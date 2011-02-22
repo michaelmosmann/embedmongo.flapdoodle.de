@@ -18,14 +18,23 @@ package de.flapdoodle.embedmongo;
 
 import java.io.IOException;
 
+import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.distribution.Platform;
+import de.flapdoodle.embedmongo.distribution.Version;
+
+import junit.framework.TestCase;
 
 
-public class EmbeddedMongoDB {
+public class EmbeddedMongoDBTest extends TestCase {
 
-	public static void checkDistribution(Distribution distribution) throws IOException {
-		if (!LocalArtifactStore.checkArtifact(distribution)) {
-			LocalArtifactStore.store(distribution, Downloader.download(distribution));
-		}
+	public void testNothing() {
+		
 	}
+	
+	public void NOtestCheck() throws IOException {
+		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
+		EmbeddedMongoDB.checkDistribution(distribution);
+	}
+	
 }
