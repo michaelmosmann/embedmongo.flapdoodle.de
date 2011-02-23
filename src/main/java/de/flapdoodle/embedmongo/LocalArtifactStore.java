@@ -23,11 +23,7 @@ import de.flapdoodle.embedmongo.distribution.Distribution;
 public class LocalArtifactStore {
 
 	public static boolean checkArtifact(Distribution distribution) {
-		File dir = createOrGetBaseDir();
-		File artifactFile = new File(dir, Paths.getPath(distribution));
-		if ((artifactFile.exists()) && (artifactFile.isFile()))
-			return true;
-		return false;
+		return getArtifact(distribution)!=null;
 	}
 	
 	public static boolean store(Distribution distribution, File download) {
@@ -56,5 +52,12 @@ public class LocalArtifactStore {
 
 	private static String getPath() {
 		return System.getProperty("user.home") + "/.embedmongo/";
+	}
+
+	public static File getArtifact(Distribution distribution) {
+		File dir = createOrGetBaseDir();
+		File artifactFile = new File(dir, Paths.getPath(distribution));
+		if ((artifactFile.exists()) && (artifactFile.isFile())) return artifactFile;
+		return null;
 	}
 }

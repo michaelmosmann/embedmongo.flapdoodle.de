@@ -16,12 +16,17 @@
 
 package de.flapdoodle.embedmongo;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 
 import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.embedmongo.extract.TgzExtractor;
 
 import junit.framework.TestCase;
 
@@ -35,6 +40,11 @@ public class EmbeddedMongoDBTest extends TestCase {
 	public void NOtestCheck() throws IOException {
 		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
 		EmbeddedMongoDB.checkDistribution(distribution);
+		
+		File artifact = LocalArtifactStore.getArtifact(distribution);
+		System.out.println("Artifact: "+artifact);
+
+		new TgzExtractor().extract(artifact, Files.createTempFile("extract",".tar"));
 	}
 	
 }

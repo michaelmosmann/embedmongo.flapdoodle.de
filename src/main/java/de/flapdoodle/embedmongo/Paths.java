@@ -21,6 +21,21 @@ import de.flapdoodle.embedmongo.distribution.Distribution;
 
 public class Paths {
 
+	public static String getArchiveType(Distribution distribution) {
+		String archiveType;
+		switch (distribution.getPlatform()) {
+			case Linux:
+				archiveType="tgz";
+				break;
+			case Windows:
+				archiveType="zip";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
+		}
+		return archiveType;
+	}
+	
 	public static String getPath(Distribution distribution) {
 		String sversion;
 		switch (distribution.getVersion()) {
@@ -35,15 +50,13 @@ public class Paths {
 		}
 		
 		String splatform;
-		String archiveType;
+		String archiveType=getArchiveType(distribution);
 		switch (distribution.getPlatform()) {
 			case Linux:
 				splatform="linux";
-				archiveType="tgz";
 				break;
 			case Windows:
 				splatform="win32";
-				archiveType="zip";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());

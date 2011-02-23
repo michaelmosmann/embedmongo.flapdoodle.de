@@ -49,7 +49,7 @@ public class Downloader {
 
 	public static File download(Distribution distribution) throws IOException {
 		
-		File ret = File.createTempFile("embedmongo-","-part");
+		File ret = Files.createTempFile("embedmongo-download","."+Paths.getArchiveType(distribution));
 		if (ret.canWrite())
 		{
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
