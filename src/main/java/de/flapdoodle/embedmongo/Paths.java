@@ -16,19 +16,41 @@
 
 package de.flapdoodle.embedmongo;
 
+import java.util.regex.Pattern;
+
+import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 
 
 public class Paths {
 
-	public static String getArchiveType(Distribution distribution) {
-		String archiveType;
+	public static Pattern getMongodExecutablePattern(Distribution distribution) {
+		return Pattern.compile(".*"+getMongodExecutable(distribution));
+	}
+	
+	public static String getMongodExecutable(Distribution distribution) {
+		String mongodPattern;
 		switch (distribution.getPlatform()) {
 			case Linux:
-				archiveType="tgz";
+				mongodPattern="mongod";
 				break;
 			case Windows:
-				archiveType="zip";
+				mongodPattern="mongod.exe";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
+		}
+		return mongodPattern;
+	}
+	
+	public static ArchiveType getArchiveType(Distribution distribution) {
+		ArchiveType archiveType;
+		switch (distribution.getPlatform()) {
+			case Linux:
+				archiveType=ArchiveType.TGZ;
+				break;
+			case Windows:
+				archiveType=ArchiveType.ZIP;
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
@@ -49,8 +71,20 @@ public class Paths {
 				throw new IllegalArgumentException("Unknown Version "+distribution.getVersion());
 		}
 		
+		ArchiveType archiveType=getArchiveType(distribution);
+		String sarchiveType;
+		switch (archiveType) {
+			case TGZ:
+				sarchiveType="tgz";
+				break;
+			case ZIP:
+				sarchiveType="zip";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown ArchiveType "+archiveType);
+		}
+		
 		String splatform;
-		String archiveType=getArchiveType(distribution);
 		switch (distribution.getPlatform()) {
 			case Linux:
 				splatform="linux";
@@ -84,7 +118,7 @@ public class Paths {
 				throw new IllegalArgumentException("Unknown BitSize "+distribution.getBitsize());
 		}
 		
-		return splatform+"/mongodb-"+splatform+"-"+sbitSize+"-"+sversion+"."+archiveType;
+		return splatform+"/mongodb-"+splatform+"-"+sbitSize+"-"+sversion+"."+sarchiveType;
 	}
 
 }

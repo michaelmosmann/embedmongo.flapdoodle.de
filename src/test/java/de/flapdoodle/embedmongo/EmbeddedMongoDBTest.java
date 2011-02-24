@@ -21,11 +21,14 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.embedmongo.extract.Extractors;
+import de.flapdoodle.embedmongo.extract.IExtractor;
 import de.flapdoodle.embedmongo.extract.TgzExtractor;
 
 import junit.framework.TestCase;
@@ -44,7 +47,8 @@ public class EmbeddedMongoDBTest extends TestCase {
 		File artifact = LocalArtifactStore.getArtifact(distribution);
 		System.out.println("Artifact: "+artifact);
 
-		new TgzExtractor().extract(artifact, Files.createTempFile("extract",".tar"));
+		IExtractor extractor = Extractors.getExtractor(distribution);
+		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
 	}
 	
 }

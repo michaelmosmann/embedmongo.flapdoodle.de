@@ -19,34 +19,47 @@ package de.flapdoodle.embedmongo.extract;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
+import de.flapdoodle.embedmongo.Files;
 
-public class TgzExtractor {
+public class TgzExtractor implements IExtractor {
 
-	public void extract(File source,File destination) throws IOException {
-		
+	@Override
+	public void extract(File source, File destination, Pattern file) throws IOException {
+
 		FileInputStream fin = new FileInputStream(source);
 		BufferedInputStream in = new BufferedInputStream(fin);
 		GzipCompressorInputStream gzIn = new GzipCompressorInputStream(in);
-		
-		FileOutputStream out = new FileOutputStream(destination);
-		
-		try
-		{
-			final byte[] buffer = new byte[512];
-			int n = 0;
-			while (-1 != (n = gzIn.read(buffer))) {
-			    out.write(buffer, 0, n);
+
+		TarArchiveInputStream tarIn = new TarArchiveInputStream(gzIn);
+		try {
+			TarArchiveEntry entry;
+			while ((entry = tarIn.getNextTarEntry()) != null) {
+				if (file.matcher(entry.getName()).matches()) {
+					System.out.println("File: " + entry.getName());
+					if (tarIn.canReadEntryData(entry)) {
+						System.out.println("Can Read: " + entry.getName());
+						long size = entry.getSize();
+						Files.write(tarIn, size, destination);
+						destination.setExecutable(true);
+						System.out.println("DONE");
+					}
+					break;
+					
+				}
+				else {
+					System.out.println("SKIP File: " + entry.getName());
+				}
 			}
-		}
-		finally
-		{
-			out.close();
+
+		} finally {
+			tarIn.close();
 			gzIn.close();
 		}
 	}
