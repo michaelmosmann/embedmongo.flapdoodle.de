@@ -40,7 +40,7 @@ public class EmbeddedMongoDBTest extends TestCase {
 		
 	}
 	
-	public void testCheck() throws IOException, InterruptedException {
+	public void NOtestCheck() throws IOException, InterruptedException {
 //		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
 		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, 12345));
 		MongodProcess mongod = embeddedMongo.start();
