@@ -16,16 +16,53 @@
 
 package de.flapdoodle.embedmongo;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.extract.Extractors;
+import de.flapdoodle.embedmongo.extract.IExtractor;
 
 
 public class EmbeddedMongoDB {
 
-	public static void checkDistribution(Distribution distribution) throws IOException {
+	private static final Logger _logger = Logger.getLogger(EmbeddedMongoDB.class.getName());
+	
+	private final MongodConfig _mongodConfig;
+
+	public static boolean checkDistribution(Distribution distribution) throws IOException {
 		if (!LocalArtifactStore.checkArtifact(distribution)) {
-			LocalArtifactStore.store(distribution, Downloader.download(distribution));
+			return LocalArtifactStore.store(distribution, Downloader.download(distribution));
 		}
+		return true;
 	}
+
+	public EmbeddedMongoDB(MongodConfig mongodConfig) {
+		_mongodConfig = mongodConfig;
+	}
+	
+	public MongodProcess start() {
+		try
+		{
+			Distribution distribution = Distribution.detectFor(_mongodConfig.getVersion());
+			if (checkDistribution(distribution)) {
+				File artifact = LocalArtifactStore.getArtifact(distribution);
+				IExtractor extractor = Extractors.getExtractor(distribution);
+				
+				File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
+				extractor.extract(artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
+
+				return new MongodProcess(_mongodConfig,mongodExe);
+			}
+		}
+		catch (IOException iox) {
+			_logger.log(Level.SEVERE,"start",iox);
+		}
+		return null;
+	}
+	
+	
+	
 }

@@ -40,15 +40,23 @@ public class EmbeddedMongoDBTest extends TestCase {
 		
 	}
 	
-	public void NOtestCheck() throws IOException {
-		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
-		EmbeddedMongoDB.checkDistribution(distribution);
+	public void testCheck() throws IOException, InterruptedException {
+//		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
+		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, 12345));
+		MongodProcess mongod = embeddedMongo.start();
+		assertNotNull("Mongod", mongod);
 		
-		File artifact = LocalArtifactStore.getArtifact(distribution);
-		System.out.println("Artifact: "+artifact);
-
-		IExtractor extractor = Extractors.getExtractor(distribution);
-		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
+		Thread.sleep(10000);
+		
+		mongod.stop();
+		
+//		EmbeddedMongoDB.checkDistribution(distribution);
+//		
+//		File artifact = LocalArtifactStore.getArtifact(distribution);
+//		System.out.println("Artifact: "+artifact);
+//
+//		IExtractor extractor = Extractors.getExtractor(distribution);
+//		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
 	}
 	
 }

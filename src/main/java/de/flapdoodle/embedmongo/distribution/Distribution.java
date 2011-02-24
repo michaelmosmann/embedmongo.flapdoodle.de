@@ -16,6 +16,8 @@
 
 package de.flapdoodle.embedmongo.distribution;
 
+import java.util.Properties;
+
 public class Distribution {
 
 	private final Version _version;
@@ -43,5 +45,24 @@ public class Distribution {
 	@Override
 	public String toString() {
 		return ""+_version+":"+_platform+":"+_bitsize;
+	}
+	
+	public static Distribution detectFor(Version version) {
+//		Properties properties = System.getProperties();
+//		for (Object key : properties.keySet()) {
+//			System.out.println(key+"="+properties.getProperty(key.toString()));
+//		}
+		BitSize bitSize=BitSize.B32;
+		String osArch = System.getProperty("os.arch");
+		if (osArch.equals("i686_64")) bitSize=BitSize.B64;
+		
+		String osName = System.getProperty("os.name");
+		Platform platform=null;
+		if (osName.equals("Linux")) platform=Platform.Linux;
+		if (osName.equals("Windows")) platform=Platform.Linux;
+		
+		if (platform==null) throw new IllegalArgumentException("Could not detect Platform: os.name="+osName);
+		
+		return new Distribution(version, platform, bitSize);
 	}
 }
