@@ -32,24 +32,30 @@ public class MongodProcess {
 	private final File _mongodExecutable;
 	private Process _process;
 
+	private File _dbDir;
+
 	public MongodProcess(MongodConfig config, File mongodExecutable) throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
 
 		try {
-			ProcessBuilder processBuilder = new ProcessBuilder(_mongodExecutable.getAbsolutePath(), "--help");
+			_dbDir = Files.createTempDir("embedmongo-db");
+			ProcessBuilder processBuilder = new ProcessBuilder(_mongodExecutable.getAbsolutePath(), "-v","--port",""+_config.getPort(),"--dbpath",""+_dbDir.getAbsolutePath());
 			processBuilder.redirectErrorStream();
 			_process = processBuilder.start();
 			ConsoleOutput consoleOutput = new ConsoleOutput();
 			consoleOutput.setDaemon(true);
 			consoleOutput.start();
-		} finally {
+		} catch (IOException iox) {
+			if (_dbDir!=null) _dbDir.delete();
 			_mongodExecutable.delete();
+			throw iox;
 		}
 	}
 
 	public void stop() {
 		_process.destroy();
+		_dbDir.delete();
 		_mongodExecutable.delete();
 	}
 

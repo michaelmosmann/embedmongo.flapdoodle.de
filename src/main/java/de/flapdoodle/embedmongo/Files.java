@@ -35,6 +35,13 @@ public class Files {
 		return tempFile;
 	}
 	
+	public static File createTempDir(String prefix) throws IOException {
+		File tempDir = new File(System.getProperty("java.io.tmpdir"));
+		File tempFile = new File(tempDir,prefix+"-"+UUID.randomUUID().toString());
+		if (!tempFile.mkdir()) throw new IOException("Could not create Tempdir: "+tempFile);
+		return tempFile;
+	}
+	
 	public static void write(InputStream in, long size, File output) throws IOException {
 		FileOutputStream out = new FileOutputStream(output);
 		
@@ -60,4 +67,6 @@ public class Files {
 			out.close();
 		}
 	}
+
+
 }

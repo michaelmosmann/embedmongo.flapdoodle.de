@@ -16,47 +16,53 @@
 
 package de.flapdoodle.embedmongo;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.regex.Pattern;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
 
-import de.flapdoodle.embedmongo.distribution.BitSize;
-import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.extract.Extractors;
-import de.flapdoodle.embedmongo.extract.IExtractor;
-import de.flapdoodle.embedmongo.extract.TgzExtractor;
+import org.bson.BSONObject;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.mongodb.Mongo;
 
 import junit.framework.TestCase;
 
+import de.flapdoodle.embedmongo.distribution.Version;
 
 public class EmbeddedMongoDBTest extends TestCase {
 
 	public void testNothing() {
-		
+
 	}
-	
+
 	public void NOtestCheck() throws IOException, InterruptedException {
-//		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
-		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, 12345));
+		//		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
+		int port = 12345;
+		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, port));
 		MongodProcess mongod = embeddedMongo.start();
 		assertNotNull("Mongod", mongod);
+
+		Thread.sleep(1000);
 		
+		Mongo mongo=new Mongo("localhost", port);
+		DB db = mongo.getDB("test");
+		DBCollection col = db.createCollection("testCol", new BasicDBObject());
+		col.save(new BasicDBObject("testDoc",new Date()));
 		Thread.sleep(10000);
-		
+
 		mongod.stop();
-		
-//		EmbeddedMongoDB.checkDistribution(distribution);
-//		
-//		File artifact = LocalArtifactStore.getArtifact(distribution);
-//		System.out.println("Artifact: "+artifact);
-//
-//		IExtractor extractor = Extractors.getExtractor(distribution);
-//		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
+
+		//		EmbeddedMongoDB.checkDistribution(distribution);
+		//		
+		//		File artifact = LocalArtifactStore.getArtifact(distribution);
+		//		System.out.println("Artifact: "+artifact);
+		//
+		//		IExtractor extractor = Extractors.getExtractor(distribution);
+		//		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
 	}
-	
+
 }
