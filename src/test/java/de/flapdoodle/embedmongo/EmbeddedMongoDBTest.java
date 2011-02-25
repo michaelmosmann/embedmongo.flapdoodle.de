@@ -39,22 +39,34 @@ public class EmbeddedMongoDBTest extends TestCase {
 
 	}
 
-	public void NOtestCheck() throws IOException, InterruptedException {
+	public void testCheck() throws IOException, InterruptedException {
 		//		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
 		int port = 12345;
 		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, port));
-		MongodProcess mongod = embeddedMongo.start();
-		assertNotNull("Mongod", mongod);
-
-		Thread.sleep(1000);
+		MongodProcess mongod = null;
 		
-		Mongo mongo=new Mongo("localhost", port);
-		DB db = mongo.getDB("test");
-		DBCollection col = db.createCollection("testCol", new BasicDBObject());
-		col.save(new BasicDBObject("testDoc",new Date()));
-		Thread.sleep(10000);
-
-		mongod.stop();
+		
+		try
+		{
+			mongod=embeddedMongo.start();
+			assertNotNull("Mongod", mongod);
+	
+			Thread.sleep(1000);
+			
+			Mongo mongo=new Mongo("localhost", port);
+			DB db = mongo.getDB("test");
+			DBCollection col = db.createCollection("testCol", new BasicDBObject());
+			col.save(new BasicDBObject("testDoc",new Date()));
+			
+			System.out.println("Waiting");
+			
+//			if (true) throw new IllegalArgumentException("Fake");
+			Thread.sleep(2000);
+		}
+		finally
+		{
+			if (mongod!=null) mongod.stop();
+		}
 
 		//		EmbeddedMongoDB.checkDistribution(distribution);
 		//		
