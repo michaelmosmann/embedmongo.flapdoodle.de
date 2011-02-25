@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2011 Michael Mosmann <michael@mosmann.de>
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,12 +17,16 @@
 package de.flapdoodle.embedmongo;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 public class Files {
+
+	private static final Logger _logger = Logger.getLogger(Files.class.getName());
 
 	private Files() {
 
@@ -48,9 +52,11 @@ public class Files {
 		if (dir.exists()) {
 			for (File file : dir.listFiles()) {
 				if (file.isFile()) {
-					if (!file.delete()) return false;
+					if (!file.delete())
+						return false;
 				} else {
-					if (!deleteDir(file)) return false;
+					if (!deleteDir(file))
+						return false;
 				}
 			}
 			return dir.delete();
@@ -78,6 +84,40 @@ public class Files {
 			}
 		} finally {
 			out.close();
+		}
+	}
+
+	public static boolean moveFile(File source, File destination) {
+		if (!source.renameTo(destination)) {
+			// move konnte evtl. nicht durchgeführt werden
+			try {
+				copyFile(source, destination);
+				return source.delete();
+			} catch (IOException iox) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static void copyFile(File source, File destination) throws IOException {
+		FileInputStream reader = null;
+		FileOutputStream writer = null;
+		try {
+			reader = new FileInputStream(source);
+			writer = new FileOutputStream(destination);
+
+			int read;
+			byte[] buf = new byte[512];
+			while ((read = reader.read(buf)) != -1) {
+				writer.write(buf, 0, read);
+			}
+
+		} finally {
+			if (reader != null)
+				reader.close();
+			if (writer != null)
+				writer.close();
 		}
 	}
 
