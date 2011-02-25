@@ -29,9 +29,11 @@ import de.flapdoodle.embedmongo.extract.IExtractor;
 public class EmbeddedMongoDB {
 
 	private static final Logger _logger = Logger.getLogger(EmbeddedMongoDB.class.getName());
-	
-	private final MongodConfig _mongodConfig;
 
+	private EmbeddedMongoDB() {
+		
+	}
+	
 	public static boolean checkDistribution(Distribution distribution) throws IOException {
 		if (!LocalArtifactStore.checkArtifact(distribution)) {
 			return LocalArtifactStore.store(distribution, Downloader.download(distribution));
@@ -39,14 +41,10 @@ public class EmbeddedMongoDB {
 		return true;
 	}
 
-	public EmbeddedMongoDB(MongodConfig mongodConfig) {
-		_mongodConfig = mongodConfig;
-	}
-	
-	public MongodProcess start() {
+	public static MongodProcess start(MongodConfig mongodConfig) {
 		try
 		{
-			Distribution distribution = Distribution.detectFor(_mongodConfig.getVersion());
+			Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
 			if (checkDistribution(distribution)) {
 				File artifact = LocalArtifactStore.getArtifact(distribution);
 				IExtractor extractor = Extractors.getExtractor(distribution);
@@ -54,7 +52,7 @@ public class EmbeddedMongoDB {
 				File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
 				extractor.extract(artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
 
-				return new MongodProcess(_mongodConfig,mongodExe);
+				return new MongodProcess(mongodConfig,mongodExe);
 			}
 		}
 		catch (IOException iox) {

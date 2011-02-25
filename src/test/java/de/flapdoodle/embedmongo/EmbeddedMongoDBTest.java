@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2011 Michael Mosmann <michael@mosmann.de>
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,41 +40,22 @@ public class EmbeddedMongoDBTest extends TestCase {
 	}
 
 	public void testCheck() throws IOException, InterruptedException {
-		//		Distribution distribution = new Distribution(Version.V1_6_5, Platform.Linux, BitSize.B32);
 		int port = 12345;
-		EmbeddedMongoDB embeddedMongo = new EmbeddedMongoDB(new MongodConfig(Version.V1_6_5, port));
 		MongodProcess mongod = null;
-		
-		
-		try
-		{
-			mongod=embeddedMongo.start();
+
+		try {
+			mongod = EmbeddedMongoDB.start(new MongodConfig(Version.V1_6_5, port));
 			assertNotNull("Mongod", mongod);
-	
-			Thread.sleep(1000);
-			
-			Mongo mongo=new Mongo("localhost", port);
+
+			Mongo mongo = new Mongo("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
-			col.save(new BasicDBObject("testDoc",new Date()));
-			
-			System.out.println("Waiting");
-			
-//			if (true) throw new IllegalArgumentException("Fake");
-			Thread.sleep(2000);
-		}
-		finally
-		{
-			if (mongod!=null) mongod.stop();
-		}
+			col.save(new BasicDBObject("testDoc", new Date()));
 
-		//		EmbeddedMongoDB.checkDistribution(distribution);
-		//		
-		//		File artifact = LocalArtifactStore.getArtifact(distribution);
-		//		System.out.println("Artifact: "+artifact);
-		//
-		//		IExtractor extractor = Extractors.getExtractor(distribution);
-		//		extractor.extract(artifact, Files.createTempFile("extract",Paths.getMongodExecutable(distribution)),Paths.getMongodExecutablePattern(distribution));
+		} finally {
+			if (mongod != null)
+				mongod.stop();
+		}
 	}
 
 }
