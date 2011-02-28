@@ -42,9 +42,10 @@ public class EmbeddedMongoDBTest extends TestCase {
 	public void testCheck() throws IOException, InterruptedException {
 		int port = 12345;
 		MongodProcess mongod = null;
-
+		EmbeddedMongoDB embedder = EmbeddedMongoDB.getDefaultInstance();
+		
 		try {
-			mongod = EmbeddedMongoDB.start(new MongodConfig(Version.V1_6_5, port));
+			mongod = embedder.start(new MongodConfig(Version.V1_6_5, port));
 			assertNotNull("Mongod", mongod);
 
 			Mongo mongo = new Mongo("localhost", port);

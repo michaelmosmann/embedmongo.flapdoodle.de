@@ -27,6 +27,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.output.IProgressListener;
 
 public class Downloader {
 

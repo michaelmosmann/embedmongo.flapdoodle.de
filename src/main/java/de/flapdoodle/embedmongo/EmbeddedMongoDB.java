@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embedmongo.config.EmbedderConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.extract.Extractors;
 import de.flapdoodle.embedmongo.extract.IExtractor;
@@ -29,19 +30,29 @@ import de.flapdoodle.embedmongo.extract.IExtractor;
 public class EmbeddedMongoDB {
 
 	private static final Logger _logger = Logger.getLogger(EmbeddedMongoDB.class.getName());
+	
+	private final EmbedderConfig _config;
 
-	private EmbeddedMongoDB() {
-		
+	private EmbeddedMongoDB(EmbedderConfig config) {
+		_config = config;
 	}
 	
-	public static boolean checkDistribution(Distribution distribution) throws IOException {
+	public static EmbeddedMongoDB getInstance(EmbedderConfig config) {
+		return new EmbeddedMongoDB(config);
+	}
+	
+	public static EmbeddedMongoDB getDefaultInstance() {
+		return getInstance(new EmbedderConfig());
+	}
+	
+	public boolean checkDistribution(Distribution distribution) throws IOException {
 		if (!LocalArtifactStore.checkArtifact(distribution)) {
 			return LocalArtifactStore.store(distribution, Downloader.download(distribution));
 		}
 		return true;
 	}
 
-	public static MongodProcess start(MongodConfig mongodConfig) {
+	public MongodProcess start(MongodConfig mongodConfig) {
 		try
 		{
 			Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
