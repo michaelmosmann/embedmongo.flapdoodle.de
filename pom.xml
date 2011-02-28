@@ -175,32 +175,19 @@
 			<scope>test</scope>
 		</dependency>
 
-<!-- 
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-			<version>2.0</version>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>r07</version>
-		</dependency>
- -->		
-		<dependency>
-	    <groupId>org.apache.commons</groupId>
-	    <artifactId>commons-compress</artifactId>
-	    <version>1.1</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.mongodb</groupId>
 			<artifactId>mongo-java-driver</artifactId>
 			<version>2.4</version>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+	    <groupId>org.apache.commons</groupId>
+	    <artifactId>commons-compress</artifactId>
+	    <version>1.1</version>
+		</dependency>
+
 	</dependencies>
 
 </project>
