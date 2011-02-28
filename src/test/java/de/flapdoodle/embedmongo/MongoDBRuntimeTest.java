@@ -31,9 +31,10 @@ import com.mongodb.Mongo;
 
 import junit.framework.TestCase;
 
+import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
 
-public class EmbeddedMongoDBTest extends TestCase {
+public class MongoDBRuntimeTest extends TestCase {
 
 	public void testNothing() {
 
@@ -42,10 +43,10 @@ public class EmbeddedMongoDBTest extends TestCase {
 	public void testCheck() throws IOException, InterruptedException {
 		int port = 12345;
 		MongodProcess mongod = null;
-		EmbeddedMongoDB embedder = EmbeddedMongoDB.getDefaultInstance();
+		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 		
 		try {
-			mongod = embedder.start(new MongodConfig(Version.V1_6_5, port));
+			mongod = runtime.start(new MongodConfig(Version.V1_6_5, port));
 			assertNotNull("Mongod", mongod);
 
 			Mongo mongo = new Mongo("localhost", port);

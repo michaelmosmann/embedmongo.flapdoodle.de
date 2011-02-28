@@ -27,11 +27,12 @@ import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 import de.flapdoodle.embedmongo.Files;
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
 
 public class TgzExtractor implements IExtractor {
 
 	@Override
-	public void extract(File source, File destination, Pattern file) throws IOException {
+	public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
 
 		FileInputStream fin = new FileInputStream(source);
 		BufferedInputStream in = new BufferedInputStream(fin);
@@ -42,19 +43,19 @@ public class TgzExtractor implements IExtractor {
 			TarArchiveEntry entry;
 			while ((entry = tarIn.getNextTarEntry()) != null) {
 				if (file.matcher(entry.getName()).matches()) {
-					System.out.println("File: " + entry.getName());
+//					System.out.println("File: " + entry.getName());
 					if (tarIn.canReadEntryData(entry)) {
-						System.out.println("Can Read: " + entry.getName());
+//						System.out.println("Can Read: " + entry.getName());
 						long size = entry.getSize();
 						Files.write(tarIn, size, destination);
 						destination.setExecutable(true);
-						System.out.println("DONE");
+//						System.out.println("DONE");
+						runtime.getProgressListener().done("Extract");
 					}
 					break;
-					
-				}
-				else {
-					System.out.println("SKIP File: " + entry.getName());
+
+				} else {
+//					System.out.println("SKIP File: " + entry.getName());
 				}
 			}
 

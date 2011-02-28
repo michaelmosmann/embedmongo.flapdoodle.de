@@ -32,6 +32,8 @@ import java.util.regex.Pattern;
 
 import com.sun.net.httpserver.Authenticator.Success;
 
+import de.flapdoodle.embedmongo.config.MongodConfig;
+
 public class MongodProcess {
 
 	private static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());

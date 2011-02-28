@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package de.flapdoodle.embedmongo;
+package de.flapdoodle.embedmongo.config;
 
 import de.flapdoodle.embedmongo.distribution.Version;
 

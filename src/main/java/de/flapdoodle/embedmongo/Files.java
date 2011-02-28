@@ -80,7 +80,7 @@ public class Files {
 				size = size - read;
 				if (left > size)
 					left = (int) size;
-				System.out.print("+");
+//				System.out.print("+");
 			}
 		} finally {
 			out.close();

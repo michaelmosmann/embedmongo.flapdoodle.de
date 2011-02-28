@@ -21,33 +21,35 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.config.EmbedderConfig;
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
+import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.extract.Extractors;
 import de.flapdoodle.embedmongo.extract.IExtractor;
+import de.flapdoodle.embedmongo.output.IProgressListener;
 
 
-public class EmbeddedMongoDB {
+public class MongoDBRuntime {
 
-	private static final Logger _logger = Logger.getLogger(EmbeddedMongoDB.class.getName());
+	private static final Logger _logger = Logger.getLogger(MongoDBRuntime.class.getName());
 	
-	private final EmbedderConfig _config;
+	private final RuntimeConfig _runtime;
 
-	private EmbeddedMongoDB(EmbedderConfig config) {
-		_config = config;
+	private MongoDBRuntime(RuntimeConfig config) {
+		_runtime = config;
 	}
 	
-	public static EmbeddedMongoDB getInstance(EmbedderConfig config) {
-		return new EmbeddedMongoDB(config);
+	public static MongoDBRuntime getInstance(RuntimeConfig config) {
+		return new MongoDBRuntime(config);
 	}
 	
-	public static EmbeddedMongoDB getDefaultInstance() {
-		return getInstance(new EmbedderConfig());
+	public static MongoDBRuntime getDefaultInstance() {
+		return getInstance(new RuntimeConfig());
 	}
 	
 	public boolean checkDistribution(Distribution distribution) throws IOException {
-		if (!LocalArtifactStore.checkArtifact(distribution)) {
-			return LocalArtifactStore.store(distribution, Downloader.download(distribution));
+		if (!LocalArtifactStore.checkArtifact(_runtime,distribution)) {
+			return LocalArtifactStore.store(_runtime, distribution, Downloader.download(_runtime,distribution));
 		}
 		return true;
 	}
@@ -55,13 +57,17 @@ public class EmbeddedMongoDB {
 	public MongodProcess start(MongodConfig mongodConfig) {
 		try
 		{
+			IProgressListener progress = _runtime.getProgressListener();
+			
 			Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
+			progress.done("Detect Distribution");
 			if (checkDistribution(distribution)) {
-				File artifact = LocalArtifactStore.getArtifact(distribution);
+				progress.done("Check Distribution");
+				File artifact = LocalArtifactStore.getArtifact(_runtime,distribution);
 				IExtractor extractor = Extractors.getExtractor(distribution);
 				
 				File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
-				extractor.extract(artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
+				extractor.extract(_runtime, artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
 
 				return new MongodProcess(mongodConfig,mongodExe);
 			}

@@ -22,16 +22,17 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.Reader;
 
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 
 public class LocalArtifactStore {
 
-	public static boolean checkArtifact(Distribution distribution) {
-		return getArtifact(distribution) != null;
+	public static boolean checkArtifact(RuntimeConfig runtime, Distribution distribution) {
+		return getArtifact(runtime, distribution) != null;
 	}
 
-	public static boolean store(Distribution distribution, File download) {
-		File dir = createOrGetBaseDir();
+	public static boolean store(RuntimeConfig runtime, Distribution distribution, File download) {
+		File dir = createOrGetBaseDir(runtime);
 		File artifactFile = new File(dir, Paths.getPath(distribution));
 		createOrCheckDir(artifactFile.getParentFile());
 		if (!Files.moveFile(download, artifactFile))
@@ -40,8 +41,8 @@ public class LocalArtifactStore {
 		return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
 	}
 
-	private static File createOrGetBaseDir() {
-		File dir = new File(getPath());
+	private static File createOrGetBaseDir(RuntimeConfig runtime) {
+		File dir = new File(getPath(runtime));
 		createOrCheckDir(dir);
 		return dir;
 	}
@@ -55,12 +56,12 @@ public class LocalArtifactStore {
 			throw new IllegalArgumentException("" + dir + " is not a Directory");
 	}
 
-	private static String getPath() {
-		return System.getProperty("user.home") + "/.embedmongo/";
+	private static String getPath(RuntimeConfig runtime) {
+		return System.getProperty("user.home") + "/"+runtime.getArtifactStorePath()+"/";//"/.embedmongo/";
 	}
 
-	public static File getArtifact(Distribution distribution) {
-		File dir = createOrGetBaseDir();
+	public static File getArtifact(RuntimeConfig runtime, Distribution distribution) {
+		File dir = createOrGetBaseDir(runtime);
 		File artifactFile = new File(dir, Paths.getPath(distribution));
 		if ((artifactFile.exists()) && (artifactFile.isFile()))
 			return artifactFile;

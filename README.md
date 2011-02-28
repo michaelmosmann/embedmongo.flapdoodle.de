@@ -31,9 +31,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 	int port = 12345;
 	MongodProcess mongod = null;
-
+	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+	
 	try {
-		mongod = EmbeddedMongoDB.start(new MongodConfig(Version.V1_6_5, port));
+		mongod = runtime.start(new MongodConfig(Version.V1_6_5, port));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
