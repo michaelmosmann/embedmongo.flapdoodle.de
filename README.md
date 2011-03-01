@@ -13,17 +13,17 @@ easy access??
 Stable
 
 	<dependency>
-	  <groupId>de.flapdoodle.embedmongo</groupId>
+		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-	  <version>1.2</version>
+		<version>1.2</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 	<dependency>
-	  <groupId>de.flapdoodle.mongoom</groupId>
-		<artifactId>de.flapdoodle.mongoom</artifactId>
-	  <version>1.3-SNAPSHOT</version>
+		<groupId>de.flapdoodle.embedmongo</groupId>
+		<artifactId>de.flapdoodle.embedmongo</artifactId>
+		<version>1.3-SNAPSHOT</version>
 	</dependency>
 
 ### Supported Versions
