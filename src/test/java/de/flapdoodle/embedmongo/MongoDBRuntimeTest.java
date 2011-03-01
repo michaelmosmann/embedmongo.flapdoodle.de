@@ -32,12 +32,22 @@ import com.mongodb.Mongo;
 import junit.framework.TestCase;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.distribution.BitSize;
+import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
 
 public class MongoDBRuntimeTest extends TestCase {
 
 	public void testNothing() {
 
+	}
+	
+	public void testDistributions() throws IOException {
+		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.Linux,BitSize.B32));
+		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.Windows,BitSize.B32));
+		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.OS_X,BitSize.B32));
 	}
 
 	public void testCheck() throws IOException, InterruptedException {

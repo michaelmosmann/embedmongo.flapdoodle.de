@@ -16,12 +16,13 @@
 
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.embedmongo.output.ConsoleProgressListener;
+import de.flapdoodle.embedmongo.output.ConsoleOneLineProgressListener;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 
 public class RuntimeConfig {
 
-	private IProgressListener _progressListener = new ConsoleProgressListener();
+	private IProgressListener _progressListener = new StandardConsoleProgressListener();
 	private String _downloadPath = "http://fastdl.mongodb.org/";
 	private String _artifactStorePath=".embedmongo";
 

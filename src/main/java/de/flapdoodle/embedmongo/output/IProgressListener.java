@@ -20,4 +20,6 @@ public interface IProgressListener {
 
 	void progress(String label, int percent);
 	void done(String label);
+	void start(String label);
+	void info(String label,String message);
 }

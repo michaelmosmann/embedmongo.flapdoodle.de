@@ -51,9 +51,14 @@ public class Downloader {
 
 	public static File download(RuntimeConfig runtime, Distribution distribution) throws IOException {
 		
+		String progressLabel = "Download "+distribution;
+		IProgressListener progress = runtime.getProgressListener();
+		progress.start(progressLabel);
+		
 		File ret = Files.createTempFile("embedmongo-download","."+Paths.getArchiveType(distribution));
 		if (ret.canWrite())
 		{
+			
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
 			
 			URL url = new URL(getDownloadUrl(runtime, distribution));
@@ -64,20 +69,24 @@ public class Downloader {
 			InputStream downloadStream = openConnection.getInputStream();
 			
 			int length=openConnection.getContentLength();
+			progress.info(progressLabel,"DownloadSize: "+length);
 			
-			IProgressListener progress = runtime.getProgressListener();
+			if (length==-1) length=20*1024*1024;
+			
+			
 			
 			try {
 				BufferedInputStream bis = new BufferedInputStream(downloadStream);
-				byte[] buf = new byte[512];
+				byte[] buf = new byte[1024*8];
 //				int count = 0;
 				int read=0;
 				int readCount=0;
 				while ((read=bis.read(buf)) != -1) {
 					bos.write(buf, 0, read);
 					readCount=readCount+read;
+					if (readCount>length) length=readCount;
 					
-					progress.progress("Download", length!=-1 ? readCount/length : 0);
+					progress.progress(progressLabel, readCount*100/length );
 //					System.out.print("+");
 //					count++;
 //					if (count >= 100) {
@@ -90,8 +99,11 @@ public class Downloader {
 				bos.flush();
 				bos.close();
 			}
-			progress.done("Download");
 		}
+		else {
+			throw new IOException("Can not write "+ret);
+		}
+		progress.done(progressLabel);
 		return ret;
 	}
 

@@ -16,7 +16,7 @@
 
 package de.flapdoodle.embedmongo.output;
 
-public class ConsoleProgressListener implements IProgressListener {
+public class ConsoleOneLineProgressListener implements IProgressListener {
 
 	private static final char BAR_DONE = '=';
 	private static final char BAR_TODO = '-';
@@ -63,6 +63,15 @@ public class ConsoleProgressListener implements IProgressListener {
 	@Override
 	public void done(String label) {
 		System.out.println(label+" DONE");
+	}
+	
+	@Override
+	public void start(String label) {
+		System.out.println(label+" START");		
+	}
+	@Override
+	public void info(String label,String message) {
+		System.out.println(label+" "+message);		
 	}
 
 	static String makeString(char c, int len) {

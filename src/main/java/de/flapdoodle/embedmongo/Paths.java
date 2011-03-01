@@ -52,6 +52,9 @@ public class Paths {
 			case Windows:
 				archiveType=ArchiveType.ZIP;
 				break;
+			case OS_X:
+				archiveType=ArchiveType.TGZ;
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
 		}
@@ -66,6 +69,9 @@ public class Paths {
 				break;
 			case V1_7_6:
 				sversion="1.7.6";
+				break;
+			case V1_8_0_rc0:
+				sversion="1.8.0-rc0";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Version "+distribution.getVersion());
@@ -92,6 +98,9 @@ public class Paths {
 			case Windows:
 				splatform="win32";
 				break;
+			case OS_X:
+				splatform="osx";
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
 		}
@@ -105,6 +114,9 @@ public class Paths {
 						sbitSize="i686";
 						break;
 					case Windows:
+						sbitSize="i386";
+						break;
+					case OS_X:
 						sbitSize="i386";
 						break;
 					default:
