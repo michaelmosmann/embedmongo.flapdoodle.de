@@ -31,7 +31,9 @@ public class Extractors {
 		switch (archiveType) {
 			case TGZ:
 				return new TgzExtractor();
+			case ZIP:
+				return new ZipExtractor();
 		}
-		throw new IllegalArgumentException("ArciveType "+archiveType+"not supported");
+		throw new IllegalArgumentException("ArciveType "+archiveType+" not supported");
 	}
 }

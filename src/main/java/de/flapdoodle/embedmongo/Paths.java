@@ -37,6 +37,9 @@ public class Paths {
 			case Windows:
 				mongodPattern="mongod.exe";
 				break;
+			case OS_X:
+				mongodPattern="mongod";
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform "+distribution.getPlatform());
 		}

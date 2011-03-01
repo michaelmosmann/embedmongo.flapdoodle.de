@@ -16,6 +16,7 @@
 
 package de.flapdoodle.embedmongo;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
@@ -45,9 +46,16 @@ public class MongoDBRuntimeTest extends TestCase {
 	
 	public void testDistributions() throws IOException {
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.Linux,BitSize.B32));
-		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.Windows,BitSize.B32));
-		runtime.checkDistribution(new Distribution(Version.V1_7_6,Platform.OS_X,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_7_6,Platform.Linux,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_7_6,Platform.Windows,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_7_6,Platform.OS_X,BitSize.B32));
+	}
+
+	private void check(MongoDBRuntime runtime, Distribution distribution) throws IOException {
+		assertTrue("Check",runtime.checkDistribution(distribution));
+		File mongod = runtime.extractMongod(distribution);
+		assertNotNull("Extracted",mongod);
+		assertTrue("Delete",mongod.delete());
 	}
 
 	public void testCheck() throws IOException, InterruptedException {

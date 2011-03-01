@@ -1,6 +1,6 @@
 # Embedded MongoDB
 
-Embedded MongoDB will provide a platform neutral way for running mongodb in unittests
+Embedded MongoDB will provide a platform neutral way for running mongodb in unittests. Support for Linux, Windows and MacOSX.
 
 ## Why?
 

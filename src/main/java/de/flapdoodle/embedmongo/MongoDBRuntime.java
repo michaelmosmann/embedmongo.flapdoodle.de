@@ -63,11 +63,7 @@ public class MongoDBRuntime {
 			progress.done("Detect Distribution");
 			if (checkDistribution(distribution)) {
 				progress.done("Check Distribution");
-				File artifact = LocalArtifactStore.getArtifact(_runtime,distribution);
-				IExtractor extractor = Extractors.getExtractor(distribution);
-				
-				File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
-				extractor.extract(_runtime, artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
+				File mongodExe = extractMongod(distribution);
 
 				return new MongodProcess(mongodConfig,mongodExe);
 			}
@@ -76,6 +72,15 @@ public class MongoDBRuntime {
 			_logger.log(Level.SEVERE,"start",iox);
 		}
 		return null;
+	}
+
+	protected File extractMongod(Distribution distribution) throws IOException {
+		File artifact = LocalArtifactStore.getArtifact(_runtime,distribution);
+		IExtractor extractor = Extractors.getExtractor(distribution);
+		
+		File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
+		extractor.extract(_runtime, artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
+		return mongodExe;
 	}
 	
 	

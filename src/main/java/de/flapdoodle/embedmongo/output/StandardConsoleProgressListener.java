@@ -20,7 +20,7 @@ public class StandardConsoleProgressListener implements IProgressListener {
 
 	String _lastLabel = null;
 	int _lastPercent = -1;
-	int _countEquals = 0;
+//	int _countEquals = 0;
 
 	@Override
 	public void progress(String label, int percent) {
@@ -29,15 +29,15 @@ public class StandardConsoleProgressListener implements IProgressListener {
 			System.out.print(" ");
 		}
 		if (percent == _lastPercent) {
-			_countEquals++;
-			if (_countEquals >= 10) {
-				System.out.print(".");
-				_countEquals = 0;
-			}
+//			_countEquals++;
+//			if (_countEquals >= 10) {
+//				System.out.print(".");
+//				_countEquals = 0;
+//			}
 		} else {
-			_countEquals=0;
+//			_countEquals=0;
 			System.out.print(percent);
-			System.out.print("%");
+			System.out.print("% ");
 		}
 		_lastLabel = label;
 		_lastPercent = percent;
