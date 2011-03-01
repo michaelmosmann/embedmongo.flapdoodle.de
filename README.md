@@ -10,12 +10,12 @@ easy access??
 
 ### Maven
 
-Stable (not yet)
+Stable
 
 	<dependency>
 	  <groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-	  <version>1.0</version>
+	  <version>1.1</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -23,7 +23,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 	  <groupId>de.flapdoodle.mongoom</groupId>
 		<artifactId>de.flapdoodle.mongoom</artifactId>
-	  <version>1.0-SNAPSHOT</version>
+	  <version>1.2-SNAPSHOT</version>
 	</dependency>
 
 
