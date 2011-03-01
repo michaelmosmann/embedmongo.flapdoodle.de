@@ -1,6 +1,6 @@
 # Embedded MongoDB
 
-Embedded MongoDB will provide a platform neutral way for running mongodb in unittests. Support for Linux, Windows and MacOSX.
+Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
 
 ## Why?
 
@@ -26,6 +26,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	  <version>1.2-SNAPSHOT</version>
 	</dependency>
 
+### Supported Versions
+
+Versions: 1.6.5, 1.7.6, 1.8.0-rc0
+Support for Linux, Windows and MacOSX.
 
 ### Usage
 
