@@ -93,7 +93,6 @@ public class MongodProcess {
 
 		@Override
 		public void run() {
-			_logger.warning("stopProcess");
 			MongodProcess.this.stop();
 		}
 	}

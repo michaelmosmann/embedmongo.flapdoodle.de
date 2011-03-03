@@ -50,7 +50,6 @@ public class MongodExecutable {
 
 		@Override
 		public void run() {
-			_logger.warning("CleanUp");
 			cleanup();
 		}
 	}
