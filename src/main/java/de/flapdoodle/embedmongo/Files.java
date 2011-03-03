@@ -68,7 +68,7 @@ public class Files {
 		FileOutputStream out = new FileOutputStream(output);
 
 		try {
-			byte[] buf = new byte[512];
+			byte[] buf = new byte[1024*16];
 			int read;
 			int left = buf.length;
 			if (left > size)

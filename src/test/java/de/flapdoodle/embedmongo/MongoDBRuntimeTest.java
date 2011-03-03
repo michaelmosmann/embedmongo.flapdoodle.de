@@ -18,7 +18,9 @@ package de.flapdoodle.embedmongo;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,22 +61,55 @@ public class MongoDBRuntimeTest extends TestCase {
 	}
 
 	public void testCheck() throws IOException, InterruptedException {
+		
+		Timer timer = new Timer();
+		
 		int port = 12345;
 		MongodProcess mongod = null;
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 		
+		timer.check("After Runtime");
+		
 		try {
 			mongod = runtime.start(new MongodConfig(Version.V1_6_5, port));
+			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 
 			Mongo mongo = new Mongo("localhost", port);
+			timer.check("After Mongo");
 			DB db = mongo.getDB("test");
+			timer.check("After DB test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
+			timer.check("After Collection testCol");
 			col.save(new BasicDBObject("testDoc", new Date()));
+			timer.check("After save");
 
 		} finally {
 			if (mongod != null)
 				mongod.stop();
+			timer.check("After mongod stop");
+		}
+		timer.log();
+	}
+	
+	static class Timer {
+		long _start=System.currentTimeMillis();
+		long _last=_start;
+		
+		List<String> _log=new ArrayList<String>();
+		
+		void check(String label) {
+			long current=System.currentTimeMillis();
+			long diff=current-_last;
+			_last=current;
+			
+			_log.add(label+": "+diff+"ms");
+		}
+		
+		void log() {
+			for (String line : _log) {
+				System.out.println(line);
+			}
 		}
 	}
 
