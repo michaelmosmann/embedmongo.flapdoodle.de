@@ -89,7 +89,7 @@ public class MongoDBRuntimeTest extends TestCase {
 
 		} finally {
 			if (mongodProcess!=null)
-				mongodProcess.stopProcess();
+				mongodProcess.stop();
 			timer.check("After mongodProcess stop");
 			if (mongod != null)
 				mongod.cleanup();

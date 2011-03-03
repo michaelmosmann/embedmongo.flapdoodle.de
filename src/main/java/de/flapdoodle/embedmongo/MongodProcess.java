@@ -69,7 +69,7 @@ public class MongodProcess {
 			}
 
 		} catch (IOException iox) {
-			stopProcess();
+			stop();
 			throw iox;
 		}
 	}
@@ -79,7 +79,7 @@ public class MongodProcess {
 				+ dbDir.getAbsolutePath(), "--noprealloc","--nohttpinterface","--smallfiles");
 	}
 
-	public synchronized void stopProcess() {
+	public synchronized void stop() {
 		if (!_stopped) {
 			if (_process != null)
 				_process.destroy();
@@ -94,7 +94,7 @@ public class MongodProcess {
 		@Override
 		public void run() {
 			_logger.warning("stopProcess");
-			stopProcess();
+			MongodProcess.this.stop();
 		}
 	}
 
