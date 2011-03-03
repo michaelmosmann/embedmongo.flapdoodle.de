@@ -39,20 +39,20 @@ public class MongodProcess {
 	private static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
 
 	private final MongodConfig _config;
-	private final File _mongodExecutable;
+	private final MongodExecutable _mongodExecutable;
 	private Process _process;
 
 	private File _dbDir;
 
 	boolean _stopped = false;
 
-	public MongodProcess(MongodConfig config, File mongodExecutable) throws IOException {
+	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable) throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
 
 		try {
 			_dbDir = Files.createTempDir("embedmongo-db");
-			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(mongodExecutable));
+			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config,_mongodExecutable.getFile(),_dbDir));
 			processBuilder.redirectErrorStream();
 			_process = processBuilder.start();
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
@@ -69,24 +69,22 @@ public class MongodProcess {
 			}
 
 		} catch (IOException iox) {
-			stop();
+			stopProcess();
 			throw iox;
 		}
 	}
 
-	private List<String> getCommandLine(File mongodExecutable) {
-		return Arrays.asList(_mongodExecutable.getAbsolutePath(), "-v", "--port", "" + _config.getPort(), "--dbpath", ""
-				+ _dbDir.getAbsolutePath(), "--noprealloc","--nohttpinterface","--smallfiles");
+	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable,File dbDir) {
+		return Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
+				+ dbDir.getAbsolutePath(), "--noprealloc","--nohttpinterface","--smallfiles");
 	}
 
-	public synchronized void stop() {
+	public synchronized void stopProcess() {
 		if (!_stopped) {
 			if (_process != null)
 				_process.destroy();
 			if (!Files.deleteDir(_dbDir))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
-			if (!_mongodExecutable.delete())
-				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
 			_stopped = true;
 		}
 	}
@@ -95,7 +93,8 @@ public class MongodProcess {
 
 		@Override
 		public void run() {
-			stop();
+			_logger.warning("stopProcess");
+			stopProcess();
 		}
 	}
 

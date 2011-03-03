@@ -65,15 +65,18 @@ public class MongoDBRuntimeTest extends TestCase {
 		Timer timer = new Timer();
 		
 		int port = 12345;
-		MongodProcess mongod = null;
+		MongodProcess mongodProcess=null;
+		MongodExecutable mongod = null;
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 		
 		timer.check("After Runtime");
 		
 		try {
-			mongod = runtime.start(new MongodConfig(Version.V1_6_5, port));
+			mongod = runtime.prepare(new MongodConfig(Version.V1_6_5, port));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
+			mongodProcess=mongod.start();
+			timer.check("After mongodProcess");
 
 			Mongo mongo = new Mongo("localhost", port);
 			timer.check("After Mongo");
@@ -85,9 +88,12 @@ public class MongoDBRuntimeTest extends TestCase {
 			timer.check("After save");
 
 		} finally {
+			if (mongodProcess!=null)
+				mongodProcess.stopProcess();
+			timer.check("After mongodProcess stop");
 			if (mongod != null)
-				mongod.stop();
-			timer.check("After mongod stop");
+				mongod.cleanup();
+			timer.check("After mongod cleanup");
 		}
 		timer.log();
 	}

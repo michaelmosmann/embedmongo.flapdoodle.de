@@ -54,7 +54,7 @@ public class MongoDBRuntime {
 		return true;
 	}
 
-	public MongodProcess start(MongodConfig mongodConfig) {
+	public MongodExecutable prepare(MongodConfig mongodConfig) {
 		try
 		{
 			IProgressListener progress = _runtime.getProgressListener();
@@ -65,7 +65,7 @@ public class MongoDBRuntime {
 				progress.done("Check Distribution");
 				File mongodExe = extractMongod(distribution);
 
-				return new MongodProcess(mongodConfig,mongodExe);
+				return new MongodExecutable(mongodConfig,mongodExe);
 			}
 		}
 		catch (IOException iox) {
@@ -73,6 +73,7 @@ public class MongoDBRuntime {
 		}
 		return null;
 	}
+	
 
 	protected File extractMongod(Distribution distribution) throws IOException {
 		File artifact = LocalArtifactStore.getArtifact(_runtime,distribution);
