@@ -60,6 +60,7 @@ public class Distribution {
 		Platform platform=null;
 		if (osName.equals("Linux")) platform=Platform.Linux;
 		if (osName.equals("Windows")) platform=Platform.Windows;
+		if (osName.equals("WindowsXP")) platform=Platform.Windows;
 		if (osName.equals("Mac OS X")) platform=Platform.OS_X;
 		
 		if (platform==null) throw new IllegalArgumentException("Could not detect Platform: os.name="+osName);
