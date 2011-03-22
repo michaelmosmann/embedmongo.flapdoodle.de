@@ -19,6 +19,7 @@ package de.flapdoodle.embedmongo.distribution;
 
 public enum Version {
 	V1_6_5,
+	@Deprecated
 	V1_7_6,
 	@Deprecated
 	V1_8_0_rc0,
