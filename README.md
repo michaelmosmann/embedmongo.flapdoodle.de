@@ -28,7 +28,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Supported Versions
 
-Versions: 1.6.5, 1.7.6, 1.8.0-rc0
+Versions: 1.6.5, 1.8.0
 Support for Linux, Windows and MacOSX.
 
 ### Usage
