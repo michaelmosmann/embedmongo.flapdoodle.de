@@ -76,6 +76,9 @@ public class Paths {
 			case V1_8_0_rc0:
 				sversion="1.8.0-rc0";
 				break;
+			case V1_8_0:
+				sversion="1.8.0";
+				break;
 			default:
 				throw new IllegalArgumentException("Unknown Version "+distribution.getVersion());
 		}

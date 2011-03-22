@@ -48,9 +48,9 @@ public class MongoDBRuntimeTest extends TestCase {
 	
 	public void testDistributions() throws IOException {
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-		check(runtime, new Distribution(Version.V1_7_6,Platform.Linux,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_7_6,Platform.Windows,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_7_6,Platform.OS_X,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8_0,Platform.Linux,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8_0,Platform.Windows,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8_0,Platform.OS_X,BitSize.B32));
 	}
 
 	private void check(MongoDBRuntime runtime, Distribution distribution) throws IOException {
@@ -72,7 +72,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 		
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.V1_6_5, port));
+			mongod = runtime.prepare(new MongodConfig(Version.V1_8_0, port));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess=mongod.start();

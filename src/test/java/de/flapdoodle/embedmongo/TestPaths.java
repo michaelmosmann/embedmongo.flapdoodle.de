@@ -31,6 +31,8 @@ public class TestPaths extends TestCase {
 		checkPath(new Distribution(Version.V1_6_5, Platform.Windows, BitSize.B64), "win32/mongodb-win32-x86_64-1.6.5.zip");
 		checkPath(new Distribution(Version.V1_7_6, Platform.Linux, BitSize.B32), "linux/mongodb-linux-i686-1.7.6.tgz");
 		checkPath(new Distribution(Version.V1_7_6, Platform.Linux, BitSize.B64), "linux/mongodb-linux-x86_64-1.7.6.tgz");
+		checkPath(new Distribution(Version.V1_8_0, Platform.OS_X, BitSize.B32), "osx/mongodb-osx-i386-1.8.0.tgz");
+		checkPath(new Distribution(Version.V1_8_0, Platform.OS_X, BitSize.B64), "osx/mongodb-osx-x86_64-1.8.0.tgz");
 	}
 
 	private void checkPath(Distribution distribution, String match) {

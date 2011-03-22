@@ -68,7 +68,7 @@ public class Downloader {
 			
 			InputStream downloadStream = openConnection.getInputStream();
 			
-			int length=openConnection.getContentLength();
+			long length=openConnection.getContentLength();
 			progress.info(progressLabel,"DownloadSize: "+length);
 			
 			if (length==-1) length=20*1024*1024;
@@ -80,13 +80,13 @@ public class Downloader {
 				byte[] buf = new byte[1024*8];
 //				int count = 0;
 				int read=0;
-				int readCount=0;
+				long readCount=0;
 				while ((read=bis.read(buf)) != -1) {
 					bos.write(buf, 0, read);
 					readCount=readCount+read;
 					if (readCount>length) length=readCount;
 					
-					progress.progress(progressLabel, readCount*100/length );
+					progress.progress(progressLabel, (int) (readCount*100/length) );
 //					System.out.print("+");
 //					count++;
 //					if (count >= 100) {
