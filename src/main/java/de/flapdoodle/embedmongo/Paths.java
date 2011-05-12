@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.distribution.Version;
 
 
 public class Paths {
@@ -65,23 +66,7 @@ public class Paths {
 	}
 	
 	public static String getPath(Distribution distribution) {
-		String sversion;
-		switch (distribution.getVersion()) {
-			case V1_6_5:
-				sversion="1.6.5";
-				break;
-			case V1_7_6:
-				sversion="1.7.6";
-				break;
-			case V1_8_0_rc0:
-				sversion="1.8.0-rc0";
-				break;
-			case V1_8_0:
-				sversion="1.8.0";
-				break;
-			default:
-				throw new IllegalArgumentException("Unknown Version "+distribution.getVersion());
-		}
+		String sversion = getVersionPart(distribution.getVersion());
 		
 		ArchiveType archiveType=getArchiveType(distribution);
 		String sarchiveType;
@@ -137,6 +122,36 @@ public class Paths {
 		}
 		
 		return splatform+"/mongodb-"+splatform+"-"+sbitSize+"-"+sversion+"."+sarchiveType;
+	}
+
+	protected static String getVersionPart(Version version) {
+		String sversion;
+		switch (version) {
+			case V1_6_5:
+				sversion="1.6.5";
+				break;
+			case V1_7_6:
+				sversion="1.7.6";
+				break;
+			case V1_8_0_rc0:
+				sversion="1.8.0-rc0";
+				break;
+			case V1_8_0:
+				sversion="1.8.0";
+				break;
+			case V1_8_1:
+				sversion="1.8.1";
+				break;
+			case V1_8_2_rc0:
+				sversion="1.8.2-rc0";
+				break;
+			case V1_9_0:
+				sversion="1.9.0";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Version "+version);
+		}
+		return sversion;
 	}
 
 }
