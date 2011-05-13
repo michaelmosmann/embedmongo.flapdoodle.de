@@ -10,7 +10,7 @@ easy access??
 
 ### Maven
 
-Stable
+Stable (Maven Central Repository)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
