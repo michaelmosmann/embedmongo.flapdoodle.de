@@ -15,7 +15,7 @@ Stable
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.3</version>
+		<version>1.4</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -23,12 +23,12 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.4-SNAPSHOT</version>
+		<version>1.5-SNAPSHOT</version>
 	</dependency>
 
 ### Supported Versions
 
-Versions: 1.6.5, 1.8.0
+Versions: 1.6.5, 1.8.0, 1.8.1, 1.9.0
 Support for Linux, Windows and MacOSX.
 
 ### Usage
