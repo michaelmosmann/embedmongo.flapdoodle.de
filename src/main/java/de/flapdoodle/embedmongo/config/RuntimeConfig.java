@@ -16,7 +16,6 @@
 
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.embedmongo.output.ConsoleOneLineProgressListener;
 import de.flapdoodle.embedmongo.output.IProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 

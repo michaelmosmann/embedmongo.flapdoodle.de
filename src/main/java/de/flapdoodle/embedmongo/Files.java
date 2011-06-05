@@ -40,6 +40,25 @@ public class Files {
 		return tempFile;
 	}
 
+	public static File createOrCheckDir(String dir) throws IOException {
+		File tempFile = new File(dir);
+		if ((tempFile.exists()) && (tempFile.isDirectory()))
+			return tempFile;
+		if (!tempFile.mkdir())
+			throw new IOException("Could not create Tempdir: " + tempFile);
+		return tempFile;
+	}
+	
+	public static File createOrCheckUserDir(String prefix) throws IOException {
+		File tempDir = new File(System.getProperty("user.home"));
+		File tempFile = new File(tempDir, prefix);
+		if ((tempFile.exists()) && (tempFile.isDirectory()))
+			return tempFile;
+		if (!tempFile.mkdir())
+			throw new IOException("Could not create Tempdir: " + tempFile);
+		return tempFile;
+	}
+	
 	public static File createTempDir(String prefix) throws IOException {
 		File tempDir = new File(System.getProperty("java.io.tmpdir"));
 		File tempFile = new File(tempDir, prefix + "-" + UUID.randomUUID().toString());
@@ -120,5 +139,6 @@ public class Files {
 				writer.close();
 		}
 	}
+
 
 }

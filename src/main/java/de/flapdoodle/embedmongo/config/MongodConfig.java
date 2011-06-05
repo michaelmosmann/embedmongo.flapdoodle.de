@@ -23,10 +23,16 @@ public class MongodConfig {
 
 	private final Version _version;
 	private final int _port;
+	private final String _databaseDir;
 
 	public MongodConfig(Version version,int port) {
+		this(version,port,null);
+	}
+	
+	public MongodConfig(Version version,int port,String databaseDir) {
 		_version = version;
 		_port = port;
+		_databaseDir=databaseDir;
 	}
 	
 	public Version getVersion() {
@@ -35,5 +41,10 @@ public class MongodConfig {
 	
 	public int getPort() {
 		return _port;
+	}
+	
+	
+	public String getDatabaseDir() {
+		return _databaseDir;
 	}
 }

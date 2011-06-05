@@ -51,8 +51,15 @@ public class MongodProcess {
 		_mongodExecutable = mongodExecutable;
 
 		try {
-			_dbDir = Files.createTempDir("embedmongo-db");
-			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config,_mongodExecutable.getFile(),_dbDir));
+			File dbDir;
+			if (config.getDatabaseDir() != null) {
+				dbDir = Files.createOrCheckDir(config.getDatabaseDir());
+			} else {
+				dbDir = Files.createTempDir("embedmongo-db");
+				_dbDir = dbDir;
+			}
+
+			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config, _mongodExecutable.getFile(), dbDir));
 			processBuilder.redirectErrorStream();
 			_process = processBuilder.start();
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
@@ -74,16 +81,16 @@ public class MongodProcess {
 		}
 	}
 
-	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable,File dbDir) {
+	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
 		return Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc","--nohttpinterface","--smallfiles");
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles");
 	}
 
 	public synchronized void stop() {
 		if (!_stopped) {
 			if (_process != null)
 				_process.destroy();
-			if (!Files.deleteDir(_dbDir))
+			if ((_dbDir!=null) && (!Files.deleteDir(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
 			_stopped = true;
 		}
