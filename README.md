@@ -15,7 +15,7 @@ Stable (Maven Central Repository)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.4</version>
+		<version>1.5</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -23,12 +23,12 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.5-SNAPSHOT</version>
+		<version>1.6-SNAPSHOT</version>
 	</dependency>
 
 ### Supported Versions
 
-Versions: 1.6.5, 1.8.0, 1.8.1, 1.9.0
+Versions: 1.6.5, 1.8.0, 1.8.1, 1.8.2, 1.9.0
 Support for Linux, Windows and MacOSX.
 
 ### Usage
@@ -38,7 +38,7 @@ Support for Linux, Windows and MacOSX.
 	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_6_5, port));
+		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
