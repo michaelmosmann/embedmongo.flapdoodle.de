@@ -83,7 +83,7 @@ public class MongodProcess {
 
 	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
 		return Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles");
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--ipv6");
 	}
 
 	public synchronized void stop() {
