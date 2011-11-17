@@ -24,14 +24,16 @@ public class MongodConfig {
 	private final Version _version;
 	private final int _port;
 	private final String _databaseDir;
+	private final boolean _ipv6;
 
-	public MongodConfig(Version version,int port) {
-		this(version,port,null);
+	public MongodConfig(Version version,int port,boolean ipv6) {
+		this(version,port,ipv6,null);
 	}
 	
-	public MongodConfig(Version version,int port,String databaseDir) {
+	public MongodConfig(Version version,int port,boolean ipv6, String databaseDir) {
 		_version = version;
 		_port = port;
+		_ipv6=ipv6;
 		_databaseDir=databaseDir;
 	}
 	
@@ -41,6 +43,11 @@ public class MongodConfig {
 	
 	public int getPort() {
 		return _port;
+	}
+	
+	
+	public boolean isIpv6() {
+		return _ipv6;
 	}
 	
 	

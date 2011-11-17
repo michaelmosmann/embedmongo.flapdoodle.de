@@ -28,17 +28,18 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Supported Versions
 
-Versions: 1.6.5, 1.8.0, 1.8.1, 1.8.2, 1.9.0
+Versions: some older, 1.8.4, 1.9.0, 2.0.1
 Support for Linux, Windows and MacOSX.
 
 ### Usage
 
 	int port = 12345;
+	boolean useIPv6 = false;
 	MongodProcess mongod = null;
 	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port));
+		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,useIPv6));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");

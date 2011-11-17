@@ -75,7 +75,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 		
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.V1_8_2, port));
+			mongod = runtime.prepare(new MongodConfig(Version.V1_8_4, port,true));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess=mongod.start();

@@ -148,8 +148,14 @@ public class Paths {
 			case V1_8_2:
 				sversion="1.8.2";
 				break;
+			case V1_8_4:
+				sversion="1.8.4";
+				break;
 			case V1_9_0:
 				sversion="1.9.0";
+				break;
+			case V2_0_1:
+				sversion="2.0.1";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Version "+version);

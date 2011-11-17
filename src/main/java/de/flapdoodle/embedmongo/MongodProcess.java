@@ -1,12 +1,12 @@
 /**
  * Copyright (C) 2011 Michael Mosmann <michael@mosmann.de>
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -29,6 +29,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.apache.commons.io.FileUtils;
 
 import com.sun.net.httpserver.Authenticator.Success;
 
@@ -82,16 +84,25 @@ public class MongodProcess {
 	}
 
 	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
-		return Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--ipv6");
+		List<String> ret = new ArrayList<String>();
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles"));
+		if (config.isIpv6()) {
+			ret.add("--ipv6");
+		}
+		return ret;
 	}
 
 	public synchronized void stop() {
 		if (!_stopped) {
 			if (_process != null)
 				_process.destroy();
-			if ((_dbDir!=null) && (!Files.deleteDir(_dbDir)))
+			if ((_dbDir!=null) && (!Files.forceDelete(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
+
+			if ((_mongodExecutable.getFile()!=null) && (!Files.forceDelete(_mongodExecutable.getFile())))
+				_logger.warning("Could not delete mongod executable: " + _mongodExecutable.getFile());
+
 			_stopped = true;
 		}
 	}

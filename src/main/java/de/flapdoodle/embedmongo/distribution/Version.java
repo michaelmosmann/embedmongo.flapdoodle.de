@@ -28,6 +28,10 @@ public enum Version {
 	V1_8_1,
 	@Deprecated
 	V1_8_2_rc0,
+	@Deprecated
 	V1_8_2,
+	V1_8_4,
+	@Deprecated
 	V1_9_0,
+	V2_0_1,
 }
