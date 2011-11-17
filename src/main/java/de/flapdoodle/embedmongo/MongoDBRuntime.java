@@ -79,7 +79,7 @@ public class MongoDBRuntime {
 		File artifact = LocalArtifactStore.getArtifact(_runtime,distribution);
 		IExtractor extractor = Extractors.getExtractor(distribution);
 		
-		File mongodExe = Files.createTempFile("extract",Paths.getMongodExecutable(distribution));
+		File mongodExe = Files.createTempFile(_runtime.getExecutableNaming().nameFor("extract",Paths.getMongodExecutable(distribution)));
 		extractor.extract(_runtime, artifact, mongodExe,Paths.getMongodExecutablePattern(distribution));
 		return mongodExe;
 	}

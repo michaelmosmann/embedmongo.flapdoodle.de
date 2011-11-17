@@ -16,6 +16,8 @@
 
 package de.flapdoodle.embedmongo.config;
 
+import de.flapdoodle.embedmongo.extract.ITempNaming;
+import de.flapdoodle.embedmongo.extract.UUIDTempNaming;
 import de.flapdoodle.embedmongo.output.IProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 
@@ -24,6 +26,8 @@ public class RuntimeConfig {
 	private IProgressListener _progressListener = new StandardConsoleProgressListener();
 	private String _downloadPath = "http://fastdl.mongodb.org/";
 	private String _artifactStorePath=".embedmongo";
+	private ITempNaming _defaultfileNaming=new UUIDTempNaming();
+	private ITempNaming _executableNaming=_defaultfileNaming;
 
 	public void setDownloadPath(String downloadPath) {
 		_downloadPath = downloadPath;
@@ -35,6 +39,26 @@ public class RuntimeConfig {
 
 	public void setProgressListener(IProgressListener progressListener) {
 		_progressListener = progressListener;
+	}
+
+	
+	public ITempNaming getDefaultfileNaming() {
+		return _defaultfileNaming;
+	}
+
+	
+	public void setDefaultfileNaming(ITempNaming defaultfileNaming) {
+		_defaultfileNaming = defaultfileNaming;
+	}
+
+	
+	public ITempNaming getExecutableNaming() {
+		return _executableNaming;
+	}
+
+	
+	public void setExecutableNaming(ITempNaming executableNaming) {
+		_executableNaming = executableNaming;
 	}
 
 	public IProgressListener getProgressListener() {

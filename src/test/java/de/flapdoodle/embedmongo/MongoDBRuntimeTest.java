@@ -35,10 +35,12 @@ import com.mongodb.Mongo;
 import junit.framework.TestCase;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.embedmongo.extract.UserTempNaming;
 
 public class MongoDBRuntimeTest extends TestCase {
 
@@ -70,7 +72,9 @@ public class MongoDBRuntimeTest extends TestCase {
 		int port = 12345;
 		MongodProcess mongodProcess=null;
 		MongodExecutable mongod = null;
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		RuntimeConfig runtimeConfig=new RuntimeConfig();
+//		runtimeConfig.setExecutableNaming(new UserTempNaming());
+		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 		
 		timer.check("After Runtime");
 		

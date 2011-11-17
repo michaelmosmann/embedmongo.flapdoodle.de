@@ -40,7 +40,7 @@ public class MongodExecutable {
 
 	public synchronized void cleanup() {
 		if (!_stopped) {
-			if (!_mongodExecutable.delete())
+			if (_mongodExecutable.exists() &&  !_mongodExecutable.delete())
 				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
 			_stopped = true;
 		}

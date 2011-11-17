@@ -55,7 +55,7 @@ public class Downloader {
 		IProgressListener progress = runtime.getProgressListener();
 		progress.start(progressLabel);
 		
-		File ret = Files.createTempFile("embedmongo-download","."+Paths.getArchiveType(distribution));
+		File ret = Files.createTempFile(runtime.getDefaultfileNaming().nameFor("embedmongo-download","."+Paths.getArchiveType(distribution)));
 		if (ret.canWrite())
 		{
 			
