@@ -34,12 +34,11 @@ Support for Linux, Windows and MacOSX.
 ### Usage
 
 	int port = 12345;
-	boolean useIPv6 = false;
 	MongodProcess mongod = null;
 	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,useIPv6));
+		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,Network.localhostIsIPv6()));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -53,14 +52,13 @@ Support for Linux, Windows and MacOSX.
 ### Usage wih WinXP
 
 	int port = 12345;
-	boolean useIPv6 = false;
 	MongodProcess mongod = null;
 	RuntimeConfig runtimeConfig=new RuntimeConfig();
 	runtimeConfig.setExecutableNaming(new UserTempNaming());
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,useIPv6));
+		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,Network.localhostIsIPv6()));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");

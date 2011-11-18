@@ -41,6 +41,7 @@ import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.extract.UserTempNaming;
+import de.flapdoodle.embedmongo.runtime.Network;
 
 public class MongoDBRuntimeTest extends TestCase {
 
@@ -79,7 +80,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 		
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.V1_8_4, port,true));
+			mongod = runtime.prepare(new MongodConfig(Version.V1_8_4, port,Network.localhostIsIPv6()));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess=mongod.start();
