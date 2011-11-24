@@ -1,5 +1,7 @@
 target
+temp/
 velocity.log
+*~
 .classpath
 .project
 .settings
