@@ -11,7 +11,7 @@
 	<groupId>de.flapdoodle.embedmongo</groupId>
 	<artifactId>de.flapdoodle.embedmongo</artifactId>
 	<name>Flapdoodle Embedded MongoDB</name>
-	<version>1.8</version>
+	<version>1.9-SNAPSHOT</version>
 
 	<description>A embedded mongodb ...</description>
 	<url>http://github.com/michaelmosmann/embedmongo.flapdoodle.de</url>
