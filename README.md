@@ -54,7 +54,7 @@ Support for Linux, Windows and MacOSX.
 		if (mongod != null)	mongod.stop();
 	}
 
-### Usage wih WinXP
+### Usage - custom mongod filename 
 
 	int port = 12345;
 	MongodProcess mongod = null;
