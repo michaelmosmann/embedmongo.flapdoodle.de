@@ -73,3 +73,42 @@ Support for Linux, Windows and MacOSX.
 	} finally {
 		if (mongod != null)	mongod.stop();
 	}
+
+### Unit Tests
+
+	public abstract class AbstractMongoOMTest extends TestCase {
+	
+		private MongodExecutable _mongodExe;
+		private MongodProcess _mongod;
+	
+		private Mongo _mongo;
+		private static final String DATABASENAME = "mongo_test";
+	
+		@Override
+		protected void setUp() throws Exception {
+	
+			MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+			_mongodExe = runtime.prepare(new MongodConfig(Version.V1_8_0, 12345));
+			_mongod=_mongodExe.start();
+			
+			super.setUp();
+	
+			_mongo = new Mongo("localhost", 12345);
+		}
+	
+		@Override
+		protected void tearDown() throws Exception {
+			super.tearDown();
+			
+			_mongod.stop();
+			_mongodExe.cleanup();
+		}
+	
+		public Mongo getMongo() {
+			return _mongo;
+		}
+	
+		public String getDatabaseName() {
+			return DATABASENAME;
+		}
+	}
