@@ -26,8 +26,9 @@ public class DistributionTest extends TestCase {
 	}
 	
 	public void NOtestDetection() {
-		assertNotNull("Linux32",Distribution.detectFor(Version.V1_6_5));
-		assertNotNull("Linux32",Distribution.detectFor(Version.V1_8_1));
-		assertNotNull("Linux32",Distribution.detectFor(Version.V1_9_0));
+		assertNotNull("Linux32",Distribution.detectFor(Version.V1_6));
+		assertNotNull("Linux32",Distribution.detectFor(Version.V1_8));
+		assertNotNull("Linux32",Distribution.detectFor(Version.V2_0));
+		assertNotNull("Linux32",Distribution.detectFor(Version.V2_1));
 	}
 }

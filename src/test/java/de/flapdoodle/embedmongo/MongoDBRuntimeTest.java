@@ -51,12 +51,15 @@ public class MongoDBRuntimeTest extends TestCase {
 	
 	public void testDistributions() throws IOException {
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-		check(runtime, new Distribution(Version.V1_8_1,Platform.Linux,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_8_1,Platform.Windows,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_8_1,Platform.OS_X,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_9_0,Platform.Linux,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_9_0,Platform.Windows,BitSize.B32));
-		check(runtime, new Distribution(Version.V1_9_0,Platform.OS_X,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8,Platform.Linux,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8,Platform.Windows,BitSize.B32));
+		check(runtime, new Distribution(Version.V1_8,Platform.OS_X,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_0,Platform.Linux,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_0,Platform.Windows,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_0,Platform.OS_X,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_1,Platform.Linux,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_1,Platform.Windows,BitSize.B32));
+		check(runtime, new Distribution(Version.V2_1,Platform.OS_X,BitSize.B32));
 	}
 
 	private void check(MongoDBRuntime runtime, Distribution distribution) throws IOException {

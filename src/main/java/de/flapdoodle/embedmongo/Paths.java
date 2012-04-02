@@ -127,6 +127,7 @@ public class Paths {
 	protected static String getVersionPart(Version version) {
 		String sversion;
 		switch (version) {
+			case V1_6:
 			case V1_6_5:
 				sversion="1.6.5";
 				break;
@@ -151,11 +152,23 @@ public class Paths {
 			case V1_8_4:
 				sversion="1.8.4";
 				break;
+			case V1_8:
+			case V1_8_5:
+				sversion="1.8.5";
+				break;
 			case V1_9_0:
 				sversion="1.9.0";
 				break;
 			case V2_0_1:
 				sversion="2.0.1";
+				break;
+			case V2_0:
+			case V2_0_4:
+				sversion="2.0.4";
+				break;
+			case V2_1:
+			case V2_1_0:
+				sversion="2.1.0";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Version "+version);

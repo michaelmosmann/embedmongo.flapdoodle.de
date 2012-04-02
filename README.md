@@ -31,9 +31,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 - fixed 64Bit detection
 - changed commons-io dependencies
 
+### Last Changes (SNAPSHOT)
+
+- fixed 64Bit detection - amd64
+- now with main versions 1.6, 1.8, 2.0, 2.1
+
 ### Supported Versions
 
-Versions: some older, 1.8.4, 1.9.0, 2.0.1
+Versions: some older, 1.8.5, 1.9.0, 2.0.4, 2.1.0
 Support for Linux, Windows and MacOSX.
 
 ### Usage
@@ -43,7 +48,7 @@ Support for Linux, Windows and MacOSX.
 	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,Network.localhostIsIPv6()));
+		mongod = runtime.start(new MongodConfig(Version.V2_0, port,Network.localhostIsIPv6()));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -63,7 +68,7 @@ Support for Linux, Windows and MacOSX.
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V1_8_2, port,Network.localhostIsIPv6()));
+		mongod = runtime.start(new MongodConfig(Version.V2_0, port,Network.localhostIsIPv6()));
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -88,7 +93,7 @@ Support for Linux, Windows and MacOSX.
 		protected void setUp() throws Exception {
 	
 			MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-			_mongodExe = runtime.prepare(new MongodConfig(Version.V1_8_0, 12345));
+			_mongodExe = runtime.prepare(new MongodConfig(Version.V2_0, 12345));
 			_mongod=_mongodExe.start();
 			
 			super.setUp();
