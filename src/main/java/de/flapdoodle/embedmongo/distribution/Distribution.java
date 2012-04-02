@@ -50,7 +50,7 @@ public class Distribution {
 	public static Distribution detectFor(Version version) {
 		BitSize bitSize=BitSize.B32;
 		String osArch = System.getProperty("os.arch");
-		if (osArch.equals("i686_64") || osArch.equals("x86_64")) bitSize=BitSize.B64;
+		if (osArch.equals("i686_64") || osArch.equals("x86_64") || osArch.equals("amd64")) bitSize=BitSize.B64;
 		
 		String osName = System.getProperty("os.name");
 		Platform platform=null;
