@@ -10,7 +10,7 @@ easy access??
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 24.11.2011)
+Stable (Maven Central Repository, Released: 02.04.2012)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
@@ -28,13 +28,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Last Changes
 
-- fixed 64Bit detection
-- changed commons-io dependencies
-
-### Last Changes (SNAPSHOT)
-
 - fixed 64Bit detection - amd64
 - now with main versions 1.6, 1.8, 2.0, 2.1
+
+### Last Changes (SNAPSHOT)
 
 ### Supported Versions
 
