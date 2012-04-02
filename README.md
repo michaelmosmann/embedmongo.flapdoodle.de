@@ -10,7 +10,7 @@ easy access??
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 02.04.2012)
+Stable (Maven Central Repository, Released: 02.04.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
