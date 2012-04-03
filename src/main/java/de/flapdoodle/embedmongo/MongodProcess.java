@@ -20,35 +20,30 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.nio.CharBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.apache.commons.io.FileUtils;
-
-import com.sun.net.httpserver.Authenticator.Success;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 
 public class MongodProcess {
 
-	private static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
+	private static final Logger _logger = Logger.getLogger(MongodProcess.class
+			.getName());
 
 	private final MongodConfig _config;
 	private final MongodExecutable _mongodExecutable;
 	private Process _process;
+	private ConsoleOutput _consoleOutput;
 
 	private File _dbDir;
 
 	boolean _stopped = false;
 
-	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable) throws IOException {
+	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable)
+			throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
 
@@ -60,8 +55,8 @@ public class MongodProcess {
 				dbDir = Files.createTempDir("embedmongo-db");
 				_dbDir = dbDir;
 			}
-
-			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config, _mongodExecutable.getFile(), dbDir));
+			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(
+					_config, _mongodExecutable.getFile(), dbDir));
 			processBuilder.redirectErrorStream();
 			_process = processBuilder.start();
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
@@ -69,10 +64,11 @@ public class MongodProcess {
 			InputStream inputStream = _process.getInputStream();
 			InputStreamReader reader = new InputStreamReader(inputStream);
 
-			if (LogWatch.waitForStart(reader, "waiting for connections on port", "failed", 2000)) {
-				ConsoleOutput consoleOutput = new ConsoleOutput(reader);
-				consoleOutput.setDaemon(true);
-				consoleOutput.start();
+			if (LogWatch.waitForStart(reader,
+					"waiting for connections on port", "failed", 2000)) {
+				_consoleOutput = new ConsoleOutput(reader);
+				_consoleOutput.setDaemon(true);
+				_consoleOutput.start();
 			} else {
 				throw new IOException("Could not start mongod process");
 			}
@@ -83,10 +79,13 @@ public class MongodProcess {
 		}
 	}
 
-	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
+	private static List<String> getCommandLine(MongodConfig config,
+			File mongodExecutable, File dbDir) {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles"));
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v",
+				"--port", "" + config.getPort(), "--dbpath",
+				"" + dbDir.getAbsolutePath(), "--noprealloc",
+				"--nohttpinterface", "--smallfiles"));
 		if (config.isIpv6()) {
 			ret.add("--ipv6");
 		}
@@ -95,14 +94,27 @@ public class MongodProcess {
 
 	public synchronized void stop() {
 		if (!_stopped) {
-			if (_process != null)
-				_process.destroy();
-			if ((_dbDir!=null) && (!Files.forceDelete(_dbDir)))
+			if (_process != null) {
+
+				try {
+					// streams need to be closed, otherwise process may block see http://kylecartmell.com/?p=9
+					_process.getErrorStream().close();
+					_process.getInputStream().close();
+					_process.getOutputStream().close();
+
+				} catch (IOException e) {
+					_logger.severe(e.getMessage());
+				} finally {
+					_process.destroy();
+				}
+			}
+			if ((_dbDir != null) && (!Files.forceDelete(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
 
-			if ((_mongodExecutable.getFile()!=null) && (!Files.forceDelete(_mongodExecutable.getFile())))
-				_logger.warning("Could not delete mongod executable: " + _mongodExecutable.getFile());
-
+			if ((_mongodExecutable.getFile() != null)
+					&& (!Files.forceDelete(_mongodExecutable.getFile())))
+				_logger.warning("Could not delete mongod executable: "
+						+ _mongodExecutable.getFile()); 
 			_stopped = true;
 		}
 	}
@@ -124,7 +136,8 @@ public class MongodProcess {
 
 		private boolean _initWithSuccess = false;
 
-		private LogWatch(InputStreamReader reader, String success, String failure) {
+		private LogWatch(InputStreamReader reader, String success,
+				String failure) {
 			_reader = reader;
 			_success = success;
 			_failure = failure;
@@ -162,7 +175,8 @@ public class MongodProcess {
 			return _initWithSuccess;
 		}
 
-		public static boolean waitForStart(InputStreamReader reader, String success, String failed, long timeout) {
+		public static boolean waitForStart(InputStreamReader reader,
+				String success, String failed, long timeout) {
 			LogWatch logWatch = new LogWatch(reader, success, failed);
 			logWatch.start();
 
@@ -181,7 +195,6 @@ public class MongodProcess {
 	static class ConsoleOutput extends Thread {
 
 		private final InputStreamReader _reader;
-
 		public ConsoleOutput(InputStreamReader reader) {
 			_reader = reader;
 		}
@@ -195,7 +208,7 @@ public class MongodProcess {
 					System.out.print(new String(buf, 0, read));
 				}
 			} catch (IOException iox) {
-				//				_logger.log(Level.SEVERE,"out",iox);
+				 //_logger.log(Level.SEVERE,"out",iox);
 			}
 		}
 	}
