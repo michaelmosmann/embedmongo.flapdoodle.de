@@ -21,18 +21,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
-import org.bson.BSONObject;
+import junit.framework.TestCase;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.DBObject;
 import com.mongodb.Mongo;
-
-import junit.framework.TestCase;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
@@ -40,7 +35,6 @@ import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.extract.UserTempNaming;
 import de.flapdoodle.embedmongo.runtime.Network;
 
 public class MongoDBRuntimeTest extends TestCase {
