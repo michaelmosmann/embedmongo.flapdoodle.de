@@ -85,6 +85,7 @@
 			<plugin>
 				<groupId>com.mycila.maven-license-plugin</groupId>
 				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
 				<configuration>
 					<!--
 					<basedir>${basedir}</basedir>
@@ -119,6 +120,8 @@
 						<lic.year>2011</lic.year>
 						<lic.email>michael@mosmann.de</lic.email>
 						<lic.username>Michael Mosmann</lic.username>
+						<lic.email2>m.joehren@googlemail.com</lic.email2>
+						<lic.username2>Martin Jöhren</lic.username2>
 					</properties>
 					<encoding>UTF-8</encoding>
 					<!--
