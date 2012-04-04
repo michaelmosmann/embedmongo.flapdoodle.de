@@ -34,6 +34,7 @@ import com.mongodb.Mongo;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.embedmongo.runtime.Network;
 
 /**
  * Test whether a race condition occurs between setup and tear down of setting
@@ -75,7 +76,7 @@ public class MongoDBExampleAllVersionsTest {
 
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 		mongodExe = runtime.prepare(new MongodConfig(this.mongoVersion, PORT,
-				false));
+				Network.localhostIsIPv6()));
 		mongod = mongodExe.start();
 
 		mongo = new Mongo("localhost", PORT);
