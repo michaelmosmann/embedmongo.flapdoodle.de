@@ -28,7 +28,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-#### 1.19
+#### 1.11 (SNAPSHOT)
+
+#### 1.10
 
 - race condition and cleanup of mongod process
 
