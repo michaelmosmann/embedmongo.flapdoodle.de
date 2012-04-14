@@ -24,12 +24,17 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.FutureTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 
 public class MongodProcess {
+
+	private static final int MONGODB_RETURN_CODE_EXIT_KILL = 12;
 
 	private static final Logger _logger = Logger.getLogger(MongodProcess.class
 			.getName());
@@ -41,6 +46,7 @@ public class MongodProcess {
 
 	private File _dbDir;
 
+	boolean _processKilled = false;
 	boolean _stopped = false;
 
 	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable)
@@ -98,7 +104,8 @@ public class MongodProcess {
 			if (_process != null) {
 
 				try {
-					// streams need to be closed, otherwise process may block see http://kylecartmell.com/?p=9
+					// streams need to be closed, otherwise process may block
+					// see http://kylecartmell.com/?p=9
 					_process.getErrorStream().close();
 					_process.getInputStream().close();
 					_process.getOutputStream().close();
@@ -109,14 +116,51 @@ public class MongodProcess {
 					_process.destroy();
 				}
 			}
+			waitForProcessGotKilled();
+
 			if ((_dbDir != null) && (!Files.forceDelete(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
 
 			if ((_mongodExecutable.getFile() != null)
 					&& (!Files.forceDelete(_mongodExecutable.getFile())))
 				_logger.warning("Could not delete mongod executable: "
-						+ _mongodExecutable.getFile()); 
+						+ _mongodExecutable.getFile());
 			_stopped = true;
+		}
+	}
+
+	/**
+	 * It may happen in tests, that the process is currently using some files in
+	 * the temp directory, e.g. journal files (journal/j._0) and got killed at
+	 * that time, so it takes a bit longer to kill the process. So we just wait
+	 * for a second (in 10 ms steps) that the process got really killed.
+	 */
+	private void waitForProcessGotKilled() {
+		final Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				try {
+					_process.waitFor();
+				} catch (InterruptedException e) {
+					_logger.severe(e.getMessage());
+				} finally {
+					_processKilled = true;
+					timer.cancel();
+				}
+			}
+		}, 0, 10);
+		// wait for max. 1 second that process got killed
+
+		int countDown = 100;
+		while (!_processKilled && (countDown-- > 0))
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				_logger.severe(e.getMessage());
+			}
+		if (!_processKilled){
+			timer.cancel();
+			_logger.severe("Couldn't kill mongod process!");
 		}
 	}
 
@@ -196,6 +240,7 @@ public class MongodProcess {
 	static class ConsoleOutput extends Thread {
 
 		private final InputStreamReader _reader;
+
 		public ConsoleOutput(InputStreamReader reader) {
 			_reader = reader;
 		}
@@ -209,7 +254,7 @@ public class MongodProcess {
 					System.out.print(new String(buf, 0, read));
 				}
 			} catch (IOException iox) {
-				 //_logger.log(Level.SEVERE,"out",iox);
+				// _logger.log(Level.SEVERE,"out",iox);
 			}
 		}
 	}
