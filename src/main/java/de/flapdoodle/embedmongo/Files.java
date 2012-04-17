@@ -76,6 +76,7 @@ public class Files {
 		try {
 			if (fileOrDir != null) {
 				FileUtils.forceDelete(fileOrDir);
+				_logger.info("Could delete " + fileOrDir);
 				ret = true;
 			}
 		} catch (IOException e) {
@@ -85,6 +86,7 @@ public class Files {
 				ret = true;
 			} catch (IOException ioe) {
 				_logger.severe("Could not delete " + fileOrDir);
+				throw new IllegalStateException("Could not delete " + fileOrDir);
 			}
 		}
 

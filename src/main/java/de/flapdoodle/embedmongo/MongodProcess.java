@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,8 +36,7 @@ public class MongodProcess {
 
 	private static final int MONGODB_RETURN_CODE_EXIT_KILL = 12;
 
-	private static final Logger _logger = Logger.getLogger(MongodProcess.class
-			.getName());
+	private static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
 
 	private final MongodConfig _config;
 	private final MongodExecutable _mongodExecutable;
@@ -49,8 +48,7 @@ public class MongodProcess {
 	boolean _processKilled = false;
 	boolean _stopped = false;
 
-	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable)
-			throws IOException {
+	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable) throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
 
@@ -62,8 +60,7 @@ public class MongodProcess {
 				dbDir = Files.createTempDir("embedmongo-db");
 				_dbDir = dbDir;
 			}
-			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(
-					_config, _mongodExecutable.getFile(), dbDir));
+			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config, _mongodExecutable.getFile(), dbDir));
 			processBuilder.redirectErrorStream();
 			_process = processBuilder.start();
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
@@ -71,8 +68,7 @@ public class MongodProcess {
 			InputStream inputStream = _process.getInputStream();
 			InputStreamReader reader = new InputStreamReader(inputStream);
 
-			if (LogWatch.waitForStart(reader,
-					"waiting for connections on port", "failed", 2000)) {
+			if (LogWatch.waitForStart(reader, "waiting for connections on port", "failed", 2000)) {
 				_consoleOutput = new ConsoleOutput(reader);
 				_consoleOutput.setDaemon(true);
 				_consoleOutput.start();
@@ -86,13 +82,10 @@ public class MongodProcess {
 		}
 	}
 
-	private static List<String> getCommandLine(MongodConfig config,
-			File mongodExecutable, File dbDir) {
+	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v",
-				"--port", "" + config.getPort(), "--dbpath",
-				"" + dbDir.getAbsolutePath(), "--noprealloc",
-				"--nohttpinterface", "--smallfiles"));
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles"));
 		if (config.isIpv6()) {
 			ret.add("--ipv6");
 		}
@@ -121,11 +114,12 @@ public class MongodProcess {
 			if ((_dbDir != null) && (!Files.forceDelete(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
 
-			if ((_mongodExecutable.getFile() != null)
-					&& (!Files.forceDelete(_mongodExecutable.getFile())))
-				_logger.warning("Could not delete mongod executable: "
-						+ _mongodExecutable.getFile());
-			_stopped = true;
+			if (_mongodExecutable.getFile() != null) {
+				if (!Files.forceDelete(_mongodExecutable.getFile())) {
+					_stopped = true;
+					_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable.getFile());
+				}
+			}
 		}
 	}
 
@@ -138,6 +132,7 @@ public class MongodProcess {
 	private void waitForProcessGotKilled() {
 		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
+
 			public void run() {
 				try {
 					_process.waitFor();
@@ -158,9 +153,9 @@ public class MongodProcess {
 			} catch (InterruptedException e) {
 				_logger.severe(e.getMessage());
 			}
-		if (!_processKilled){
+		if (!_processKilled) {
 			timer.cancel();
-			_logger.severe("Couldn't kill mongod process!");
+			throw new IllegalStateException("Couldn't kill mongod process!");
 		}
 	}
 
@@ -181,8 +176,7 @@ public class MongodProcess {
 
 		private boolean _initWithSuccess = false;
 
-		private LogWatch(InputStreamReader reader, String success,
-				String failure) {
+		private LogWatch(InputStreamReader reader, String success, String failure) {
 			_reader = reader;
 			_success = success;
 			_failure = failure;
@@ -220,8 +214,7 @@ public class MongodProcess {
 			return _initWithSuccess;
 		}
 
-		public static boolean waitForStart(InputStreamReader reader,
-				String success, String failed, long timeout) {
+		public static boolean waitForStart(InputStreamReader reader, String success, String failed, long timeout) {
 			LogWatch logWatch = new LogWatch(reader, success, failed);
 			logWatch.start();
 
