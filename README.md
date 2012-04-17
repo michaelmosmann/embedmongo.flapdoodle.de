@@ -6,6 +6,11 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 
 easy access??
 
+## Comments about Embedded MongoDB in the Wild
+
+http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests
+http://www.cubeia.com/index.php/blog/archives/436
+
 ## Howto
 
 ### Maven
