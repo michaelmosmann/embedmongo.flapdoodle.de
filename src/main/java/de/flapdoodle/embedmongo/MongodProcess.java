@@ -68,7 +68,7 @@ public class MongodProcess {
 			InputStream inputStream = _process.getInputStream();
 			InputStreamReader reader = new InputStreamReader(inputStream);
 
-			if (LogWatch.waitForStart(reader, "waiting for connections on port", "failed", 2000)) {
+			if (LogWatch.waitForStart(reader, "waiting for connections on port", "failed", 20000)) {
 				_consoleOutput = new ConsoleOutput(reader);
 				_consoleOutput.setDaemon(true);
 				_consoleOutput.start();
