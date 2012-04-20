@@ -35,6 +35,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.11 (SNAPSHOT)
 
+- timeout fix on slow systems
+- stability on win plattforms (hopefully)
+
 #### 1.10
 
 - race condition and cleanup of mongod process
