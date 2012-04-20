@@ -1,3 +1,11 @@
+# Moving to Flapdoodle OSS
+
+We are using a gitgub organisation NOW. Thats the way you can participate in development. Please use from NOW
+
+https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de
+
+
+
 # Embedded MongoDB
 
 Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
