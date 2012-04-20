@@ -1,3 +1,7 @@
+# Organisation Flapdoodle OSS
+
+We are now a github organisation. You are invited to participate.
+
 # Embedded MongoDB
 
 Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
