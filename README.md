@@ -15,12 +15,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 04.04.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 20.04.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.10</version>
+		<version>1.11</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -28,12 +28,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.11-SNAPSHOT</version>
+		<version>1.12-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.11 (SNAPSHOT)
+#### 1.12 (SNAPSHOT)
+
+#### 1.11
 
 - timeout fix on slow systems
 - stability on win plattforms (hopefully)
