@@ -21,8 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.MongodProcess.JobKiller;
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.distribution.Distribution;
 
 
 public class MongodExecutable {
@@ -33,7 +33,10 @@ public class MongodExecutable {
 	private final File _mongodExecutable;
 	private boolean _stopped;
 
-	public MongodExecutable(MongodConfig mongodConfig, File mongodExecutable) {
+	private final Distribution _distribution;
+
+	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig, File mongodExecutable) {
+		_distribution = distribution;
 		_mongodConfig = mongodConfig;
 		_mongodExecutable = mongodExecutable;
 		Runtime.getRuntime().addShutdownHook(new JobKiller());
@@ -60,7 +63,7 @@ public class MongodExecutable {
 	}
 
 	public MongodProcess start() throws IOException {
-		return new MongodProcess(_mongodConfig,this);
+		return new MongodProcess(_distribution,_mongodConfig,this);
 	}
 
 }

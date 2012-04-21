@@ -39,6 +39,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.12 (SNAPSHOT)
 
+- NUMA support (alpha)
+
 #### 1.11
 
 - timeout fix on slow systems

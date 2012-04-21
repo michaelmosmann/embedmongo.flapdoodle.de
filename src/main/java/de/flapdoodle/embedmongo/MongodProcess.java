@@ -26,21 +26,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.FutureTask;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.io.ConsoleOutput;
+import de.flapdoodle.embedmongo.io.LogWatch;
+import de.flapdoodle.embedmongo.runtime.NUMA;
+import de.flapdoodle.embedmongo.runtime.ProcessControl;
 
 public class MongodProcess {
 
-	private static final int MONGODB_RETURN_CODE_EXIT_KILL = 12;
-
-	private static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
+	static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
 
 	private final MongodConfig _config;
 	private final MongodExecutable _mongodExecutable;
-	private Process _process;
+	private ProcessControl _process;
 	private ConsoleOutput _consoleOutput;
 
 	private File _dbDir;
@@ -48,7 +49,8 @@ public class MongodProcess {
 	boolean _processKilled = false;
 	boolean _stopped = false;
 
-	public MongodProcess(MongodConfig config, MongodExecutable mongodExecutable) throws IOException {
+	public MongodProcess(Distribution distribution, MongodConfig config, MongodExecutable mongodExecutable)
+			throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
 
@@ -60,16 +62,17 @@ public class MongodProcess {
 				dbDir = Files.createTempDir("embedmongo-db");
 				_dbDir = dbDir;
 			}
-			ProcessBuilder processBuilder = new ProcessBuilder(getCommandLine(_config, _mongodExecutable.getFile(), dbDir));
-			processBuilder.redirectErrorStream();
-			_process = processBuilder.start();
+//			ProcessBuilder processBuilder = new ProcessBuilder(enhanceCommandLinePlattformSpecific(distribution,
+//					getCommandLine(_config, _mongodExecutable.getFile(), dbDir)));
+//			processBuilder.redirectErrorStream();
+//			_process = new ProcessControl(processBuilder.start());
+			_process = ProcessControl.fromCommandLine(enhanceCommandLinePlattformSpecific(distribution,
+					getCommandLine(_config, _mongodExecutable.getFile(), dbDir)));
+			
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			InputStream inputStream = _process.getInputStream();
-			InputStreamReader reader = new InputStreamReader(inputStream);
-
-			if (LogWatch.waitForStart(reader, "waiting for connections on port", "failed", 20000)) {
-				_consoleOutput = new ConsoleOutput(reader);
+			if (LogWatch.waitForStart(_process.getReader(), "waiting for connections on port", "failed", 20000)) {
+				_consoleOutput = new ConsoleOutput(_process.getReader());
 				_consoleOutput.setDaemon(true);
 				_consoleOutput.start();
 			} else {
@@ -92,22 +95,26 @@ public class MongodProcess {
 		return ret;
 	}
 
+	private List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
+		if (NUMA.isNUMA(distribution.getPlatform())) {
+			switch (distribution.getPlatform()) {
+				case Linux:
+					List<String> ret=new ArrayList<String>();
+					ret.add("numactl");
+					ret.add("--interleave=all");
+					ret.addAll(commands);
+					return ret;
+				default:
+					_logger.warning("NUMA Plattform detected, but not supported.");
+			}
+		}
+		return commands;
+	}
+
 	public synchronized void stop() {
 		if (!_stopped) {
 			if (_process != null) {
-
-				try {
-					// streams need to be closed, otherwise process may block
-					// see http://kylecartmell.com/?p=9
-					_process.getErrorStream().close();
-					_process.getInputStream().close();
-					_process.getOutputStream().close();
-
-				} catch (IOException e) {
-					_logger.severe(e.getMessage());
-				} finally {
-					_process.destroy();
-				}
+				_process.stop();
 			}
 			waitForProcessGotKilled();
 
@@ -164,91 +171,6 @@ public class MongodProcess {
 		@Override
 		public void run() {
 			MongodProcess.this.stop();
-		}
-	}
-
-	static class LogWatch extends Thread {
-
-		private final InputStreamReader _reader;
-		private final StringBuilder _output = new StringBuilder();
-		private final String _success;
-		private final String _failure;
-
-		private boolean _initWithSuccess = false;
-
-		private LogWatch(InputStreamReader reader, String success, String failure) {
-			_reader = reader;
-			_success = success;
-			_failure = failure;
-		}
-
-		@Override
-		public void run() {
-			try {
-				int read;
-				char[] buf = new char[512];
-				while ((read = _reader.read(buf)) != -1) {
-					CharSequence line = new String(buf, 0, read);
-					System.out.print(line);
-					_output.append(line);
-
-					if (_output.indexOf(_success) != -1) {
-						_initWithSuccess = true;
-						break;
-					}
-					if (_output.indexOf(_failure) != -1) {
-						_initWithSuccess = false;
-						break;
-					}
-				}
-
-			} catch (IOException iox) {
-				_logger.log(Level.SEVERE, "out", iox);
-			}
-			synchronized (this) {
-				notify();
-			}
-		}
-
-		public boolean isInitWithSuccess() {
-			return _initWithSuccess;
-		}
-
-		public static boolean waitForStart(InputStreamReader reader, String success, String failed, long timeout) {
-			LogWatch logWatch = new LogWatch(reader, success, failed);
-			logWatch.start();
-
-			synchronized (logWatch) {
-				try {
-					logWatch.wait(timeout);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-			return logWatch.isInitWithSuccess();
-		}
-
-	}
-
-	static class ConsoleOutput extends Thread {
-
-		private final InputStreamReader _reader;
-
-		public ConsoleOutput(InputStreamReader reader) {
-			_reader = reader;
-		}
-
-		@Override
-		public void run() {
-			try {
-				int read;
-				char[] buf = new char[512];
-				while ((read = _reader.read(buf)) != -1) {
-					System.out.print(new String(buf, 0, read));
-				}
-			} catch (IOException iox) {
-				// _logger.log(Level.SEVERE,"out",iox);
-			}
 		}
 	}
 }

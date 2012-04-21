@@ -74,7 +74,7 @@ public class Files {
 		boolean ret=false;
 
 		try {
-			if (fileOrDir != null) {
+			if ((fileOrDir != null) && (fileOrDir.exists())) {
 				FileUtils.forceDelete(fileOrDir);
 				_logger.info("Could delete " + fileOrDir);
 				ret = true;
