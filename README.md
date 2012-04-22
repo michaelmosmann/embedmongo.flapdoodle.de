@@ -39,7 +39,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.12 (SNAPSHOT)
 
-- NUMA support (alpha)
+- NUMA support (alpha) - http://www.mongodb.org/display/DOCS/NUMA
 
 #### 1.11
 
