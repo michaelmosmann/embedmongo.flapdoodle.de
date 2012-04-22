@@ -14,7 +14,7 @@
 	<version>1.12-SNAPSHOT</version>
 
 	<description>A embedded mongodb ...</description>
-	<url>http://github.com/michaelmosmann/embedmongo.flapdoodle.de</url>
+	<url>http://github.com/flapdoodle-oss/embedmongo.flapdoodle.de</url>
 
 	<licenses>
 		<license>
@@ -27,9 +27,9 @@
 
 
 	<scm>
-		<connection>scm:git:git@github.com:michaelmosmann/embedmongo.flapdoodle.de.git</connection>
-		<developerConnection>scm:git:git@github.com:michaelmosmann/embedmongo.flapdoodle.de.git</developerConnection>
-		<url>git@github.com:michaelmosmann/embedmongo.flapdoodle.de.git</url>
+		<connection>scm:git:git@github.com:flapdoodle-oss/embedmongo.flapdoodle.de.git</connection>
+		<developerConnection>scm:git:git@github.com:flapdoodle-oss/embedmongo.flapdoodle.de.git</developerConnection>
+		<url>git@github.com:flapdoodle-oss/embedmongo.flapdoodle.de.git</url>
 	</scm>
 
 	<!--
