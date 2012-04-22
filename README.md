@@ -19,12 +19,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 20.04.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 22.04.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.11</version>
+		<version>1.12</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -32,12 +32,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.12-SNAPSHOT</version>
+		<version>1.13-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.12 (SNAPSHOT)
+#### 1.13 (SNAPSHOT)
+
+#### 1.12
 
 - NUMA support (alpha) - http://www.mongodb.org/display/DOCS/NUMA
 
