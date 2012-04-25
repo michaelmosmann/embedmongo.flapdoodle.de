@@ -39,6 +39,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.13 (SNAPSHOT)
 
+- windows mongod shutdown improvement (alpha)
+
 #### 1.12
 
 - NUMA support (alpha) - http://www.mongodb.org/display/DOCS/NUMA
