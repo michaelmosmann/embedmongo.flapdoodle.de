@@ -36,6 +36,7 @@ import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.QueryBuilder;
+import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
@@ -44,6 +45,7 @@ import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.io.ConsoleOutput;
 import de.flapdoodle.embedmongo.io.LogWatch;
 import de.flapdoodle.embedmongo.runtime.NUMA;
+import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
 
 public class MongodProcess {
@@ -156,7 +158,7 @@ public class MongodProcess {
 					"This will cause some logging of exceptions which we can not suppress.\n" +
 					"------------------------------------------------");
 			try {
-				Mongo mongo = new Mongo("localhost", _config.getPort());
+				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), _config.getPort()));
 				DB db = mongo.getDB("admin");
 	//			db.doEval("db.shutdownServer();");
 				db.command(new BasicDBObject("shutdown", 1).append("force", true));

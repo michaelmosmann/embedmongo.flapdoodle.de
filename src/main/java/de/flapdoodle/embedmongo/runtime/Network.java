@@ -33,4 +33,8 @@ public class Network {
 			return true;
 		return false;
 	}
+
+	public static InetAddress getLocalHost() throws UnknownHostException {
+		return InetAddress.getLocalHost();
+	}
 }
