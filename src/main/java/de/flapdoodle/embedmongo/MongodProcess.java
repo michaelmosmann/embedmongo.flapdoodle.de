@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -188,21 +188,27 @@ public class MongodProcess {
 		}
 	}
 
+	private static boolean executeCommandLine(List<String> commandLine) {
+		try {
+			ProcessControl killProcess = ProcessControl.fromCommandLine(commandLine);
+			Thread.sleep(100);
+			killProcess.stop();
+			return true;
+		} catch (IOException e) {
+			_logger.log(Level.SEVERE, "" + commandLine, e);
+		} catch (InterruptedException e) {
+			_logger.log(Level.SEVERE, "" + commandLine, e);
+		}
+		return false;
+	}
+
 	private boolean sendKillToMongodProcess() {
-		if ((_distribution.getPlatform() == Platform.Linux) || (_distribution.getPlatform() == Platform.OS_X)) {
-			if (_mongodProcessId != -1) {
-				try {
-					ProcessControl killProcess = ProcessControl.fromCommandLine(Collections.newArrayList("kill", "-2", ""
-							+ _mongodProcessId));
-					Thread.sleep(100);
-					killProcess.stop();
-					return true;
-				} catch (IOException e) {
-					_logger.log(Level.SEVERE, "send kill to " + _mongodProcessId, e);
-				} catch (InterruptedException e) {
-					_logger.log(Level.SEVERE, "send kill to " + _mongodProcessId, e);
-				}
+		if (_mongodProcessId != -1) {
+			List<String> commandLine = Collections.newArrayList("kill", "-2", "" + _mongodProcessId);
+			if (_distribution.getPlatform() == Platform.Windows) {
+				commandLine = Collections.newArrayList("taskkill", "/pid", "" + _mongodProcessId);
 			}
+			return executeCommandLine(commandLine);
 		}
 		return false;
 	}

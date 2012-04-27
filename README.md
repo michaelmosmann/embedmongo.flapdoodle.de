@@ -39,7 +39,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.13 (SNAPSHOT)
 
-- on linux and osx send ctrl+c to mongod will perform clean shutdown
+- send ctrl+c to mongod will perform clean shutdown (untested on windows using taskkill)
 - windows (and maybe osx) mongod shutdown improvement (alpha)
 - mongodb driver dependency changed from test to provided
 
