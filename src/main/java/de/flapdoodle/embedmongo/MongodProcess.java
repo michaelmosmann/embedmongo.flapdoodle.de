@@ -29,6 +29,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.mongodb.BasicDBObject;
 import com.mongodb.Bytes;
@@ -39,6 +41,7 @@ import com.mongodb.QueryBuilder;
 import com.mongodb.ServerAddress;
 import com.mongodb.WriteConcern;
 
+import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
@@ -55,6 +58,7 @@ public class MongodProcess {
 	private final MongodConfig _config;
 	private final MongodExecutable _mongodExecutable;
 	private ProcessControl _process;
+	private int _mongodProcessId;
 	private ConsoleOutput _consoleOutput;
 
 	private File _dbDir;
@@ -68,7 +72,7 @@ public class MongodProcess {
 			throws IOException {
 		_config = config;
 		_mongodExecutable = mongodExecutable;
-		_distribution=distribution;
+		_distribution = distribution;
 
 		try {
 			File dbDir;
@@ -87,7 +91,9 @@ public class MongodProcess {
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			if (LogWatch.waitForStart(_process.getReader(), "waiting for connections on port", "failed", 20000)) {
+			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
+			if (logWatch.isInitWithSuccess()) {
+				_mongodProcessId = getMongodProcessId(logWatch.getOutput(), -1);
 				_consoleOutput = new ConsoleOutput(_process.getReader());
 				_consoleOutput.setDaemon(true);
 				_consoleOutput.start();
@@ -99,6 +105,16 @@ public class MongodProcess {
 			stop();
 			throw iox;
 		}
+	}
+
+	protected static int getMongodProcessId(String output, int defaultValue) {
+		Pattern pattern = Pattern.compile("MongoDB starting : pid=([1234567890]+) port", Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(output);
+		if (matcher.find()) {
+			String value = matcher.group(1);
+			return Integer.valueOf(value);
+		}
+		return defaultValue;
 	}
 
 	private static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
@@ -130,7 +146,9 @@ public class MongodProcess {
 	public synchronized void stop() {
 		if (!_stopped) {
 
-			sendStopToMongoInstance();
+			if (!sendKillToMongodProcess()) {
+				sendStopToMongoInstance();
+			}
 
 			if (_process != null) {
 				_process.stop();
@@ -150,24 +168,43 @@ public class MongodProcess {
 	}
 
 	private void sendStopToMongoInstance() {
-		if ((_distribution.getPlatform()==Platform.Windows) || (_distribution.getPlatform()==Platform.OS_X)) {
-			_logger.warning("\n" +
-					"------------------------------------------------\n" +
-					"On windows (and maybe osx) stopping mongod process could take too much time.\n" +
-					"We will send shutdown to db for speedup.\n" +
-					"This will cause some logging of exceptions which we can not suppress.\n" +
-					"------------------------------------------------");
+
+		if ((_distribution.getPlatform() == Platform.Windows) || (_distribution.getPlatform() == Platform.OS_X)) {
+			_logger.warning("\n" + "------------------------------------------------\n"
+					+ "On windows (and maybe osx) stopping mongod process could take too much time.\n"
+					+ "We will send shutdown to db for speedup.\n"
+					+ "This will cause some logging of exceptions which we can not suppress.\n"
+					+ "------------------------------------------------");
 			try {
 				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), _config.getPort()));
 				DB db = mongo.getDB("admin");
-	//			db.doEval("db.shutdownServer();");
+				//			db.doEval("db.shutdownServer();");
 				db.command(new BasicDBObject("shutdown", 1).append("force", true));
 			} catch (UnknownHostException e) {
 				_logger.log(Level.SEVERE, "sendStop", e);
 			} catch (MongoException e) {
-	//			_logger.log(Level.SEVERE, "sendStop", e);
+				//			_logger.log(Level.SEVERE, "sendStop", e);
 			}
 		}
+	}
+
+	private boolean sendKillToMongodProcess() {
+		if ((_distribution.getPlatform() == Platform.Linux) || (_distribution.getPlatform() == Platform.OS_X)) {
+			if (_mongodProcessId != -1) {
+				try {
+					ProcessControl killProcess = ProcessControl.fromCommandLine(Collections.newArrayList("kill", "-2", ""
+							+ _mongodProcessId));
+					Thread.sleep(100);
+					killProcess.stop();
+					return true;
+				} catch (IOException e) {
+					_logger.log(Level.SEVERE, "send kill to " + _mongodProcessId, e);
+				} catch (InterruptedException e) {
+					_logger.log(Level.SEVERE, "send kill to " + _mongodProcessId, e);
+				}
+			}
+		}
+		return false;
 	}
 
 	/**

@@ -74,8 +74,12 @@ public class LogWatch extends Thread {
 	public boolean isInitWithSuccess() {
 		return _initWithSuccess;
 	}
+	
+	public String getOutput() {
+		return _output.toString();
+	}
 
-	public static boolean waitForStart(Reader reader, String success, String failed, long timeout) {
+	public static LogWatch watch(Reader reader, String success, String failed, long timeout) {
 		LogWatch logWatch = new LogWatch(reader, success, failed);
 		logWatch.start();
 
@@ -86,7 +90,7 @@ public class LogWatch extends Thread {
 				e.printStackTrace();
 			}
 		}
-		return logWatch.isInitWithSuccess();
+		return logWatch;
 	}
 
 }
