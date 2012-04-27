@@ -39,7 +39,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.13 (SNAPSHOT)
 
-- windows mongod shutdown improvement (alpha)
+- windows (and maybe osx) mongod shutdown improvement (alpha)
 - mongodb driver dependency changed from test to provided
 
 #### 1.12

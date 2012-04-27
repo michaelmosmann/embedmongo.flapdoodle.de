@@ -150,10 +150,10 @@ public class MongodProcess {
 	}
 
 	private void sendStopToMongoInstance() {
-		if (_distribution.getPlatform()==Platform.Windows) {
+		if ((_distribution.getPlatform()==Platform.Windows) || (_distribution.getPlatform()==Platform.OS_X)) {
 			_logger.warning("\n" +
 					"------------------------------------------------\n" +
-					"On windows stopping mongod process could take too much time.\n" +
+					"On windows (and maybe osx) stopping mongod process could take too much time.\n" +
 					"We will send shutdown to db for speedup.\n" +
 					"This will cause some logging of exceptions which we can not suppress.\n" +
 					"------------------------------------------------");
