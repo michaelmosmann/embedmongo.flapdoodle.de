@@ -1,4 +1,4 @@
-# Moving to Flapdoodle OSS
+# Moved to Flapdoodle OSS
 
 We are using a gitgub organisation NOW. Thats the way you can participate in development. Please use from NOW
 
