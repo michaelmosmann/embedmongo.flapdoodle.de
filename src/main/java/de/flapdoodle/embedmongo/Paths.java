@@ -167,9 +167,12 @@ public class Paths {
 			case V2_0_4:
 				sversion="2.0.4";
 				break;
-			case V2_1:
 			case V2_1_0:
 				sversion="2.1.0";
+				break;
+			case V2_1:
+			case V2_1_1:
+				sversion="2.1.1";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Version "+version);

@@ -42,6 +42,7 @@ public enum Version {
 	V2_0_4,
 
 	V2_1_0,
+	V2_1_1,
 
 	V1_6,
 	V1_8,

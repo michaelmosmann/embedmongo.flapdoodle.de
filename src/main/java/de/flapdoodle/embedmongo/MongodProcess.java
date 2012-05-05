@@ -19,8 +19,6 @@ package de.flapdoodle.embedmongo;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,21 +30,13 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.Bytes;
-import com.mongodb.DB;
-import com.mongodb.Mongo;
-import com.mongodb.MongoException;
-import com.mongodb.QueryBuilder;
-import com.mongodb.ServerAddress;
-import com.mongodb.WriteConcern;
-
 import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.io.ConsoleOutput;
 import de.flapdoodle.embedmongo.io.LogWatch;
+import de.flapdoodle.embedmongo.runtime.MongodShutdown;
 import de.flapdoodle.embedmongo.runtime.NUMA;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
@@ -146,8 +136,8 @@ public class MongodProcess {
 	public synchronized void stop() {
 		if (!_stopped) {
 
-			if (!sendKillToMongodProcess()) {
-				sendStopToMongoInstance();
+			if (!sendStopToMongoInstance()) {
+				sendKillToMongodProcess();
 			}
 
 			if (_process != null) {
@@ -167,25 +157,31 @@ public class MongodProcess {
 		}
 	}
 
-	private void sendStopToMongoInstance() {
-
-		if ((_distribution.getPlatform() == Platform.Windows) || (_distribution.getPlatform() == Platform.OS_X)) {
-			_logger.warning("\n" + "------------------------------------------------\n"
-					+ "On windows (and maybe osx) stopping mongod process could take too much time.\n"
-					+ "We will send shutdown to db for speedup.\n"
-					+ "This will cause some logging of exceptions which we can not suppress.\n"
-					+ "------------------------------------------------");
-			try {
-				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), _config.getPort()));
-				DB db = mongo.getDB("admin");
-				//			db.doEval("db.shutdownServer();");
-				db.command(new BasicDBObject("shutdown", 1).append("force", true));
-			} catch (UnknownHostException e) {
-				_logger.log(Level.SEVERE, "sendStop", e);
-			} catch (MongoException e) {
-				//			_logger.log(Level.SEVERE, "sendStop", e);
-			}
+	private boolean sendStopToMongoInstance() {
+		try {
+			return MongodShutdown.sendShutdown(Network.getLocalHost(), _config.getPort());
+		} catch (UnknownHostException e) {
+			_logger.log(Level.SEVERE, "sendStop", e);
 		}
+		return false;
+		
+//		if ((_distribution.getPlatform() == Platform.Windows) || (_distribution.getPlatform() == Platform.OS_X)) {
+//			_logger.warning("\n" + "------------------------------------------------\n"
+//					+ "On windows (and maybe osx) stopping mongod process could take too much time.\n"
+//					+ "We will send shutdown to db for speedup.\n"
+//					+ "This will cause some logging of exceptions which we can not suppress.\n"
+//					+ "------------------------------------------------");
+//			try {
+//				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), _config.getPort()));
+//				DB db = mongo.getDB("admin");
+//				//			db.doEval("db.shutdownServer();");
+//				db.command(new BasicDBObject("shutdown", 1).append("force", true));
+//			} catch (UnknownHostException e) {
+//				_logger.log(Level.SEVERE, "sendStop", e);
+//			} catch (MongoException e) {
+//				//			_logger.log(Level.SEVERE, "sendStop", e);
+//			}
+//		}
 	}
 
 	private static boolean executeCommandLine(List<String> commandLine) {

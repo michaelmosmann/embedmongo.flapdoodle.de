@@ -39,9 +39,11 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.13 (SNAPSHOT)
 
-- send ctrl+c to mongod will perform clean shutdown (untested on windows using taskkill)
-- windows (and maybe osx) mongod shutdown improvement (alpha)
-- mongodb driver dependency changed from test to provided
+- mongod process management improvement 
+ (windows mongod shutdown improvement (alpha) (some trouble stopping process on windows - http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092))
+ - send shutdown to server
+ - send ctrl+c to mongod will perform clean shutdown (untested on windows using taskkill)
+- now with 2.1.1
 
 #### 1.12
 
