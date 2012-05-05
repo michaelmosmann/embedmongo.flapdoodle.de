@@ -21,12 +21,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 22.04.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 05.05.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.12</version>
+		<version>1.13</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -34,12 +34,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.13-SNAPSHOT</version>
+		<version>1.14-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.13 (SNAPSHOT)
+#### 1.14 (SNAPSHOT)
+
+#### 1.13
 
 - mongod process management improvement 
  (windows mongod shutdown improvement (alpha) (some trouble stopping process on windows - http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4770092))
