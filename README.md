@@ -8,7 +8,9 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 
 ## Why?
 
-easy access??
+- dropping databases causing some pains (often you have to wait long time after each test)
+- its easy, much easier as installing right version by hand
+- you can change version per test
 
 ## Comments about Embedded MongoDB in the Wild
 
