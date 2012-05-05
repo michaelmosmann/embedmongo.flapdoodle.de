@@ -136,8 +136,8 @@ public class MongodProcess {
 	public synchronized void stop() {
 		if (!_stopped) {
 
-			if (!sendStopToMongoInstance()) {
-				sendKillToMongodProcess();
+			if (!sendKillToMongodProcess()) {
+				sendStopToMongoInstance();
 			}
 
 			if (_process != null) {

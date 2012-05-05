@@ -41,6 +41,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.14 (SNAPSHOT)
 
+- changed back to send ctrl+c and then send shutdown
+
 #### 1.13
 
 - mongod process management improvement 
