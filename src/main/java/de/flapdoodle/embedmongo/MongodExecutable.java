@@ -44,8 +44,9 @@ public class MongodExecutable {
 
 	public synchronized void cleanup() {
 		if (!_stopped) {
-			if (_mongodExecutable.exists() &&  !_mongodExecutable.delete())
-				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
+			if (_mongodExecutable.exists() &&  !Files.forceDelete(_mongodExecutable))
+				_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable);
+//				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
 			_stopped = true;
 		}
 	}

@@ -15,12 +15,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo;
+package de.flapdoodle.embedmongo.runtime;
+
+import de.flapdoodle.embedmongo.runtime.Mongod;
 
 import junit.framework.TestCase;
 
 
-public class TestMongodProcess extends TestCase {
+public class TestMongod extends TestCase {
 
 	public void testGetPID() {
 		String consoleOutput="Fri Apr 27 08:08:55 BackgroundJob starting: DataFileSync\n" +
@@ -30,6 +32,6 @@ public class TestMongodProcess extends TestCase {
 				"Fri Apr 27 08:08:55 [initandlisten]\n" +
 				"Fri Apr 27 08:08:55 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data\n";
 		
-		assertEquals("PID",11026,MongodProcess.getMongodProcessId(consoleOutput, -1));
+		assertEquals("PID",11026,Mongod.getMongodProcessId(consoleOutput, -1));
 	}
 }

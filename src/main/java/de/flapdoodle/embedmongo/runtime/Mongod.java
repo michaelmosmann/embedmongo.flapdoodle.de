@@ -17,17 +17,26 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class MongodShutdown {
+import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.distribution.Distribution;
 
-	private static final Logger _logger = Logger.getLogger(MongodShutdown.class.getName());
+public class Mongod {
+
+	private static final Logger _logger = Logger.getLogger(Mongod.class.getName());
 
 	/**
 	 * Binary sample of shutdown command 
@@ -56,6 +65,42 @@ public class MongodShutdown {
 			_logger.log(Level.WARNING, "sendShutdown", ix);
 		}
 		return false;
+	}
+
+	public static int getMongodProcessId(String output, int defaultValue) {
+		Pattern pattern = Pattern.compile("MongoDB starting : pid=([1234567890]+) port", Pattern.MULTILINE);
+		Matcher matcher = pattern.matcher(output);
+		if (matcher.find()) {
+			String value = matcher.group(1);
+			return Integer.valueOf(value);
+		}
+		return defaultValue;
+	}
+
+	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
+		List<String> ret = new ArrayList<String>();
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles"));
+		if (config.isIpv6()) {
+			ret.add("--ipv6");
+		}
+		return ret;
+	}
+
+	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
+		if (NUMA.isNUMA(distribution.getPlatform())) {
+			switch (distribution.getPlatform()) {
+				case Linux:
+					List<String> ret = new ArrayList<String>();
+					ret.add("numactl");
+					ret.add("--interleave=all");
+					ret.addAll(commands);
+					return ret;
+				default:
+					_logger.warning("NUMA Plattform detected, but not supported.");
+			}
+		}
+		return commands;
 	}
 
 }

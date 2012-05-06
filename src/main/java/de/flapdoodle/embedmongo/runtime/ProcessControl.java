@@ -21,13 +21,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embedmongo.collections.Collections;
+import de.flapdoodle.embedmongo.distribution.Platform;
 
 public class ProcessControl {
 
 	private static final Logger _logger = Logger.getLogger(ProcessControl.class.getName());
-	
+
 	private Process _process;
 	private InputStreamReader _reader;
 
@@ -35,36 +40,107 @@ public class ProcessControl {
 		_process = process;
 		_reader = new InputStreamReader(_process.getInputStream());
 	}
-	
+
 	public Reader getReader() {
 		return _reader;
 	}
+
+	public int stop() {
+		closeIOAndDestroy();
+		return waitForProcessGotKilled();
+	}
 	
-	public void stop() {
-		if (_process!=null) {
+	private void closeIOAndDestroy() {
+		if (_process != null) {
 			try {
 				// streams need to be closed, otherwise process may block
 				// see http://kylecartmell.com/?p=9
 				_process.getErrorStream().close();
 				_process.getInputStream().close();
 				_process.getOutputStream().close();
-	
+
 			} catch (IOException e) {
 				_logger.severe(e.getMessage());
 			} finally {
 				_process.destroy();
 			}
-			_reader=null;
+			_reader = null;
 		}
 	}
 
-	public int waitFor() throws InterruptedException {
-		return _process.waitFor();
+//	public int waitFor() throws InterruptedException {
+//		return _process.waitFor();
+//	}
+
+	/**
+	 * It may happen in tests, that the process is currently using some files in
+	 * the temp directory, e.g. journal files (journal/j._0) and got killed at
+	 * that time, so it takes a bit longer to kill the process. So we just wait
+	 * for a second (in 10 ms steps) that the process got really killed.
+	 */
+	private int waitForProcessGotKilled() {
+		final ProcessState state=new ProcessState();
+		
+		final Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+
+			public void run() {
+				try {
+					state.returnCode=_process.waitFor();
+				} catch (InterruptedException e) {
+					_logger.severe(e.getMessage());
+				} finally {
+					state.killed = true;
+					timer.cancel();
+				}
+			}
+		}, 0, 10);
+		// wait for max. 1 second that process got killed
+
+		int countDown = 100;
+		while (!state.killed && (countDown-- > 0))
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				_logger.severe(e.getMessage());
+			}
+		if (!state.killed) {
+			timer.cancel();
+			throw new IllegalStateException("Couldn't kill mongod process!");
+		}
+		return state.returnCode;
 	}
+	
 	
 	public static ProcessControl fromCommandLine(List<String> commandLine) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
 		processBuilder.redirectErrorStream();
 		return new ProcessControl(processBuilder.start());
+	}
+
+	public static boolean executeCommandLine(List<String> commandLine) {
+		boolean ret = false;
+
+		try {
+			ProcessControl killProcess = fromCommandLine(commandLine);
+			ret = killProcess.stop() == 0;
+			return ret;
+		} catch (IOException e) {
+			_logger.log(Level.SEVERE, "" + commandLine, e);
+		}
+		return false;
+	}
+	
+	public static boolean killProcess(Platform platform, int pid) {
+		List<String> commandLine = Collections.newArrayList("kill", "-2", "" + pid);
+		if (platform == Platform.Windows) {
+			commandLine = Collections.newArrayList("taskkill", "/pid", "" + pid);
+		}
+		return executeCommandLine(commandLine);
+	}
+
+	static class ProcessState {
+		protected int returnCode;
+		boolean killed=false;
 	}
 }
