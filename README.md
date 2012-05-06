@@ -21,12 +21,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 05.05.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 06.05.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.13</version>
+		<version>1.14</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -34,12 +34,16 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.14-SNAPSHOT</version>
+		<version>1.15-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.14 (SNAPSHOT)
+Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
+
+#### 1.15 (SNAPSHOT)
+
+#### 1.14
 
 - changed back to send ctrl+c and then send shutdown
 
