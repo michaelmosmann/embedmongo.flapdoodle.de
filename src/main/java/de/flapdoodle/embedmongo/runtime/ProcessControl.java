@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package de.flapdoodle.embedmongo.runtime;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -36,9 +37,12 @@ public class ProcessControl {
 	private Process _process;
 	private InputStreamReader _reader;
 
+	private Integer _pid;
+
 	public ProcessControl(Process process) {
 		_process = process;
 		_reader = new InputStreamReader(_process.getInputStream());
+		_pid = getProcessID();
 	}
 
 	public Reader getReader() {
@@ -49,7 +53,7 @@ public class ProcessControl {
 		closeIOAndDestroy();
 		return waitForProcessGotKilled();
 	}
-	
+
 	private void closeIOAndDestroy() {
 		if (_process != null) {
 			try {
@@ -68,9 +72,9 @@ public class ProcessControl {
 		}
 	}
 
-//	public int waitFor() throws InterruptedException {
-//		return _process.waitFor();
-//	}
+	//	public int waitFor() throws InterruptedException {
+	//		return _process.waitFor();
+	//	}
 
 	/**
 	 * It may happen in tests, that the process is currently using some files in
@@ -79,14 +83,14 @@ public class ProcessControl {
 	 * for a second (in 10 ms steps) that the process got really killed.
 	 */
 	private int waitForProcessGotKilled() {
-		final ProcessState state=new ProcessState();
-		
+		final ProcessState state = new ProcessState();
+
 		final Timer timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 
 			public void run() {
 				try {
-					state.returnCode=_process.waitFor();
+					state.returnCode = _process.waitFor();
 				} catch (InterruptedException e) {
 					_logger.severe(e.getMessage());
 				} finally {
@@ -110,8 +114,7 @@ public class ProcessControl {
 		}
 		return state.returnCode;
 	}
-	
-	
+
 	public static ProcessControl fromCommandLine(List<String> commandLine) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
 		processBuilder.redirectErrorStream();
@@ -130,7 +133,7 @@ public class ProcessControl {
 		}
 		return false;
 	}
-	
+
 	public static boolean killProcess(Platform platform, int pid) {
 		List<String> commandLine = Collections.newArrayList("kill", "-2", "" + pid);
 		if (platform == Platform.Windows) {
@@ -139,8 +142,33 @@ public class ProcessControl {
 		return executeCommandLine(commandLine);
 	}
 
+	private Integer getProcessID() {
+		Class<?> clazz = _process.getClass();
+		try {
+			if (clazz.getName().equals("java.lang.UNIXProcess")) {
+				Field pidField = clazz.getDeclaredField("pid");
+				pidField.setAccessible(true);
+				Object value = pidField.get(_process);
+				System.err.println("pid = " + value);
+				if (value instanceof Integer) {
+					return (Integer) value;
+				}
+			}
+		} catch (SecurityException sx) {
+			sx.printStackTrace();
+		} catch (NoSuchFieldException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	static class ProcessState {
+
 		protected int returnCode;
-		boolean killed=false;
+		boolean killed = false;
 	}
 }
