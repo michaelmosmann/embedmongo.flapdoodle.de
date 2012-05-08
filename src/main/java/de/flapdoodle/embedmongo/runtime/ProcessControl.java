@@ -110,7 +110,17 @@ public class ProcessControl {
 			}
 		if (!state.killed) {
 			timer.cancel();
-			throw new IllegalStateException("Couldn't kill mongod process!");
+			String message="\n\n" +
+					"----------------------------------------------------\n" +
+					"Something bad happend. We couldn't kill mongod process, and tried a lot.\n" +
+					"If you want this problem solved you can help us if you open a new issue on github.\n" +
+					"\n" +
+					"Follow this link:\n" +
+					"https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" +
+					"\n" +
+					"Thank you:)\n" +
+					"----------------------------------------------------\n\n";
+			throw new IllegalStateException("Couldn't kill mongod process!"+message);
 		}
 		return state.returnCode;
 	}
@@ -135,11 +145,17 @@ public class ProcessControl {
 	}
 
 	public static boolean killProcess(Platform platform, int pid) {
-		List<String> commandLine = Collections.newArrayList("kill", "-2", "" + pid);
-		if (platform == Platform.Windows) {
-			commandLine = Collections.newArrayList("taskkill", "/pid", "" + pid);
+		if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
+			return executeCommandLine(Collections.newArrayList("kill", "-2", "" + pid));
 		}
-		return executeCommandLine(commandLine);
+		return false;
+	}
+	
+	public static boolean tryKillProcess(Platform platform, int pid) {
+		if (platform == Platform.Windows) {
+			return executeCommandLine(Collections.newArrayList("taskkill", "/pid", "" + pid));
+		}
+		return false;
 	}
 
 	private Integer getProcessID() {

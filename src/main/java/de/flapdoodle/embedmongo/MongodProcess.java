@@ -90,8 +90,15 @@ public class MongodProcess {
 	public synchronized void stop() {
 		if (!_stopped) {
 
+			_logger.warning("try to stop mongod");
 			if (!sendKillToMongodProcess()) {
-				sendStopToMongoInstance();
+				_logger.warning("could not stop mongod, try next");
+				if (!sendStopToMongoInstance()) {
+					_logger.warning("could not stop mongod with db command, try next");
+					if (!tryKillToMongodProcess()) {
+						_logger.warning("could not stop mongod the second time, try one last thing");
+					}
+				}
 			}
 
 			_process.stop();
@@ -120,6 +127,13 @@ public class MongodProcess {
 	private boolean sendKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
 			return ProcessControl.killProcess(_distribution.getPlatform(), _mongodProcessId);
+		}
+		return false;
+	}
+
+	private boolean tryKillToMongodProcess() {
+		if (_mongodProcessId != -1) {
+			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _mongodProcessId);
 		}
 		return false;
 	}
