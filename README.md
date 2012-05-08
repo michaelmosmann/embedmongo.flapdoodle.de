@@ -45,6 +45,7 @@ Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
 
 - now we send ctrl+c on linux and osx, then send shutdown to server, then taskkill on windows (may the force be with us)
 - disable journal for faster turnaround times
+- noauth added
 
 #### 1.14
 
