@@ -26,7 +26,7 @@ public class RuntimeConfig {
 
 	private IProgressListener _progressListener = new StandardConsoleProgressListener();
 	private String _downloadPath = "http://fastdl.mongodb.org/";
-	private String _artifactStorePath=".embedmongo";
+	private IArtifactStoragePathNaming _artifactStorePath=new ArtifactStoreInUserHome();
 	private ITempNaming _defaultfileNaming=new UUIDTempNaming();
 	private ITempNaming _executableNaming=_defaultfileNaming;
 
@@ -65,8 +65,13 @@ public class RuntimeConfig {
 	public IProgressListener getProgressListener() {
 		return _progressListener;
 	}
-
-	public String getArtifactStorePath() {
+	
+	public IArtifactStoragePathNaming getArtifactStorePathNaming() {
 		return _artifactStorePath;
+	}
+	
+	
+	public void setArtifactStorePathNaming(IArtifactStoragePathNaming artifactStorePath) {
+		_artifactStorePath = artifactStorePath;
 	}
 }

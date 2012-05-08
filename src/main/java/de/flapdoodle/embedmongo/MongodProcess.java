@@ -93,10 +93,10 @@ public class MongodProcess {
 			_logger.warning("try to stop mongod");
 			if (!sendKillToMongodProcess()) {
 				_logger.warning("could not stop mongod, try next");
-				if (!sendStopToMongoInstance()) {
-					_logger.warning("could not stop mongod with db command, try next");
-					if (!tryKillToMongodProcess()) {
-						_logger.warning("could not stop mongod the second time, try one last thing");
+				if (!tryKillToMongodProcess()) {
+					_logger.warning("could not stop mongod the second time, try next");
+					if (!sendStopToMongoInstance()) {
+						_logger.warning("could not stop mongod with db command, try one last thing");
 					}
 				}
 			}

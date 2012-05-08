@@ -46,6 +46,7 @@ Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
 - now we send ctrl+c on linux and osx, then send shutdown to server, then taskkill on windows (may the force be with us)
 - disable journal for faster turnaround times
 - noauth added
+- customize artifact storage path
 
 #### 1.14
 
@@ -158,3 +159,14 @@ Support for Linux, Windows and MacOSX.
 			return DATABASENAME;
 		}
 	}
+
+### Customize Artifact Storage
+
+	...
+	IArtifactStoragePathNaming pathNaming = ...
+
+	RuntimeConfig runtimeConfig=new RuntimeConfig();
+	runtimeConfig.setExecutableNaming(new UserTempNaming());
+	runtimeConfig.setArtifactStorePathNaming(pathNaming);
+	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	...

@@ -43,7 +43,7 @@ public class LocalArtifactStore {
 	}
 
 	private static File createOrGetBaseDir(RuntimeConfig runtime) {
-		File dir = new File(getPath(runtime));
+		File dir = new File(runtime.getArtifactStorePathNaming().getPath());
 		createOrCheckDir(dir);
 		return dir;
 	}
@@ -57,9 +57,9 @@ public class LocalArtifactStore {
 			throw new IllegalArgumentException("" + dir + " is not a Directory");
 	}
 
-	private static String getPath(RuntimeConfig runtime) {
-		return System.getProperty("user.home") + "/"+runtime.getArtifactStorePath()+"/";//"/.embedmongo/";
-	}
+//	private static String getPath(RuntimeConfig runtime) {
+//		return System.getProperty("user.home") + "/"+runtime.getArtifactStorePath()+"/";//"/.embedmongo/";
+//	}
 
 	public static File getArtifact(RuntimeConfig runtime, Distribution distribution) {
 		File dir = createOrGetBaseDir(runtime);
