@@ -80,7 +80,7 @@ public class Mongod {
 	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
 		List<String> ret = new ArrayList<String>();
 		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--nojournal"));
+				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--nojournal","--noauth"));
 		if (config.isIpv6()) {
 			ret.add("--ipv6");
 		}
