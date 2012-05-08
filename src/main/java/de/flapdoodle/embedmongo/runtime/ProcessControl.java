@@ -135,10 +135,14 @@ public class ProcessControl {
 		boolean ret = false;
 
 		try {
-			ProcessControl killProcess = fromCommandLine(commandLine);
-			ret = killProcess.stop() == 0;
+			ProcessControl process = fromCommandLine(commandLine);
+			Thread.sleep(10);
+			ret = process.stop() == 0;
+			_logger.severe("execSuccess: "+ret);
 			return ret;
 		} catch (IOException e) {
+			_logger.log(Level.SEVERE, "" + commandLine, e);
+		} catch (InterruptedException e) {
 			_logger.log(Level.SEVERE, "" + commandLine, e);
 		}
 		return false;
@@ -153,7 +157,7 @@ public class ProcessControl {
 	
 	public static boolean tryKillProcess(Platform platform, int pid) {
 		if (platform == Platform.Windows) {
-			return executeCommandLine(Collections.newArrayList("taskkill", "/pid", "" + pid));
+			return executeCommandLine(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid));
 		}
 		return false;
 	}

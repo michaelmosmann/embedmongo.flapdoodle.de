@@ -46,7 +46,7 @@ public class MongoExecutableTest extends TestCase {
 	@Test
 	public void testStartStopTenTimesWithNewMongoExecutable() throws IOException {
 		boolean useMongodb=true;
-		int loops=10;
+		int loops=1;
 		
 		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345,
 				Network.localhostIsIPv6());
