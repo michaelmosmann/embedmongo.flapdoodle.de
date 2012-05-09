@@ -52,7 +52,7 @@ public class Mongod {
 		if (hostname.isLoopbackAddress()) {
 			_logger.log(Level.WARNING,"" +
 					"---------------------------------------\n" +
-					"Your LocalHost is not a "+hostname.getHostAddress()+"\n" +
+					"Your localhost ("+hostname.getHostAddress()+") is not a loobback adress\n" +
 					"We can NOT send shutdown to mongod, because it is denied from remote."+
 					"---------------------------------------\n");
 			return false;
