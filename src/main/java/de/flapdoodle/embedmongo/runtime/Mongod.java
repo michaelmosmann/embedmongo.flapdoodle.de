@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,6 +49,14 @@ public class Mongod {
 			0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00,};
 
 	public static boolean sendShutdown(InetAddress hostname, int port) {
+		if (hostname.isLoopbackAddress()) {
+			_logger.log(Level.WARNING,"" +
+					"---------------------------------------\n" +
+					"Your LocalHost is not a "+hostname.getHostAddress()+"\n" +
+					"We can NOT send shutdown to mongod, because it is denied from remote."+
+					"---------------------------------------\n");
+			return false;
+		}
 		try {
 //			Thread.sleep(1000);
 			Socket s = new Socket();
@@ -77,9 +86,9 @@ public class Mongod {
 		return defaultValue;
 	}
 
-	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) {
+	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), "--dbpath", ""
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), /*"--bind_ip",""+Network.getLocalHost().getHostAddress(),*/"--dbpath", ""
 				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--nojournal","--noauth"));
 		if (config.isIpv6()) {
 			ret.add("--ipv6");

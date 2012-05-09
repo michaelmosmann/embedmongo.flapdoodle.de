@@ -47,6 +47,7 @@ Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
 - disable journal for faster turnaround times
 - noauth added
 - customize artifact storage path
+- detection if localhost is not loopback (command shutdown on mongod does not work for remote access)
 
 #### 1.14
 

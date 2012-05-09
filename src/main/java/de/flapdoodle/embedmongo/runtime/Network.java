@@ -19,9 +19,14 @@ package de.flapdoodle.embedmongo.runtime;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Network {
 
+	private static final Logger _logger = Logger.getLogger(Network.class.getName());
+
+	
 	private Network() {
 		throw new IllegalAccessError("singleton");
 	}
@@ -35,6 +40,14 @@ public class Network {
 	}
 
 	public static InetAddress getLocalHost() throws UnknownHostException {
-		return InetAddress.getLocalHost();
+		InetAddress ret = InetAddress.getLocalHost();
+		if (!ret.isLoopbackAddress()) {
+			_logger.severe(""+ret.getHostAddress()+" is not a LoopbackAddress");
+		}
+//		_logger.log(Level.SEVERE,"LoopbackAddress: "+ret.isLoopbackAddress());
+//		_logger.log(Level.SEVERE,"LinkLocalAddress: "+ret.isLinkLocalAddress());
+//		_logger.log(Level.SEVERE,"AnyLocalAddress: "+ret.isAnyLocalAddress());
+//		ret=InetAddress.getByAddress(new byte[] {(byte)192,(byte)168,(byte)192,(byte)251});
+		return ret;
 	}
 }

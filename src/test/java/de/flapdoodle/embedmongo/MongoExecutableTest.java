@@ -29,6 +29,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
@@ -46,7 +47,7 @@ public class MongoExecutableTest extends TestCase {
 	@Test
 	public void testStartStopTenTimesWithNewMongoExecutable() throws IOException {
 		boolean useMongodb=true;
-		int loops=1;
+		int loops=10;
 		
 		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345,
 				Network.localhostIsIPv6());
@@ -58,7 +59,7 @@ public class MongoExecutableTest extends TestCase {
 			MongodProcess mongod = mongodExe.start();
 		
 			if (useMongodb) {
-				Mongo mongo = new Mongo("localhost", mongodConfig.getPort());
+				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
 				DB db = mongo.getDB("test");
 				DBCollection col = db.createCollection("testCol", new BasicDBObject());
 				col.save(new BasicDBObject("testDoc", new Date()));
