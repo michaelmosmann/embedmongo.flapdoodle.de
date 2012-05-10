@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.io.ConsoleOutput;
-import de.flapdoodle.embedmongo.io.LogWatch;
+import de.flapdoodle.embedmongo.io.BlockLogWatchProcessor;
+import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
@@ -39,7 +39,7 @@ public class MongodProcess {
 	private final MongodExecutable _mongodExecutable;
 	private ProcessControl _process;
 	private int _mongodProcessId;
-	private ConsoleOutput _consoleOutput;
+//	private ConsoleOutput _consoleOutput;
 
 	private File _dbDir;
 
@@ -70,12 +70,15 @@ public class MongodProcess {
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
+			BlockLogWatchProcessor logWatch = new BlockLogWatchProcessor("waiting for connections on port", "failed", Processors.namedConsole("[mongod output]"));
+			Processors.connect(_process.getReader(), logWatch);
+			Processors.connect(_process.getError(), Processors.namedConsole("[mongod error]"));
+			logWatch.waitForResult(20000);
+			
+//			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
 			if (logWatch.isInitWithSuccess()) {
 				_mongodProcessId = Mongod.getMongodProcessId(logWatch.getOutput(), -1);
-				_consoleOutput = new ConsoleOutput(_process.getReader());
-				_consoleOutput.setDaemon(true);
-				_consoleOutput.start();
+//				ConsoleOutput consoleOutput = new ConsoleOutput(_process.getReader());
 			} else {
 				throw new IOException("Could not start mongod process");
 			}

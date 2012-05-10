@@ -42,7 +42,7 @@ public class Network {
 	public static InetAddress getLocalHost() throws UnknownHostException {
 		InetAddress ret = InetAddress.getLocalHost();
 		if (!ret.isLoopbackAddress()) {
-			_logger.severe(""+ret.getHostAddress()+" is not a LoopbackAddress");
+			_logger.severe(""+ret.getHostAddress()+" is not a loopback address");
 		}
 //		_logger.log(Level.SEVERE,"LoopbackAddress: "+ret.isLoopbackAddress());
 //		_logger.log(Level.SEVERE,"LinkLocalAddress: "+ret.isLinkLocalAddress());

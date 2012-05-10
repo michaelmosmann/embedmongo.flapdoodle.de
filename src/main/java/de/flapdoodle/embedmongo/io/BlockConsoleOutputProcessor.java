@@ -17,27 +17,17 @@
  */
 package de.flapdoodle.embedmongo.io;
 
-import java.io.IOException;
-import java.io.Reader;
+public class BlockConsoleOutputProcessor implements IBlockProcessor {
 
-public class ConsoleOutput extends Thread {
-
-	private final Reader _reader;
-
-	public ConsoleOutput(Reader reader) {
-		_reader = reader;
+	@Override
+	public void process(String block) {
+		System.out.print(block);
+		System.out.flush();
 	}
 
 	@Override
-	public void run() {
-		try {
-			int read;
-			char[] buf = new char[512];
-			while ((read = _reader.read(buf)) != -1) {
-				System.out.print(new String(buf, 0, read));
-			}
-		} catch (IOException iox) {
-			// _logger.log(Level.SEVERE,"out",iox);
-		}
+	public void onProcessed() {
+		System.out.println();
 	}
+
 }

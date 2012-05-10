@@ -29,24 +29,32 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.distribution.Platform;
+import de.flapdoodle.embedmongo.io.Processors;
 
 public class ProcessControl {
 
 	private static final Logger _logger = Logger.getLogger(ProcessControl.class.getName());
 
 	private Process _process;
+
 	private InputStreamReader _reader;
+	private InputStreamReader _error;
 
 	private Integer _pid;
 
 	public ProcessControl(Process process) {
 		_process = process;
 		_reader = new InputStreamReader(_process.getInputStream());
+		_error = new InputStreamReader(_process.getErrorStream());
 		_pid = getProcessID();
 	}
 
 	public Reader getReader() {
 		return _reader;
+	}
+
+	public InputStreamReader getError() {
+		return _error;
 	}
 
 	public int stop() {
@@ -110,17 +118,12 @@ public class ProcessControl {
 			}
 		if (!state.killed) {
 			timer.cancel();
-			String message="\n\n" +
-					"----------------------------------------------------\n" +
-					"Something bad happend. We couldn't kill mongod process, and tried a lot.\n" +
-					"If you want this problem solved you can help us if you open a new issue on github.\n" +
-					"\n" +
-					"Follow this link:\n" +
-					"https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" +
-					"\n" +
-					"Thank you:)\n" +
-					"----------------------------------------------------\n\n";
-			throw new IllegalStateException("Couldn't kill mongod process!"+message);
+			String message = "\n\n" + "----------------------------------------------------\n"
+					+ "Something bad happend. We couldn't kill mongod process, and tried a lot.\n"
+					+ "If you want this problem solved you can help us if you open a new issue on github.\n" + "\n"
+					+ "Follow this link:\n" + "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" + "\n"
+					+ "Thank you:)\n" + "----------------------------------------------------\n\n";
+			throw new IllegalStateException("Couldn't kill mongod process!" + message);
 		}
 		return state.returnCode;
 	}
@@ -131,14 +134,15 @@ public class ProcessControl {
 		return new ProcessControl(processBuilder.start());
 	}
 
-	public static boolean executeCommandLine(List<String> commandLine) {
+	public static boolean executeCommandLine(String label, List<String> commandLine) {
 		boolean ret = false;
 
 		try {
 			ProcessControl process = fromCommandLine(commandLine);
+			Processors.connect(process.getReader(), Processors.namedConsole(label));
 			Thread.sleep(10);
 			ret = process.stop() == 0;
-			_logger.severe("execSuccess: "+ret);
+			_logger.info("execSuccess: " + ret+" "+commandLine);
 			return ret;
 		} catch (IOException e) {
 			_logger.log(Level.SEVERE, "" + commandLine, e);
@@ -150,14 +154,14 @@ public class ProcessControl {
 
 	public static boolean killProcess(Platform platform, int pid) {
 		if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
-			return executeCommandLine(Collections.newArrayList("kill", "-2", "" + pid));
+			return executeCommandLine("[kill process]",Collections.newArrayList("kill", "-2", "" + pid));
 		}
 		return false;
 	}
-	
+
 	public static boolean tryKillProcess(Platform platform, int pid) {
 		if (platform == Platform.Windows) {
-			return executeCommandLine(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid));
+			return executeCommandLine("[taskkill process]",Collections.newArrayList("taskkill", "/F", "/pid", "" + pid));
 		}
 		return false;
 	}

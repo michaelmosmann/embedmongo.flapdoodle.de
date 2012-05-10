@@ -49,10 +49,10 @@ public class Mongod {
 			0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00,};
 
 	public static boolean sendShutdown(InetAddress hostname, int port) {
-		if (hostname.isLoopbackAddress()) {
+		if (!hostname.isLoopbackAddress()) {
 			_logger.log(Level.WARNING,"" +
 					"---------------------------------------\n" +
-					"Your localhost ("+hostname.getHostAddress()+") is not a loobback adress\n" +
+					"Your localhost ("+hostname.getHostAddress()+") is not a loopback adress\n" +
 					"We can NOT send shutdown to mongod, because it is denied from remote."+
 					"---------------------------------------\n");
 			return false;
