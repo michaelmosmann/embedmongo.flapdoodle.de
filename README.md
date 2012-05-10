@@ -48,6 +48,7 @@ Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
 - noauth added
 - customize artifact storage path
 - detection if localhost is not loopback (command shutdown on mongod does not work for remote access)
+- formated process output
 
 #### 1.14
 
