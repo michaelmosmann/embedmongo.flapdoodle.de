@@ -26,7 +26,7 @@ Stable (Maven Central Repository, Released: 06.05.2012 - wait 24hrs for maven ce
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.14</version>
+		<version>1.15</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -34,14 +34,18 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.15-SNAPSHOT</version>
+		<version>1.16-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-Please use 1.14 or 1.15-SNAPSHOT, 1.13 had some troubles.
+- Much better windows support in 1.15.
+- Please DON'T use 1.13 (had some troubles).
 
-#### 1.15 (SNAPSHOT)
+#### 1.16 (SNAPSHOT)
+
+
+#### 1.15
 
 - now we send ctrl+c on linux and osx, then send shutdown to server, then taskkill on windows (may the force be with us)
 - disable journal for faster turnaround times
