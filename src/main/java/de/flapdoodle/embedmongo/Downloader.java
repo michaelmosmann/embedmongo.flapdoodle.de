@@ -64,6 +64,7 @@ public class Downloader {
 			
 			URL url = new URL(getDownloadUrl(runtime, distribution));
 			URLConnection openConnection = url.openConnection();
+			openConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
 			openConnection.setConnectTimeout(10000);
 			openConnection.setReadTimeout(10000);
 			

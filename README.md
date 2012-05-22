@@ -46,6 +46,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.16 (SNAPSHOT)
 
+- added version 2.0.5 (main version 2.0 now points to it)
+- changed http user agent
 
 #### 1.15
 

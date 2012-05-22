@@ -40,6 +40,7 @@ public enum Version {
 	@Deprecated
 	V2_0_1,
 	V2_0_4,
+	V2_0_5,
 
 	V2_1_0,
 	V2_1_1,

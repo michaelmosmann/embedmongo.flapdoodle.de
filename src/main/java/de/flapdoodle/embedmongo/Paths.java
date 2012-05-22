@@ -163,9 +163,12 @@ public class Paths {
 			case V2_0_1:
 				sversion="2.0.1";
 				break;
-			case V2_0:
 			case V2_0_4:
 				sversion="2.0.4";
+				break;
+			case V2_0:
+			case V2_0_5:
+				sversion="2.0.5";
 				break;
 			case V2_1_0:
 				sversion="2.1.0";
