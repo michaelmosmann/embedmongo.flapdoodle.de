@@ -143,7 +143,7 @@ public class ProcessControl {
 		List<String> commandLine=processConfig.getCommandLine();
 		try {
 			ProcessControl process = fromCommandLine(processConfig.getCommandLine(),processConfig.getError()==null);
-			Processors.connect(process.getReader(), Processors.namedConsole(label));
+			Processors.connect(process.getReader(), processConfig.getOutput());
 			Thread.sleep(10);
 			ret = process.stop() == 0;
 			_logger.info("execSuccess: " + ret + " " + commandLine);

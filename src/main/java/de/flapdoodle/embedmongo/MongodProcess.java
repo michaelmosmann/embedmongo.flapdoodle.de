@@ -28,6 +28,7 @@ import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.io.LogWatchStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
+import de.flapdoodle.embedmongo.io.StreamToLineProcessor;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
@@ -75,9 +76,9 @@ public class MongodProcess {
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
 			LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
-					outputConfig.getMongodOutput());
+					StreamToLineProcessor.wrap(outputConfig.getMongodOutput()));
 			Processors.connect(_process.getReader(), logWatch);
-			Processors.connect(_process.getError(), outputConfig.getMongodError());
+			Processors.connect(_process.getError(), StreamToLineProcessor.wrap(outputConfig.getMongodError()));
 			logWatch.waitForResult(20000);
 
 			//			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
@@ -135,7 +136,7 @@ public class MongodProcess {
 
 	private boolean sendKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.killProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(),
+			return ProcessControl.killProcess(_distribution.getPlatform(), StreamToLineProcessor.wrap(_outputConfig.getCommandsOutput()),
 					_mongodProcessId);
 		}
 		return false;
@@ -143,7 +144,7 @@ public class MongodProcess {
 
 	private boolean tryKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(),
+			return ProcessControl.tryKillProcess(_distribution.getPlatform(), StreamToLineProcessor.wrap(_outputConfig.getCommandsOutput()),
 					_mongodProcessId);
 		}
 		return false;
