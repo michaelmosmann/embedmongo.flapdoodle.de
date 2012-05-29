@@ -24,11 +24,11 @@ import java.io.Reader;
 public class ReaderProcessor extends Thread {
 
 	private final Reader _reader;
-	private final IBlockProcessor _blockProcessor;
+	private final IStreamProcessor _streamProcessor;
 
-	protected ReaderProcessor(Reader reader,IBlockProcessor blockProcessor) {
+	protected ReaderProcessor(Reader reader,IStreamProcessor streamProcessor) {
 		_reader = reader;
-		_blockProcessor = blockProcessor;
+		_streamProcessor = streamProcessor;
 		
 		setDaemon(true);
 		start();
@@ -40,12 +40,12 @@ public class ReaderProcessor extends Thread {
 			int read;
 			char[] buf = new char[512];
 			while ((read = _reader.read(buf)) != -1) {
-				_blockProcessor.process(new String(buf, 0, read));
+				_streamProcessor.process(new String(buf, 0, read));
 			}
 		} catch (IOException iox) {
 			// _logger.log(Level.SEVERE,"out",iox);
 		}
 		
-		_blockProcessor.onProcessed();
+		_streamProcessor.onProcessed();
 	}
 }

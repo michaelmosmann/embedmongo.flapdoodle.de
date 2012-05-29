@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.io.BlockLogWatchProcessor;
+import de.flapdoodle.embedmongo.io.LogWatchStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.embedmongo.runtime.Network;
@@ -74,7 +74,7 @@ public class MongodProcess {
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			BlockLogWatchProcessor logWatch = new BlockLogWatchProcessor("waiting for connections on port", "failed",
+			LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
 					outputConfig.getMongodOutput());
 			Processors.connect(_process.getReader(), logWatch);
 			Processors.connect(_process.getError(), outputConfig.getMongodError());

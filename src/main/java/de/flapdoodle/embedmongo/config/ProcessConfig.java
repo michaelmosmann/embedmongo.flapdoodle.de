@@ -21,21 +21,21 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.flapdoodle.embedmongo.io.IBlockProcessor;
+import de.flapdoodle.embedmongo.io.IStreamProcessor;
 
 public class ProcessConfig {
 
 	private final List<String> _commandLine;
-	private final IBlockProcessor _output;
-	private final IBlockProcessor _error;
+	private final IStreamProcessor _output;
+	private final IStreamProcessor _error;
 
-	public ProcessConfig(List<String> commandLine, IBlockProcessor output, IBlockProcessor error) {
+	public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
 		_commandLine = new ArrayList<String>(commandLine);
 		_output = output;
 		_error = error;
 	}
 
-	public ProcessConfig(List<String> commandLine, IBlockProcessor output) {
+	public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
 		this(commandLine, output, null);
 	}
 
@@ -43,11 +43,11 @@ public class ProcessConfig {
 		return Collections.unmodifiableList(_commandLine);
 	}
 
-	public IBlockProcessor getOutput() {
+	public IStreamProcessor getOutput() {
 		return _output;
 	}
 
-	public IBlockProcessor getError() {
+	public IStreamProcessor getError() {
 		return _error;
 	}
 }

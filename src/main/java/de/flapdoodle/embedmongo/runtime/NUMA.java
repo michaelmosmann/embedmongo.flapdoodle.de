@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.io.BlockConsoleOutputProcessor;
-import de.flapdoodle.embedmongo.io.IBlockProcessor;
+import de.flapdoodle.embedmongo.io.ConsoleOutputStreamProcessor;
+import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Readers;
 
 

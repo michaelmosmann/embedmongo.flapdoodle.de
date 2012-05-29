@@ -17,9 +17,17 @@
  */
 package de.flapdoodle.embedmongo.io;
 
+public class ConsoleOutputStreamProcessor implements IStreamProcessor {
 
-public interface IBlockProcessor {
-	void process(String block);
+	@Override
+	public void process(String block) {
+		System.out.print(block);
+		System.out.flush();
+	}
 
-	void onProcessed();
+	@Override
+	public void onProcessed() {
+		System.out.println();
+	}
+
 }

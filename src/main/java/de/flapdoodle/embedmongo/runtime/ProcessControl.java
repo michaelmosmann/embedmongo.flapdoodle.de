@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.config.ProcessConfig;
 import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.io.IBlockProcessor;
+import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 
 public class ProcessControl {
@@ -156,14 +156,14 @@ public class ProcessControl {
 		return false;
 	}
 
-	public static boolean killProcess(Platform platform, IBlockProcessor output, int pid) {
+	public static boolean killProcess(Platform platform, IStreamProcessor output, int pid) {
 		if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
 			return executeCommandLine("[kill process]", new ProcessConfig(Collections.newArrayList("kill", "-2", "" + pid),output));
 		}
 		return false;
 	}
 
-	public static boolean tryKillProcess(Platform platform, IBlockProcessor output, int pid) {
+	public static boolean tryKillProcess(Platform platform, IStreamProcessor output, int pid) {
 		if (platform == Platform.Windows) {
 			return executeCommandLine("[taskkill process]", new ProcessConfig(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid),output));
 		}

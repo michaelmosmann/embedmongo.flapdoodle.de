@@ -18,13 +18,13 @@
 package de.flapdoodle.embedmongo.io;
 
 
-public class BlockNamedOutputProcessor implements IBlockProcessor {
+public class NamedOutputStreamProcessor implements IStreamProcessor {
 
 	
-	private final IBlockProcessor _destination;
+	private final IStreamProcessor _destination;
 	private final String _name;
 
-	public BlockNamedOutputProcessor(String name, IBlockProcessor destination) {
+	public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
 		_name = name;
 		_destination = destination;
 	}

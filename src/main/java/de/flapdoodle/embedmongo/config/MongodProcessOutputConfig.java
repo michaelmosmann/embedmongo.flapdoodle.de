@@ -17,31 +17,31 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.embedmongo.io.IBlockProcessor;
+import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 
 public class MongodProcessOutputConfig {
 
-	private final IBlockProcessor _mongodOutput;
-	private final IBlockProcessor _mongodError;
-	private final IBlockProcessor _commandsOutput;
+	private final IStreamProcessor _mongodOutput;
+	private final IStreamProcessor _mongodError;
+	private final IStreamProcessor _commandsOutput;
 
-	public MongodProcessOutputConfig(IBlockProcessor mongodOutput, IBlockProcessor mongodError,
-			IBlockProcessor commandsOutput) {
+	public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
+			IStreamProcessor commandsOutput) {
 		_mongodOutput = mongodOutput;
 		_mongodError = mongodError;
 		_commandsOutput = commandsOutput;
 	}
 
-	public IBlockProcessor getMongodOutput() {
+	public IStreamProcessor getMongodOutput() {
 		return _mongodOutput;
 	}
 
-	public IBlockProcessor getMongodError() {
+	public IStreamProcessor getMongodError() {
 		return _mongodError;
 	}
 
-	public IBlockProcessor getCommandsOutput() {
+	public IStreamProcessor getCommandsOutput() {
 		return _commandsOutput;
 	}
 

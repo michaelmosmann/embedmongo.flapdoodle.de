@@ -20,9 +20,9 @@ package de.flapdoodle.embedmongo.io;
 import java.io.Reader;
 import java.util.logging.Logger;
 
-public class BlockLogWatchProcessor implements IBlockProcessor {
+public class LogWatchStreamProcessor implements IStreamProcessor {
 
-	private static final Logger _logger = Logger.getLogger(BlockLogWatchProcessor.class.getName());
+	private static final Logger _logger = Logger.getLogger(LogWatchStreamProcessor.class.getName());
 
 	//private final Reader _reader;
 	private final StringBuilder _output = new StringBuilder();
@@ -31,9 +31,9 @@ public class BlockLogWatchProcessor implements IBlockProcessor {
 
 	private boolean _initWithSuccess = false;
 
-	private final IBlockProcessor _destination;
+	private final IStreamProcessor _destination;
 
-	public BlockLogWatchProcessor(String success, String failure, IBlockProcessor destination) {
+	public LogWatchStreamProcessor(String success, String failure, IStreamProcessor destination) {
 		_success = success;
 		_failure = failure;
 		_destination = destination;
