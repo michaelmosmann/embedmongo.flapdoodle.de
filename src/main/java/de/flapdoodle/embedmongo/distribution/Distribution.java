@@ -49,18 +49,6 @@ public class Distribution {
 	}
 	
 	public static Distribution detectFor(Version version) {
-		BitSize bitSize=BitSize.B32;
-		String osArch = System.getProperty("os.arch");
-		if (osArch.equals("i686_64") || osArch.equals("x86_64") || osArch.equals("amd64")) bitSize=BitSize.B64;
-		
-		String osName = System.getProperty("os.name");
-		Platform platform=null;
-		if (osName.equals("Linux")) platform=Platform.Linux;
-		if (osName.startsWith("Windows",0)) platform=Platform.Windows;
-		if (osName.equals("Mac OS X")) platform=Platform.OS_X;
-		
-		if (platform==null) throw new IllegalArgumentException("Could not detect Platform: os.name="+osName);
-		
-		return new Distribution(version, platform, bitSize);
+		return new Distribution(version, Platform.detect(), BitSize.detect());
 	}
 }

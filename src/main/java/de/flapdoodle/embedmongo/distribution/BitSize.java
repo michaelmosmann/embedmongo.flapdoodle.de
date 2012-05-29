@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,8 +17,15 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
-
 public enum BitSize {
 	B32,
-	B64
+	B64;
+
+	public static BitSize detect() {
+		BitSize bitSize = BitSize.B32;
+		String osArch = System.getProperty("os.arch");
+		if (osArch.equals("i686_64") || osArch.equals("x86_64") || osArch.equals("amd64"))
+			bitSize = BitSize.B64;
+		return bitSize;
+	}
 }
