@@ -26,9 +26,10 @@ public class RuntimeConfig {
 
 	private IProgressListener _progressListener = new StandardConsoleProgressListener();
 	private String _downloadPath = "http://fastdl.mongodb.org/";
-	private IArtifactStoragePathNaming _artifactStorePath=new ArtifactStoreInUserHome();
-	private ITempNaming _defaultfileNaming=new UUIDTempNaming();
-	private ITempNaming _executableNaming=_defaultfileNaming;
+	private IArtifactStoragePathNaming _artifactStorePath = new ArtifactStoreInUserHome();
+	private ITempNaming _defaultfileNaming = new UUIDTempNaming();
+	private ITempNaming _executableNaming = _defaultfileNaming;
+	private MongodProcessOutputConfig _mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
 
 	public void setDownloadPath(String downloadPath) {
 		_downloadPath = downloadPath;
@@ -42,22 +43,18 @@ public class RuntimeConfig {
 		_progressListener = progressListener;
 	}
 
-	
 	public ITempNaming getDefaultfileNaming() {
 		return _defaultfileNaming;
 	}
 
-	
 	public void setDefaultfileNaming(ITempNaming defaultfileNaming) {
 		_defaultfileNaming = defaultfileNaming;
 	}
 
-	
 	public ITempNaming getExecutableNaming() {
 		return _executableNaming;
 	}
 
-	
 	public void setExecutableNaming(ITempNaming executableNaming) {
 		_executableNaming = executableNaming;
 	}
@@ -65,13 +62,20 @@ public class RuntimeConfig {
 	public IProgressListener getProgressListener() {
 		return _progressListener;
 	}
-	
+
 	public IArtifactStoragePathNaming getArtifactStorePathNaming() {
 		return _artifactStorePath;
 	}
-	
-	
+
 	public void setArtifactStorePathNaming(IArtifactStoragePathNaming artifactStorePath) {
 		_artifactStorePath = artifactStorePath;
+	}
+
+	public MongodProcessOutputConfig getMongodOutputConfig() {
+		return _mongodOutputConfig;
+	}
+
+	public void setMongodOutputConfig(MongodProcessOutputConfig mongodOutputConfig) {
+		_mongodOutputConfig = mongodOutputConfig;
 	}
 }

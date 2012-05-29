@@ -48,6 +48,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 - added version 2.0.5 (main version 2.0 now points to it)
 - changed http user agent
+- customizeable mongod process output 
 
 #### 1.15
 
@@ -180,3 +181,14 @@ Support for Linux, Windows and MacOSX.
 	runtimeConfig.setArtifactStorePathNaming(pathNaming);
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...
+
+### Usage - custom mongod process output 
+
+	...
+	RuntimeConfig runtimeConfig=new RuntimeConfig();
+	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
+		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
+	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	...
+
+	

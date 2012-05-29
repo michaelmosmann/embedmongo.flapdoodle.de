@@ -27,6 +27,8 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.collections.Collections;
 import de.flapdoodle.embedmongo.distribution.Platform;
+import de.flapdoodle.embedmongo.io.BlockConsoleOutputProcessor;
+import de.flapdoodle.embedmongo.io.IBlockProcessor;
 import de.flapdoodle.embedmongo.io.Readers;
 
 
@@ -48,7 +50,7 @@ public class NUMA {
 	public static boolean isNUMAOnce(Platform platform) {
 		if (platform==Platform.Linux) {
 			try {
-				ProcessControl process = ProcessControl.fromCommandLine(Collections.newArrayList("grep","NUMA=y","/boot/config-`uname -r`"));
+				ProcessControl process = ProcessControl.fromCommandLine(Collections.newArrayList("grep","NUMA=y","/boot/config-`uname -r`"),true);
 				Reader reader = process.getReader();
 				String content=Readers.readAll(reader);
 				process.stop();

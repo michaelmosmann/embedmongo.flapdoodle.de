@@ -66,7 +66,7 @@ public class MongoDBRuntime {
 				progress.done("Check Distribution");
 				File mongodExe = extractMongod(distribution);
 
-				return new MongodExecutable(distribution,mongodConfig,mongodExe);
+				return new MongodExecutable(distribution,mongodConfig,_runtime.getMongodOutputConfig(), mongodExe);
 			}
 		}
 		catch (IOException iox) {

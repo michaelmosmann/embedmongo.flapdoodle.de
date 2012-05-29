@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.io.BlockLogWatchProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
@@ -36,6 +37,7 @@ public class MongodProcess {
 	static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
 
 	private final MongodConfig _config;
+	private final MongodProcessOutputConfig _outputConfig;
 	private final MongodExecutable _mongodExecutable;
 	private ProcessControl _process;
 	private int _mongodProcessId;
@@ -47,9 +49,11 @@ public class MongodProcess {
 
 	private Distribution _distribution;
 
-	public MongodProcess(Distribution distribution, MongodConfig config, MongodExecutable mongodExecutable)
+
+	public MongodProcess(Distribution distribution, MongodConfig config, MongodProcessOutputConfig outputConfig, MongodExecutable mongodExecutable)
 			throws IOException {
 		_config = config;
+		_outputConfig = outputConfig;
 		_mongodExecutable = mongodExecutable;
 		_distribution = distribution;
 
@@ -66,14 +70,14 @@ public class MongodProcess {
 			//			processBuilder.redirectErrorStream();
 			//			_process = new ProcessControl(processBuilder.start());
 			_process = ProcessControl.fromCommandLine(Mongod.enhanceCommandLinePlattformSpecific(distribution,
-					Mongod.getCommandLine(_config, _mongodExecutable.getFile(), dbDir)));
+					Mongod.getCommandLine(_config, _mongodExecutable.getFile(), dbDir)),true);
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
 			BlockLogWatchProcessor logWatch = new BlockLogWatchProcessor("waiting for connections on port", "failed",
-					Processors.namedConsole("[mongod output]"));
+					outputConfig.getMongodOutput());
 			Processors.connect(_process.getReader(), logWatch);
-			Processors.connect(_process.getError(), Processors.namedConsole("[mongod error]"));
+			Processors.connect(_process.getError(), outputConfig.getMongodError());
 			logWatch.waitForResult(20000);
 
 			//			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
@@ -143,14 +147,14 @@ public class MongodProcess {
 
 	private boolean sendKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.killProcess(_distribution.getPlatform(), _mongodProcessId);
+			return ProcessControl.killProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(), _mongodProcessId);
 		}
 		return false;
 	}
 
 	private boolean tryKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _mongodProcessId);
+			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(), _mongodProcessId);
 		}
 		return false;
 	}

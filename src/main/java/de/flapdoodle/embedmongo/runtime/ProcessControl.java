@@ -28,7 +28,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.collections.Collections;
+import de.flapdoodle.embedmongo.config.ProcessConfig;
 import de.flapdoodle.embedmongo.distribution.Platform;
+import de.flapdoodle.embedmongo.io.IBlockProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 
 public class ProcessControl {
@@ -128,21 +130,23 @@ public class ProcessControl {
 		return state.returnCode;
 	}
 
-	public static ProcessControl fromCommandLine(List<String> commandLine) throws IOException {
+	public static ProcessControl fromCommandLine(List<String> commandLine,boolean redirectErrorStream) throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
-		processBuilder.redirectErrorStream();
+		if (redirectErrorStream)
+			processBuilder.redirectErrorStream();
 		return new ProcessControl(processBuilder.start());
 	}
 
-	public static boolean executeCommandLine(String label, List<String> commandLine) {
+	public static boolean executeCommandLine(String label, ProcessConfig processConfig) {
 		boolean ret = false;
 
+		List<String> commandLine=processConfig.getCommandLine();
 		try {
-			ProcessControl process = fromCommandLine(commandLine);
+			ProcessControl process = fromCommandLine(processConfig.getCommandLine(),processConfig.getError()==null);
 			Processors.connect(process.getReader(), Processors.namedConsole(label));
 			Thread.sleep(10);
 			ret = process.stop() == 0;
-			_logger.info("execSuccess: " + ret+" "+commandLine);
+			_logger.info("execSuccess: " + ret + " " + commandLine);
 			return ret;
 		} catch (IOException e) {
 			_logger.log(Level.SEVERE, "" + commandLine, e);
@@ -152,16 +156,16 @@ public class ProcessControl {
 		return false;
 	}
 
-	public static boolean killProcess(Platform platform, int pid) {
+	public static boolean killProcess(Platform platform, IBlockProcessor output, int pid) {
 		if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
-			return executeCommandLine("[kill process]",Collections.newArrayList("kill", "-2", "" + pid));
+			return executeCommandLine("[kill process]", new ProcessConfig(Collections.newArrayList("kill", "-2", "" + pid),output));
 		}
 		return false;
 	}
 
-	public static boolean tryKillProcess(Platform platform, int pid) {
+	public static boolean tryKillProcess(Platform platform, IBlockProcessor output, int pid) {
 		if (platform == Platform.Windows) {
-			return executeCommandLine("[taskkill process]",Collections.newArrayList("taskkill", "/F", "/pid", "" + pid));
+			return executeCommandLine("[taskkill process]", new ProcessConfig(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid),output));
 		}
 		return false;
 	}
@@ -173,7 +177,7 @@ public class ProcessControl {
 				Field pidField = clazz.getDeclaredField("pid");
 				pidField.setAccessible(true);
 				Object value = pidField.get(_process);
-//				System.err.println("pid = " + value);
+				//				System.err.println("pid = " + value);
 				if (value instanceof Integer) {
 					return (Integer) value;
 				}

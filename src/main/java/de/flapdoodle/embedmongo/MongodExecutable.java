@@ -22,31 +22,34 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
-
 
 public class MongodExecutable {
 
 	private static final Logger _logger = Logger.getLogger(MongodExecutable.class.getName());
-	
+
 	private final MongodConfig _mongodConfig;
+	private final MongodProcessOutputConfig _mongodOutputConfig;
 	private final File _mongodExecutable;
 	private boolean _stopped;
 
 	private final Distribution _distribution;
 
-	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig, File mongodExecutable) {
+	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig,
+			MongodProcessOutputConfig mongodOutputConfig, File mongodExecutable) {
 		_distribution = distribution;
 		_mongodConfig = mongodConfig;
+		_mongodOutputConfig = mongodOutputConfig;
 		_mongodExecutable = mongodExecutable;
 		Runtime.getRuntime().addShutdownHook(new JobKiller());
 	}
 
 	public synchronized void cleanup() {
 		if (!_stopped) {
-			if (_mongodExecutable.exists() &&  !Files.forceDelete(_mongodExecutable))
+			if (_mongodExecutable.exists() && !Files.forceDelete(_mongodExecutable))
 				_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable);
-//				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
+			//				_logger.warning("Could not delete temp mongod exe: " + _mongodExecutable);
 			_stopped = true;
 		}
 	}
@@ -64,7 +67,7 @@ public class MongodExecutable {
 	}
 
 	public MongodProcess start() throws IOException {
-		return new MongodProcess(_distribution,_mongodConfig,this);
+		return new MongodProcess(_distribution, _mongodConfig, _mongodOutputConfig, this);
 	}
 
 }
