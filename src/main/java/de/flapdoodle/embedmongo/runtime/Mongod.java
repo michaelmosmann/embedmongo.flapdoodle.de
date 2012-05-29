@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ package de.flapdoodle.embedmongo.runtime;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -40,7 +41,7 @@ public class Mongod {
 	private static final Logger _logger = Logger.getLogger(Mongod.class.getName());
 
 	/**
-	 * Binary sample of shutdown command 
+	 * Binary sample of shutdown command
 	 */
 	static final byte[] SHUTDOWN_COMMAND = {0x47, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 			(byte) 0xD4, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x64, 0x6D, 0x69, 0x6E, 0x2E, 0x24, 0x63, 0x6D,
@@ -50,28 +51,45 @@ public class Mongod {
 
 	public static boolean sendShutdown(InetAddress hostname, int port) {
 		if (!hostname.isLoopbackAddress()) {
-			_logger.log(Level.WARNING,"" +
-					"---------------------------------------\n" +
-					"Your localhost ("+hostname.getHostAddress()+") is not a loopback adress\n" +
-					"We can NOT send shutdown to mongod, because it is denied from remote."+
-					"---------------------------------------\n");
+			_logger.log(Level.WARNING,
+					"" + "---------------------------------------\n" + "Your localhost (" + hostname.getHostAddress()
+							+ ") is not a loopback adress\n"
+							+ "We can NOT send shutdown to mongod, because it is denied from remote."
+							+ "---------------------------------------\n");
 			return false;
 		}
+
+		boolean tryToReadErrorResponse = false;
+
+		final Socket s = new Socket();
 		try {
-//			Thread.sleep(1000);
-			Socket s = new Socket();
 			s.setSoTimeout(2000);
 			s.connect(new InetSocketAddress(hostname, port), 2000);
 			OutputStream outputStream = s.getOutputStream();
 			outputStream.write(SHUTDOWN_COMMAND);
 			outputStream.flush();
-			s.close();
-			Thread.sleep(100);
+
+			tryToReadErrorResponse = true;
+			InputStream inputStream = s.getInputStream();
+			if (inputStream.read(new byte[512]) != -1) {
+				_logger.severe("Got some response, should be an error message");
+				return false;
+			}
 			return true;
 		} catch (IOException iox) {
 			_logger.log(Level.WARNING, "sendShutdown", iox);
-		} catch (InterruptedException ix) {
-			_logger.log(Level.WARNING, "sendShutdown", ix);
+			if (tryToReadErrorResponse) {
+				return true;
+			}
+		} finally {
+			try {
+				s.close();
+				Thread.sleep(100);
+			} catch (InterruptedException ix) {
+				_logger.log(Level.WARNING, "sendShutdown", ix);
+			} catch (IOException iox) {
+				_logger.log(Level.WARNING, "sendShutdown", iox);
+			}
 		}
 		return false;
 	}
@@ -86,10 +104,18 @@ public class Mongod {
 		return defaultValue;
 	}
 
-	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir) throws UnknownHostException {
+	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir)
+			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), /*"--bind_ip",""+Network.getLocalHost().getHostAddress(),*/"--dbpath", ""
-				+ dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles","--nojournal","--noauth"));
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), /*
+																																																				 * "--bind_ip",""
+																																																				 * +Network.
+																																																				 * getLocalHost
+																																																				 * ()
+																																																				 * .getHostAddress
+																																																				 * (),
+																																																				 */"--dbpath",
+				"" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal", "--noauth"));
 		if (config.isIpv6()) {
 			ret.add("--ipv6");
 		}

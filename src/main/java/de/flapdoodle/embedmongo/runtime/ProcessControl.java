@@ -173,7 +173,7 @@ public class ProcessControl {
 				Field pidField = clazz.getDeclaredField("pid");
 				pidField.setAccessible(true);
 				Object value = pidField.get(_process);
-				System.err.println("pid = " + value);
+//				System.err.println("pid = " + value);
 				if (value instanceof Integer) {
 					return (Integer) value;
 				}

@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -39,7 +39,7 @@ public class MongodProcess {
 	private final MongodExecutable _mongodExecutable;
 	private ProcessControl _process;
 	private int _mongodProcessId;
-//	private ConsoleOutput _consoleOutput;
+	//	private ConsoleOutput _consoleOutput;
 
 	private File _dbDir;
 
@@ -70,15 +70,16 @@ public class MongodProcess {
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			BlockLogWatchProcessor logWatch = new BlockLogWatchProcessor("waiting for connections on port", "failed", Processors.namedConsole("[mongod output]"));
+			BlockLogWatchProcessor logWatch = new BlockLogWatchProcessor("waiting for connections on port", "failed",
+					Processors.namedConsole("[mongod output]"));
 			Processors.connect(_process.getReader(), logWatch);
 			Processors.connect(_process.getError(), Processors.namedConsole("[mongod error]"));
 			logWatch.waitForResult(20000);
-			
-//			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
+
+			//			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
 			if (logWatch.isInitWithSuccess()) {
 				_mongodProcessId = Mongod.getMongodProcessId(logWatch.getOutput(), -1);
-//				ConsoleOutput consoleOutput = new ConsoleOutput(_process.getReader());
+				//				ConsoleOutput consoleOutput = new ConsoleOutput(_process.getReader());
 			} else {
 				throw new IOException("Could not start mongod process");
 			}
@@ -89,17 +90,21 @@ public class MongodProcess {
 		}
 	}
 
-
 	public synchronized void stop() {
 		if (!_stopped) {
 
+			_stopped=true;
+			
 			_logger.warning("try to stop mongod");
-			if (!sendKillToMongodProcess()) {
-				_logger.warning("could not stop mongod, try next");
-				if (!sendStopToMongoInstance()) {
-					_logger.warning("could not stop mongod with db command, try next");
-					if (!tryKillToMongodProcess()) {
-						_logger.warning("could not stop mongod the second time, try one last thing");
+			if (!sendStopToMongoInstance()) {
+				_logger.warning("could not stop mongod with db command, try next");
+				if (!sendKillToMongodProcess()) {
+					_logger.warning("could not stop mongod, try next");
+					if (Network.isLocalHostNotDefaultIPv4() && !sendStopToLocalHostIPv4MongoInstance()) {
+						_logger.warning("could not stop mongod with db command on localhost ipv4, try next");
+						if (!tryKillToMongodProcess()) {
+							_logger.warning("could not stop mongod the second time, try one last thing");
+						}
 					}
 				}
 			}
@@ -109,13 +114,22 @@ public class MongodProcess {
 			if ((_dbDir != null) && (!Files.forceDelete(_dbDir)))
 				_logger.warning("Could not delete temp db dir: " + _dbDir);
 
-//			if (_mongodExecutable.getFile() != null) {
-//				if (!Files.forceDelete(_mongodExecutable.getFile())) {
-//					_stopped = true;
-//					_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable.getFile());
-//				}
-//			}
+			//			if (_mongodExecutable.getFile() != null) {
+			//				if (!Files.forceDelete(_mongodExecutable.getFile())) {
+			//					_stopped = true;
+			//					_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable.getFile());
+			//				}
+			//			}
 		}
+	}
+
+	private boolean sendStopToLocalHostIPv4MongoInstance() {
+		try {
+			return Mongod.sendShutdown(Network.getLocalHostIPv4(), _config.getPort());
+		} catch (UnknownHostException e) {
+			_logger.log(Level.SEVERE, "sendStop", e);
+		}
+		return false;
 	}
 
 	private boolean sendStopToMongoInstance() {
