@@ -1,14 +1,14 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,8 @@ public class MongodProcess {
 
 	private Distribution _distribution;
 
-
-	public MongodProcess(Distribution distribution, MongodConfig config, MongodProcessOutputConfig outputConfig, MongodExecutable mongodExecutable)
-			throws IOException {
+	public MongodProcess(Distribution distribution, MongodConfig config, MongodProcessOutputConfig outputConfig,
+			MongodExecutable mongodExecutable) throws IOException {
 		_config = config;
 		_outputConfig = outputConfig;
 		_mongodExecutable = mongodExecutable;
@@ -69,8 +68,9 @@ public class MongodProcess {
 			//					getCommandLine(_config, _mongodExecutable.getFile(), dbDir)));
 			//			processBuilder.redirectErrorStream();
 			//			_process = new ProcessControl(processBuilder.start());
-			_process = ProcessControl.fromCommandLine(Mongod.enhanceCommandLinePlattformSpecific(distribution,
-					Mongod.getCommandLine(_config, _mongodExecutable.getFile(), dbDir)),true);
+			_process = ProcessControl.fromCommandLine(
+					Mongod.enhanceCommandLinePlattformSpecific(distribution,
+							Mongod.getCommandLine(_config, _mongodExecutable.getFile(), dbDir)), true);
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
@@ -97,18 +97,15 @@ public class MongodProcess {
 	public synchronized void stop() {
 		if (!_stopped) {
 
-			_stopped=true;
-			
+			_stopped = true;
+
 			_logger.warning("try to stop mongod");
 			if (!sendStopToMongoInstance()) {
 				_logger.warning("could not stop mongod with db command, try next");
 				if (!sendKillToMongodProcess()) {
 					_logger.warning("could not stop mongod, try next");
-					if (Network.isLocalHostNotDefaultIPv4() && !sendStopToLocalHostIPv4MongoInstance()) {
-						_logger.warning("could not stop mongod with db command on localhost ipv4, try next");
-						if (!tryKillToMongodProcess()) {
-							_logger.warning("could not stop mongod the second time, try one last thing");
-						}
+					if (!tryKillToMongodProcess()) {
+						_logger.warning("could not stop mongod the second time, try one last thing");
 					}
 				}
 			}
@@ -127,15 +124,6 @@ public class MongodProcess {
 		}
 	}
 
-	private boolean sendStopToLocalHostIPv4MongoInstance() {
-		try {
-			return Mongod.sendShutdown(Network.getLocalHostIPv4(), _config.getPort());
-		} catch (UnknownHostException e) {
-			_logger.log(Level.SEVERE, "sendStop", e);
-		}
-		return false;
-	}
-
 	private boolean sendStopToMongoInstance() {
 		try {
 			return Mongod.sendShutdown(Network.getLocalHost(), _config.getPort());
@@ -147,14 +135,16 @@ public class MongodProcess {
 
 	private boolean sendKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.killProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(), _mongodProcessId);
+			return ProcessControl.killProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(),
+					_mongodProcessId);
 		}
 		return false;
 	}
 
 	private boolean tryKillToMongodProcess() {
 		if (_mongodProcessId != -1) {
-			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(), _mongodProcessId);
+			return ProcessControl.tryKillProcess(_distribution.getPlatform(), _outputConfig.getCommandsOutput(),
+					_mongodProcessId);
 		}
 		return false;
 	}
