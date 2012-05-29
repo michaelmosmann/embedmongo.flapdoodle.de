@@ -49,6 +49,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 - added version 2.0.5 (main version 2.0 now points to it)
 - changed http user agent
 - customizeable mongod process output 
+- better loopback device detection for mongod process shutdown via command
 
 #### 1.15
 
