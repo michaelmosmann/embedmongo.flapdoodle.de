@@ -17,16 +17,19 @@
  */
 package de.flapdoodle.embedmongo.config;
 
+/**
+ *
+ */
 public class ArtifactStoreInFixedPath implements IArtifactStoragePathNaming {
 
-    private String _path;
+    private String path;
 
     public ArtifactStoreInFixedPath(String path) {
-        _path = path;
+        this.path = path;
     }
 
     @Override
     public String getPath() {
-        return _path;
+        return this.path;
     }
 }

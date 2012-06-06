@@ -17,6 +17,9 @@
  */
 package de.flapdoodle.embedmongo.output;
 
+/**
+ *
+ */
 public class ConsoleOneLineProgressListener implements IProgressListener {
 
     private static final char BAR_DONE = '=';
@@ -24,8 +27,8 @@ public class ConsoleOneLineProgressListener implements IProgressListener {
     static final int LINE_LEN = 80;
     static final char[] CLOCK = {'-', '\\', '|', '/'};
 
-    int _lastPercent = -1;
-    int _lastIdx = 0;
+    private int lastPercent = -1;
+    private int lastIdx = 0;
 
     @Override
     public void progress(String label, int percent) {
@@ -34,12 +37,13 @@ public class ConsoleOneLineProgressListener implements IProgressListener {
         if (percent > 100)
             throw new IllegalArgumentException("Percent > 100: " + percent);
 
-        if (_lastPercent == percent) {
-            _lastIdx++;
-            if (_lastIdx >= CLOCK.length)
-                _lastIdx = 0;
-        } else {
-            _lastIdx = 0;
+        if (lastPercent == percent) {
+            lastIdx++;
+            if (lastIdx >= CLOCK.length)
+                lastIdx = 0;
+        }
+        else {
+            lastIdx = 0;
         }
 
         StringBuilder sb = new StringBuilder();
@@ -49,14 +53,15 @@ public class ConsoleOneLineProgressListener implements IProgressListener {
 
         sb.append(makeString(BAR_DONE, percLength));
         if (percent < 100) {
-            sb.append(CLOCK[_lastIdx]);
+            sb.append(CLOCK[lastIdx]);
             sb.append(makeString(BAR_TODO, lineLength - percLength));
-        } else {
+        }
+        else {
             sb.append(BAR_DONE);
         }
         sb.append("\r");
 
-        _lastPercent = percent;
+        lastPercent = percent;
 
         System.out.print(sb.toString());
     }

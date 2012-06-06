@@ -19,7 +19,9 @@ package de.flapdoodle.embedmongo.collections;
 
 import java.util.ArrayList;
 
-
+/**
+ *
+ */
 public class Collections {
     private Collections() {
         throw new IllegalAccessError("singleton");
