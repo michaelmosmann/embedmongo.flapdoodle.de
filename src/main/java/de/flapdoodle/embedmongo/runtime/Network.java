@@ -19,39 +19,38 @@ package de.flapdoodle.embedmongo.runtime;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Network {
 
-	private static final Logger _logger = Logger.getLogger(Network.class.getName());
+    private static final Logger _logger = Logger.getLogger(Network.class.getName());
 
-	private Network() {
-		throw new IllegalAccessError("singleton");
-	}
+    private Network() {
+        throw new IllegalAccessError("singleton");
+    }
 
-	public static boolean localhostIsIPv6() throws UnknownHostException {
-		InetAddress addr = InetAddress.getLocalHost();
-		byte[] ipAddr = addr.getAddress();
-		if (ipAddr.length > 4)
-			return true;
-		return false;
-	}
+    public static boolean localhostIsIPv6() throws UnknownHostException {
+        InetAddress addr = InetAddress.getLocalHost();
+        byte[] ipAddr = addr.getAddress();
+        if (ipAddr.length > 4)
+            return true;
+        return false;
+    }
 
-	public static InetAddress getLocalHost() throws UnknownHostException {
-		InetAddress ret = InetAddress.getLocalHost();
-		if (!ret.isLoopbackAddress()) {
-			ret = InetAddress.getByName("localhost");
-			if (!ret.isLoopbackAddress()) {
-				_logger.severe("" + ret.getHostAddress() + " is not a loopback address");
-			}
-		}
-		//		_logger.log(Level.SEVERE,"LoopbackAddress: "+ret.isLoopbackAddress());
-		//		_logger.log(Level.SEVERE,"LinkLocalAddress: "+ret.isLinkLocalAddress());
-		//		_logger.log(Level.SEVERE,"AnyLocalAddress: "+ret.isAnyLocalAddress());
-		//		ret=InetAddress.getByAddress(new byte[] {(byte)192,(byte)168,(byte)192,(byte)251});
-		return ret;
-	}
+    public static InetAddress getLocalHost() throws UnknownHostException {
+        InetAddress ret = InetAddress.getLocalHost();
+        if (!ret.isLoopbackAddress()) {
+            ret = InetAddress.getByName("localhost");
+            if (!ret.isLoopbackAddress()) {
+                _logger.severe("" + ret.getHostAddress() + " is not a loopback address");
+            }
+        }
+        //		_logger.log(Level.SEVERE,"LoopbackAddress: "+ret.isLoopbackAddress());
+        //		_logger.log(Level.SEVERE,"LinkLocalAddress: "+ret.isLinkLocalAddress());
+        //		_logger.log(Level.SEVERE,"AnyLocalAddress: "+ret.isAnyLocalAddress());
+        //		ret=InetAddress.getByAddress(new byte[] {(byte)192,(byte)168,(byte)192,(byte)251});
+        return ret;
+    }
 
 //	public static InetAddress getLocalHostIPv4() throws UnknownHostException {
 //		return InetAddress.getByAddress(new byte[] {127, 0, 0, 1});

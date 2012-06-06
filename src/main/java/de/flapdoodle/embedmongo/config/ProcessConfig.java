@@ -17,37 +17,37 @@
  */
 package de.flapdoodle.embedmongo.config;
 
+import de.flapdoodle.embedmongo.io.IStreamProcessor;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
-
 public class ProcessConfig {
 
-	private final List<String> _commandLine;
-	private final IStreamProcessor _output;
-	private final IStreamProcessor _error;
+    private final List<String> _commandLine;
+    private final IStreamProcessor _output;
+    private final IStreamProcessor _error;
 
-	public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
-		_commandLine = new ArrayList<String>(commandLine);
-		_output = output;
-		_error = error;
-	}
+    public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
+        _commandLine = new ArrayList<String>(commandLine);
+        _output = output;
+        _error = error;
+    }
 
-	public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
-		this(commandLine, output, null);
-	}
+    public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
+        this(commandLine, output, null);
+    }
 
-	public List<String> getCommandLine() {
-		return Collections.unmodifiableList(_commandLine);
-	}
+    public List<String> getCommandLine() {
+        return Collections.unmodifiableList(_commandLine);
+    }
 
-	public IStreamProcessor getOutput() {
-		return _output;
-	}
+    public IStreamProcessor getOutput() {
+        return _output;
+    }
 
-	public IStreamProcessor getError() {
-		return _error;
-	}
+    public IStreamProcessor getError() {
+        return _error;
+    }
 }

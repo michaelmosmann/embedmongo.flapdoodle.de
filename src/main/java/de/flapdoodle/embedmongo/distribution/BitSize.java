@@ -18,14 +18,14 @@
 package de.flapdoodle.embedmongo.distribution;
 
 public enum BitSize {
-	B32,
-	B64;
+    B32,
+    B64;
 
-	public static BitSize detect() {
-		BitSize bitSize = BitSize.B32;
-		String osArch = System.getProperty("os.arch");
-		if (osArch.equals("i686_64") || osArch.equals("x86_64") || osArch.equals("amd64"))
-			bitSize = BitSize.B64;
-		return bitSize;
-	}
+    public static BitSize detect() {
+        BitSize bitSize = BitSize.B32;
+        String osArch = System.getProperty("os.arch");
+        if (osArch.equals("i686_64") || osArch.equals("x86_64") || osArch.equals("amd64"))
+            bitSize = BitSize.B64;
+        return bitSize;
+    }
 }

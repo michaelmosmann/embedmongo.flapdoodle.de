@@ -17,15 +17,15 @@
  */
 package de.flapdoodle.embedmongo.extract;
 
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
-
 
 public interface IExtractor {
 
-	void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
+    void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
 
 }

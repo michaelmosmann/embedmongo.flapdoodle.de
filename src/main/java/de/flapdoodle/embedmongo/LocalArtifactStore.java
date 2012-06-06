@@ -17,55 +17,51 @@
  */
 package de.flapdoodle.embedmongo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.Reader;
-
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 
+import java.io.File;
+
 public class LocalArtifactStore {
 
-	public static boolean checkArtifact(RuntimeConfig runtime, Distribution distribution) {
-		return getArtifact(runtime, distribution) != null;
-	}
+    public static boolean checkArtifact(RuntimeConfig runtime, Distribution distribution) {
+        return getArtifact(runtime, distribution) != null;
+    }
 
-	public static boolean store(RuntimeConfig runtime, Distribution distribution, File download) {
-		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, Paths.getPath(distribution));
-		createOrCheckDir(artifactFile.getParentFile());
-		if (!Files.moveFile(download, artifactFile))
-			throw new IllegalArgumentException("Could not move " + download + " to " + artifactFile);
-		File checkFile = new File(dir, Paths.getPath(distribution));
-		return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
-	}
+    public static boolean store(RuntimeConfig runtime, Distribution distribution, File download) {
+        File dir = createOrGetBaseDir(runtime);
+        File artifactFile = new File(dir, Paths.getPath(distribution));
+        createOrCheckDir(artifactFile.getParentFile());
+        if (!Files.moveFile(download, artifactFile))
+            throw new IllegalArgumentException("Could not move " + download + " to " + artifactFile);
+        File checkFile = new File(dir, Paths.getPath(distribution));
+        return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
+    }
 
-	private static File createOrGetBaseDir(RuntimeConfig runtime) {
-		File dir = new File(runtime.getArtifactStorePathNaming().getPath());
-		createOrCheckDir(dir);
-		return dir;
-	}
+    private static File createOrGetBaseDir(RuntimeConfig runtime) {
+        File dir = new File(runtime.getArtifactStorePathNaming().getPath());
+        createOrCheckDir(dir);
+        return dir;
+    }
 
-	private static void createOrCheckDir(File dir) {
-		if (!dir.exists()) {
-			if (!dir.mkdir())
-				throw new IllegalArgumentException("Could NOT create Directory " + dir);
-		}
-		if (!dir.isDirectory())
-			throw new IllegalArgumentException("" + dir + " is not a Directory");
-	}
+    private static void createOrCheckDir(File dir) {
+        if (!dir.exists()) {
+            if (!dir.mkdir())
+                throw new IllegalArgumentException("Could NOT create Directory " + dir);
+        }
+        if (!dir.isDirectory())
+            throw new IllegalArgumentException("" + dir + " is not a Directory");
+    }
 
 //	private static String getPath(RuntimeConfig runtime) {
 //		return System.getProperty("user.home") + "/"+runtime.getArtifactStorePath()+"/";//"/.embedmongo/";
 //	}
 
-	public static File getArtifact(RuntimeConfig runtime, Distribution distribution) {
-		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, Paths.getPath(distribution));
-		if ((artifactFile.exists()) && (artifactFile.isFile()))
-			return artifactFile;
-		return null;
-	}
+    public static File getArtifact(RuntimeConfig runtime, Distribution distribution) {
+        File dir = createOrGetBaseDir(runtime);
+        File artifactFile = new File(dir, Paths.getPath(distribution));
+        if ((artifactFile.exists()) && (artifactFile.isFile()))
+            return artifactFile;
+        return null;
+    }
 }

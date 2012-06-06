@@ -21,17 +21,16 @@ import java.util.ArrayList;
 
 
 public class Collections {
-	private Collections() {
-		throw new IllegalAccessError("singleton");
-	}
-	
-	public static <T> ArrayList<T> newArrayList(T... val)
-	{
-		ArrayList<T> res = new ArrayList<T>(val.length);
-		for (T v : val) {
-			res.add(v);
-		}
-		return res;
-	}
+    private Collections() {
+        throw new IllegalAccessError("singleton");
+    }
+
+    public static <T> ArrayList<T> newArrayList(T... val) {
+        ArrayList<T> res = new ArrayList<T>(val.length);
+        for (T v : val) {
+            res.add(v);
+        }
+        return res;
+    }
 
 }

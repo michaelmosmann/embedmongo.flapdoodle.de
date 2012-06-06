@@ -19,43 +19,43 @@ package de.flapdoodle.embedmongo.output;
 
 public class StandardConsoleProgressListener implements IProgressListener {
 
-	String _lastLabel = null;
-	int _lastPercent = -1;
+    String _lastLabel = null;
+    int _lastPercent = -1;
 //	int _countEquals = 0;
 
-	@Override
-	public void progress(String label, int percent) {
-		if (!label.equals(_lastLabel)) {
-			System.out.print(label);
-			System.out.print(" ");
-		}
-		if (percent == _lastPercent) {
+    @Override
+    public void progress(String label, int percent) {
+        if (!label.equals(_lastLabel)) {
+            System.out.print(label);
+            System.out.print(" ");
+        }
+        if (percent == _lastPercent) {
 //			_countEquals++;
 //			if (_countEquals >= 10) {
 //				System.out.print(".");
 //				_countEquals = 0;
 //			}
-		} else {
+        } else {
 //			_countEquals=0;
-			System.out.print(percent);
-			System.out.print("% ");
-		}
-		_lastLabel = label;
-		_lastPercent = percent;
-	}
+            System.out.print(percent);
+            System.out.print("% ");
+        }
+        _lastLabel = label;
+        _lastPercent = percent;
+    }
 
-	@Override
-	public void done(String label) {
-		System.out.println(label + " DONE");
-	}
-	
-	@Override
-	public void start(String label) {
-		System.out.println(label + " START");		
-	}
-	
-	@Override
-	public void info(String label, String message) {
-		System.out.println(label + " "+message);
-	}
+    @Override
+    public void done(String label) {
+        System.out.println(label + " DONE");
+    }
+
+    @Override
+    public void start(String label) {
+        System.out.println(label + " START");
+    }
+
+    @Override
+    public void info(String label, String message) {
+        System.out.println(label + " " + message);
+    }
 }

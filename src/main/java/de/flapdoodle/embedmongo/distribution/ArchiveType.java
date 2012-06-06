@@ -19,5 +19,5 @@ package de.flapdoodle.embedmongo.distribution;
 
 
 public enum ArchiveType {
-	TGZ,ZIP,;
+    TGZ, ZIP,;
 }

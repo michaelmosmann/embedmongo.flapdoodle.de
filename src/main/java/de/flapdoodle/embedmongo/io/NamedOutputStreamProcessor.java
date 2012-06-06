@@ -20,18 +20,18 @@ package de.flapdoodle.embedmongo.io;
 
 public class NamedOutputStreamProcessor implements IStreamProcessor {
 
-	
-	private final IStreamProcessor _destination;
-	private final String _name;
 
-	public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
-		_name = name;
-		_destination = destination;
-	}
-	
-	@Override
-	public void process(String block) {
-		_destination.process(block.replace("\n", "\n"+_name+" "));
+    private final IStreamProcessor _destination;
+    private final String _name;
+
+    public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
+        _name = name;
+        _destination = destination;
+    }
+
+    @Override
+    public void process(String block) {
+        _destination.process(block.replace("\n", "\n" + _name + " "));
 //		int idx=block.indexOf('\n');
 //		if (idx!=-1) {
 //			_destination.process(block.substring(0,idx+1));
@@ -40,13 +40,13 @@ public class NamedOutputStreamProcessor implements IStreamProcessor {
 //		} else {
 //			_destination.process(block);
 //		}
-	}
+    }
 
-	@Override
-	public void onProcessed() {
-		_destination.onProcessed();
-		
-	}
+    @Override
+    public void onProcessed() {
+        _destination.onProcessed();
 
-	
+    }
+
+
 }

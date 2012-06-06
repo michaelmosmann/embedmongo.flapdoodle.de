@@ -19,34 +19,34 @@ package de.flapdoodle.embedmongo.distribution;
 
 
 public enum Version {
-	V1_6_5,
-	@Deprecated
-	V1_7_6,
-	@Deprecated
-	V1_8_0_rc0,
-	@Deprecated
-	V1_8_0,
-	@Deprecated
-	V1_8_1,
-	@Deprecated
-	V1_8_2_rc0,
-	@Deprecated
-	V1_8_2,
-	@Deprecated
-	V1_8_4,
-	V1_8_5,
-	@Deprecated
-	V1_9_0,
-	@Deprecated
-	V2_0_1,
-	V2_0_4,
-	V2_0_5,
+    V1_6_5,
+    @Deprecated
+    V1_7_6,
+    @Deprecated
+    V1_8_0_rc0,
+    @Deprecated
+    V1_8_0,
+    @Deprecated
+    V1_8_1,
+    @Deprecated
+    V1_8_2_rc0,
+    @Deprecated
+    V1_8_2,
+    @Deprecated
+    V1_8_4,
+    V1_8_5,
+    @Deprecated
+    V1_9_0,
+    @Deprecated
+    V2_0_1,
+    V2_0_4,
+    V2_0_5,
 
-	V2_1_0,
-	V2_1_1,
+    V2_1_0,
+    V2_1_1,
 
-	V1_6,
-	V1_8,
-	V2_0,
-	V2_1,
+    V1_6,
+    V1_8,
+    V2_0,
+    V2_1,
 }
