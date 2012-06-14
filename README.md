@@ -23,12 +23,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 11.05.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 13.06.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.15</version>
+		<version>1.16</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -36,7 +36,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.16-SNAPSHOT</version>
+		<version>1.17-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
@@ -44,7 +44,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 - Much better windows support in 1.15.
 - Please DON'T use 1.13 (had some troubles).
 
-#### 1.16 (SNAPSHOT)
+#### 1.17 (SNAPSHOT)
+
+#### 1.16
 
 - added version 2.0.5 (main version 2.0 now points to it)
 - changed http user agent
