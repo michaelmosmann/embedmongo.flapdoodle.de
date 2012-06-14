@@ -4,7 +4,7 @@ We are using a gitgub organisation NOW. Thats the way you can participate in dev
 
 https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de
 
-Current Release: 1.15
+Current Release: 1.16
 
 
 # Embedded MongoDB
