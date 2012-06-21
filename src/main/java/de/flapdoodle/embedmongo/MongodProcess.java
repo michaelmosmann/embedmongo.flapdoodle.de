@@ -125,7 +125,7 @@ public class MongodProcess {
     }
 
     private boolean sendKillToMongodProcess() {
-        if (_mongodProcessId > 0) {
+        if (mongodProcessId > 0) {
             return ProcessControl.killProcess(distribution.getPlatform(),
                     StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
                     mongodProcessId);
@@ -134,7 +134,7 @@ public class MongodProcess {
     }
 
     private boolean tryKillToMongodProcess() {
-        if (_mongodProcessId > 0) {
+        if (mongodProcessId > 0) {
             return ProcessControl.tryKillProcess(distribution.getPlatform(),
                     StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
                     mongodProcessId);
