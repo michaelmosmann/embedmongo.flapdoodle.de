@@ -23,13 +23,15 @@ import de.flapdoodle.embedmongo.distribution.Version;
 
 import java.util.regex.Pattern;
 
-
+/**
+ *
+ */
 public class Paths {
 
     public static Pattern getMongodExecutablePattern(Distribution distribution) {
         return Pattern.compile(".*" + getMongodExecutable(distribution));
     }
-
+    //CHECKSTYLE:OFF
     public static String getMongodExecutable(Distribution distribution) {
         String mongodPattern;
         switch (distribution.getPlatform()) {

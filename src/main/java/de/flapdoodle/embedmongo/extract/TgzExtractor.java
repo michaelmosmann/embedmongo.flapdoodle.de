@@ -30,6 +30,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+/**
+ *
+ */
 public class TgzExtractor implements IExtractor {
 
     @Override
@@ -48,19 +51,14 @@ public class TgzExtractor implements IExtractor {
             TarArchiveEntry entry;
             while ((entry = tarIn.getNextTarEntry()) != null) {
                 if (file.matcher(entry.getName()).matches()) {
-//					System.out.println("File: " + entry.getName());
                     if (tarIn.canReadEntryData(entry)) {
-//						System.out.println("Can Read: " + entry.getName());
                         long size = entry.getSize();
                         Files.write(tarIn, size, destination);
                         destination.setExecutable(true);
-//						System.out.println("DONE");
                         progressListener.done(progressLabel);
                     }
                     break;
 
-                } else {
-//					System.out.println("SKIP File: " + entry.getName());
                 }
             }
 

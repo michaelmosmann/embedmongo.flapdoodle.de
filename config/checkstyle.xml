@@ -5,8 +5,9 @@
     This configuration file was written by the eclipse-cs plugin configuration editor
 -->
 <!--
-    Checkstyle-Configuration: checkstyle
-    Description: none
+    Checkstyle-Configuration: embedmongo
+    Description: 
+Checkstyle configuration that checks the sun coding conventions.
 -->
 <module name="Checker">
   <property name="severity" value="warning"/>
@@ -61,7 +62,7 @@
       <property name="tokens" value="LITERAL_DO"/>
     </module>
     <module name="RightCurly">
-      <property name="option" value="alone"/>
+      <property name="tokens" value="LITERAL_TRY,LITERAL_IF"/>
     </module>
     <module name="DoubleCheckedLocking"/>
     <module name="EmptyStatement"/>
@@ -89,7 +90,7 @@
     </module>
     <module name="ArrayTypeStyle"/>
     <module name="TodoComment">
-    	 <property name="format" value="(TODO|FIXME):?"/>
+      <property name="format" value="(TODO|FIXME):?"/>
     </module>
     <module name="UpperEll"/>
     <module name="LeftCurly"/>

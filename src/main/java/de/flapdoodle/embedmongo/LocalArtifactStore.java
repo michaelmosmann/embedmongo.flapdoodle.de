@@ -22,6 +22,9 @@ import de.flapdoodle.embedmongo.distribution.Distribution;
 
 import java.io.File;
 
+/**
+ *
+ */
 public class LocalArtifactStore {
 
     public static boolean checkArtifact(RuntimeConfig runtime, Distribution distribution) {
@@ -53,9 +56,6 @@ public class LocalArtifactStore {
             throw new IllegalArgumentException("" + dir + " is not a Directory");
     }
 
-//	private static String getPath(RuntimeConfig runtime) {
-//		return System.getProperty("user.home") + "/"+runtime.getArtifactStorePath()+"/";//"/.embedmongo/";
-//	}
 
     public static File getArtifact(RuntimeConfig runtime, Distribution distribution) {
         File dir = createOrGetBaseDir(runtime);

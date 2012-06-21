@@ -19,13 +19,21 @@ package de.flapdoodle.embedmongo;
 
 import org.apache.commons.io.FileUtils;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class Files {
 
-    private static final Logger _logger = Logger.getLogger(Files.class.getName());
+    private static Logger logger = Logger.getLogger(Files.class.getName());
+    public static final int BYTE_BUFFER_LENGTH = 1024 * 16;
 
     private Files() {
 
@@ -72,16 +80,16 @@ public class Files {
         try {
             if ((fileOrDir != null) && (fileOrDir.exists())) {
                 FileUtils.forceDelete(fileOrDir);
-                _logger.info("Could delete " + fileOrDir);
+                logger.info("Could delete " + fileOrDir);
                 ret = true;
             }
         } catch (IOException e) {
-            _logger.warning("Could not delete " + fileOrDir + ". Will try to delete it again when program exits.");
+            logger.warning("Could not delete " + fileOrDir + ". Will try to delete it again when program exits.");
             try {
                 FileUtils.forceDeleteOnExit(fileOrDir);
                 ret = true;
             } catch (IOException ioe) {
-                _logger.severe("Could not delete " + fileOrDir);
+                logger.severe("Could not delete " + fileOrDir);
                 throw new IllegalStateException("Could not delete " + fileOrDir);
             }
         }
@@ -93,7 +101,7 @@ public class Files {
         FileOutputStream out = new FileOutputStream(output);
 
         try {
-            byte[] buf = new byte[1024 * 16];
+            byte[] buf = new byte[BYTE_BUFFER_LENGTH];
             int read;
             int left = buf.length;
             if (left > size)
@@ -105,7 +113,6 @@ public class Files {
                 size = size - read;
                 if (left > size)
                     left = (int) size;
-                //				System.out.print("+");
             }
         } finally {
             out.close();
@@ -133,7 +140,7 @@ public class Files {
             writer = new FileOutputStream(destination);
 
             int read;
-            byte[] buf = new byte[512];
+            byte[] buf = new byte[BYTE_BUFFER_LENGTH];
             while ((read = reader.read(buf)) != -1) {
                 writer.write(buf, 0, read);
             }

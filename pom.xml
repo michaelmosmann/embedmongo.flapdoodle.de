@@ -147,6 +147,9 @@
                 <version>2.9.1</version>
                 <configuration>
                     <configLocation>config/checkstyle.xml</configLocation>
+                <excludes>
+                    ${basedir}/src/test/**/*
+                </excludes>
                 </configuration>
             </plugin>
 

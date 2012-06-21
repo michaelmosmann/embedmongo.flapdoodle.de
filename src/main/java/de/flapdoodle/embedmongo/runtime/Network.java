@@ -21,9 +21,13 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class Network {
 
-    private static final Logger _logger = Logger.getLogger(Network.class.getName());
+    private static Logger logger = Logger.getLogger(Network.class.getName());
+    public static final int IP_LENGTH = 4;
 
     private Network() {
         throw new IllegalAccessError("singleton");
@@ -32,7 +36,7 @@ public class Network {
     public static boolean localhostIsIPv6() throws UnknownHostException {
         InetAddress addr = InetAddress.getLocalHost();
         byte[] ipAddr = addr.getAddress();
-        if (ipAddr.length > 4)
+        if (ipAddr.length > IP_LENGTH)
             return true;
         return false;
     }
@@ -42,25 +46,10 @@ public class Network {
         if (!ret.isLoopbackAddress()) {
             ret = InetAddress.getByName("localhost");
             if (!ret.isLoopbackAddress()) {
-                _logger.severe("" + ret.getHostAddress() + " is not a loopback address");
+                logger.severe("" + ret.getHostAddress() + " is not a loopback address");
             }
         }
-        //		_logger.log(Level.SEVERE,"LoopbackAddress: "+ret.isLoopbackAddress());
-        //		_logger.log(Level.SEVERE,"LinkLocalAddress: "+ret.isLinkLocalAddress());
-        //		_logger.log(Level.SEVERE,"AnyLocalAddress: "+ret.isAnyLocalAddress());
-        //		ret=InetAddress.getByAddress(new byte[] {(byte)192,(byte)168,(byte)192,(byte)251});
         return ret;
     }
 
-//	public static InetAddress getLocalHostIPv4() throws UnknownHostException {
-//		return InetAddress.getByAddress(new byte[] {127, 0, 0, 1});
-//	}
-
-//	public static boolean isLocalHostNotDefaultIPv4() {
-//		try {
-//			return getLocalHost().equals(getLocalHostIPv4());
-//		} catch (UnknownHostException ux) {
-//			return false;
-//		}
-//	}
 }

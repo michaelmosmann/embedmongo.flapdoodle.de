@@ -21,11 +21,25 @@ import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.output.IProgressListener;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+/**
+ * Class for downloading mongodb runtime
+ */
 public class Downloader {
+
+    public static final int CONNECTION_TIMEOUT = 10000;
+    public static final int READ_TIMEOUT = 10000;
+    public static final int DEFAULT_CONTENT_LENGTH = 20 * 1024 * 1024;
+    public static final int BUFFER_LENGTH = 1024 * 8;
+    public static final int READ_COUNT_MULTIPLIER = 100;
 
     private Downloader() {
 
@@ -50,29 +64,31 @@ public class Downloader {
         IProgressListener progress = runtime.getProgressListener();
         progress.start(progressLabel);
 
-        File ret = Files.createTempFile(runtime.getDefaultfileNaming().nameFor("embedmongo-download", "." + Paths.getArchiveType(distribution)));
+        File ret = Files.createTempFile(runtime.getDefaultfileNaming()
+                .nameFor("embedmongo-download", "." + Paths.getArchiveType(distribution)));
         if (ret.canWrite()) {
 
             BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
 
             URL url = new URL(getDownloadUrl(runtime, distribution));
             URLConnection openConnection = url.openConnection();
-            openConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (compatible; Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
-            openConnection.setConnectTimeout(10000);
-            openConnection.setReadTimeout(10000);
+            openConnection.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (compatible; "
+                            + "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
+            openConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+            openConnection.setReadTimeout(READ_TIMEOUT);
 
             InputStream downloadStream = openConnection.getInputStream();
 
             long length = openConnection.getContentLength();
             progress.info(progressLabel, "DownloadSize: " + length);
 
-            if (length == -1) length = 20 * 1024 * 1024;
+            if (length == -1) length = DEFAULT_CONTENT_LENGTH;
 
 
             try {
                 BufferedInputStream bis = new BufferedInputStream(downloadStream);
-                byte[] buf = new byte[1024 * 8];
-//				int count = 0;
+                byte[] buf = new byte[BUFFER_LENGTH];
                 int read = 0;
                 long readCount = 0;
                 while ((read = bis.read(buf)) != -1) {
@@ -80,13 +96,7 @@ public class Downloader {
                     readCount = readCount + read;
                     if (readCount > length) length = readCount;
 
-                    progress.progress(progressLabel, (int) (readCount * 100 / length));
-//					System.out.print("+");
-//					count++;
-//					if (count >= 100) {
-//						count = 0;
-//						System.out.println(""+readCount);
-//					}
+                    progress.progress(progressLabel, (int) (readCount * READ_COUNT_MULTIPLIER / length));
                 }
             } finally {
                 downloadStream.close();

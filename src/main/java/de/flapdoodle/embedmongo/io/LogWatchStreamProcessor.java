@@ -19,40 +19,41 @@ package de.flapdoodle.embedmongo.io;
 
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class LogWatchStreamProcessor implements IStreamProcessor {
 
-    private static final Logger _logger = Logger.getLogger(LogWatchStreamProcessor.class.getName());
+    private static Logger logger = Logger.getLogger(LogWatchStreamProcessor.class.getName());
 
     //private final Reader _reader;
-    private final StringBuilder _output = new StringBuilder();
-    private final String _success;
-    private final String _failure;
+    private final StringBuilder output = new StringBuilder();
+    private final String success;
+    private final String failure;
 
-    private boolean _initWithSuccess = false;
+    private boolean initWithSuccess = false;
 
-    private final IStreamProcessor _destination;
+    private final IStreamProcessor destination;
 
     public LogWatchStreamProcessor(String success, String failure, IStreamProcessor destination) {
-        _success = success;
-        _failure = failure;
-        _destination = destination;
+        this.success = success;
+        this.failure = failure;
+        this.destination = destination;
     }
 
     @Override
     public void process(String block) {
-        _destination.process(block);
+        destination.process(block);
 
         CharSequence line = block;
-//		System.out.print(line);
-//		System.out.flush();
-        _output.append(line);
+        output.append(line);
 
-        if (_output.indexOf(_success) != -1) {
-            _initWithSuccess = true;
+        if (output.indexOf(success) != -1) {
+            initWithSuccess = true;
             gotResult();
         }
-        if (_output.indexOf(_failure) != -1) {
-            _initWithSuccess = false;
+        if (output.indexOf(failure) != -1) {
+            initWithSuccess = false;
             gotResult();
         }
     }
@@ -75,25 +76,12 @@ public class LogWatchStreamProcessor implements IStreamProcessor {
     }
 
     public boolean isInitWithSuccess() {
-        return _initWithSuccess;
+        return initWithSuccess;
     }
 
     public String getOutput() {
-        return _output.toString();
+        return output.toString();
     }
 
-//	public static LogWatch watch(Reader reader, String success, String failed, long timeout) {
-//		LogWatch logWatch = new LogWatch(reader, success, failed);
-//		logWatch.start();
-//
-//		synchronized (logWatch) {
-//			try {
-//				logWatch.wait(timeout);
-//			} catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return logWatch;
-//	}
 
 }

@@ -33,58 +33,54 @@ import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class MongodProcess {
 
-    static final Logger _logger = Logger.getLogger(MongodProcess.class.getName());
+    private static Logger logger = Logger.getLogger(MongodProcess.class.getName());
+    public static final int TIMEOUT = 20000;
 
-    private final MongodConfig _config;
-    private final MongodProcessOutputConfig _outputConfig;
-    private final MongodExecutable _mongodExecutable;
-    private ProcessControl _process;
-    private int _mongodProcessId;
-    //	private ConsoleOutput _consoleOutput;
+    private final MongodConfig config;
+    private final MongodProcessOutputConfig outputConfig;
+    private final MongodExecutable mongodExecutable;
+    private ProcessControl process;
+    private int mongodProcessId;
 
-    private File _dbDir;
+    private File dbDir;
 
-    boolean _stopped = false;
+    private boolean stopped = false;
 
-    private Distribution _distribution;
+    private Distribution distribution;
 
     public MongodProcess(Distribution distribution, MongodConfig config, MongodProcessOutputConfig outputConfig,
                          MongodExecutable mongodExecutable) throws IOException {
-        _config = config;
-        _outputConfig = outputConfig;
-        _mongodExecutable = mongodExecutable;
-        _distribution = distribution;
+        this.config = config;
+        this.outputConfig = outputConfig;
+        this.mongodExecutable = mongodExecutable;
+        this.distribution = distribution;
 
         try {
-            File dbDir;
+            File tmpDbDir;
             if (config.getDatabaseDir() != null) {
-                dbDir = Files.createOrCheckDir(config.getDatabaseDir());
+                tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
             } else {
-                dbDir = Files.createTempDir("embedmongo-db");
-                _dbDir = dbDir;
+                tmpDbDir = Files.createTempDir("embedmongo-db");
+                this.dbDir = tmpDbDir;
             }
-            //			ProcessBuilder processBuilder = new ProcessBuilder(enhanceCommandLinePlattformSpecific(distribution,
-            //					getCommandLine(_config, _mongodExecutable.getFile(), dbDir)));
-            //			processBuilder.redirectErrorStream();
-            //			_process = new ProcessControl(processBuilder.start());
-            _process = ProcessControl.fromCommandLine(
+            process = ProcessControl.fromCommandLine(
                     Mongod.enhanceCommandLinePlattformSpecific(distribution,
-                            Mongod.getCommandLine(_config, _mongodExecutable.getFile(), dbDir)), true);
+                            Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), dbDir)), true);
 
             Runtime.getRuntime().addShutdownHook(new JobKiller());
 
             LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
                     StreamToLineProcessor.wrap(outputConfig.getMongodOutput()));
-            Processors.connect(_process.getReader(), logWatch);
-            Processors.connect(_process.getError(), StreamToLineProcessor.wrap(outputConfig.getMongodError()));
-            logWatch.waitForResult(20000);
-
-            //			LogWatch logWatch = LogWatch.watch(_process.getReader(), "waiting for connections on port", "failed", 20000);
+            Processors.connect(process.getReader(), logWatch);
+            Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getMongodError()));
+            logWatch.waitForResult(TIMEOUT);
             if (logWatch.isInitWithSuccess()) {
-                _mongodProcessId = Mongod.getMongodProcessId(logWatch.getOutput(), -1);
-                //				ConsoleOutput consoleOutput = new ConsoleOutput(_process.getReader());
+                mongodProcessId = Mongod.getMongodProcessId(logWatch.getOutput(), -1);
             } else {
                 throw new IOException("Could not start mongod process");
             }
@@ -96,60 +92,59 @@ public class MongodProcess {
     }
 
     public synchronized void stop() {
-        if (!_stopped) {
+        if (!stopped) {
 
-            _stopped = true;
+            stopped = true;
 
-            _logger.warning("try to stop mongod");
+            logger.warning("try to stop mongod");
             if (!sendStopToMongoInstance()) {
-                _logger.warning("could not stop mongod with db command, try next");
+                logger.warning("could not stop mongod with db command, try next");
                 if (!sendKillToMongodProcess()) {
-                    _logger.warning("could not stop mongod, try next");
+                    logger.warning("could not stop mongod, try next");
                     if (!tryKillToMongodProcess()) {
-                        _logger.warning("could not stop mongod the second time, try one last thing");
+                        logger.warning("could not stop mongod the second time, try one last thing");
                     }
                 }
             }
 
-            _process.stop();
+            process.stop();
 
-            if ((_dbDir != null) && (!Files.forceDelete(_dbDir)))
-                _logger.warning("Could not delete temp db dir: " + _dbDir);
+            if ((dbDir != null) && (!Files.forceDelete(dbDir)))
+                logger.warning("Could not delete temp db dir: " + dbDir);
 
-            //			if (_mongodExecutable.getFile() != null) {
-            //				if (!Files.forceDelete(_mongodExecutable.getFile())) {
-            //					_stopped = true;
-            //					_logger.warning("Could not delete mongod executable NOW: " + _mongodExecutable.getFile());
-            //				}
-            //			}
         }
     }
 
     private boolean sendStopToMongoInstance() {
         try {
-            return Mongod.sendShutdown(Network.getLocalHost(), _config.getPort());
+            return Mongod.sendShutdown(Network.getLocalHost(), config.getPort());
         } catch (UnknownHostException e) {
-            _logger.log(Level.SEVERE, "sendStop", e);
+            logger.log(Level.SEVERE, "sendStop", e);
         }
         return false;
     }
 
     private boolean sendKillToMongodProcess() {
         if (_mongodProcessId > 0) {
-            return ProcessControl.killProcess(_distribution.getPlatform(), StreamToLineProcessor.wrap(_outputConfig.getCommandsOutput()),
-                    _mongodProcessId);
+            return ProcessControl.killProcess(distribution.getPlatform(),
+                    StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
+                    mongodProcessId);
         }
         return false;
     }
 
     private boolean tryKillToMongodProcess() {
         if (_mongodProcessId > 0) {
-            return ProcessControl.tryKillProcess(_distribution.getPlatform(), StreamToLineProcessor.wrap(_outputConfig.getCommandsOutput()),
-                    _mongodProcessId);
+            return ProcessControl.tryKillProcess(distribution.getPlatform(),
+                    StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
+                    mongodProcessId);
         }
         return false;
     }
 
+    /**
+     *
+     */
     class JobKiller extends Thread {
 
         @Override

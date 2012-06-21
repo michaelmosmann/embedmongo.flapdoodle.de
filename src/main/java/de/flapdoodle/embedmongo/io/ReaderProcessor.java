@@ -20,15 +20,18 @@ package de.flapdoodle.embedmongo.io;
 import java.io.IOException;
 import java.io.Reader;
 
-
+/**
+ *
+ */
 public class ReaderProcessor extends Thread {
 
-    private final Reader _reader;
-    private final IStreamProcessor _streamProcessor;
+    public static final int CHAR_BUFFER_LENGTH = 512;
+    private final Reader reader;
+    private final IStreamProcessor streamProcessor;
 
     protected ReaderProcessor(Reader reader, IStreamProcessor streamProcessor) {
-        _reader = reader;
-        _streamProcessor = streamProcessor;
+        this.reader = reader;
+        this.streamProcessor = streamProcessor;
 
         setDaemon(true);
         start();
@@ -38,14 +41,16 @@ public class ReaderProcessor extends Thread {
     public void run() {
         try {
             int read;
-            char[] buf = new char[512];
-            while ((read = _reader.read(buf)) != -1) {
-                _streamProcessor.process(new String(buf, 0, read));
+            char[] buf = new char[CHAR_BUFFER_LENGTH];
+            while ((read = reader.read(buf)) != -1) {
+                streamProcessor.process(new String(buf, 0, read));
             }
+            //CHECKSTYLE:OFF
         } catch (IOException iox) {
             // _logger.log(Level.SEVERE,"out",iox);
         }
+        //CHECKSTYLE:ON
 
-        _streamProcessor.onProcessed();
+        streamProcessor.onProcessed();
     }
 }

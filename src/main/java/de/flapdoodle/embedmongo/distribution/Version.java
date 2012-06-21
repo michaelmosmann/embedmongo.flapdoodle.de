@@ -17,7 +17,9 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
-
+/**
+ * MongoDB Version enum
+ */
 public enum Version {
     V1_6_5,
     @Deprecated

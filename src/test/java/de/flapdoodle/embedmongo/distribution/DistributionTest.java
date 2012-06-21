@@ -19,17 +19,17 @@ package de.flapdoodle.embedmongo.distribution;
 
 import junit.framework.TestCase;
 
-
+//CHECKSTYLE:OFF
 public class DistributionTest extends TestCase {
-	
-	public void testNothing() {
-		
-	}
-	
-	public void NOtestDetection() {
-		assertNotNull("Linux32",Distribution.detectFor(Version.V1_6));
-		assertNotNull("Linux32",Distribution.detectFor(Version.V1_8));
-		assertNotNull("Linux32",Distribution.detectFor(Version.V2_0));
-		assertNotNull("Linux32",Distribution.detectFor(Version.V2_1));
-	}
+
+    public void testNothing() {
+
+    }
+
+    public void NOtestDetection() {
+        assertNotNull("Linux32", Distribution.detectFor(Version.V1_6));
+        assertNotNull("Linux32", Distribution.detectFor(Version.V1_8));
+        assertNotNull("Linux32", Distribution.detectFor(Version.V2_0));
+        assertNotNull("Linux32", Distribution.detectFor(Version.V2_1));
+    }
 }

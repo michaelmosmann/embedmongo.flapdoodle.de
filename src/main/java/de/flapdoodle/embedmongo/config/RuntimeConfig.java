@@ -22,60 +22,63 @@ import de.flapdoodle.embedmongo.extract.UUIDTempNaming;
 import de.flapdoodle.embedmongo.output.IProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 
+/**
+ *
+ */
 public class RuntimeConfig {
 
-    private IProgressListener _progressListener = new StandardConsoleProgressListener();
-    private String _downloadPath = "http://fastdl.mongodb.org/";
-    private IArtifactStoragePathNaming _artifactStorePath = new ArtifactStoreInUserHome();
-    private ITempNaming _defaultfileNaming = new UUIDTempNaming();
-    private ITempNaming _executableNaming = _defaultfileNaming;
-    private MongodProcessOutputConfig _mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
+    private IProgressListener progressListener = new StandardConsoleProgressListener();
+    private String downloadPath = "http://fastdl.mongodb.org/";
+    private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome();
+    private ITempNaming defaultfileNaming = new UUIDTempNaming();
+    private ITempNaming executableNaming = defaultfileNaming;
+    private MongodProcessOutputConfig mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
 
     public void setDownloadPath(String downloadPath) {
-        _downloadPath = downloadPath;
+        this.downloadPath = downloadPath;
     }
 
     public String getDownloadPath() {
-        return _downloadPath;
+        return downloadPath;
     }
 
     public void setProgressListener(IProgressListener progressListener) {
-        _progressListener = progressListener;
+        this.progressListener = progressListener;
     }
 
     public ITempNaming getDefaultfileNaming() {
-        return _defaultfileNaming;
+        return defaultfileNaming;
     }
 
     public void setDefaultfileNaming(ITempNaming defaultfileNaming) {
-        _defaultfileNaming = defaultfileNaming;
+        this.defaultfileNaming = defaultfileNaming;
     }
 
     public ITempNaming getExecutableNaming() {
-        return _executableNaming;
+        return executableNaming;
     }
 
     public void setExecutableNaming(ITempNaming executableNaming) {
-        _executableNaming = executableNaming;
+        this.executableNaming = executableNaming;
     }
 
     public IProgressListener getProgressListener() {
-        return _progressListener;
+        return progressListener;
     }
 
     public IArtifactStoragePathNaming getArtifactStorePathNaming() {
-        return _artifactStorePath;
+        return artifactStorePath;
     }
 
-    public void setArtifactStorePathNaming(IArtifactStoragePathNaming artifactStorePath) {
-        _artifactStorePath = artifactStorePath;
+    public void setArtifactStorePathNaming(IArtifactStoragePathNaming value) {
+        this.artifactStorePath = value;
     }
 
     public MongodProcessOutputConfig getMongodOutputConfig() {
-        return _mongodOutputConfig;
+        return mongodOutputConfig;
     }
 
     public void setMongodOutputConfig(MongodProcessOutputConfig mongodOutputConfig) {
-        _mongodOutputConfig = mongodOutputConfig;
+        this.mongodOutputConfig = mongodOutputConfig;
     }
 }

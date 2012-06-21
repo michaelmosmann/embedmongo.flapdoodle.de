@@ -33,30 +33,34 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ *
+ */
 public class ProcessControl {
 
-    private static final Logger _logger = Logger.getLogger(ProcessControl.class.getName());
+    private static Logger logger = Logger.getLogger(ProcessControl.class.getName());
+    public static final int SLEEPT_TIMEOUT = 10;
 
-    private Process _process;
+    private Process process;
 
-    private InputStreamReader _reader;
-    private InputStreamReader _error;
+    private InputStreamReader reader;
+    private InputStreamReader error;
 
-    private Integer _pid;
+    private Integer pid;
 
     public ProcessControl(Process process) {
-        _process = process;
-        _reader = new InputStreamReader(_process.getInputStream());
-        _error = new InputStreamReader(_process.getErrorStream());
-        _pid = getProcessID();
+        this.process = process;
+        reader = new InputStreamReader(this.process.getInputStream());
+        error = new InputStreamReader(this.process.getErrorStream());
+        pid = getProcessID();
     }
 
     public Reader getReader() {
-        return _reader;
+        return reader;
     }
 
     public InputStreamReader getError() {
-        return _error;
+        return error;
     }
 
     public int stop() {
@@ -65,27 +69,24 @@ public class ProcessControl {
     }
 
     private void closeIOAndDestroy() {
-        if (_process != null) {
+        if (process != null) {
             try {
                 // streams need to be closed, otherwise process may block
                 // see http://kylecartmell.com/?p=9
-                _process.getErrorStream().close();
-                _process.getInputStream().close();
-                _process.getOutputStream().close();
+                process.getErrorStream().close();
+                process.getInputStream().close();
+                process.getOutputStream().close();
 
             } catch (IOException e) {
-                _logger.severe(e.getMessage());
+                logger.severe(e.getMessage());
             } finally {
-                _process.destroy();
+                process.destroy();
             }
-            _reader = null;
+            reader = null;
         }
     }
 
-    //	public int waitFor() throws InterruptedException {
-    //		return _process.waitFor();
-    //	}
-
+    //CHECKSTYLE:OFF
     /**
      * It may happen in tests, that the process is currently using some files in
      * the temp directory, e.g. journal files (journal/j._0) and got killed at
@@ -100,11 +101,11 @@ public class ProcessControl {
 
             public void run() {
                 try {
-                    state.returnCode = _process.waitFor();
+                    state.returnCode = process.waitFor();
                 } catch (InterruptedException e) {
-                    _logger.severe(e.getMessage());
+                    logger.severe(e.getMessage());
                 } finally {
-                    state.killed = true;
+                    state.setKilled(true);
                     timer.cancel();
                 }
             }
@@ -112,25 +113,28 @@ public class ProcessControl {
         // wait for max. 1 second that process got killed
 
         int countDown = 100;
-        while (!state.killed && (countDown-- > 0))
+        while (!state.isKilled() && (countDown-- > 0))
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
-                _logger.severe(e.getMessage());
+                logger.severe(e.getMessage());
             }
-        if (!state.killed) {
+        if (!state.isKilled()) {
             timer.cancel();
             String message = "\n\n" + "----------------------------------------------------\n"
                     + "Something bad happend. We couldn't kill mongod process, and tried a lot.\n"
                     + "If you want this problem solved you can help us if you open a new issue on github.\n" + "\n"
-                    + "Follow this link:\n" + "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" + "\n"
+                    + "Follow this link:\n" + "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" +
+                    "\n"
                     + "Thank you:)\n" + "----------------------------------------------------\n\n";
             throw new IllegalStateException("Couldn't kill mongod process!" + message);
         }
         return state.returnCode;
     }
 
-    public static ProcessControl fromCommandLine(List<String> commandLine, boolean redirectErrorStream) throws IOException {
+    //CHECKSTYLE:ON
+    public static ProcessControl fromCommandLine(List<String> commandLine, boolean redirectErrorStream)
+            throws IOException {
         ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
         if (redirectErrorStream)
             processBuilder.redirectErrorStream();
@@ -144,40 +148,41 @@ public class ProcessControl {
         try {
             ProcessControl process = fromCommandLine(processConfig.getCommandLine(), processConfig.getError() == null);
             Processors.connect(process.getReader(), processConfig.getOutput());
-            Thread.sleep(10);
+            Thread.sleep(SLEEPT_TIMEOUT);
             ret = process.stop() == 0;
-            _logger.info("execSuccess: " + ret + " " + commandLine);
+            logger.info("execSuccess: " + ret + " " + commandLine);
             return ret;
         } catch (IOException e) {
-            _logger.log(Level.SEVERE, "" + commandLine, e);
+            logger.log(Level.SEVERE, "" + commandLine, e);
         } catch (InterruptedException e) {
-            _logger.log(Level.SEVERE, "" + commandLine, e);
+            logger.log(Level.SEVERE, "" + commandLine, e);
         }
         return false;
     }
 
     public static boolean killProcess(Platform platform, IStreamProcessor output, int pid) {
         if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
-            return executeCommandLine("[kill process]", new ProcessConfig(Collections.newArrayList("kill", "-2", "" + pid), output));
+            return executeCommandLine("[kill process]",
+                    new ProcessConfig(Collections.newArrayList("kill", "-2", "" + pid), output));
         }
         return false;
     }
 
     public static boolean tryKillProcess(Platform platform, IStreamProcessor output, int pid) {
         if (platform == Platform.Windows) {
-            return executeCommandLine("[taskkill process]", new ProcessConfig(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid), output));
+            return executeCommandLine("[taskkill process]",
+                    new ProcessConfig(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid), output));
         }
         return false;
     }
 
     private Integer getProcessID() {
-        Class<?> clazz = _process.getClass();
+        Class<?> clazz = process.getClass();
         try {
             if (clazz.getName().equals("java.lang.UNIXProcess")) {
                 Field pidField = clazz.getDeclaredField("pid");
                 pidField.setAccessible(true);
-                Object value = pidField.get(_process);
-                //				System.err.println("pid = " + value);
+                Object value = pidField.get(process);
                 if (value instanceof Integer) {
                     return (Integer) value;
                 }
@@ -194,9 +199,21 @@ public class ProcessControl {
         return null;
     }
 
+    /**
+     *
+     */
     static class ProcessState {
 
         protected int returnCode;
-        boolean killed = false;
+
+        public boolean isKilled() {
+            return killed;
+        }
+
+        public void setKilled(boolean killed) {
+            this.killed = killed;
+        }
+
+        private boolean killed = false;
     }
 }

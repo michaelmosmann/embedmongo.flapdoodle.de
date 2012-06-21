@@ -17,7 +17,9 @@
  */
 package de.flapdoodle.embedmongo.extract;
 
-
+/**
+ *
+ */
 public class UserTempNaming implements ITempNaming {
 
     @Override

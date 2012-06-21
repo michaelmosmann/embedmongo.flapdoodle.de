@@ -36,22 +36,29 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ */
 public class Mongod {
 
-    private static final Logger _logger = Logger.getLogger(Mongod.class.getName());
+    private static Logger logger = Logger.getLogger(Mongod.class.getName());
 
     /**
      * Binary sample of shutdown command
      */
     static final byte[] SHUTDOWN_COMMAND = {0x47, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             (byte) 0xD4, 0x07, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x61, 0x64, 0x6D, 0x69, 0x6E, 0x2E, 0x24, 0x63, 0x6D,
-            0x64, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 0x1B, 0x00, 0x00, 0x00,
-            0x10, 0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x00, 0x01, 0x00, 0x00, 0x00, 0x08, 0x66, 0x6F, 0x72, 0x63,
-            0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00,};
+            0x64, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, (byte) 0xFF, 0x1B, 0x00, 0x00,
+            0x00, 0x10, 0x73, 0x68, 0x75, 0x74, 0x64, 0x6F, 0x77, 0x6E, 0x00, 0x01, 0x00, 0x00, 0x00, 0x08, 0x66, 0x6F,
+            0x72, 0x63, 0x65, 0x00, 0x01, 0x00, 0x05, 0x00, 0x00, 0x00, 0x00};
+    public static final int SOCKET_TIMEOUT = 2000;
+    public static final int CONNECT_TIMEOUT = 2000;
+    public static final int BYTE_BUFFER_LENGTH = 512;
+    public static final int WAITING_TIME_SHUTDOWN_IN_MS = 100;
 
     public static boolean sendShutdown(InetAddress hostname, int port) {
         if (!hostname.isLoopbackAddress()) {
-            _logger.log(Level.WARNING,
+            logger.log(Level.WARNING,
                     "" + "---------------------------------------\n" + "Your localhost (" + hostname.getHostAddress()
                             + ") is not a loopback adress\n"
                             + "We can NOT send shutdown to mongod, because it is denied from remote."
@@ -63,32 +70,32 @@ public class Mongod {
 
         final Socket s = new Socket();
         try {
-            s.setSoTimeout(2000);
-            s.connect(new InetSocketAddress(hostname, port), 2000);
+            s.setSoTimeout(SOCKET_TIMEOUT);
+            s.connect(new InetSocketAddress(hostname, port), CONNECT_TIMEOUT);
             OutputStream outputStream = s.getOutputStream();
             outputStream.write(SHUTDOWN_COMMAND);
             outputStream.flush();
 
             tryToReadErrorResponse = true;
             InputStream inputStream = s.getInputStream();
-            if (inputStream.read(new byte[512]) != -1) {
-                _logger.severe("Got some response, should be an error message");
+            if (inputStream.read(new byte[BYTE_BUFFER_LENGTH]) != -1) {
+                logger.severe("Got some response, should be an error message");
                 return false;
             }
             return true;
         } catch (IOException iox) {
-            _logger.log(Level.WARNING, "sendShutdown", iox);
+            logger.log(Level.WARNING, "sendShutdown", iox);
             if (tryToReadErrorResponse) {
                 return true;
             }
         } finally {
             try {
                 s.close();
-                Thread.sleep(100);
+                Thread.sleep(WAITING_TIME_SHUTDOWN_IN_MS);
             } catch (InterruptedException ix) {
-                _logger.log(Level.WARNING, "sendShutdown", ix);
+                logger.log(Level.WARNING, "sendShutdown", ix);
             } catch (IOException iox) {
-                _logger.log(Level.WARNING, "sendShutdown", iox);
+                logger.log(Level.WARNING, "sendShutdown", iox);
             }
         }
         return false;
@@ -107,15 +114,10 @@ public class Mongod {
     public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir)
             throws UnknownHostException {
         List<String> ret = new ArrayList<String>();
-        ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(), /*
-																																																				 * "--bind_ip",""
-																																																				 * +Network.
-																																																				 * getLocalHost
-																																																				 * ()
-																																																				 * .getHostAddress
-																																																				 * (),
-																																																				 */"--dbpath",
-                "" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal", "--noauth"));
+        ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(),
+                "--dbpath",
+                "" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal",
+                "--noauth"));
         if (config.isIpv6()) {
             ret.add("--ipv6");
         }
@@ -132,7 +134,7 @@ public class Mongod {
                     ret.addAll(commands);
                     return ret;
                 default:
-                    _logger.warning("NUMA Plattform detected, but not supported.");
+                    logger.warning("NUMA Plattform detected, but not supported.");
             }
         }
         return commands;

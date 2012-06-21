@@ -17,34 +17,28 @@
  */
 package de.flapdoodle.embedmongo.io;
 
-
+/**
+ *
+ */
 public class NamedOutputStreamProcessor implements IStreamProcessor {
 
 
-    private final IStreamProcessor _destination;
-    private final String _name;
+    private final IStreamProcessor destination;
+    private final String name;
 
     public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
-        _name = name;
-        _destination = destination;
+        this.name = name;
+        this.destination = destination;
     }
 
     @Override
     public void process(String block) {
-        _destination.process(block.replace("\n", "\n" + _name + " "));
-//		int idx=block.indexOf('\n');
-//		if (idx!=-1) {
-//			_destination.process(block.substring(0,idx+1));
-//			_destination.process(_name+" ");
-//			_destination.process(block.substring(idx+1));
-//		} else {
-//			_destination.process(block);
-//		}
+        destination.process(block.replace("\n", "\n" + name + " "));
     }
 
     @Override
     public void onProcessed() {
-        _destination.onProcessed();
+        destination.onProcessed();
 
     }
 

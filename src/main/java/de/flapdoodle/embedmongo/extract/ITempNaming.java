@@ -17,7 +17,9 @@
  */
 package de.flapdoodle.embedmongo.extract;
 
-
+/**
+ * Interface for temp naming
+ */
 public interface ITempNaming {
     String nameFor(String prefix, String postfix);
 }

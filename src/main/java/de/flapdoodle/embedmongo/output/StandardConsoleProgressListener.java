@@ -17,31 +17,26 @@
  */
 package de.flapdoodle.embedmongo.output;
 
+/**
+ *
+ */
 public class StandardConsoleProgressListener implements IProgressListener {
 
-    String _lastLabel = null;
-    int _lastPercent = -1;
-//	int _countEquals = 0;
+    private String lastLabel = null;
+    private int lastPercent = -1;
 
     @Override
     public void progress(String label, int percent) {
-        if (!label.equals(_lastLabel)) {
+        if (!label.equals(lastLabel)) {
             System.out.print(label);
             System.out.print(" ");
         }
-        if (percent == _lastPercent) {
-//			_countEquals++;
-//			if (_countEquals >= 10) {
-//				System.out.print(".");
-//				_countEquals = 0;
-//			}
-        } else {
-//			_countEquals=0;
+        if (percent != lastPercent) {
             System.out.print(percent);
             System.out.print("% ");
         }
-        _lastLabel = label;
-        _lastPercent = percent;
+        lastLabel = label;
+        lastPercent = percent;
     }
 
     @Override

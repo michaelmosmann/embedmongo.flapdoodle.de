@@ -23,7 +23,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-
+/**
+ * Extractor interface
+ */
 public interface IExtractor {
 
     void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;

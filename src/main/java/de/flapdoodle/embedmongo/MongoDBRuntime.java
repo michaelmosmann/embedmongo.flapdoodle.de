@@ -29,15 +29,17 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
+/**
+ *
+ */
 public class MongoDBRuntime {
 
-    private static final Logger _logger = Logger.getLogger(MongoDBRuntime.class.getName());
+    private static Logger logger = Logger.getLogger(MongoDBRuntime.class.getName());
 
-    private final RuntimeConfig _runtime;
+    private final RuntimeConfig runtime;
 
     private MongoDBRuntime(RuntimeConfig config) {
-        _runtime = config;
+        runtime = config;
     }
 
     public static MongoDBRuntime getInstance(RuntimeConfig config) {
@@ -49,15 +51,15 @@ public class MongoDBRuntime {
     }
 
     public boolean checkDistribution(Distribution distribution) throws IOException {
-        if (!LocalArtifactStore.checkArtifact(_runtime, distribution)) {
-            return LocalArtifactStore.store(_runtime, distribution, Downloader.download(_runtime, distribution));
+        if (!LocalArtifactStore.checkArtifact(runtime, distribution)) {
+            return LocalArtifactStore.store(runtime, distribution, Downloader.download(runtime, distribution));
         }
         return true;
     }
 
     public MongodExecutable prepare(MongodConfig mongodConfig) {
         try {
-            IProgressListener progress = _runtime.getProgressListener();
+            IProgressListener progress = runtime.getProgressListener();
 
             Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
             progress.done("Detect Distribution");
@@ -65,21 +67,22 @@ public class MongoDBRuntime {
                 progress.done("Check Distribution");
                 File mongodExe = extractMongod(distribution);
 
-                return new MongodExecutable(distribution, mongodConfig, _runtime.getMongodOutputConfig(), mongodExe);
+                return new MongodExecutable(distribution, mongodConfig, runtime.getMongodOutputConfig(), mongodExe);
             }
         } catch (IOException iox) {
-            _logger.log(Level.SEVERE, "start", iox);
+            logger.log(Level.SEVERE, "start", iox);
         }
         return null;
     }
 
 
     protected File extractMongod(Distribution distribution) throws IOException {
-        File artifact = LocalArtifactStore.getArtifact(_runtime, distribution);
+        File artifact = LocalArtifactStore.getArtifact(runtime, distribution);
         IExtractor extractor = Extractors.getExtractor(distribution);
 
-        File mongodExe = Files.createTempFile(_runtime.getExecutableNaming().nameFor("extract", Paths.getMongodExecutable(distribution)));
-        extractor.extract(_runtime, artifact, mongodExe, Paths.getMongodExecutablePattern(distribution));
+        File mongodExe = Files.createTempFile(
+                runtime.getExecutableNaming().nameFor("extract", Paths.getMongodExecutable(distribution)));
+        extractor.extract(runtime, artifact, mongodExe, Paths.getMongodExecutablePattern(distribution));
         return mongodExe;
     }
 

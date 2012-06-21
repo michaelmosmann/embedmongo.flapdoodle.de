@@ -17,48 +17,50 @@
  */
 package de.flapdoodle.embedmongo.io;
 
-
+/**
+ *
+ */
 public class StreamToLineProcessor implements IStreamProcessor {
 
-    private final IStreamProcessor _destination;
-    StringBuilder _buffer = new StringBuilder();
+    private final IStreamProcessor destination;
+    private StringBuilder buffer = new StringBuilder();
 
     public StreamToLineProcessor(IStreamProcessor destination) {
-        _destination = destination;
+        this.destination = destination;
     }
 
     @Override
     public void process(String block) {
         int newLineEnd = block.indexOf('\n');
         if (newLineEnd == -1) {
-            _buffer.append(block);
+            buffer.append(block);
         } else {
-            _buffer.append(block.substring(0, newLineEnd + 1));
-            _destination.process(getAndClearBuffer());
+            buffer.append(block.substring(0, newLineEnd + 1));
+            destination.process(getAndClearBuffer());
             do {
                 int lastEnd = newLineEnd;
                 newLineEnd = block.indexOf('\n', newLineEnd + 1);
                 if (newLineEnd != -1) {
-                    _destination.process(block.substring(lastEnd + 1, newLineEnd + 1));
+                    destination.process(block.substring(lastEnd + 1, newLineEnd + 1));
                 } else {
-                    _buffer.append(block.substring(lastEnd + 1));
+                    buffer.append(block.substring(lastEnd + 1));
                 }
             } while (newLineEnd != -1);
         }
     }
 
     private String getAndClearBuffer() {
-        String ret = _buffer.toString();
-        _buffer.setLength(0);
+        String ret = buffer.toString();
+        buffer.setLength(0);
         return ret;
     }
 
     @Override
     public void onProcessed() {
-        if (_buffer.length() > 0) {
-            _destination.process(getAndClearBuffer());
+        if (buffer.length() > 0) {
+            destination.process(getAndClearBuffer());
         }
-        _destination.onProcessed();
+        destination.onProcessed();
     }
 
     public static IStreamProcessor wrap(IStreamProcessor destination) {

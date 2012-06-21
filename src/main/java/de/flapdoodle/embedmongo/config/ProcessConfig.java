@@ -23,16 +23,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ *
+ */
 public class ProcessConfig {
 
-    private final List<String> _commandLine;
-    private final IStreamProcessor _output;
-    private final IStreamProcessor _error;
+    private final List<String> commandLine;
+    private final IStreamProcessor output;
+    private final IStreamProcessor error;
 
     public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
-        _commandLine = new ArrayList<String>(commandLine);
-        _output = output;
-        _error = error;
+        this.commandLine = new ArrayList<String>(commandLine);
+        this.output = output;
+        this.error = error;
     }
 
     public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
@@ -40,14 +43,14 @@ public class ProcessConfig {
     }
 
     public List<String> getCommandLine() {
-        return Collections.unmodifiableList(_commandLine);
+        return Collections.unmodifiableList(commandLine);
     }
 
     public IStreamProcessor getOutput() {
-        return _output;
+        return output;
     }
 
     public IStreamProcessor getError() {
-        return _error;
+        return error;
     }
 }

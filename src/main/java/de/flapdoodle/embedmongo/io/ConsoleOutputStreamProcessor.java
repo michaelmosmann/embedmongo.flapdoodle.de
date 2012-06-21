@@ -17,6 +17,9 @@
  */
 package de.flapdoodle.embedmongo.io;
 
+/**
+ *
+ */
 public class ConsoleOutputStreamProcessor implements IStreamProcessor {
 
     @Override

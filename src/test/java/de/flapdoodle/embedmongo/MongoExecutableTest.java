@@ -17,59 +17,57 @@
  */
 package de.flapdoodle.embedmongo;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Logger;
-
-import junit.framework.TestCase;
-
-import org.junit.Test;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
-
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.runtime.Network;
+import junit.framework.TestCase;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * Integration test for starting and stopping MongodExecutable
- * @author m.joehren
  *
+ * @author m.joehren
  */
+//CHECKSTYLE:OFF
 public class MongoExecutableTest extends TestCase {
 
-	private static final Logger _logger = Logger.getLogger(MongoExecutableTest.class.getName());
+    private static final Logger _logger = Logger.getLogger(MongoExecutableTest.class.getName());
 
-	@Test
-	public void testStartStopTenTimesWithNewMongoExecutable() throws IOException {
-		boolean useMongodb=true;
-		int loops=10;
-		
-		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345,
-				Network.localhostIsIPv6());
-		
-		for (int i = 0; i < loops; i++) {
-			_logger.info("Loop: "+i);
-			
-			MongodExecutable mongodExe = MongoDBRuntime.getDefaultInstance().prepare(mongodConfig);
-			MongodProcess mongod = mongodExe.start();
-		
-			if (useMongodb) {
-				Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
-				DB db = mongo.getDB("test");
-				DBCollection col = db.createCollection("testCol", new BasicDBObject());
-				col.save(new BasicDBObject("testDoc", new Date()));
-			}
-			
-			mongod.stop();
-			mongodExe.cleanup();
-		}
+    @Test
+    public void testStartStopTenTimesWithNewMongoExecutable() throws IOException {
+        boolean useMongodb = true;
+        int loops = 10;
 
-	}
+        MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345,
+                Network.localhostIsIPv6());
+
+        for (int i = 0; i < loops; i++) {
+            _logger.info("Loop: " + i);
+
+            MongodExecutable mongodExe = MongoDBRuntime.getDefaultInstance().prepare(mongodConfig);
+            MongodProcess mongod = mongodExe.start();
+
+            if (useMongodb) {
+                Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
+                DB db = mongo.getDB("test");
+                DBCollection col = db.createCollection("testCol", new BasicDBObject());
+                col.save(new BasicDBObject("testDoc", new Date()));
+            }
+
+            mongod.stop();
+            mongodExe.cleanup();
+        }
+
+    }
 
 
 }

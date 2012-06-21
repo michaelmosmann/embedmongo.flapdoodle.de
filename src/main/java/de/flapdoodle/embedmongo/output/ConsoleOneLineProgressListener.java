@@ -26,6 +26,7 @@ public class ConsoleOneLineProgressListener implements IProgressListener {
     private static final char BAR_TODO = '-';
     static final int LINE_LEN = 80;
     static final char[] CLOCK = {'-', '\\', '|', '/'};
+    public static final int ONE_HUNDRED_PERCENT = 100;
 
     private int lastPercent = -1;
     private int lastIdx = 0;
@@ -34,29 +35,27 @@ public class ConsoleOneLineProgressListener implements IProgressListener {
     public void progress(String label, int percent) {
         if (percent < 0)
             throw new IllegalArgumentException("Percent < 0: " + percent);
-        if (percent > 100)
+        if (percent > ONE_HUNDRED_PERCENT)
             throw new IllegalArgumentException("Percent > 100: " + percent);
 
         if (lastPercent == percent) {
             lastIdx++;
             if (lastIdx >= CLOCK.length)
                 lastIdx = 0;
-        }
-        else {
+        } else {
             lastIdx = 0;
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append(label).append(" ");
         int lineLength = LINE_LEN - label.length() - 1;
-        int percLength = percent * lineLength / 100;
+        int percLength = percent * lineLength / ONE_HUNDRED_PERCENT;
 
         sb.append(makeString(BAR_DONE, percLength));
-        if (percent < 100) {
+        if (percent < ONE_HUNDRED_PERCENT) {
             sb.append(CLOCK[lastIdx]);
             sb.append(makeString(BAR_TODO, lineLength - percLength));
-        }
-        else {
+        } else {
             sb.append(BAR_DONE);
         }
         sb.append("\r");

@@ -17,7 +17,9 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-
+/**
+ * Interface for artifact storage
+ */
 public interface IArtifactStoragePathNaming {
 
     String getPath();

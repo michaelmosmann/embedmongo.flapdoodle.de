@@ -17,33 +17,36 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
+/**
+ *
+ */
 public class Distribution {
 
-    private final Version _version;
-    private final Platform _platform;
-    private final BitSize _bitsize;
+    private final Version version;
+    private final Platform platform;
+    private final BitSize bitsize;
 
     public Distribution(Version version, Platform platform, BitSize bitsize) {
-        _version = version;
-        _platform = platform;
-        _bitsize = bitsize;
+        this.version = version;
+        this.platform = platform;
+        this.bitsize = bitsize;
     }
 
     public Version getVersion() {
-        return _version;
+        return version;
     }
 
     public Platform getPlatform() {
-        return _platform;
+        return platform;
     }
 
     public BitSize getBitsize() {
-        return _bitsize;
+        return bitsize;
     }
 
     @Override
     public String toString() {
-        return "" + _version + ":" + _platform + ":" + _bitsize;
+        return "" + version + ":" + platform + ":" + bitsize;
     }
 
     public static Distribution detectFor(Version version) {

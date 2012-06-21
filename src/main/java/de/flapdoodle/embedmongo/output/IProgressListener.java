@@ -17,6 +17,9 @@
  */
 package de.flapdoodle.embedmongo.output;
 
+/**
+ * Progress listener interface
+ */
 public interface IProgressListener {
 
     void progress(String label, int percent);

@@ -21,7 +21,9 @@ import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 
-
+/**
+ * Extractor Helper
+ */
 public class Extractors {
     private Extractors() {
 
@@ -34,7 +36,8 @@ public class Extractors {
                 return new TgzExtractor();
             case ZIP:
                 return new ZipExtractor();
+            default:
+                throw new IllegalArgumentException("ArciveType " + archiveType + " not supported");
         }
-        throw new IllegalArgumentException("ArciveType " + archiveType + " not supported");
     }
 }

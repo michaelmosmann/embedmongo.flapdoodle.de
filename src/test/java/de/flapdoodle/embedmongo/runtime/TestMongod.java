@@ -17,21 +17,19 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
-import de.flapdoodle.embedmongo.runtime.Mongod;
-
 import junit.framework.TestCase;
 
-
+//CHECKSTYLE:OFF
 public class TestMongod extends TestCase {
 
-	public void testGetPID() {
-		String consoleOutput="Fri Apr 27 08:08:55 BackgroundJob starting: DataFileSync\n" +
-				"Fri Apr 27 08:08:55 versionCmpTest passed\n" +
-				"Fri Apr 27 08:08:55 versionArrayTest passed\n" +
-				"Fri Apr 27 08:08:55 [initandlisten] MongoDB starting : pid=11026 port=12345 dbpath=/tmp/embedmongo-db-78b0fc63-31d2-4741-aa15-8fdc4deeda68 32-bit host=mub001\n" +
-				"Fri Apr 27 08:08:55 [initandlisten]\n" +
-				"Fri Apr 27 08:08:55 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data\n";
-		
-		assertEquals("PID",11026,Mongod.getMongodProcessId(consoleOutput, -1));
-	}
+    public void testGetPID() {
+        String consoleOutput = "Fri Apr 27 08:08:55 BackgroundJob starting: DataFileSync\n" +
+                "Fri Apr 27 08:08:55 versionCmpTest passed\n" +
+                "Fri Apr 27 08:08:55 versionArrayTest passed\n" +
+                "Fri Apr 27 08:08:55 [initandlisten] MongoDB starting : pid=11026 port=12345 dbpath=/tmp/embedmongo-db-78b0fc63-31d2-4741-aa15-8fdc4deeda68 32-bit host=mub001\n" +
+                "Fri Apr 27 08:08:55 [initandlisten]\n" +
+                "Fri Apr 27 08:08:55 [initandlisten] ** NOTE: when using MongoDB 32 bit, you are limited to about 2 gigabytes of data\n";
+
+        assertEquals("PID", 11026, Mongod.getMongodProcessId(consoleOutput, -1));
+    }
 }

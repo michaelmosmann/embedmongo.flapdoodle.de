@@ -20,29 +20,32 @@ package de.flapdoodle.embedmongo.config;
 import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 
+/**
+ *
+ */
 public class MongodProcessOutputConfig {
 
-    private final IStreamProcessor _mongodOutput;
-    private final IStreamProcessor _mongodError;
-    private final IStreamProcessor _commandsOutput;
+    private final IStreamProcessor mongodOutput;
+    private final IStreamProcessor mongodError;
+    private final IStreamProcessor commandsOutput;
 
     public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
                                      IStreamProcessor commandsOutput) {
-        _mongodOutput = mongodOutput;
-        _mongodError = mongodError;
-        _commandsOutput = commandsOutput;
+        this.mongodOutput = mongodOutput;
+        this.mongodError = mongodError;
+        this.commandsOutput = commandsOutput;
     }
 
     public IStreamProcessor getMongodOutput() {
-        return _mongodOutput;
+        return mongodOutput;
     }
 
     public IStreamProcessor getMongodError() {
-        return _mongodError;
+        return mongodError;
     }
 
     public IStreamProcessor getCommandsOutput() {
-        return _commandsOutput;
+        return commandsOutput;
     }
 
     public static MongodProcessOutputConfig getDefaultInstance() {

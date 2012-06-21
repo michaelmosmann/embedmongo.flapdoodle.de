@@ -19,40 +19,42 @@ package de.flapdoodle.embedmongo.config;
 
 import de.flapdoodle.embedmongo.distribution.Version;
 
-
+/**
+ *
+ */
 public class MongodConfig {
 
-    private final Version _version;
-    private final int _port;
-    private final String _databaseDir;
-    private final boolean _ipv6;
+    private final Version version;
+    private final int port;
+    private final String databaseDir;
+    private final boolean ipv6;
 
     public MongodConfig(Version version, int port, boolean ipv6) {
         this(version, port, ipv6, null);
     }
 
     public MongodConfig(Version version, int port, boolean ipv6, String databaseDir) {
-        _version = version;
-        _port = port;
-        _ipv6 = ipv6;
-        _databaseDir = databaseDir;
+        this.version = version;
+        this.port = port;
+        this.ipv6 = ipv6;
+        this.databaseDir = databaseDir;
     }
 
     public Version getVersion() {
-        return _version;
+        return version;
     }
 
     public int getPort() {
-        return _port;
+        return port;
     }
 
 
     public boolean isIpv6() {
-        return _ipv6;
+        return ipv6;
     }
 
 
     public String getDatabaseDir() {
-        return _databaseDir;
+        return databaseDir;
     }
 }

@@ -29,7 +29,9 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-
+/**
+ *
+ */
 public class ZipExtractor implements IExtractor {
     @Override
     public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
@@ -45,19 +47,14 @@ public class ZipExtractor implements IExtractor {
             ZipArchiveEntry entry;
             while ((entry = zipIn.getNextZipEntry()) != null) {
                 if (file.matcher(entry.getName()).matches()) {
-//					System.out.println("File: " + entry.getName());
                     if (zipIn.canReadEntryData(entry)) {
-//						System.out.println("Can Read: " + entry.getName());
                         long size = entry.getSize();
                         Files.write(zipIn, size, destination);
                         destination.setExecutable(true);
-//						System.out.println("DONE");
                         progressListener.done(progressLabel);
                     }
                     break;
 
-                } else {
-//					System.out.println("SKIP File: " + entry.getName());
                 }
             }
 

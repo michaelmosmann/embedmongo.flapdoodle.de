@@ -17,6 +17,9 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
+/**
+ * Platform enum
+ */
 public enum Platform {
     Linux,
     Windows,

@@ -19,7 +19,9 @@ package de.flapdoodle.embedmongo.extract;
 
 import java.util.UUID;
 
-
+/**
+ *
+ */
 public class UUIDTempNaming implements ITempNaming {
 
     @Override
