@@ -194,4 +194,8 @@ Support for Linux, Windows and MacOSX.
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...
 
-	
+## Other MongoDB Stuff
+
+- https://github.com/thiloplanz/jmockmongo - mongodb mocking
+- https://github.com/lordofthejars/nosql-unit - extended nosql unit testing
+
