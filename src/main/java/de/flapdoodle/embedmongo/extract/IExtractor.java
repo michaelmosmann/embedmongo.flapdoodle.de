@@ -28,6 +28,6 @@ import java.util.regex.Pattern;
  */
 public interface IExtractor {
 
-    void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
+	void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
 
 }

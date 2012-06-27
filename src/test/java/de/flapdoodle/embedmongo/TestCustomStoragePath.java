@@ -25,22 +25,23 @@ import de.flapdoodle.embedmongo.runtime.Network;
 import junit.framework.TestCase;
 
 import java.io.IOException;
+
 //CHECKSTYLE:OFF
 public class TestCustomStoragePath extends TestCase {
 
-    public void testCustomPath() throws IOException {
+	public void testCustomPath() throws IOException {
 
-        MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345, Network.localhostIsIPv6());
 
-        RuntimeConfig config = new RuntimeConfig();
-        ArtifactStoreInFixedPath artifactStorePath =
-                new ArtifactStoreInFixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
-        config.setArtifactStorePathNaming(artifactStorePath);
+		RuntimeConfig config = new RuntimeConfig();
+		ArtifactStoreInFixedPath artifactStorePath =
+				new ArtifactStoreInFixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
+		config.setArtifactStorePathNaming(artifactStorePath);
 
-        MongodExecutable mongodExe = MongoDBRuntime.getInstance(config).prepare(mongodConfig);
-        MongodProcess mongod = mongodExe.start();
+		MongodExecutable mongodExe = MongoDBRuntime.getInstance(config).prepare(mongodConfig);
+		MongodProcess mongod = mongodExe.start();
 
-        mongod.stop();
-        mongodExe.cleanup();
-    }
+		mongod.stop();
+		mongodExe.cleanup();
+	}
 }

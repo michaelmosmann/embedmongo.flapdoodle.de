@@ -21,7 +21,6 @@ import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Version;
 
-import java.util.EnumMap;
 import java.util.regex.Pattern;
 
 /**
@@ -29,176 +28,177 @@ import java.util.regex.Pattern;
  */
 public class Paths {
 
-    public static Pattern getMongodExecutablePattern(Distribution distribution) {
-        return Pattern.compile(".*" + getMongodExecutable(distribution));
-    }
-    //CHECKSTYLE:OFF
-    public static String getMongodExecutable(Distribution distribution) {
-        String mongodPattern;
-        switch (distribution.getPlatform()) {
-            case Linux:
-                mongodPattern = "mongod";
-                break;
-            case Windows:
-                mongodPattern = "mongod.exe";
-                break;
-            case OS_X:
-                mongodPattern = "mongod";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
-        }
-        return mongodPattern;
-    }
+	public static Pattern getMongodExecutablePattern(Distribution distribution) {
+		return Pattern.compile(".*" + getMongodExecutable(distribution));
+	}
 
-    public static ArchiveType getArchiveType(Distribution distribution) {
-        ArchiveType archiveType;
-        switch (distribution.getPlatform()) {
-            case Linux:
-                archiveType = ArchiveType.TGZ;
-                break;
-            case Windows:
-                archiveType = ArchiveType.ZIP;
-                break;
-            case OS_X:
-                archiveType = ArchiveType.TGZ;
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
-        }
-        return archiveType;
-    }
+	//CHECKSTYLE:OFF
+	public static String getMongodExecutable(Distribution distribution) {
+		String mongodPattern;
+		switch (distribution.getPlatform()) {
+			case Linux:
+				mongodPattern = "mongod";
+				break;
+			case Windows:
+				mongodPattern = "mongod.exe";
+				break;
+			case OS_X:
+				mongodPattern = "mongod";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
+		}
+		return mongodPattern;
+	}
 
-    public static String getPath(Distribution distribution) {
-        String sversion = getVersionPart(distribution.getVersion());
+	public static ArchiveType getArchiveType(Distribution distribution) {
+		ArchiveType archiveType;
+		switch (distribution.getPlatform()) {
+			case Linux:
+				archiveType = ArchiveType.TGZ;
+				break;
+			case Windows:
+				archiveType = ArchiveType.ZIP;
+				break;
+			case OS_X:
+				archiveType = ArchiveType.TGZ;
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
+		}
+		return archiveType;
+	}
 
-        ArchiveType archiveType = getArchiveType(distribution);
-        String sarchiveType;
-        switch (archiveType) {
-            case TGZ:
-                sarchiveType = "tgz";
-                break;
-            case ZIP:
-                sarchiveType = "zip";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown ArchiveType " + archiveType);
-        }
+	public static String getPath(Distribution distribution) {
+		String sversion = getVersionPart(distribution.getVersion());
 
-        String splatform;
-        switch (distribution.getPlatform()) {
-            case Linux:
-                splatform = "linux";
-                break;
-            case Windows:
-                splatform = "win32";
-                break;
-            case OS_X:
-                splatform = "osx";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
-        }
+		ArchiveType archiveType = getArchiveType(distribution);
+		String sarchiveType;
+		switch (archiveType) {
+			case TGZ:
+				sarchiveType = "tgz";
+				break;
+			case ZIP:
+				sarchiveType = "zip";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown ArchiveType " + archiveType);
+		}
 
-        String sbitSize;
-        switch (distribution.getBitsize()) {
-            case B32:
-                switch (distribution.getPlatform()) {
-                    case Linux:
-                        sbitSize = "i686";
-                        break;
-                    case Windows:
-                        sbitSize = "i386";
-                        break;
-                    case OS_X:
-                        sbitSize = "i386";
-                        break;
-                    default:
-                        throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
-                }
-                break;
-            case B64:
-                sbitSize = "x86_64";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown BitSize " + distribution.getBitsize());
-        }
+		String splatform;
+		switch (distribution.getPlatform()) {
+			case Linux:
+				splatform = "linux";
+				break;
+			case Windows:
+				splatform = "win32";
+				break;
+			case OS_X:
+				splatform = "osx";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
+		}
 
-        return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
-    }
+		String sbitSize;
+		switch (distribution.getBitsize()) {
+			case B32:
+				switch (distribution.getPlatform()) {
+					case Linux:
+						sbitSize = "i686";
+						break;
+					case Windows:
+						sbitSize = "i386";
+						break;
+					case OS_X:
+						sbitSize = "i386";
+						break;
+					default:
+						throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
+				}
+				break;
+			case B64:
+				sbitSize = "x86_64";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown BitSize " + distribution.getBitsize());
+		}
 
-    protected static Version getSpecificVersion(Version version) {
-      switch (version) {
-      	case V1_6:
-      		return Version.V1_6_5;
-      	case V1_8:
-      		return Version.V1_8_5;
-      	case V2_0:
-      		return Version.V2_0_6;
-      	case V2_1:
-      		return Version.V2_1_2;
-      }
-      return version;
-    }
-    
-    protected static String getVersionPart(Version version) {
-        String sversion;
-        switch (getSpecificVersion(version)) {
-            case V1_6_5:
-                sversion = "1.6.5";
-                break;
-            case V1_7_6:
-                sversion = "1.7.6";
-                break;
-            case V1_8_0_rc0:
-                sversion = "1.8.0-rc0";
-                break;
-            case V1_8_0:
-                sversion = "1.8.0";
-                break;
-            case V1_8_1:
-                sversion = "1.8.1";
-                break;
-            case V1_8_2_rc0:
-                sversion = "1.8.2-rc0";
-                break;
-            case V1_8_2:
-                sversion = "1.8.2";
-                break;
-            case V1_8_4:
-                sversion = "1.8.4";
-                break;
-            case V1_8_5:
-                sversion = "1.8.5";
-                break;
-            case V1_9_0:
-                sversion = "1.9.0";
-                break;
-            case V2_0_1:
-                sversion = "2.0.1";
-                break;
-            case V2_0_4:
-                sversion = "2.0.4";
-                break;
-            case V2_0_5:
-                sversion = "2.0.5";
-                break;
-            case V2_0_6:
-                sversion = "2.0.6";
-                break;
-            case V2_1_0:
-                sversion = "2.1.0";
-                break;
-            case V2_1_1:
-                sversion = "2.1.1";
-                break;
-            case V2_1_2:
-                sversion = "2.1.2";
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown Version " + version);
-        }
-        return sversion;
-    }
+		return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
+	}
+
+	protected static Version getSpecificVersion(Version version) {
+		switch (version) {
+			case V1_6:
+				return Version.V1_6_5;
+			case V1_8:
+				return Version.V1_8_5;
+			case V2_0:
+				return Version.V2_0_6;
+			case V2_1:
+				return Version.V2_1_2;
+		}
+		return version;
+	}
+
+	protected static String getVersionPart(Version version) {
+		String sversion;
+		switch (getSpecificVersion(version)) {
+			case V1_6_5:
+				sversion = "1.6.5";
+				break;
+			case V1_7_6:
+				sversion = "1.7.6";
+				break;
+			case V1_8_0_rc0:
+				sversion = "1.8.0-rc0";
+				break;
+			case V1_8_0:
+				sversion = "1.8.0";
+				break;
+			case V1_8_1:
+				sversion = "1.8.1";
+				break;
+			case V1_8_2_rc0:
+				sversion = "1.8.2-rc0";
+				break;
+			case V1_8_2:
+				sversion = "1.8.2";
+				break;
+			case V1_8_4:
+				sversion = "1.8.4";
+				break;
+			case V1_8_5:
+				sversion = "1.8.5";
+				break;
+			case V1_9_0:
+				sversion = "1.9.0";
+				break;
+			case V2_0_1:
+				sversion = "2.0.1";
+				break;
+			case V2_0_4:
+				sversion = "2.0.4";
+				break;
+			case V2_0_5:
+				sversion = "2.0.5";
+				break;
+			case V2_0_6:
+				sversion = "2.0.6";
+				break;
+			case V2_1_0:
+				sversion = "2.1.0";
+				break;
+			case V2_1_1:
+				sversion = "2.1.1";
+				break;
+			case V2_1_2:
+				sversion = "2.1.2";
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown Version " + version);
+		}
+		return sversion;
+	}
 
 }

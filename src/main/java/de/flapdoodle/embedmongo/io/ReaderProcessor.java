@@ -25,32 +25,32 @@ import java.io.Reader;
  */
 public class ReaderProcessor extends Thread {
 
-    public static final int CHAR_BUFFER_LENGTH = 512;
-    private final Reader reader;
-    private final IStreamProcessor streamProcessor;
+	public static final int CHAR_BUFFER_LENGTH = 512;
+	private final Reader reader;
+	private final IStreamProcessor streamProcessor;
 
-    protected ReaderProcessor(Reader reader, IStreamProcessor streamProcessor) {
-        this.reader = reader;
-        this.streamProcessor = streamProcessor;
+	protected ReaderProcessor(Reader reader, IStreamProcessor streamProcessor) {
+		this.reader = reader;
+		this.streamProcessor = streamProcessor;
 
-        setDaemon(true);
-        start();
-    }
+		setDaemon(true);
+		start();
+	}
 
-    @Override
-    public void run() {
-        try {
-            int read;
-            char[] buf = new char[CHAR_BUFFER_LENGTH];
-            while ((read = reader.read(buf)) != -1) {
-                streamProcessor.process(new String(buf, 0, read));
-            }
-            //CHECKSTYLE:OFF
-        } catch (IOException iox) {
-            // _logger.log(Level.SEVERE,"out",iox);
-        }
-        //CHECKSTYLE:ON
+	@Override
+	public void run() {
+		try {
+			int read;
+			char[] buf = new char[CHAR_BUFFER_LENGTH];
+			while ((read = reader.read(buf)) != -1) {
+				streamProcessor.process(new String(buf, 0, read));
+			}
+			//CHECKSTYLE:OFF
+		} catch (IOException iox) {
+			// _logger.log(Level.SEVERE,"out",iox);
+		}
+		//CHECKSTYLE:ON
 
-        streamProcessor.onProcessed();
-    }
+		streamProcessor.onProcessed();
+	}
 }

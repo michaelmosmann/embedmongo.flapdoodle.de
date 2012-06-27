@@ -33,34 +33,34 @@ import java.util.regex.Pattern;
  *
  */
 public class ZipExtractor implements IExtractor {
-    @Override
-    public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
-        IProgressListener progressListener = runtime.getProgressListener();
-        String progressLabel = "Extract " + source;
-        progressListener.start(progressLabel);
+	@Override
+	public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
+		IProgressListener progressListener = runtime.getProgressListener();
+		String progressLabel = "Extract " + source;
+		progressListener.start(progressLabel);
 
-        FileInputStream fin = new FileInputStream(source);
-        BufferedInputStream in = new BufferedInputStream(fin);
+		FileInputStream fin = new FileInputStream(source);
+		BufferedInputStream in = new BufferedInputStream(fin);
 
-        ZipArchiveInputStream zipIn = new ZipArchiveInputStream(in);
-        try {
-            ZipArchiveEntry entry;
-            while ((entry = zipIn.getNextZipEntry()) != null) {
-                if (file.matcher(entry.getName()).matches()) {
-                    if (zipIn.canReadEntryData(entry)) {
-                        long size = entry.getSize();
-                        Files.write(zipIn, size, destination);
-                        destination.setExecutable(true);
-                        progressListener.done(progressLabel);
-                    }
-                    break;
+		ZipArchiveInputStream zipIn = new ZipArchiveInputStream(in);
+		try {
+			ZipArchiveEntry entry;
+			while ((entry = zipIn.getNextZipEntry()) != null) {
+				if (file.matcher(entry.getName()).matches()) {
+					if (zipIn.canReadEntryData(entry)) {
+						long size = entry.getSize();
+						Files.write(zipIn, size, destination);
+						destination.setExecutable(true);
+						progressListener.done(progressLabel);
+					}
+					break;
 
-                }
-            }
+				}
+			}
 
-        } finally {
-            zipIn.close();
-        }
+		} finally {
+			zipIn.close();
+		}
 
-    }
+	}
 }

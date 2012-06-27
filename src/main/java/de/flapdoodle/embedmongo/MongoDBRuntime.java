@@ -34,57 +34,57 @@ import java.util.logging.Logger;
  */
 public class MongoDBRuntime {
 
-    private static Logger logger = Logger.getLogger(MongoDBRuntime.class.getName());
+	private static Logger logger = Logger.getLogger(MongoDBRuntime.class.getName());
 
-    private final RuntimeConfig runtime;
+	private final RuntimeConfig runtime;
 
-    private MongoDBRuntime(RuntimeConfig config) {
-        runtime = config;
-    }
+	private MongoDBRuntime(RuntimeConfig config) {
+		runtime = config;
+	}
 
-    public static MongoDBRuntime getInstance(RuntimeConfig config) {
-        return new MongoDBRuntime(config);
-    }
+	public static MongoDBRuntime getInstance(RuntimeConfig config) {
+		return new MongoDBRuntime(config);
+	}
 
-    public static MongoDBRuntime getDefaultInstance() {
-        return getInstance(new RuntimeConfig());
-    }
+	public static MongoDBRuntime getDefaultInstance() {
+		return getInstance(new RuntimeConfig());
+	}
 
-    public boolean checkDistribution(Distribution distribution) throws IOException {
-        if (!LocalArtifactStore.checkArtifact(runtime, distribution)) {
-            return LocalArtifactStore.store(runtime, distribution, Downloader.download(runtime, distribution));
-        }
-        return true;
-    }
+	public boolean checkDistribution(Distribution distribution) throws IOException {
+		if (!LocalArtifactStore.checkArtifact(runtime, distribution)) {
+			return LocalArtifactStore.store(runtime, distribution, Downloader.download(runtime, distribution));
+		}
+		return true;
+	}
 
-    public MongodExecutable prepare(MongodConfig mongodConfig) {
-        try {
-            IProgressListener progress = runtime.getProgressListener();
+	public MongodExecutable prepare(MongodConfig mongodConfig) {
+		try {
+			IProgressListener progress = runtime.getProgressListener();
 
-            Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
-            progress.done("Detect Distribution");
-            if (checkDistribution(distribution)) {
-                progress.done("Check Distribution");
-                File mongodExe = extractMongod(distribution);
+			Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
+			progress.done("Detect Distribution");
+			if (checkDistribution(distribution)) {
+				progress.done("Check Distribution");
+				File mongodExe = extractMongod(distribution);
 
-                return new MongodExecutable(distribution, mongodConfig, runtime.getMongodOutputConfig(), mongodExe);
-            }
-        } catch (IOException iox) {
-            logger.log(Level.SEVERE, "start", iox);
-        }
-        return null;
-    }
+				return new MongodExecutable(distribution, mongodConfig, runtime.getMongodOutputConfig(), mongodExe);
+			}
+		} catch (IOException iox) {
+			logger.log(Level.SEVERE, "start", iox);
+		}
+		return null;
+	}
 
 
-    protected File extractMongod(Distribution distribution) throws IOException {
-        File artifact = LocalArtifactStore.getArtifact(runtime, distribution);
-        IExtractor extractor = Extractors.getExtractor(distribution);
+	protected File extractMongod(Distribution distribution) throws IOException {
+		File artifact = LocalArtifactStore.getArtifact(runtime, distribution);
+		IExtractor extractor = Extractors.getExtractor(distribution);
 
-        File mongodExe = Files.createTempFile(
-                runtime.getExecutableNaming().nameFor("extract", Paths.getMongodExecutable(distribution)));
-        extractor.extract(runtime, artifact, mongodExe, Paths.getMongodExecutablePattern(distribution));
-        return mongodExe;
-    }
+		File mongodExe = Files.createTempFile(
+				runtime.getExecutableNaming().nameFor("extract", Paths.getMongodExecutable(distribution)));
+		extractor.extract(runtime, artifact, mongodExe, Paths.getMongodExecutablePattern(distribution));
+		return mongodExe;
+	}
 
 
 }

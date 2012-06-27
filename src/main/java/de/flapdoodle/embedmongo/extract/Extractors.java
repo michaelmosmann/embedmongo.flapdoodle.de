@@ -25,19 +25,19 @@ import de.flapdoodle.embedmongo.distribution.Distribution;
  * Extractor Helper
  */
 public class Extractors {
-    private Extractors() {
+	private Extractors() {
 
-    }
+	}
 
-    public static IExtractor getExtractor(Distribution distribution) {
-        ArchiveType archiveType = Paths.getArchiveType(distribution);
-        switch (archiveType) {
-            case TGZ:
-                return new TgzExtractor();
-            case ZIP:
-                return new ZipExtractor();
-            default:
-                throw new IllegalArgumentException("ArciveType " + archiveType + " not supported");
-        }
-    }
+	public static IExtractor getExtractor(Distribution distribution) {
+		ArchiveType archiveType = Paths.getArchiveType(distribution);
+		switch (archiveType) {
+			case TGZ:
+				return new TgzExtractor();
+			case ZIP:
+				return new ZipExtractor();
+			default:
+				throw new IllegalArgumentException("ArciveType " + archiveType + " not supported");
+		}
+	}
 }

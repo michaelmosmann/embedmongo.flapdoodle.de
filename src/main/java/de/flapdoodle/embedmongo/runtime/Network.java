@@ -26,30 +26,30 @@ import java.util.logging.Logger;
  */
 public class Network {
 
-    private static Logger logger = Logger.getLogger(Network.class.getName());
-    public static final int IP_LENGTH = 4;
+	private static Logger logger = Logger.getLogger(Network.class.getName());
+	public static final int IP_LENGTH = 4;
 
-    private Network() {
-        throw new IllegalAccessError("singleton");
-    }
+	private Network() {
+		throw new IllegalAccessError("singleton");
+	}
 
-    public static boolean localhostIsIPv6() throws UnknownHostException {
-        InetAddress addr = InetAddress.getLocalHost();
-        byte[] ipAddr = addr.getAddress();
-        if (ipAddr.length > IP_LENGTH)
-            return true;
-        return false;
-    }
+	public static boolean localhostIsIPv6() throws UnknownHostException {
+		InetAddress addr = InetAddress.getLocalHost();
+		byte[] ipAddr = addr.getAddress();
+		if (ipAddr.length > IP_LENGTH)
+			return true;
+		return false;
+	}
 
-    public static InetAddress getLocalHost() throws UnknownHostException {
-        InetAddress ret = InetAddress.getLocalHost();
-        if (!ret.isLoopbackAddress()) {
-            ret = InetAddress.getByName("localhost");
-            if (!ret.isLoopbackAddress()) {
-                logger.severe("" + ret.getHostAddress() + " is not a loopback address");
-            }
-        }
-        return ret;
-    }
+	public static InetAddress getLocalHost() throws UnknownHostException {
+		InetAddress ret = InetAddress.getLocalHost();
+		if (!ret.isLoopbackAddress()) {
+			ret = InetAddress.getByName("localhost");
+			if (!ret.isLoopbackAddress()) {
+				logger.severe("" + ret.getHostAddress() + " is not a loopback address");
+			}
+		}
+		return ret;
+	}
 
 }

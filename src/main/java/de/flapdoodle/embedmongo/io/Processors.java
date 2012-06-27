@@ -24,23 +24,23 @@ import java.io.Reader;
  */
 public class Processors {
 
-    private Processors() {
-        throw new IllegalAccessError("singleton");
-    }
+	private Processors() {
+		throw new IllegalAccessError("singleton");
+	}
 
-    public static IStreamProcessor console() {
-        return new ConsoleOutputStreamProcessor();
-    }
+	public static IStreamProcessor console() {
+		return new ConsoleOutputStreamProcessor();
+	}
 
-    public static IStreamProcessor named(String name, IStreamProcessor destination) {
-        return new NamedOutputStreamProcessor(name, destination);
-    }
+	public static IStreamProcessor named(String name, IStreamProcessor destination) {
+		return new NamedOutputStreamProcessor(name, destination);
+	}
 
-    public static IStreamProcessor namedConsole(String name) {
-        return named(name, console());
-    }
+	public static IStreamProcessor namedConsole(String name) {
+		return named(name, console());
+	}
 
-    public static ReaderProcessor connect(Reader reader, IStreamProcessor processor) {
-        return new ReaderProcessor(reader, processor);
-    }
+	public static ReaderProcessor connect(Reader reader, IStreamProcessor processor) {
+		return new ReaderProcessor(reader, processor);
+	}
 }

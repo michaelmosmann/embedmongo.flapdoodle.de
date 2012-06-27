@@ -28,29 +28,29 @@ import java.util.List;
  */
 public class ProcessConfig {
 
-    private final List<String> commandLine;
-    private final IStreamProcessor output;
-    private final IStreamProcessor error;
+	private final List<String> commandLine;
+	private final IStreamProcessor output;
+	private final IStreamProcessor error;
 
-    public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
-        this.commandLine = new ArrayList<String>(commandLine);
-        this.output = output;
-        this.error = error;
-    }
+	public ProcessConfig(List<String> commandLine, IStreamProcessor output, IStreamProcessor error) {
+		this.commandLine = new ArrayList<String>(commandLine);
+		this.output = output;
+		this.error = error;
+	}
 
-    public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
-        this(commandLine, output, null);
-    }
+	public ProcessConfig(List<String> commandLine, IStreamProcessor output) {
+		this(commandLine, output, null);
+	}
 
-    public List<String> getCommandLine() {
-        return Collections.unmodifiableList(commandLine);
-    }
+	public List<String> getCommandLine() {
+		return Collections.unmodifiableList(commandLine);
+	}
 
-    public IStreamProcessor getOutput() {
-        return output;
-    }
+	public IStreamProcessor getOutput() {
+		return output;
+	}
 
-    public IStreamProcessor getError() {
-        return error;
-    }
+	public IStreamProcessor getError() {
+		return error;
+	}
 }

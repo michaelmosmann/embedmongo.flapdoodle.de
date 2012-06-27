@@ -21,18 +21,18 @@ package de.flapdoodle.embedmongo.distribution;
  * Platform enum
  */
 public enum Platform {
-    Linux,
-    Windows,
-    OS_X;
+	Linux,
+	Windows,
+	OS_X;
 
-    public static Platform detect() {
-        String osName = System.getProperty("os.name");
-        if (osName.equals("Linux"))
-            return Linux;
-        if (osName.startsWith("Windows", 0))
-            return Windows;
-        if (osName.equals("Mac OS X"))
-            return OS_X;
-        throw new IllegalArgumentException("Could not detect Platform: os.name=" + osName);
-    }
+	public static Platform detect() {
+		String osName = System.getProperty("os.name");
+		if (osName.equals("Linux"))
+			return Linux;
+		if (osName.startsWith("Windows", 0))
+			return Windows;
+		if (osName.equals("Mac OS X"))
+			return OS_X;
+		throw new IllegalArgumentException("Could not detect Platform: os.name=" + osName);
+	}
 }

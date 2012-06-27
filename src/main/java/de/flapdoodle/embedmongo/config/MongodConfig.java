@@ -24,37 +24,37 @@ import de.flapdoodle.embedmongo.distribution.Version;
  */
 public class MongodConfig {
 
-    private final Version version;
-    private final int port;
-    private final String databaseDir;
-    private final boolean ipv6;
+	private final Version version;
+	private final int port;
+	private final String databaseDir;
+	private final boolean ipv6;
 
-    public MongodConfig(Version version, int port, boolean ipv6) {
-        this(version, port, ipv6, null);
-    }
+	public MongodConfig(Version version, int port, boolean ipv6) {
+		this(version, port, ipv6, null);
+	}
 
-    public MongodConfig(Version version, int port, boolean ipv6, String databaseDir) {
-        this.version = version;
-        this.port = port;
-        this.ipv6 = ipv6;
-        this.databaseDir = databaseDir;
-    }
+	public MongodConfig(Version version, int port, boolean ipv6, String databaseDir) {
+		this.version = version;
+		this.port = port;
+		this.ipv6 = ipv6;
+		this.databaseDir = databaseDir;
+	}
 
-    public Version getVersion() {
-        return version;
-    }
+	public Version getVersion() {
+		return version;
+	}
 
-    public int getPort() {
-        return port;
-    }
-
-
-    public boolean isIpv6() {
-        return ipv6;
-    }
+	public int getPort() {
+		return port;
+	}
 
 
-    public String getDatabaseDir() {
-        return databaseDir;
-    }
+	public boolean isIpv6() {
+		return ipv6;
+	}
+
+
+	public String getDatabaseDir() {
+		return databaseDir;
+	}
 }

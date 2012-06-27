@@ -35,79 +35,79 @@ import java.net.URLConnection;
  */
 public class Downloader {
 
-    public static final int CONNECTION_TIMEOUT = 10000;
-    public static final int READ_TIMEOUT = 10000;
-    public static final int DEFAULT_CONTENT_LENGTH = 20 * 1024 * 1024;
-    public static final int BUFFER_LENGTH = 1024 * 8;
-    public static final int READ_COUNT_MULTIPLIER = 100;
+	public static final int CONNECTION_TIMEOUT = 10000;
+	public static final int READ_TIMEOUT = 10000;
+	public static final int DEFAULT_CONTENT_LENGTH = 20 * 1024 * 1024;
+	public static final int BUFFER_LENGTH = 1024 * 8;
+	public static final int READ_COUNT_MULTIPLIER = 100;
 
-    private Downloader() {
+	private Downloader() {
 
-    }
+	}
 
-    /**
-     * http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-1.6.5.tgz
-     * http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.7.6.tgz
-     * http://fastdl.mongodb.org/win32/mongodb-win32-x86_64-1.6.5.zip
-     * http://fastdl.mongodb.org/win32/mongodb-win32-i386-1.7.6.zip
-     * <p/>
-     * http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz
-     * http://fastdl.mongodb.org/osx/mongodb-osx-i386-tiger-1.7.6.tgz
-     */
-    public static String getDownloadUrl(RuntimeConfig runtime, Distribution distribution) {
-        return runtime.getDownloadPath() + Paths.getPath(distribution);
-    }
+	/**
+	 * http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-1.6.5.tgz
+	 * http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.7.6.tgz
+	 * http://fastdl.mongodb.org/win32/mongodb-win32-x86_64-1.6.5.zip
+	 * http://fastdl.mongodb.org/win32/mongodb-win32-i386-1.7.6.zip
+	 * <p/>
+	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz
+	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-tiger-1.7.6.tgz
+	 */
+	public static String getDownloadUrl(RuntimeConfig runtime, Distribution distribution) {
+		return runtime.getDownloadPath() + Paths.getPath(distribution);
+	}
 
-    public static File download(RuntimeConfig runtime, Distribution distribution) throws IOException {
+	public static File download(RuntimeConfig runtime, Distribution distribution) throws IOException {
 
-        String progressLabel = "Download " + distribution;
-        IProgressListener progress = runtime.getProgressListener();
-        progress.start(progressLabel);
+		String progressLabel = "Download " + distribution;
+		IProgressListener progress = runtime.getProgressListener();
+		progress.start(progressLabel);
 
-        File ret = Files.createTempFile(runtime.getDefaultfileNaming()
-                .nameFor("embedmongo-download", "." + Paths.getArchiveType(distribution)));
-        if (ret.canWrite()) {
+		File ret = Files.createTempFile(runtime.getDefaultfileNaming()
+				.nameFor("embedmongo-download", "." + Paths.getArchiveType(distribution)));
+		if (ret.canWrite()) {
 
-            BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
+			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
 
-            URL url = new URL(getDownloadUrl(runtime, distribution));
-            URLConnection openConnection = url.openConnection();
-            openConnection.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (compatible; "
-                            + "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
-            openConnection.setConnectTimeout(CONNECTION_TIMEOUT);
-            openConnection.setReadTimeout(READ_TIMEOUT);
+			URL url = new URL(getDownloadUrl(runtime, distribution));
+			URLConnection openConnection = url.openConnection();
+			openConnection.setRequestProperty("User-Agent",
+					"Mozilla/5.0 (compatible; "
+							+ "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
+			openConnection.setConnectTimeout(CONNECTION_TIMEOUT);
+			openConnection.setReadTimeout(READ_TIMEOUT);
 
-            InputStream downloadStream = openConnection.getInputStream();
+			InputStream downloadStream = openConnection.getInputStream();
 
-            long length = openConnection.getContentLength();
-            progress.info(progressLabel, "DownloadSize: " + length);
+			long length = openConnection.getContentLength();
+			progress.info(progressLabel, "DownloadSize: " + length);
 
-            if (length == -1) length = DEFAULT_CONTENT_LENGTH;
+			if (length == -1) length = DEFAULT_CONTENT_LENGTH;
 
 
-            try {
-                BufferedInputStream bis = new BufferedInputStream(downloadStream);
-                byte[] buf = new byte[BUFFER_LENGTH];
-                int read = 0;
-                long readCount = 0;
-                while ((read = bis.read(buf)) != -1) {
-                    bos.write(buf, 0, read);
-                    readCount = readCount + read;
-                    if (readCount > length) length = readCount;
+			try {
+				BufferedInputStream bis = new BufferedInputStream(downloadStream);
+				byte[] buf = new byte[BUFFER_LENGTH];
+				int read = 0;
+				long readCount = 0;
+				while ((read = bis.read(buf)) != -1) {
+					bos.write(buf, 0, read);
+					readCount = readCount + read;
+					if (readCount > length) length = readCount;
 
-                    progress.progress(progressLabel, (int) (readCount * READ_COUNT_MULTIPLIER / length));
-                }
-            } finally {
-                downloadStream.close();
-                bos.flush();
-                bos.close();
-            }
-        } else {
-            throw new IOException("Can not write " + ret);
-        }
-        progress.done(progressLabel);
-        return ret;
-    }
+					progress.progress(progressLabel, (int) (readCount * READ_COUNT_MULTIPLIER / length));
+				}
+			} finally {
+				downloadStream.close();
+				bos.flush();
+				bos.close();
+			}
+		} else {
+			throw new IOException("Can not write " + ret);
+		}
+		progress.done(progressLabel);
+		return ret;
+	}
 
 }

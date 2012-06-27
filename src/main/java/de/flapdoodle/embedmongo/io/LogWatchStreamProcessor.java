@@ -24,64 +24,64 @@ import java.util.logging.Logger;
  */
 public class LogWatchStreamProcessor implements IStreamProcessor {
 
-    private static Logger logger = Logger.getLogger(LogWatchStreamProcessor.class.getName());
+	private static Logger logger = Logger.getLogger(LogWatchStreamProcessor.class.getName());
 
-    //private final Reader _reader;
-    private final StringBuilder output = new StringBuilder();
-    private final String success;
-    private final String failure;
+	//private final Reader _reader;
+	private final StringBuilder output = new StringBuilder();
+	private final String success;
+	private final String failure;
 
-    private boolean initWithSuccess = false;
+	private boolean initWithSuccess = false;
 
-    private final IStreamProcessor destination;
+	private final IStreamProcessor destination;
 
-    public LogWatchStreamProcessor(String success, String failure, IStreamProcessor destination) {
-        this.success = success;
-        this.failure = failure;
-        this.destination = destination;
-    }
+	public LogWatchStreamProcessor(String success, String failure, IStreamProcessor destination) {
+		this.success = success;
+		this.failure = failure;
+		this.destination = destination;
+	}
 
-    @Override
-    public void process(String block) {
-        destination.process(block);
+	@Override
+	public void process(String block) {
+		destination.process(block);
 
-        CharSequence line = block;
-        output.append(line);
+		CharSequence line = block;
+		output.append(line);
 
-        if (output.indexOf(success) != -1) {
-            initWithSuccess = true;
-            gotResult();
-        }
-        if (output.indexOf(failure) != -1) {
-            initWithSuccess = false;
-            gotResult();
-        }
-    }
+		if (output.indexOf(success) != -1) {
+			initWithSuccess = true;
+			gotResult();
+		}
+		if (output.indexOf(failure) != -1) {
+			initWithSuccess = false;
+			gotResult();
+		}
+	}
 
-    @Override
-    public void onProcessed() {
-        gotResult();
-    }
+	@Override
+	public void onProcessed() {
+		gotResult();
+	}
 
-    private synchronized void gotResult() {
-        notify();
-    }
+	private synchronized void gotResult() {
+		notify();
+	}
 
-    public synchronized void waitForResult(long timeout) {
-        try {
-            wait(timeout);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
+	public synchronized void waitForResult(long timeout) {
+		try {
+			wait(timeout);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public boolean isInitWithSuccess() {
-        return initWithSuccess;
-    }
+	public boolean isInitWithSuccess() {
+		return initWithSuccess;
+	}
 
-    public String getOutput() {
-        return output.toString();
-    }
+	public String getOutput() {
+		return output.toString();
+	}
 
 
 }

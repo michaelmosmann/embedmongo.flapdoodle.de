@@ -32,39 +32,39 @@ import java.util.logging.Logger;
  */
 public class NUMA {
 
-    private static Logger logger = Logger.getLogger(NUMA.class.getName());
+	private static Logger logger = Logger.getLogger(NUMA.class.getName());
 
-    public static synchronized boolean isNUMA(Platform platform) {
-        Boolean ret = NUMA_STATUS_MAP.get(platform);
-        if (ret == null) {
-            ret = isNUMAOnce(platform);
-            NUMA_STATUS_MAP.put(platform, ret);
-        }
-        return ret;
-    }
+	public static synchronized boolean isNUMA(Platform platform) {
+		Boolean ret = NUMA_STATUS_MAP.get(platform);
+		if (ret == null) {
+			ret = isNUMAOnce(platform);
+			NUMA_STATUS_MAP.put(platform, ret);
+		}
+		return ret;
+	}
 
-    static final Map<Platform, Boolean> NUMA_STATUS_MAP = new HashMap<Platform, Boolean>();
+	static final Map<Platform, Boolean> NUMA_STATUS_MAP = new HashMap<Platform, Boolean>();
 
 
-    public static boolean isNUMAOnce(Platform platform) {
-        if (platform == Platform.Linux) {
-            try {
-                ProcessControl process = ProcessControl
-                        .fromCommandLine(Collections.newArrayList("grep", "NUMA=y", "/boot/config-`uname -r`"), true);
-                Reader reader = process.getReader();
-                String content = Readers.readAll(reader);
-                process.stop();
-                boolean isNUMA = !content.isEmpty();
-                if (isNUMA) {
-                    logger.warning("-----------------------------------------------\n"
-                            + "NUMA support is still alpha. If you have any Problems with it, please contact us.\n"
-                            + "-----------------------------------------------");
-                }
-                return isNUMA;
-            } catch (IOException ix) {
-                ix.printStackTrace();
-            }
-        }
-        return false;
-    }
+	public static boolean isNUMAOnce(Platform platform) {
+		if (platform == Platform.Linux) {
+			try {
+				ProcessControl process = ProcessControl
+						.fromCommandLine(Collections.newArrayList("grep", "NUMA=y", "/boot/config-`uname -r`"), true);
+				Reader reader = process.getReader();
+				String content = Readers.readAll(reader);
+				process.stop();
+				boolean isNUMA = !content.isEmpty();
+				if (isNUMA) {
+					logger.warning("-----------------------------------------------\n"
+							+ "NUMA support is still alpha. If you have any Problems with it, please contact us.\n"
+							+ "-----------------------------------------------");
+				}
+				return isNUMA;
+			} catch (IOException ix) {
+				ix.printStackTrace();
+			}
+		}
+		return false;
+	}
 }

@@ -22,10 +22,10 @@ package de.flapdoodle.embedmongo.config;
  *
  */
 public class ArtifactStoreInUserHome implements IArtifactStoragePathNaming {
-    static final String STORE_POSTFIX = ".embedmongo";
+	static final String STORE_POSTFIX = ".embedmongo";
 
-    @Override
-    public String getPath() {
-        return System.getProperty("user.home") + "/" + STORE_POSTFIX + "/"; //"/.embedmongo/";
-    }
+	@Override
+	public String getPath() {
+		return System.getProperty("user.home") + "/" + STORE_POSTFIX + "/"; //"/.embedmongo/";
+	}
 }

@@ -22,48 +22,48 @@ package de.flapdoodle.embedmongo.io;
  */
 public class StreamToLineProcessor implements IStreamProcessor {
 
-    private final IStreamProcessor destination;
-    private StringBuilder buffer = new StringBuilder();
+	private final IStreamProcessor destination;
+	private StringBuilder buffer = new StringBuilder();
 
-    public StreamToLineProcessor(IStreamProcessor destination) {
-        this.destination = destination;
-    }
+	public StreamToLineProcessor(IStreamProcessor destination) {
+		this.destination = destination;
+	}
 
-    @Override
-    public void process(String block) {
-        int newLineEnd = block.indexOf('\n');
-        if (newLineEnd == -1) {
-            buffer.append(block);
-        } else {
-            buffer.append(block.substring(0, newLineEnd + 1));
-            destination.process(getAndClearBuffer());
-            do {
-                int lastEnd = newLineEnd;
-                newLineEnd = block.indexOf('\n', newLineEnd + 1);
-                if (newLineEnd != -1) {
-                    destination.process(block.substring(lastEnd + 1, newLineEnd + 1));
-                } else {
-                    buffer.append(block.substring(lastEnd + 1));
-                }
-            } while (newLineEnd != -1);
-        }
-    }
+	@Override
+	public void process(String block) {
+		int newLineEnd = block.indexOf('\n');
+		if (newLineEnd == -1) {
+			buffer.append(block);
+		} else {
+			buffer.append(block.substring(0, newLineEnd + 1));
+			destination.process(getAndClearBuffer());
+			do {
+				int lastEnd = newLineEnd;
+				newLineEnd = block.indexOf('\n', newLineEnd + 1);
+				if (newLineEnd != -1) {
+					destination.process(block.substring(lastEnd + 1, newLineEnd + 1));
+				} else {
+					buffer.append(block.substring(lastEnd + 1));
+				}
+			} while (newLineEnd != -1);
+		}
+	}
 
-    private String getAndClearBuffer() {
-        String ret = buffer.toString();
-        buffer.setLength(0);
-        return ret;
-    }
+	private String getAndClearBuffer() {
+		String ret = buffer.toString();
+		buffer.setLength(0);
+		return ret;
+	}
 
-    @Override
-    public void onProcessed() {
-        if (buffer.length() > 0) {
-            destination.process(getAndClearBuffer());
-        }
-        destination.onProcessed();
-    }
+	@Override
+	public void onProcessed() {
+		if (buffer.length() > 0) {
+			destination.process(getAndClearBuffer());
+		}
+		destination.onProcessed();
+	}
 
-    public static IStreamProcessor wrap(IStreamProcessor destination) {
-        return new StreamToLineProcessor(destination);
-    }
+	public static IStreamProcessor wrap(IStreamProcessor destination) {
+		return new StreamToLineProcessor(destination);
+	}
 }

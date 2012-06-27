@@ -25,31 +25,31 @@ import de.flapdoodle.embedmongo.io.Processors;
  */
 public class MongodProcessOutputConfig {
 
-    private final IStreamProcessor mongodOutput;
-    private final IStreamProcessor mongodError;
-    private final IStreamProcessor commandsOutput;
+	private final IStreamProcessor mongodOutput;
+	private final IStreamProcessor mongodError;
+	private final IStreamProcessor commandsOutput;
 
-    public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
-                                     IStreamProcessor commandsOutput) {
-        this.mongodOutput = mongodOutput;
-        this.mongodError = mongodError;
-        this.commandsOutput = commandsOutput;
-    }
+	public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
+	                                 IStreamProcessor commandsOutput) {
+		this.mongodOutput = mongodOutput;
+		this.mongodError = mongodError;
+		this.commandsOutput = commandsOutput;
+	}
 
-    public IStreamProcessor getMongodOutput() {
-        return mongodOutput;
-    }
+	public IStreamProcessor getMongodOutput() {
+		return mongodOutput;
+	}
 
-    public IStreamProcessor getMongodError() {
-        return mongodError;
-    }
+	public IStreamProcessor getMongodError() {
+		return mongodError;
+	}
 
-    public IStreamProcessor getCommandsOutput() {
-        return commandsOutput;
-    }
+	public IStreamProcessor getCommandsOutput() {
+		return commandsOutput;
+	}
 
-    public static MongodProcessOutputConfig getDefaultInstance() {
-        return new MongodProcessOutputConfig(Processors.namedConsole("[mongod output]"),
-                Processors.namedConsole("[mongod error]"), Processors.console());
-    }
+	public static MongodProcessOutputConfig getDefaultInstance() {
+		return new MongodProcessOutputConfig(Processors.namedConsole("[mongod output]"),
+				Processors.namedConsole("[mongod error]"), Processors.console());
+	}
 }

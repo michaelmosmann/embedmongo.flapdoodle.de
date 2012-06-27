@@ -25,19 +25,19 @@ import java.io.Reader;
  */
 public class Readers {
 
-    public static final int CHAR_BUFFER_LENGTH = 512;
+	public static final int CHAR_BUFFER_LENGTH = 512;
 
-    private Readers() {
-        throw new IllegalAccessError("singleton");
-    }
+	private Readers() {
+		throw new IllegalAccessError("singleton");
+	}
 
-    public static String readAll(Reader reader) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        int read;
-        char[] buf = new char[CHAR_BUFFER_LENGTH];
-        while ((read = reader.read(buf)) != -1) {
-            sb.append(new String(buf, 0, read));
-        }
-        return sb.toString();
-    }
+	public static String readAll(Reader reader) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int read;
+		char[] buf = new char[CHAR_BUFFER_LENGTH];
+		while ((read = reader.read(buf)) != -1) {
+			sb.append(new String(buf, 0, read));
+		}
+		return sb.toString();
+	}
 }

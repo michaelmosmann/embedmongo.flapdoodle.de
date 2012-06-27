@@ -22,10 +22,10 @@ package de.flapdoodle.embedmongo.extract;
  */
 public class UserTempNaming implements ITempNaming {
 
-    @Override
-    public String nameFor(String prefix, String postfix) {
-        String username = System.getProperty("user.name");
-        return prefix + "-" + username + "-" + postfix;
-    }
+	@Override
+	public String nameFor(String prefix, String postfix) {
+		String username = System.getProperty("user.name");
+		return prefix + "-" + username + "-" + postfix;
+	}
 
 }

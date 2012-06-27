@@ -22,34 +22,34 @@ package de.flapdoodle.embedmongo.distribution;
  */
 public class Distribution {
 
-    private final Version version;
-    private final Platform platform;
-    private final BitSize bitsize;
+	private final Version version;
+	private final Platform platform;
+	private final BitSize bitsize;
 
-    public Distribution(Version version, Platform platform, BitSize bitsize) {
-        this.version = version;
-        this.platform = platform;
-        this.bitsize = bitsize;
-    }
+	public Distribution(Version version, Platform platform, BitSize bitsize) {
+		this.version = version;
+		this.platform = platform;
+		this.bitsize = bitsize;
+	}
 
-    public Version getVersion() {
-        return version;
-    }
+	public Version getVersion() {
+		return version;
+	}
 
-    public Platform getPlatform() {
-        return platform;
-    }
+	public Platform getPlatform() {
+		return platform;
+	}
 
-    public BitSize getBitsize() {
-        return bitsize;
-    }
+	public BitSize getBitsize() {
+		return bitsize;
+	}
 
-    @Override
-    public String toString() {
-        return "" + version + ":" + platform + ":" + bitsize;
-    }
+	@Override
+	public String toString() {
+		return "" + version + ":" + platform + ":" + bitsize;
+	}
 
-    public static Distribution detectFor(Version version) {
-        return new Distribution(version, Platform.detect(), BitSize.detect());
-    }
+	public static Distribution detectFor(Version version) {
+		return new Distribution(version, Platform.detect(), BitSize.detect());
+	}
 }

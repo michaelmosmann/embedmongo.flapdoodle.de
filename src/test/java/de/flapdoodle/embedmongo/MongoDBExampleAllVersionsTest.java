@@ -45,66 +45,66 @@ import java.util.Date;
  */
 @RunWith(value = Parameterized.class)
 public class MongoDBExampleAllVersionsTest {
-    @Parameters
-    public static Collection<Object[]> data() {
-        Collection<Object[]> result = new ArrayList<Object[]>();
-        for (Version v : Version.values())
-            result.add(new Object[]{v});
-        result.clear();
-        result.add(new Object[]{Version.V2_0_4});
-        return result;
-    }
+	@Parameters
+	public static Collection<Object[]> data() {
+		Collection<Object[]> result = new ArrayList<Object[]>();
+		for (Version v : Version.values())
+			result.add(new Object[]{v});
+		result.clear();
+		result.add(new Object[]{Version.V2_0_4});
+		return result;
+	}
 
-    private static final int PORT = 12345;
-    private Version mongoVersion;
-    private MongodExecutable mongodExe;
-    private MongodProcess mongod;
+	private static final int PORT = 12345;
+	private Version mongoVersion;
+	private MongodExecutable mongodExe;
+	private MongodProcess mongod;
 
-    private Mongo mongo;
-    private static final String DATABASENAME = "mongo_test";
+	private Mongo mongo;
+	private static final String DATABASENAME = "mongo_test";
 
-    public MongoDBExampleAllVersionsTest(Version v) {
-        this.mongoVersion = v;
-    }
+	public MongoDBExampleAllVersionsTest(Version v) {
+		this.mongoVersion = v;
+	}
 
-    @Before
-    public void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 
-        MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-        mongodExe = runtime.prepare(new MongodConfig(this.mongoVersion, PORT,
-                Network.localhostIsIPv6()));
-        mongod = mongodExe.start();
+		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		mongodExe = runtime.prepare(new MongodConfig(this.mongoVersion, PORT,
+				Network.localhostIsIPv6()));
+		mongod = mongodExe.start();
 
-        mongo = new Mongo("localhost", PORT);
-    }
+		mongo = new Mongo("localhost", PORT);
+	}
 
-    @After
-    public void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 
-        mongod.stop();
-        mongodExe.cleanup();
-    }
+		mongod.stop();
+		mongodExe.cleanup();
+	}
 
-    public Mongo getMongo() {
-        return mongo;
-    }
+	public Mongo getMongo() {
+		return mongo;
+	}
 
-    public String getDatabaseName() {
-        return DATABASENAME;
-    }
+	public String getDatabaseName() {
+		return DATABASENAME;
+	}
 
-    @Test
-    public void testInsert1() {
-        DB db = mongo.getDB("test");
-        DBCollection col = db.createCollection("testCol", new BasicDBObject());
-        col.save(new BasicDBObject("testDoc", new Date()));
-    }
+	@Test
+	public void testInsert1() {
+		DB db = mongo.getDB("test");
+		DBCollection col = db.createCollection("testCol", new BasicDBObject());
+		col.save(new BasicDBObject("testDoc", new Date()));
+	}
 
-    @Test
-    public void testInsert2() {
-        DB db = mongo.getDB("test");
-        DBCollection col = db.createCollection("testCol", new BasicDBObject());
-        col.save(new BasicDBObject("testDoc", new Date()));
-    }
+	@Test
+	public void testInsert2() {
+		DB db = mongo.getDB("test");
+		DBCollection col = db.createCollection("testCol", new BasicDBObject());
+		col.save(new BasicDBObject("testDoc", new Date()));
+	}
 
 }

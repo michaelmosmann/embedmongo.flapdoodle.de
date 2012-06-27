@@ -24,9 +24,9 @@ import java.util.UUID;
  */
 public class UUIDTempNaming implements ITempNaming {
 
-    @Override
-    public String nameFor(String prefix, String postfix) {
-        return prefix + "-" + UUID.randomUUID().toString() + postfix;
-    }
+	@Override
+	public String nameFor(String prefix, String postfix) {
+		return prefix + "-" + UUID.randomUUID().toString() + postfix;
+	}
 
 }

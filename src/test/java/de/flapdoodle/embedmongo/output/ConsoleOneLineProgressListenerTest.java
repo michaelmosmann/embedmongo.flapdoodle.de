@@ -21,11 +21,11 @@ import junit.framework.TestCase;
 
 // CHECKSTYLE:OFF
 public class ConsoleOneLineProgressListenerTest extends TestCase {
-    public void testListener() {
-        ConsoleOneLineProgressListener listener = new ConsoleOneLineProgressListener();
-        listener.progress("Test", 0);
-        listener.progress("Test", 10);
-        listener.progress("Test", 10);
-        listener.progress("Test", 100);
-    }
+	public void testListener() {
+		ConsoleOneLineProgressListener listener = new ConsoleOneLineProgressListener();
+		listener.progress("Test", 0);
+		listener.progress("Test", 10);
+		listener.progress("Test", 10);
+		listener.progress("Test", 100);
+	}
 }

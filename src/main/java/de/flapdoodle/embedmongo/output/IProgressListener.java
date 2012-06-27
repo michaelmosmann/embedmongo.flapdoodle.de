@@ -22,11 +22,11 @@ package de.flapdoodle.embedmongo.output;
  */
 public interface IProgressListener {
 
-    void progress(String label, int percent);
+	void progress(String label, int percent);
 
-    void done(String label);
+	void done(String label);
 
-    void start(String label);
+	void start(String label);
 
-    void info(String label, String message);
+	void info(String label, String message);
 }

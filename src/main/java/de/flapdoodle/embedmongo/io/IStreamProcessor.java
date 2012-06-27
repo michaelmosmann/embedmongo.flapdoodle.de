@@ -22,7 +22,7 @@ package de.flapdoodle.embedmongo.io;
  * Stream Processor interface
  */
 public interface IStreamProcessor {
-    void process(String block);
+	void process(String block);
 
-    void onProcessed();
+	void onProcessed();
 }

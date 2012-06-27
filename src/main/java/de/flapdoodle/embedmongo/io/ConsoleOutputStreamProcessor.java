@@ -22,15 +22,15 @@ package de.flapdoodle.embedmongo.io;
  */
 public class ConsoleOutputStreamProcessor implements IStreamProcessor {
 
-    @Override
-    public void process(String block) {
-        System.out.print(block);
-        System.out.flush();
-    }
+	@Override
+	public void process(String block) {
+		System.out.print(block);
+		System.out.flush();
+	}
 
-    @Override
-    public void onProcessed() {
-        System.out.println();
-    }
+	@Override
+	public void onProcessed() {
+		System.out.println();
+	}
 
 }

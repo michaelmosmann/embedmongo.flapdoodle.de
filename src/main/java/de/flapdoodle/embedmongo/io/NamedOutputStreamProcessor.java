@@ -23,24 +23,24 @@ package de.flapdoodle.embedmongo.io;
 public class NamedOutputStreamProcessor implements IStreamProcessor {
 
 
-    private final IStreamProcessor destination;
-    private final String name;
+	private final IStreamProcessor destination;
+	private final String name;
 
-    public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
-        this.name = name;
-        this.destination = destination;
-    }
+	public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
+		this.name = name;
+		this.destination = destination;
+	}
 
-    @Override
-    public void process(String block) {
-        destination.process(block.replace("\n", "\n" + name + " "));
-    }
+	@Override
+	public void process(String block) {
+		destination.process(block.replace("\n", "\n" + name + " "));
+	}
 
-    @Override
-    public void onProcessed() {
-        destination.onProcessed();
+	@Override
+	public void onProcessed() {
+		destination.onProcessed();
 
-    }
+	}
 
 
 }

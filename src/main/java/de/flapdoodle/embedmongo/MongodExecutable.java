@@ -30,49 +30,49 @@ import java.util.logging.Logger;
  */
 public class MongodExecutable {
 
-    private static Logger logger = Logger.getLogger(MongodExecutable.class.getName());
+	private static Logger logger = Logger.getLogger(MongodExecutable.class.getName());
 
-    private final MongodConfig mongodConfig;
-    private final MongodProcessOutputConfig mongodOutputConfig;
-    private final File mongodExecutable;
-    private boolean stopped;
+	private final MongodConfig mongodConfig;
+	private final MongodProcessOutputConfig mongodOutputConfig;
+	private final File mongodExecutable;
+	private boolean stopped;
 
-    private final Distribution distribution;
+	private final Distribution distribution;
 
-    public MongodExecutable(Distribution distribution, MongodConfig mongodConfig,
-                            MongodProcessOutputConfig mongodOutputConfig, File mongodExecutable) {
-        this.distribution = distribution;
-        this.mongodConfig = mongodConfig;
-        this.mongodOutputConfig = mongodOutputConfig;
-        this.mongodExecutable = mongodExecutable;
-        Runtime.getRuntime().addShutdownHook(new JobKiller());
-    }
+	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig,
+	                        MongodProcessOutputConfig mongodOutputConfig, File mongodExecutable) {
+		this.distribution = distribution;
+		this.mongodConfig = mongodConfig;
+		this.mongodOutputConfig = mongodOutputConfig;
+		this.mongodExecutable = mongodExecutable;
+		Runtime.getRuntime().addShutdownHook(new JobKiller());
+	}
 
-    public synchronized void cleanup() {
-        if (!stopped) {
-            if (mongodExecutable.exists() && !Files.forceDelete(mongodExecutable))
-                logger.warning("Could not delete mongod executable NOW: " + mongodExecutable);
-            stopped = true;
-        }
-    }
+	public synchronized void cleanup() {
+		if (!stopped) {
+			if (mongodExecutable.exists() && !Files.forceDelete(mongodExecutable))
+				logger.warning("Could not delete mongod executable NOW: " + mongodExecutable);
+			stopped = true;
+		}
+	}
 
-    /**
-     *
-     */
-    class JobKiller extends Thread {
+	/**
+	 *
+	 */
+	class JobKiller extends Thread {
 
-        @Override
-        public void run() {
-            cleanup();
-        }
-    }
+		@Override
+		public void run() {
+			cleanup();
+		}
+	}
 
-    public File getFile() {
-        return mongodExecutable;
-    }
+	public File getFile() {
+		return mongodExecutable;
+	}
 
-    public MongodProcess start() throws IOException {
-        return new MongodProcess(distribution, mongodConfig, mongodOutputConfig, this);
-    }
+	public MongodProcess start() throws IOException {
+		return new MongodProcess(distribution, mongodConfig, mongodOutputConfig, this);
+	}
 
 }
