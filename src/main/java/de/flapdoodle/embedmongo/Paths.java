@@ -21,6 +21,7 @@ import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.Version;
 
+import java.util.EnumMap;
 import java.util.regex.Pattern;
 
 /**
@@ -126,10 +127,23 @@ public class Paths {
         return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
     }
 
+    protected static Version getSpecificVersion(Version version) {
+      switch (version) {
+      	case V1_6:
+      		return Version.V1_6_5;
+      	case V1_8:
+      		return Version.V1_8_5;
+      	case V2_0:
+      		return Version.V2_0_6;
+      	case V2_1:
+      		return Version.V2_1_2;
+      }
+      return version;
+    }
+    
     protected static String getVersionPart(Version version) {
         String sversion;
-        switch (version) {
-            case V1_6:
+        switch (getSpecificVersion(version)) {
             case V1_6_5:
                 sversion = "1.6.5";
                 break;
@@ -154,7 +168,6 @@ public class Paths {
             case V1_8_4:
                 sversion = "1.8.4";
                 break;
-            case V1_8:
             case V1_8_5:
                 sversion = "1.8.5";
                 break;
@@ -167,16 +180,20 @@ public class Paths {
             case V2_0_4:
                 sversion = "2.0.4";
                 break;
-            case V2_0:
             case V2_0_5:
                 sversion = "2.0.5";
+                break;
+            case V2_0_6:
+                sversion = "2.0.6";
                 break;
             case V2_1_0:
                 sversion = "2.1.0";
                 break;
-            case V2_1:
             case V2_1_1:
                 sversion = "2.1.1";
+                break;
+            case V2_1_2:
+                sversion = "2.1.2";
                 break;
             default:
                 throw new IllegalArgumentException("Unknown Version " + version);

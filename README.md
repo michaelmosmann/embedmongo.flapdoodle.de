@@ -46,6 +46,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.17 (SNAPSHOT)
 
+- added version 2.0.6 and 2.1.2
+
 #### 1.16
 
 - added version 2.0.5 (main version 2.0 now points to it)

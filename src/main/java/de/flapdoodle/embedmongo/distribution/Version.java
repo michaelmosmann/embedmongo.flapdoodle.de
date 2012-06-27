@@ -41,11 +41,15 @@ public enum Version {
     V1_9_0,
     @Deprecated
     V2_0_1,
+    @Deprecated
     V2_0_4,
     V2_0_5,
+    V2_0_6,
 
+    @Deprecated
     V2_1_0,
     V2_1_1,
+    V2_1_2,
 
     V1_6,
     V1_8,
