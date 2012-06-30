@@ -189,12 +189,55 @@ Support for Linux, Windows and MacOSX.
 
 ### Usage - custom mongod process output 
 
+#### ... to console with line prefix
 	...
 	RuntimeConfig runtimeConfig=new RuntimeConfig();
 	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
 		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...
+
+#### ... to file
+	...
+	RuntimeConfig runtimeConfig=new RuntimeConfig();
+	IStreamProcessor mongodOutput = Processors.named("[mongod>]", new FileStreamProcessor(File.createTempFile("mongod", "log")));
+	IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
+	IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
+		
+	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(mongodOutput,
+		mongodError, commandsOutput));
+	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	...
+	
+	...
+	public class FileStreamProcessor implements IStreamProcessor {
+	
+		private FileOutputStream outputStream;
+
+		public FileStreamProcessor(File file) throws FileNotFoundException {
+			outputStream = new FileOutputStream(file);
+		}
+		
+		@Override
+		public void process(String block) {
+			try {
+				outputStream.write(block.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onProcessed() {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
+	}
+	...
+
 
 ## Other MongoDB Stuff
 
