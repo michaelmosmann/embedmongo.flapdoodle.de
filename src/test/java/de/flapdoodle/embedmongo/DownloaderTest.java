@@ -73,7 +73,7 @@ public class DownloaderTest {
 		server.stop();
 	}
 
-	@Test
+	//@Test
 	public void testDownload() throws Exception {
 		initRuntime();
 		Distribution d = new Distribution(new GenericVersion("3.1.1"), Platform.detect(), BitSize.B64);
