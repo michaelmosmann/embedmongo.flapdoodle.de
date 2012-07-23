@@ -54,8 +54,8 @@ public enum Version implements MongoDBVersion {
 
 	V1_6("1.6.5", "1.6.5"),
 	V1_8("1.8", "1.8.5"),
-	V2_0("2.0", "2.0.6"),
-	V2_1("2.1", "2.1.2");
+	V2_0("2.0", "2.0.5"),
+	V2_1("2.1", "2.1.1");
 
 
 	private final String versionName;
