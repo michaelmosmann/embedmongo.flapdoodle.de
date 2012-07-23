@@ -70,7 +70,7 @@ public class MongodProcess {
 			}
 			process = ProcessControl.fromCommandLine(
 					Mongod.enhanceCommandLinePlattformSpecific(distribution,
-							Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), dbDir)), true);
+							Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), tmpDbDir)), true);
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
