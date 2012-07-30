@@ -17,6 +17,11 @@
  */
 package de.flapdoodle.embedmongo;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
@@ -24,13 +29,6 @@ import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.embedmongo.extract.Extractors;
 import de.flapdoodle.embedmongo.extract.IExtractor;
 import de.flapdoodle.embedmongo.output.IProgressListener;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import com.mongodb.MongoException;
 
 /**
  *
