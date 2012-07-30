@@ -23,6 +23,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import junit.framework.TestCase;
 
@@ -150,6 +152,15 @@ public class TestExampleReadMeCode extends TestCase {
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
 
+	// #### ... to java logging
+	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
+		Logger logger=Logger.getLogger(getClass().getName());
+		
+		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
+				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
+		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	}
 
 	/*
 	 * Ist fürs Readme, deshalb nicht statisch und public

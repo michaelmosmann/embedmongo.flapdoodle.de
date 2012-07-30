@@ -17,36 +17,26 @@
  */
 package de.flapdoodle.embedmongo.io;
 
-import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- */
-public class Processors {
+public class LoggingOutputStreamProcessor implements IStreamProcessor {
 
-	private Processors() {
-		throw new IllegalAccessError("singleton");
-	}
+	private final Logger _logger;
+	private final Level _level;
 
-	public static IStreamProcessor console() {
-		return new ConsoleOutputStreamProcessor();
+	public LoggingOutputStreamProcessor(Logger logger, Level level) {
+		_logger = logger;
+		_level = level;
 	}
 
-	public static IStreamProcessor named(String name, IStreamProcessor destination) {
-		return new NamedOutputStreamProcessor(name, destination);
+	@Override
+	public void process(String block) {
+		_logger.log(_level, block);
 	}
 
-	public static IStreamProcessor namedConsole(String name) {
-		return named(name, console());
+	@Override
+	public void onProcessed() {
 	}
 
-	public static IStreamProcessor logTo(Logger logger, Level level) {
-		return new LoggingOutputStreamProcessor(logger, level);
-	}
-	
-	public static ReaderProcessor connect(Reader reader, IStreamProcessor processor) {
-		return new ReaderProcessor(reader, processor);
-	}
 }

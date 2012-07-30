@@ -240,6 +240,16 @@ Support for Linux, Windows and MacOSX.
 		}	
 	}
 	...
+	
+#### ... to java logging
+	...
+		Logger logger=...
+		
+		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
+				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
+		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	...	
 
 ### Custom Version
 
