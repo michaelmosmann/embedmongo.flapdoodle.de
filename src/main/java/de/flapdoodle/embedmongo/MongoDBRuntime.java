@@ -20,6 +20,7 @@ package de.flapdoodle.embedmongo;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.embedmongo.extract.Extractors;
 import de.flapdoodle.embedmongo.extract.IExtractor;
 import de.flapdoodle.embedmongo.output.IProgressListener;
@@ -28,6 +29,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.mongodb.MongoException;
 
 /**
  *
@@ -58,21 +61,24 @@ public class MongoDBRuntime {
 	}
 
 	public MongodExecutable prepare(MongodConfig mongodConfig) {
+		Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
+		
 		try {
 			IProgressListener progress = runtime.getProgressListener();
 
-			Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
 			progress.done("Detect Distribution");
 			if (checkDistribution(distribution)) {
 				progress.done("Check Distribution");
 				File mongodExe = extractMongod(distribution);
 
 				return new MongodExecutable(distribution, mongodConfig, runtime.getMongodOutputConfig(), mongodExe);
+			} else {
+				throw new MongodException("could not find Distribution",distribution);
 			}
 		} catch (IOException iox) {
 			logger.log(Level.SEVERE, "start", iox);
+			throw new MongodException(distribution,iox);
 		}
-		return null;
 	}
 
 

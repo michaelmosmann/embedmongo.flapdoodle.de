@@ -15,31 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.distribution;
+package de.flapdoodle.embedmongo.examples;
 
-/**
- * Generic version implementation for currently unsupported mongodb versions by embedmongo.
- */
-public class GenericVersion implements IVersion {
+import java.util.Date;
 
-	private String versionInDownloadPath;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
 
-	/**
-	 * C'tor with version name = specific version
-	 * 
-	 * @param versionInDownloadPath
-	 */
-	public GenericVersion(String versionInDownloadPath) {
-		this.versionInDownloadPath = versionInDownloadPath;
-	}
-	
-	@Override
-	public String asInDownloadPath() {
-		return versionInDownloadPath;
-	}
 
-	@Override
-	public String toString() {
-		return "GenericVersion{" + versionInDownloadPath + "}";
+public class DummyMongoDBTest extends AbstractMongoDBTest {
+
+	public void testNothing() {
+		DB db = getMongo().getDB("test");
+		DBCollection col = db.createCollection("testCol", new BasicDBObject());
+		col.save(new BasicDBObject("testDoc", new Date()));
+
 	}
 }

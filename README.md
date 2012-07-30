@@ -41,12 +41,11 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-- Much better windows support in 1.15.
-- Please DON'T use 1.13 (had some troubles).
-
 #### 1.17 (SNAPSHOT)
 
 - added version 2.0.6 and 2.1.2
+- version refactoring
+- you can now have a custom version, so you do not depend on a new release of this project
 
 #### 1.16
 
@@ -63,6 +62,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 - customize artifact storage path
 - detection if localhost is not loopback (command shutdown on mongod does not work for remote access)
 - formated process output
+- much better windows support
 
 #### 1.14
 
@@ -96,17 +96,20 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Supported Versions
 
-Versions: some older, 1.8.5, 1.9.0, 2.0.4, 2.1.0
+Versions: some older, 1.8.5, 1.9.0, 2.0.6, 2.1.2
 Support for Linux, Windows and MacOSX.
 
 ### Usage
 
 	int port = 12345;
 	MongodProcess mongod = null;
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port,Network.localhostIsIPv6());
+	
 	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V2_0, port,Network.localhostIsIPv6()));
+		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongod = mongodExecutable.start();
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -121,12 +124,15 @@ Support for Linux, Windows and MacOSX.
 
 	int port = 12345;
 	MongodProcess mongod = null;
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port,Network.localhostIsIPv6());
+	
 	RuntimeConfig runtimeConfig=new RuntimeConfig();
 	runtimeConfig.setExecutableNaming(new UserTempNaming());
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	
 	try {
-		mongod = runtime.start(new MongodConfig(Version.V2_0, port,Network.localhostIsIPv6()));
+		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongod = mongodExecutable.start();
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -139,21 +145,19 @@ Support for Linux, Windows and MacOSX.
 
 ### Unit Tests
 
-	public abstract class AbstractMongoOMTest extends TestCase {
+	public abstract class AbstractMongoDBTest extends TestCase {
 	
 		private MongodExecutable _mongodExe;
 		private MongodProcess _mongod;
 	
 		private Mongo _mongo;
-		private static final String DATABASENAME = "mongo_test";
-	
 		@Override
 		protected void setUp() throws Exception {
 	
 			MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-			_mongodExe = runtime.prepare(new MongodConfig(Version.V2_0, 12345));
-			_mongod=_mongodExe.start();
-			
+			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
+			_mongod = _mongodExe.start();
+	
 			super.setUp();
 	
 			_mongo = new Mongo("localhost", 12345);
@@ -162,7 +166,7 @@ Support for Linux, Windows and MacOSX.
 		@Override
 		protected void tearDown() throws Exception {
 			super.tearDown();
-			
+	
 			_mongod.stop();
 			_mongodExe.cleanup();
 		}
@@ -170,28 +174,27 @@ Support for Linux, Windows and MacOSX.
 		public Mongo getMongo() {
 			return _mongo;
 		}
-	
-		public String getDatabaseName() {
-			return DATABASENAME;
-		}
 	}
 
 ### Customize Artifact Storage
 
 	...
-	IArtifactStoragePathNaming pathNaming = ...
+		IArtifactStoragePathNaming artifactStorePath = ...
+		ITempNaming executableNaming = ...
+		
+		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
+		runtimeConfig.setExecutableNaming(executableNaming);
 
-	RuntimeConfig runtimeConfig=new RuntimeConfig();
-	runtimeConfig.setExecutableNaming(new UserTempNaming());
-	runtimeConfig.setArtifactStorePathNaming(pathNaming);
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 	...
 
 ### Usage - custom mongod process output 
 
 #### ... to console with line prefix
 	...
-	RuntimeConfig runtimeConfig=new RuntimeConfig();
+	RuntimeConfig runtimeConfig = new RuntimeConfig();
 	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
 		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
@@ -238,6 +241,26 @@ Support for Linux, Windows and MacOSX.
 	}
 	...
 
+### Custom Version
+
+	...
+	int port = 12345;
+	MongodProcess mongod = null;
+	MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
+
+	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+
+	try {
+		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongod = mongodExecutable.start();
+
+		...
+		
+	} finally {
+		if (mongod != null)
+			mongod.stop();
+	}
+	...
 
 ## Other MongoDB Stuff
 
