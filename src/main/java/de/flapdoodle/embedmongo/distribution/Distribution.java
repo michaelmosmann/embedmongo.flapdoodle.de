@@ -22,17 +22,17 @@ package de.flapdoodle.embedmongo.distribution;
  */
 public class Distribution {
 
-	private final MongoDBVersion version;
+	private final IVersion version;
 	private final Platform platform;
 	private final BitSize bitsize;
 
-	public Distribution(MongoDBVersion version, Platform platform, BitSize bitsize) {
+	public Distribution(IVersion version, Platform platform, BitSize bitsize) {
 		this.version = version;
 		this.platform = platform;
 		this.bitsize = bitsize;
 	}
 
-	public MongoDBVersion getVersion() {
+	public IVersion getVersion() {
 		return version;
 	}
 
@@ -49,7 +49,7 @@ public class Distribution {
 		return "" + version + ":" + platform + ":" + bitsize;
 	}
 
-	public static Distribution detectFor(MongoDBVersion version) {
+	public static Distribution detectFor(IVersion version) {
 		return new Distribution(version, Platform.detect(), BitSize.detect());
 	}
 }

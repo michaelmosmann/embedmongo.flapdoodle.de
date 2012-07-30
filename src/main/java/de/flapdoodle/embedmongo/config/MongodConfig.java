@@ -17,30 +17,30 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.embedmongo.distribution.MongoDBVersion;
+import de.flapdoodle.embedmongo.distribution.IVersion;
 
 /**
  *
  */
 public class MongodConfig {
 
-	private final MongoDBVersion version;
+	private final IVersion version;
 	private final int port;
 	private final String databaseDir;
 	private final boolean ipv6;
 
-	public MongodConfig(MongoDBVersion version, int port, boolean ipv6) {
+	public MongodConfig(IVersion version, int port, boolean ipv6) {
 		this(version, port, ipv6, null);
 	}
 
-	public MongodConfig(MongoDBVersion version, int port, boolean ipv6, String databaseDir) {
+	public MongodConfig(IVersion version, int port, boolean ipv6, String databaseDir) {
 		this.version = version;
 		this.port = port;
 		this.ipv6 = ipv6;
 		this.databaseDir = databaseDir;
 	}
 
-	public MongoDBVersion getVersion() {
+	public IVersion getVersion() {
 		return version;
 	}
 

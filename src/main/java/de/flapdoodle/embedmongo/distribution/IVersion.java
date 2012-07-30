@@ -20,7 +20,7 @@ package de.flapdoodle.embedmongo.distribution;
 /**
  * Interface for mongodb versions
  */
-public interface MongoDBVersion {
+public interface IVersion {
 
-	String getSpecificVersion();
+	String asInDownloadPath();
 }

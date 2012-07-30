@@ -20,7 +20,7 @@ package de.flapdoodle.embedmongo.distribution;
 /**
  * MongoDB Version enum
  */
-public enum Version implements MongoDBVersion {
+public enum Version implements IVersion {
 
 	V1_6_5("1.6.5"),
 	@Deprecated
@@ -59,7 +59,7 @@ public enum Version implements MongoDBVersion {
 	}
 
 	@Override
-	public String getSpecificVersion() {
+	public String asInDownloadPath() {
 		return specificVersion;
 	}
 
@@ -68,7 +68,7 @@ public enum Version implements MongoDBVersion {
 		return "Version{" + specificVersion + '}';
 	}
 
-	public static enum Main implements MongoDBVersion {
+	public static enum Main implements IVersion {
 		V1_6(V1_6_5),
 		V1_8(V1_8_5),
 		V2_0(V2_0_6),
@@ -81,8 +81,8 @@ public enum Version implements MongoDBVersion {
 		}
 
 		@Override
-		public String getSpecificVersion() {
-			return _latest.getSpecificVersion();
+		public String asInDownloadPath() {
+			return _latest.asInDownloadPath();
 		}
 	}
 

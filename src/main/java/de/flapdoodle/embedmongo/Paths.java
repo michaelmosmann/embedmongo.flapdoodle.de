@@ -19,7 +19,7 @@ package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.distribution.ArchiveType;
 import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.distribution.MongoDBVersion;
+import de.flapdoodle.embedmongo.distribution.IVersion;
 
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
@@ -130,8 +130,8 @@ public class Paths {
 		return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
 	}
 
-	protected static String getVersionPart(MongoDBVersion version) {
-		return version.getSpecificVersion();
+	protected static String getVersionPart(IVersion version) {
+		return version.asInDownloadPath();
 	}
 
 }
