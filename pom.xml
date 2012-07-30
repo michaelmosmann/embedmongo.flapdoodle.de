@@ -126,6 +126,7 @@
                         <lic.username>Michael Mosmann</lic.username>
                         <lic.email2>m.joehren@googlemail.com</lic.email2>
                         <lic.username2>Martin Jöhren</lic.username2>
+                        <lic.developers>konstantin-ba@github,</lic.developers>
                     </properties>
                     <encoding>UTF-8</encoding>
                     <!--

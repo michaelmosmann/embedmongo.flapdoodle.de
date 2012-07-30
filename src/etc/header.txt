@@ -1,6 +1,9 @@
 Copyright (C) ${lic.year} 
   ${lic.username} <${lic.email}>
   ${lic.username2} <${lic.email2}>
+  
+with contributions from
+	${lic.developers}
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
