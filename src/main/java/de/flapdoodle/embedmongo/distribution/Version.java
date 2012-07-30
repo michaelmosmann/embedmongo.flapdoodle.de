@@ -50,31 +50,12 @@ public enum Version implements MongoDBVersion {
 	@Deprecated
 	V2_1_0("2.1.0"),
 	V2_1_1("2.1.1"),
-	V2_1_2("2.1.2"),
+	V2_1_2("2.1.2");
 
-	V1_6("1.6.5", "1.6.5"),
-	V1_8("1.8", "1.8.5"),
-	V2_0("2.0", "2.0.6"),
-	V2_1("2.1", "2.1.2");
-
-
-	private final String versionName;
 	private final String specificVersion;
 
-
 	Version(String vName) {
-		this.versionName = vName;
 		this.specificVersion = vName;
-	}
-
-	Version(String vName, String specificVName) {
-		this.versionName = vName;
-		this.specificVersion = specificVName;
-	}
-
-	@Override
-	public String getVersionName() {
-		return versionName;
 	}
 
 	@Override
@@ -82,13 +63,27 @@ public enum Version implements MongoDBVersion {
 		return specificVersion;
 	}
 
-
 	@Override
 	public String toString() {
-		return "Version{" +
-				"versionName='" + versionName + '\'' +
-				", specificVersion='" + specificVersion + '\'' +
-				'}';
+		return "Version{" + specificVersion + '}';
+	}
+
+	public static enum Main implements MongoDBVersion {
+		V1_6(V1_6_5),
+		V1_8(V1_8_5),
+		V2_0(V2_0_6),
+		V2_1(V2_1_2);
+
+		private final Version _latest;
+
+		Main(Version latest) {
+			_latest = latest;
+		}
+
+		@Override
+		public String getSpecificVersion() {
+			return _latest.getSpecificVersion();
+		}
 	}
 
 }

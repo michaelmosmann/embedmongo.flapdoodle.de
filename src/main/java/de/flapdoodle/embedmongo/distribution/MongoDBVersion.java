@@ -22,6 +22,5 @@ package de.flapdoodle.embedmongo.distribution;
  */
 public interface MongoDBVersion {
 
-	String getVersionName();
 	String getSpecificVersion();
 }

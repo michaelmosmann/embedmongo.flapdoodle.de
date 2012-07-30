@@ -47,11 +47,6 @@ public class GenericVersion implements MongoDBVersion {
 	}
 
 	@Override
-	public String getVersionName() {
-		return versionName;
-	}
-
-	@Override
 	public String getSpecificVersion() {
 		return specificVersion;
 	}

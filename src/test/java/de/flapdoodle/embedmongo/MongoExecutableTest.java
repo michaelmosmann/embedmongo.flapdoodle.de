@@ -47,7 +47,7 @@ public class MongoExecutableTest extends TestCase {
 		boolean useMongodb = true;
 		int loops = 10;
 
-		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345,
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345,
 				Network.localhostIsIPv6());
 
 		for (int i = 0; i < loops; i++) {

@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-//CHECKSTYLE:OFF
+// CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
 
 	public void testNothing() {
@@ -47,15 +47,15 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	public void testDistributions() throws IOException {
 		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
-		check(runtime, new Distribution(Version.V1_8, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.V1_8, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.V1_8, Platform.OS_X, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_0, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_0, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_0, Platform.OS_X, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_1, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_1, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.V2_1, Platform.OS_X, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V1_8, Platform.Linux, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V1_8, Platform.Windows, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V1_8, Platform.OS_X, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_0, Platform.Linux, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_0, Platform.Windows, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_0, Platform.OS_X, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_1, Platform.Linux, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_1, Platform.Windows, BitSize.B32));
+		check(runtime, new Distribution(Version.Main.V2_1, Platform.OS_X, BitSize.B32));
 	}
 
 	private void check(MongoDBRuntime runtime, Distribution distribution) throws IOException {
@@ -81,7 +81,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.V2_0, port, Network.localhostIsIPv6()));
+			mongod = runtime.prepare(new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6()));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess = mongod.start();

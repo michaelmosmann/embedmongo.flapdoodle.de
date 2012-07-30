@@ -31,7 +31,7 @@ public class TestCustomStoragePath extends TestCase {
 
 	public void testCustomPath() throws IOException {
 
-		MongodConfig mongodConfig = new MongodConfig(Version.V2_0, 12345, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6());
 
 		RuntimeConfig config = new RuntimeConfig();
 		ArtifactStoreInFixedPath artifactStorePath =
