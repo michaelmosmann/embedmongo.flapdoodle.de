@@ -22,8 +22,10 @@ package de.flapdoodle.embedmongo.tests;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.UUID;
 import java.util.logging.Logger;
 
+import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
