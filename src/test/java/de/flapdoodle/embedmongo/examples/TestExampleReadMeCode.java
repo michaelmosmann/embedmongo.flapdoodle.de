@@ -52,6 +52,7 @@ import de.flapdoodle.embedmongo.extract.UUIDTempNaming;
 import de.flapdoodle.embedmongo.extract.UserTempNaming;
 import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
+import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.runtime.Network;
 
 public class TestExampleReadMeCode extends TestCase {
@@ -163,9 +164,17 @@ public class TestExampleReadMeCode extends TestCase {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
 				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
+		runtimeConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
 
+	// #### ... to default java logging (the easy way)
+	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
+		Logger logger=Logger.getLogger(getClass().getName());
+		RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
+		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	}
+	
 	/*
 	 * Ist fürs Readme, deshalb nicht statisch und public
 	 */

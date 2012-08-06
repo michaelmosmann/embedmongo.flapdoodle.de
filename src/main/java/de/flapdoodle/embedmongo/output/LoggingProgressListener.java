@@ -20,33 +20,36 @@
  */
 package de.flapdoodle.embedmongo.output;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoggingProgressListener implements IProgressListener {
 
 	private final Logger _logger;
+	private final Level _level;
 
-	public LoggingProgressListener(Logger logger) {
+	public LoggingProgressListener(Logger logger, Level level) {
 		_logger = logger;
+		_level=level;
 	}
 
 	@Override
 	public void start(String label) {
-		_logger.info(label + " starting...");
+		_logger.log(_level,label + " starting...");
 	}
 
 	@Override
 	public void progress(String label, int percent) {
-		_logger.info(label + ": " + percent + "% achieved.");
+		_logger.log(_level,label + ": " + percent + "% achieved.");
 	}
 
 	@Override
 	public void info(String label, String message) {
-		_logger.info(label + ": " + message);
+		_logger.log(_level,label + ": " + message);
 	}
 
 	@Override
 	public void done(String label) {
-		_logger.info(label + " achieved successfully.");
+		_logger.log(_level,label + " achieved successfully.");
 	}
 }

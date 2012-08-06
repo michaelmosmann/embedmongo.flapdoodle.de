@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,
- *
+ * konstantin-ba@github,
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,9 +20,14 @@
  */
 package de.flapdoodle.embedmongo.config;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.flapdoodle.embedmongo.extract.ITempNaming;
 import de.flapdoodle.embedmongo.extract.UUIDTempNaming;
+import de.flapdoodle.embedmongo.io.LoggingOutputStreamProcessor;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 
 /**
@@ -83,5 +88,12 @@ public class RuntimeConfig {
 
 	public void setMongodOutputConfig(MongodProcessOutputConfig mongodOutputConfig) {
 		this.mongodOutputConfig = mongodOutputConfig;
+	}
+
+	public static RuntimeConfig getInstance(Logger logger) {
+		RuntimeConfig ret = new RuntimeConfig();
+		ret.setMongodOutputConfig(MongodProcessOutputConfig.getInstance(logger));
+		ret.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
+		return ret;
 	}
 }

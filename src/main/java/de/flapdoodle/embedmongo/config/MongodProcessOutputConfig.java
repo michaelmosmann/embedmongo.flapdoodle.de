@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,
- *
+ * konstantin-ba@github,
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,9 @@
  * limitations under the License.
  */
 package de.flapdoodle.embedmongo.config;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
@@ -33,7 +36,7 @@ public class MongodProcessOutputConfig {
 	private final IStreamProcessor commandsOutput;
 
 	public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
-	                                 IStreamProcessor commandsOutput) {
+			IStreamProcessor commandsOutput) {
 		this.mongodOutput = mongodOutput;
 		this.mongodError = mongodError;
 		this.commandsOutput = commandsOutput;
@@ -54,5 +57,11 @@ public class MongodProcessOutputConfig {
 	public static MongodProcessOutputConfig getDefaultInstance() {
 		return new MongodProcessOutputConfig(Processors.namedConsole("[mongod output]"),
 				Processors.namedConsole("[mongod error]"), Processors.console());
+	}
+
+	public static MongodProcessOutputConfig getInstance(Logger logger) {
+		return new MongodProcessOutputConfig(Processors.named("[mongod output]", Processors.logTo(logger, Level.INFO)),
+				Processors.named("[mongod error]", Processors.logTo(logger, Level.SEVERE)),
+				Processors.logTo(logger, Level.FINE));
 	}
 }
