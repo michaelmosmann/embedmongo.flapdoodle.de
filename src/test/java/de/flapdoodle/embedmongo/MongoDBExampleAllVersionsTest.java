@@ -24,7 +24,10 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
+
 import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.distribution.IVersion;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.runtime.Network;
 import org.junit.After;
@@ -51,19 +54,22 @@ public class MongoDBExampleAllVersionsTest {
 	@Parameters
 	public static Collection<Object[]> data() {
 		Collection<Object[]> result = new ArrayList<Object[]>();
-		result.add(new Object[]{Version.V2_0_4});
+		result.add(new Object[]{Version.Main.V1_8});
+		result.add(new Object[]{Version.Main.V2_0});
+		result.add(new Object[]{Version.Main.V2_1});
+		result.add(new Object[]{Version.Main.V2_2});
 		return result;
 	}
 
 	private static final int PORT = 12345;
-	private Version mongoVersion;
+	private IVersion mongoVersion;
 	private MongodExecutable mongodExe;
 	private MongodProcess mongod;
 
 	private Mongo mongo;
 	private static final String DATABASENAME = "mongo_test";
 
-	public MongoDBExampleAllVersionsTest(Version v) {
+	public MongoDBExampleAllVersionsTest(IVersion v) {
 		this.mongoVersion = v;
 	}
 
@@ -75,7 +81,7 @@ public class MongoDBExampleAllVersionsTest {
 				Network.localhostIsIPv6()));
 		mongod = mongodExe.start();
 
-		mongo = new Mongo("localhost", PORT);
+		mongo = new Mongo(new ServerAddress(Network.getLocalHost(), PORT));
 	}
 
 	@After

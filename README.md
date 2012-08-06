@@ -49,6 +49,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.18 (SNAPSHOT)
 
+- added some unit test support (thanx to trajano)
+- added some logging only runtime config option
+
 #### 1.17
 
 - added version 2.0.6 and 2.1.2
