@@ -22,10 +22,8 @@ package de.flapdoodle.embedmongo.tests;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-import java.util.UUID;
 import java.util.logging.Logger;
 
-import com.mongodb.DB;
 import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
@@ -45,9 +43,16 @@ import de.flapdoodle.embedmongo.runtime.Network;
  */
 public class MongodForTestsFactory {
 
-	private static Logger logger = Logger.getLogger(MongodForTestsFactory.class.getName());
+	private static Logger logger = Logger.getLogger(MongodForTestsFactory.class
+			.getName());
+
+	public static MongodForTestsFactory with(final IVersion version)
+			throws IOException {
+		return new MongodForTestsFactory(version);
+	}
 
 	private final MongodExecutable mongodExecutable;
+
 	private final MongodProcess mongodProcess;
 
 	/**
@@ -64,12 +69,14 @@ public class MongodForTestsFactory {
 	 * Create the testing utility using the specified version of MongoDB.
 	 * 
 	 * @param version
-	 *          version of MongoDB.
+	 *            version of MongoDB.
 	 */
-	public MongodForTestsFactory(IVersion version) throws IOException {
+	public MongodForTestsFactory(final IVersion version) throws IOException {
 
-		final MongoDBRuntime runtime = MongoDBRuntime.getInstance(RuntimeConfig.getInstance(logger));
-		mongodExecutable = runtime.prepare(new MongodConfig(version, Network.getFreeServerPort(), Network.localhostIsIPv6()));
+		final MongoDBRuntime runtime = MongoDBRuntime.getInstance(RuntimeConfig
+				.getInstance(logger));
+		mongodExecutable = runtime.prepare(new MongodConfig(version, Network
+				.getFreeServerPort(), Network.localhostIsIPv6()));
 		mongodProcess = mongodExecutable.start();
 
 	}
@@ -81,7 +88,8 @@ public class MongodForTestsFactory {
 	 * @throws UnknownHostException
 	 */
 	public Mongo newMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(Network.getLocalHost(), mongodProcess.getConfig().getPort()));
+		return new Mongo(new ServerAddress(Network.getLocalHost(),
+				mongodProcess.getConfig().getPort()));
 	}
 	
 	/**
@@ -97,9 +105,5 @@ public class MongodForTestsFactory {
 	public void shutdown() {
 		mongodProcess.stop();
 		mongodExecutable.cleanup();
-	}
-	
-	public static MongodForTestsFactory with(IVersion version) throws IOException {
-		return new MongodForTestsFactory(version);
 	}
 }
