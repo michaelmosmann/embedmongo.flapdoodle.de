@@ -183,19 +183,38 @@ Support for Linux, Windows and MacOSX.
 			return _mongo;
 		}
 	}
+	
+#### ... with some more help
+
+	...
+	MongodForTestsFactory factory = null;
+	try {
+		factory = MongodForTestsFactory.with(Version.Main.V2_0);
+
+		Mongo mongo = factory.newMongo();
+		DB db = mongo.getDB("test-" + UUID.randomUUID());
+		DBCollection col = db.createCollection("testCol", new BasicDBObject());
+		col.save(new BasicDBObject("testDoc", new Date()));
+
+	} finally {
+		if (factory != null)
+			factory.shutdown();
+	}
+	...
+
 
 ### Customize Artifact Storage
 
 	...
-		IArtifactStoragePathNaming artifactStorePath = ...
-		ITempNaming executableNaming = ...
+	IArtifactStoragePathNaming artifactStorePath = ...
+	ITempNaming executableNaming = ...
 		
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
-		runtimeConfig.setExecutableNaming(executableNaming);
+	RuntimeConfig runtimeConfig = new RuntimeConfig();
+	runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
+	runtimeConfig.setExecutableNaming(executableNaming);
 
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
-		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
+	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 	...
 
 ### Usage - custom mongod process output 

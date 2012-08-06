@@ -4,7 +4,7 @@
  *   Martin Jöhren <m.joehren@googlemail.com>
  *
  * with contributions from
- * 	konstantin-ba@github,
+ * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -54,6 +55,7 @@ import de.flapdoodle.embedmongo.io.IStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.runtime.Network;
+import de.flapdoodle.embedmongo.tests.MongodForTestsFactory;
 
 public class TestExampleReadMeCode extends TestCase {
 
@@ -110,6 +112,24 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testUnitTests() {
 		Class<?> see = AbstractMongoDBTest.class;
 	}
+	
+	// #### ... with some more help
+	public void testMongodForTests() throws IOException {
+		MongodForTestsFactory factory = null;
+		try {
+			factory = MongodForTestsFactory.with(Version.Main.V2_0);
+
+			Mongo mongo = factory.newMongo();
+			DB db = mongo.getDB("test-" + UUID.randomUUID());
+			DBCollection col = db.createCollection("testCol", new BasicDBObject());
+			col.save(new BasicDBObject("testDoc", new Date()));
+
+		} finally {
+			if (factory != null)
+				factory.shutdown();
+		}
+	}
+
 
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {
@@ -120,7 +140,7 @@ public class TestExampleReadMeCode extends TestCase {
 		IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInFixedPath(System.getProperty("user.home")
 				+ "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
-		
+
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
 		runtimeConfig.setExecutableNaming(executableNaming);
@@ -144,37 +164,37 @@ public class TestExampleReadMeCode extends TestCase {
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 
 	}
-	
+
 	// #### ... to file
 	public void testCustomOutputToFile() throws FileNotFoundException, IOException {
-		RuntimeConfig runtimeConfig=new RuntimeConfig();
-		IStreamProcessor mongodOutput = Processors.named("[mongod>]", new FileStreamProcessor(File.createTempFile("mongod", "log")));
+		RuntimeConfig runtimeConfig = new RuntimeConfig();
+		IStreamProcessor mongodOutput = Processors.named("[mongod>]",
+				new FileStreamProcessor(File.createTempFile("mongod", "log")));
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
-			
-		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(mongodOutput,
-			mongodError, commandsOutput));
+
+		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(mongodOutput, mongodError, commandsOutput));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
 
 	// #### ... to java logging
 	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
-		Logger logger=Logger.getLogger(getClass().getName());
-		
+		Logger logger = Logger.getLogger(getClass().getName());
+
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
-				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
+				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
 		runtimeConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
 
 	// #### ... to default java logging (the easy way)
 	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
-		Logger logger=Logger.getLogger(getClass().getName());
+		Logger logger = Logger.getLogger(getClass().getName());
 		RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
-	
+
 	/*
 	 * Ist fürs Readme, deshalb nicht statisch und public
 	 */
@@ -206,7 +226,6 @@ public class TestExampleReadMeCode extends TestCase {
 
 	}
 
-
 	// ### Custom Version
 	public void testCustomVersion() throws UnknownHostException, IOException {
 		int port = 12345;
@@ -232,11 +251,12 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 
 	// ### Use Free Server Port
+	// #### ... by hand
 	public void testFreeServerPort() throws UnknownHostException, IOException {
 		int port = Network.getFreeServerPort();
 	}
-	
-	// ### Use Free Server Port Auto
+
+	// ### ... automagic
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
 		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
@@ -257,4 +277,5 @@ public class TestExampleReadMeCode extends TestCase {
 				mongod.stop();
 		}
 	}
+
 }

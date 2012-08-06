@@ -126,7 +126,7 @@
                         <lic.username>Michael Mosmann</lic.username>
                         <lic.email2>m.joehren@googlemail.com</lic.email2>
                         <lic.username2>Martin Jöhren</lic.username2>
-                        <lic.developers>konstantin-ba@github,</lic.developers>
+                        <lic.developers>konstantin-ba@github,Archimedes Trajano (trajano@github)</lic.developers>
                     </properties>
                     <encoding>UTF-8</encoding>
                     <!--
@@ -204,7 +204,8 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
             <version>2.7.3</version>
-            <scope>test</scope>
+            <scope>compile</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
