@@ -83,6 +83,13 @@ public class MongodForTestsFactory {
 	public Mongo newMongo() throws UnknownHostException, MongoException {
 		return new Mongo(new ServerAddress(Network.getLocalHost(), mongodProcess.getConfig().getPort()));
 	}
+	
+	/**
+	 * Creates a new DB with unique name for connection.
+	 */
+	public DB newDB(Mongo mongo) {
+		return mongo.getDB(UUID.randomUUID().toString());
+	}
 
 	/**
 	 * Cleans up the resources created by the utility.
