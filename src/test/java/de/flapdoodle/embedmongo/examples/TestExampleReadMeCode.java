@@ -35,6 +35,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embedmongo.MongoDBRuntime;
 import de.flapdoodle.embedmongo.MongodExecutable;
@@ -219,5 +220,32 @@ public class TestExampleReadMeCode extends TestCase {
 				mongod.stop();
 		}
 
+	}
+
+	// ### Use Free Server Port
+	public void testFreeServerPort() throws UnknownHostException, IOException {
+		int port = Network.getFreeServerPort();
+	}
+	
+	// ### Use Free Server Port Auto
+	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
+		MongodProcess mongod = null;
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
+
+		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+
+		try {
+			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+			mongod = mongodExecutable.start();
+
+			Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
+			DB db = mongo.getDB("test");
+			DBCollection col = db.createCollection("testCol", new BasicDBObject());
+			col.save(new BasicDBObject("testDoc", new Date()));
+
+		} finally {
+			if (mongod != null)
+				mongod.stop();
+		}
 	}
 }

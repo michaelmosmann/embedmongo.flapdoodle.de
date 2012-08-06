@@ -144,7 +144,11 @@ public class MongodProcess {
 		}
 		return false;
 	}
-
+	
+	public MongodConfig getConfig() {
+		return config;
+	}
+	
 	/**
 	 *
 	 */

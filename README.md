@@ -280,6 +280,31 @@ Support for Linux, Windows and MacOSX.
 	}
 	...
 
+### Use Free Server Port
+
+	Warning: maybe not as stable, as expected.
+
+#### ... by hand
+	...
+	int port = Network.getFreeServerPort();
+	...
+	
+#### ... automagic
+	...
+	MongodProcess mongod = null;
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
+
+	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+
+	try {
+		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongod = mongodExecutable.start();
+
+		Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
+	}
+	...
+
+
 ## Other MongoDB Stuff
 
 - https://github.com/thiloplanz/jmockmongo - mongodb mocking

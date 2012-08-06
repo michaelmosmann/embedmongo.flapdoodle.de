@@ -20,7 +20,11 @@
  */
 package de.flapdoodle.embedmongo.config;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
 import de.flapdoodle.embedmongo.distribution.IVersion;
+import de.flapdoodle.embedmongo.runtime.Network;
 
 /**
  *
@@ -31,6 +35,10 @@ public class MongodConfig {
 	private final int port;
 	private final String databaseDir;
 	private final boolean ipv6;
+
+	public MongodConfig(IVersion version) throws UnknownHostException, IOException {
+		this(version, Network.getFreeServerPort(), Network.localhostIsIPv6(), null);
+	}
 
 	public MongodConfig(IVersion version, int port, boolean ipv6) {
 		this(version, port, ipv6, null);

@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,
- *
+ * konstantin-ba@github,
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,9 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
+import java.io.IOException;
 import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.UnknownHostException;
 import java.util.logging.Logger;
 
@@ -52,6 +54,18 @@ public class Network {
 				logger.severe("" + ret.getHostAddress() + " is not a loopback address");
 			}
 		}
+		return ret;
+	}
+
+	public static int getFreeServerPort() throws IOException {
+		return getFreeServerPort(getLocalHost());
+	}
+	
+	public static int getFreeServerPort(InetAddress hostAdress) throws IOException {
+		int ret;
+		ServerSocket socket = new ServerSocket(0, 0, hostAdress);
+		ret = socket.getLocalPort();
+		socket.close();
 		return ret;
 	}
 
