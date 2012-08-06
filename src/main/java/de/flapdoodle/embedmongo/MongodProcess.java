@@ -99,7 +99,7 @@ public class MongodProcess {
 
 			stopped = true;
 
-			logger.warning("try to stop mongod");
+			logger.info("try to stop mongod");
 			if (!sendStopToMongoInstance()) {
 				logger.warning("could not stop mongod with db command, try next");
 				if (!sendKillToMongodProcess()) {
