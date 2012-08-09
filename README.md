@@ -52,6 +52,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 - added some unit test support (thanx to trajano)
 - added some logging only runtime config option
 - added 2.0.7-rc1, 2.2.0-rc0
+- command line post processor hock
 
 #### 1.17
 
@@ -334,6 +335,14 @@ Support for Linux, Windows and MacOSX.
 
 		Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
 	}
+	...
+
+### Command Line Post Processing
+	...
+	ICommandLinePostProcessor postProcessort=...
+	
+	RuntimeConfig runtimeConfig = new RuntimeConfig();
+	runtimeConfig.setsetCommandLinePostProcessor(postProcessor);
 	...
 
 

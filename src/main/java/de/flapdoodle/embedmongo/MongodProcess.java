@@ -58,14 +58,14 @@ public class MongodProcess {
 	private Distribution distribution;
 
 	public MongodProcess(Distribution distribution, MongodConfig config, RuntimeConfig runtimeConfig,
-	                     MongodExecutable mongodExecutable) throws IOException {
+			MongodExecutable mongodExecutable) throws IOException {
 		this.config = config;
 		this.runtimeConfig = runtimeConfig;
 		this.mongodExecutable = mongodExecutable;
 		this.distribution = distribution;
 
 		MongodProcessOutputConfig outputConfig = runtimeConfig.getMongodOutputConfig();
-		
+
 		try {
 			File tmpDbDir;
 			if (config.getDatabaseDir() != null) {
@@ -75,12 +75,13 @@ public class MongodProcess {
 				this.dbDir = tmpDbDir;
 			}
 			process = ProcessControl.fromCommandLine(
-					Mongod.enhanceCommandLinePlattformSpecific(distribution,
-							Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), tmpDbDir)), true);
+					runtimeConfig.getCommandLinePostProcessor().process(
+							distribution,
+							Mongod.enhanceCommandLinePlattformSpecific(distribution,
+									Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), tmpDbDir))), true);
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			
 			LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
 					StreamToLineProcessor.wrap(outputConfig.getMongodOutput()));
 			Processors.connect(process.getReader(), logWatch);
@@ -134,8 +135,7 @@ public class MongodProcess {
 	private boolean sendKillToMongodProcess() {
 		if (mongodProcessId > 0) {
 			return ProcessControl.killProcess(distribution.getPlatform(),
-					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()),
-					mongodProcessId);
+					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()), mongodProcessId);
 		}
 		return false;
 	}
@@ -143,16 +143,15 @@ public class MongodProcess {
 	private boolean tryKillToMongodProcess() {
 		if (mongodProcessId > 0) {
 			return ProcessControl.tryKillProcess(distribution.getPlatform(),
-					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()),
-					mongodProcessId);
+					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()), mongodProcessId);
 		}
 		return false;
 	}
-	
+
 	public MongodConfig getConfig() {
 		return config;
 	}
-	
+
 	/**
 	 *
 	 */

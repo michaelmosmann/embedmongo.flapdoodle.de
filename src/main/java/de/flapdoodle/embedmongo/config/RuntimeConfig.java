@@ -29,6 +29,7 @@ import de.flapdoodle.embedmongo.io.LoggingOutputStreamProcessor;
 import de.flapdoodle.embedmongo.output.IProgressListener;
 import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
+import de.flapdoodle.embedmongo.runtime.ICommandLinePostProcessor;
 
 /**
  *
@@ -41,6 +42,7 @@ public class RuntimeConfig {
 	private ITempNaming defaultfileNaming = new UUIDTempNaming();
 	private ITempNaming executableNaming = defaultfileNaming;
 	private MongodProcessOutputConfig mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
+	private ICommandLinePostProcessor commandLinePostProcessor = new ICommandLinePostProcessor.Noop();
 
 	public void setDownloadPath(String downloadPath) {
 		this.downloadPath = downloadPath;
@@ -88,6 +90,14 @@ public class RuntimeConfig {
 
 	public void setMongodOutputConfig(MongodProcessOutputConfig mongodOutputConfig) {
 		this.mongodOutputConfig = mongodOutputConfig;
+	}
+
+	public void setCommandLinePostProcessor(ICommandLinePostProcessor commandLinePostProcessor) {
+		this.commandLinePostProcessor = commandLinePostProcessor;
+	}
+
+	public ICommandLinePostProcessor getCommandLinePostProcessor() {
+		return commandLinePostProcessor;
 	}
 
 	public static RuntimeConfig getInstance(Logger logger) {
