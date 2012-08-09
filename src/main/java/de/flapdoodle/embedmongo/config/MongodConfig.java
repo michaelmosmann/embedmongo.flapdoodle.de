@@ -23,8 +23,8 @@ package de.flapdoodle.embedmongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.process.runtime.Network;
 
 /**
  *

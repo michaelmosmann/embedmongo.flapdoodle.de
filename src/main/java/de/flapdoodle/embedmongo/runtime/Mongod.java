@@ -22,6 +22,7 @@ package de.flapdoodle.embedmongo.runtime;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.runtime.NUMA;
 
 import java.io.File;
 import java.io.IOException;

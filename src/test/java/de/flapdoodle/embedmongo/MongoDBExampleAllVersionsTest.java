@@ -28,8 +28,8 @@ import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.process.runtime.Network;
 
 import org.junit.After;
 import org.junit.Before;

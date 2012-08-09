@@ -28,12 +28,12 @@ import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.distribution.BitSize;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.Platform;
 import de.flapdoodle.process.io.Processors;
+import de.flapdoodle.process.runtime.Network;
 
 import junit.framework.TestCase;
 
