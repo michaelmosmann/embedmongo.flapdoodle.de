@@ -22,7 +22,7 @@ package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.io.IProgressListener;
+import de.flapdoodle.process.io.progress.IProgressListener;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

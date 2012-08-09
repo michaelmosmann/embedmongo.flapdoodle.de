@@ -55,8 +55,8 @@ import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
 import de.flapdoodle.process.extract.UserTempNaming;
 import de.flapdoodle.process.io.IStreamProcessor;
-import de.flapdoodle.process.io.LoggingProgressListener;
 import de.flapdoodle.process.io.Processors;
+import de.flapdoodle.process.io.progress.LoggingProgressListener;
 
 public class TestExampleReadMeCode extends TestCase {
 

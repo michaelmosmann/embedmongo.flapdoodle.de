@@ -31,7 +31,7 @@ import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
-import de.flapdoodle.process.io.IProgressListener;
+import de.flapdoodle.process.io.progress.IProgressListener;
 
 /**
  *

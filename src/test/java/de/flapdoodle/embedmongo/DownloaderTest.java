@@ -26,7 +26,7 @@ import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.GenericVersion;
 import de.flapdoodle.process.distribution.Platform;
 import de.flapdoodle.process.extract.UUIDTempNaming;
-import de.flapdoodle.process.io.IProgressListener;
+import de.flapdoodle.process.io.progress.IProgressListener;
 
 import org.junit.After;
 import org.junit.Before;

@@ -22,7 +22,7 @@ package de.flapdoodle.process.extract;
 
 import de.flapdoodle.embedmongo.Files;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.io.IProgressListener;
+import de.flapdoodle.process.io.progress.IProgressListener;
 
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;

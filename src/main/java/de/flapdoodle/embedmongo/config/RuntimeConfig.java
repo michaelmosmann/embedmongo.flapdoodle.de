@@ -29,10 +29,10 @@ import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
-import de.flapdoodle.process.io.IProgressListener;
 import de.flapdoodle.process.io.LoggingOutputStreamProcessor;
-import de.flapdoodle.process.io.LoggingProgressListener;
-import de.flapdoodle.process.io.StandardConsoleProgressListener;
+import de.flapdoodle.process.io.progress.IProgressListener;
+import de.flapdoodle.process.io.progress.LoggingProgressListener;
+import de.flapdoodle.process.io.progress.StandardConsoleProgressListener;
 
 /**
  *
