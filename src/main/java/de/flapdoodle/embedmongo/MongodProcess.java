@@ -21,7 +21,6 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
-import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.io.LogWatchStreamProcessor;
@@ -30,6 +29,7 @@ import de.flapdoodle.embedmongo.io.StreamToLineProcessor;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
+import de.flapdoodle.process.config.io.ProcessOutput;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,7 +64,7 @@ public class MongodProcess {
 		this.mongodExecutable = mongodExecutable;
 		this.distribution = distribution;
 
-		MongodProcessOutputConfig outputConfig = runtimeConfig.getMongodOutputConfig();
+		ProcessOutput outputConfig = runtimeConfig.getMongodOutputConfig();
 
 		try {
 			File tmpDbDir;

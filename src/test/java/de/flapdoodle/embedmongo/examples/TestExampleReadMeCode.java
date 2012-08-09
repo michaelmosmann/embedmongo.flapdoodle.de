@@ -56,6 +56,7 @@ import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.tests.MongodForTestsFactory;
+import de.flapdoodle.process.config.io.ProcessOutput;
 
 public class TestExampleReadMeCode extends TestCase {
 
@@ -159,7 +160,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomOutputToConsolePrefix() {
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
+		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 
@@ -173,7 +174,7 @@ public class TestExampleReadMeCode extends TestCase {
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 
-		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(mongodOutput, mongodError, commandsOutput));
+		runtimeConfig.setMongodOutputConfig(new ProcessOutput(mongodOutput, mongodError, commandsOutput));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	}
 
@@ -182,7 +183,7 @@ public class TestExampleReadMeCode extends TestCase {
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
+		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
 		runtimeConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);

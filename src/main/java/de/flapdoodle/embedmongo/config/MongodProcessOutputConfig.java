@@ -20,48 +20,20 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
-import de.flapdoodle.embedmongo.io.Processors;
+import de.flapdoodle.process.config.io.ProcessOutput;
 
 /**
  *
  */
 public class MongodProcessOutputConfig {
 
-	private final IStreamProcessor mongodOutput;
-	private final IStreamProcessor mongodError;
-	private final IStreamProcessor commandsOutput;
-
-	public MongodProcessOutputConfig(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
-			IStreamProcessor commandsOutput) {
-		this.mongodOutput = mongodOutput;
-		this.mongodError = mongodError;
-		this.commandsOutput = commandsOutput;
+	public static ProcessOutput getDefaultInstance() {
+		return ProcessOutput.getDefaultInstance("mongod");
 	}
 
-	public IStreamProcessor getMongodOutput() {
-		return mongodOutput;
-	}
-
-	public IStreamProcessor getMongodError() {
-		return mongodError;
-	}
-
-	public IStreamProcessor getCommandsOutput() {
-		return commandsOutput;
-	}
-
-	public static MongodProcessOutputConfig getDefaultInstance() {
-		return new MongodProcessOutputConfig(Processors.namedConsole("[mongod output]"),
-				Processors.namedConsole("[mongod error]"), Processors.console());
-	}
-
-	public static MongodProcessOutputConfig getInstance(Logger logger) {
-		return new MongodProcessOutputConfig(Processors.named("[mongod output]", Processors.logTo(logger, Level.INFO)),
-				Processors.named("[mongod error]", Processors.logTo(logger, Level.SEVERE)),
-				Processors.logTo(logger, Level.FINE));
+	public static ProcessOutput getInstance(Logger logger) {
+		return ProcessOutput.getInstance("mongod", logger);
 	}
 }

@@ -236,7 +236,7 @@ Support for Linux, Windows and MacOSX.
 #### ... to console with line prefix
 	...
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
+	runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.namedConsole("[mongod>]"),
 		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...
@@ -248,7 +248,7 @@ Support for Linux, Windows and MacOSX.
 	IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 	IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 		
-	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(mongodOutput,
+	runtimeConfig.setMongodOutputConfig(new ProcessOutput(mongodOutput,
 		mongodError, commandsOutput));
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...
@@ -287,7 +287,7 @@ Support for Linux, Windows and MacOSX.
 	Logger logger=...
 	
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.logTo(logger, Level.INFO),
+	runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 			Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
 	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 	...

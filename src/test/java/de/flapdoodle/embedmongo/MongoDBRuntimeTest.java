@@ -33,6 +33,8 @@ import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.embedmongo.runtime.Network;
+import de.flapdoodle.process.config.io.ProcessOutput;
+
 import junit.framework.TestCase;
 
 import java.io.File;
@@ -76,8 +78,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		MongodProcess mongodProcess = null;
 		MongodExecutable mongod = null;
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(new MongodProcessOutputConfig(Processors.namedConsole("[mongod>]"),
-				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
+		runtimeConfig.setMongodOutputConfig(MongodProcessOutputConfig.getDefaultInstance());
 		//		runtimeConfig.setExecutableNaming(new UserTempNaming());
 		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
 

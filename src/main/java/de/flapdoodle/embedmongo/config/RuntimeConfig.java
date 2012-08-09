@@ -30,6 +30,7 @@ import de.flapdoodle.embedmongo.output.IProgressListener;
 import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 import de.flapdoodle.embedmongo.runtime.ICommandLinePostProcessor;
+import de.flapdoodle.process.config.io.ProcessOutput;
 
 /**
  *
@@ -41,7 +42,7 @@ public class RuntimeConfig {
 	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome();
 	private ITempNaming defaultfileNaming = new UUIDTempNaming();
 	private ITempNaming executableNaming = defaultfileNaming;
-	private MongodProcessOutputConfig mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
+	private ProcessOutput mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
 	private ICommandLinePostProcessor commandLinePostProcessor = new ICommandLinePostProcessor.Noop();
 
 	public void setDownloadPath(String downloadPath) {
@@ -84,11 +85,11 @@ public class RuntimeConfig {
 		this.artifactStorePath = value;
 	}
 
-	public MongodProcessOutputConfig getMongodOutputConfig() {
+	public ProcessOutput getMongodOutputConfig() {
 		return mongodOutputConfig;
 	}
 
-	public void setMongodOutputConfig(MongodProcessOutputConfig mongodOutputConfig) {
+	public void setMongodOutputConfig(ProcessOutput mongodOutputConfig) {
 		this.mongodOutputConfig = mongodOutputConfig;
 	}
 
