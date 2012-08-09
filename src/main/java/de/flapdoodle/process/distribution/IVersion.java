@@ -18,41 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.distribution;
+package de.flapdoodle.process.distribution;
 
 /**
- *
+ * Interface for mongodb versions
  */
-public class Distribution {
+public interface IVersion {
 
-	private final IVersion version;
-	private final Platform platform;
-	private final BitSize bitsize;
-
-	public Distribution(IVersion version, Platform platform, BitSize bitsize) {
-		this.version = version;
-		this.platform = platform;
-		this.bitsize = bitsize;
-	}
-
-	public IVersion getVersion() {
-		return version;
-	}
-
-	public Platform getPlatform() {
-		return platform;
-	}
-
-	public BitSize getBitsize() {
-		return bitsize;
-	}
-
-	@Override
-	public String toString() {
-		return "" + version + ":" + platform + ":" + bitsize;
-	}
-
-	public static Distribution detectFor(IVersion version) {
-		return new Distribution(version, Platform.detect(), BitSize.detect());
-	}
+	String asInDownloadPath();
 }

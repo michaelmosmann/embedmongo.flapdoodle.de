@@ -18,12 +18,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.distribution;
+package de.flapdoodle.process.distribution;
 
 /**
- * Interface for mongodb versions
+ * Platform enum
  */
-public interface IVersion {
+public enum Platform {
+	Linux,
+	Windows,
+	OS_X;
 
-	String asInDownloadPath();
+	public static Platform detect() {
+		String osName = System.getProperty("os.name");
+		if (osName.equals("Linux"))
+			return Linux;
+		if (osName.startsWith("Windows", 0))
+			return Windows;
+		if (osName.equals("Mac OS X"))
+			return OS_X;
+		throw new IllegalArgumentException("Could not detect Platform: os.name=" + osName);
+	}
 }

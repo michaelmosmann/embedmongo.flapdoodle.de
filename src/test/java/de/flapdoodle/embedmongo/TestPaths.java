@@ -20,10 +20,11 @@
  */
 package de.flapdoodle.embedmongo;
 
-import de.flapdoodle.embedmongo.distribution.BitSize;
-import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.process.distribution.BitSize;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.distribution.Platform;
+
 import junit.framework.TestCase;
 
 //CHECKSTYLE:OFF

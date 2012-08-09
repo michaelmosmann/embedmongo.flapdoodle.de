@@ -21,8 +21,8 @@
 package de.flapdoodle.process.extract;
 
 import de.flapdoodle.embedmongo.Paths;
-import de.flapdoodle.embedmongo.distribution.ArchiveType;
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.process.distribution.ArchiveType;
+import de.flapdoodle.process.distribution.Distribution;
 
 /**
  * Extractor Helper

@@ -20,8 +20,8 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
-import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.distribution.Platform;
 import de.flapdoodle.process.io.Readers;
 
 import java.io.IOException;

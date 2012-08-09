@@ -22,7 +22,7 @@ package de.flapdoodle.embedmongo.runtime;
 
 import java.util.List;
 
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.process.distribution.Distribution;
 
 
 public interface ICommandLinePostProcessor {

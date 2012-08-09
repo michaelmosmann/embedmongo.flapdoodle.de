@@ -21,11 +21,11 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.BitSize;
-import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.distribution.GenericVersion;
-import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.process.distribution.BitSize;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.distribution.GenericVersion;
+import de.flapdoodle.process.distribution.Platform;
 import de.flapdoodle.process.extract.UUIDTempNaming;
 
 import org.junit.After;

@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embedmongo.exceptions;
 
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.process.distribution.Distribution;
 
 public class MongodException extends RuntimeException {
 

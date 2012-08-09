@@ -21,8 +21,8 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.process.distribution.Distribution;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

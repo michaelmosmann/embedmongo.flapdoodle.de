@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
+import de.flapdoodle.process.distribution.IVersion;
+
 /**
  * MongoDB Version enum
  */

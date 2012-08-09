@@ -20,9 +20,9 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
-import de.flapdoodle.embedmongo.config.ProcessConfig;
-import de.flapdoodle.embedmongo.distribution.Platform;
 import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.config.process.ProcessConfig;
+import de.flapdoodle.process.distribution.Platform;
 import de.flapdoodle.process.io.IStreamProcessor;
 import de.flapdoodle.process.io.Processors;
 

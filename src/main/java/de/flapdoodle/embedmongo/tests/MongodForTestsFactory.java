@@ -35,9 +35,9 @@ import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.IVersion;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.runtime.Network;
+import de.flapdoodle.process.distribution.IVersion;
 
 /**
  * This class encapsulates everything that would be needed to do embedded

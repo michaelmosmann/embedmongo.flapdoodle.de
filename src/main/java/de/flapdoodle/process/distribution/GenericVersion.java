@@ -18,24 +18,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.distribution;
+package de.flapdoodle.process.distribution;
 
 /**
- * Platform enum
+ * Generic version implementation for currently unsupported mongodb versions by embedmongo.
  */
-public enum Platform {
-	Linux,
-	Windows,
-	OS_X;
+public class GenericVersion implements IVersion {
 
-	public static Platform detect() {
-		String osName = System.getProperty("os.name");
-		if (osName.equals("Linux"))
-			return Linux;
-		if (osName.startsWith("Windows", 0))
-			return Windows;
-		if (osName.equals("Mac OS X"))
-			return OS_X;
-		throw new IllegalArgumentException("Could not detect Platform: os.name=" + osName);
+	private String versionInDownloadPath;
+
+	/**
+	 * C'tor with version name = specific version
+	 * 
+	 * @param versionInDownloadPath
+	 */
+	public GenericVersion(String versionInDownloadPath) {
+		this.versionInDownloadPath = versionInDownloadPath;
+	}
+	
+	@Override
+	public String asInDownloadPath() {
+		return versionInDownloadPath;
+	}
+
+	@Override
+	public String toString() {
+		return "GenericVersion{" + versionInDownloadPath + "}";
 	}
 }

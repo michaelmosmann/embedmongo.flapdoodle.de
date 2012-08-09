@@ -21,7 +21,7 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.process.distribution.Distribution;
 
 import java.io.File;
 

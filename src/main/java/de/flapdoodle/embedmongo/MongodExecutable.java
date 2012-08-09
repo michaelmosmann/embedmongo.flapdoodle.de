@@ -23,7 +23,7 @@ package de.flapdoodle.embedmongo;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import de.flapdoodle.process.distribution.Distribution;
 
 import java.io.File;
 import java.io.IOException;

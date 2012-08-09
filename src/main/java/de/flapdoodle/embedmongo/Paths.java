@@ -20,9 +20,9 @@
  */
 package de.flapdoodle.embedmongo;
 
-import de.flapdoodle.embedmongo.distribution.ArchiveType;
-import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.distribution.IVersion;
+import de.flapdoodle.process.distribution.ArchiveType;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.distribution.IVersion;
 
 import java.util.logging.Logger;
 import java.util.regex.Pattern;

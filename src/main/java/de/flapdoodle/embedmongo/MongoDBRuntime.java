@@ -27,9 +27,9 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
 

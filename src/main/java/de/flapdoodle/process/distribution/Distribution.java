@@ -18,31 +18,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.distribution;
+package de.flapdoodle.process.distribution;
 
 /**
- * Generic version implementation for currently unsupported mongodb versions by embedmongo.
+ *
  */
-public class GenericVersion implements IVersion {
+public class Distribution {
 
-	private String versionInDownloadPath;
+	private final IVersion version;
+	private final Platform platform;
+	private final BitSize bitsize;
 
-	/**
-	 * C'tor with version name = specific version
-	 * 
-	 * @param versionInDownloadPath
-	 */
-	public GenericVersion(String versionInDownloadPath) {
-		this.versionInDownloadPath = versionInDownloadPath;
+	public Distribution(IVersion version, Platform platform, BitSize bitsize) {
+		this.version = version;
+		this.platform = platform;
+		this.bitsize = bitsize;
 	}
-	
-	@Override
-	public String asInDownloadPath() {
-		return versionInDownloadPath;
+
+	public IVersion getVersion() {
+		return version;
+	}
+
+	public Platform getPlatform() {
+		return platform;
+	}
+
+	public BitSize getBitsize() {
+		return bitsize;
 	}
 
 	@Override
 	public String toString() {
-		return "GenericVersion{" + versionInDownloadPath + "}";
+		return "" + version + ":" + platform + ":" + bitsize;
+	}
+
+	public static Distribution detectFor(IVersion version) {
+		return new Distribution(version, Platform.detect(), BitSize.detect());
 	}
 }
