@@ -77,7 +77,7 @@ public class MongoDBExampleAllVersionsTest {
 	@Before
 	public void setUp() throws Exception {
 
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 		mongodExe = runtime.prepare(new MongodConfig(this.mongoVersion, PORT,
 				Network.localhostIsIPv6()));
 		mongod = mongodExe.start();

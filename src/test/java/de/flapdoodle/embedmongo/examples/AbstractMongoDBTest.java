@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 
 import com.mongodb.Mongo;
 
-import de.flapdoodle.embedmongo.MongoDBRuntime;
+import de.flapdoodle.embedmongo.MongodStarter;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
 import de.flapdoodle.embedmongo.config.MongodConfig;
@@ -40,7 +40,7 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 		_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
 		_mongod = _mongodExe.start();
 

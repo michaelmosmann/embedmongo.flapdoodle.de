@@ -30,7 +30,7 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
-import de.flapdoodle.embedmongo.MongoDBRuntime;
+import de.flapdoodle.embedmongo.MongodStarter;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
 import de.flapdoodle.embedmongo.config.MongodConfig;
@@ -75,7 +75,7 @@ public class MongodForTestsFactory {
 	 */
 	public MongodForTestsFactory(final IVersion version) throws IOException {
 
-		final MongoDBRuntime runtime = MongoDBRuntime.getInstance(RuntimeConfig
+		final MongodStarter runtime = MongodStarter.getInstance(RuntimeConfig
 				.getInstance(logger));
 		mongodExecutable = runtime.prepare(new MongodConfig(version, Network
 				.getFreeServerPort(), Network.localhostIsIPv6()));

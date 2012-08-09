@@ -38,7 +38,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
-import de.flapdoodle.embedmongo.MongoDBRuntime;
+import de.flapdoodle.embedmongo.MongodStarter;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
 import de.flapdoodle.embedmongo.config.MongodConfig;
@@ -66,7 +66,7 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
 
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 		try {
 			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -92,7 +92,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setExecutableNaming(new UserTempNaming());
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 		try {
 			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -146,7 +146,7 @@ public class TestExampleReadMeCode extends TestCase {
 		runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
 		runtimeConfig.setExecutableNaming(executableNaming);
 
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 		/// - >8- - - - 
 		MongodProcess mongod = mongodExe.start();
@@ -162,7 +162,7 @@ public class TestExampleReadMeCode extends TestCase {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 	}
 
@@ -175,7 +175,7 @@ public class TestExampleReadMeCode extends TestCase {
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 
 		runtimeConfig.setMongodOutputConfig(new ProcessOutput(mongodOutput, mongodError, commandsOutput));
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
 	// #### ... to java logging
@@ -186,14 +186,14 @@ public class TestExampleReadMeCode extends TestCase {
 		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
 		runtimeConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
 	// #### ... to default java logging (the easy way)
 	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
 		Logger logger = Logger.getLogger(getClass().getName());
 		RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
 	/*
@@ -233,7 +233,7 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
 
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 		try {
 			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -262,7 +262,7 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
 
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 		try {
 			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);

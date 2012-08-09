@@ -57,7 +57,7 @@ public class MongoExecutableTest extends TestCase {
 		for (int i = 0; i < loops; i++) {
 			_logger.info("Loop: " + i);
 
-			MongodExecutable mongodExe = MongoDBRuntime.getDefaultInstance().prepare(mongodConfig);
+			MongodExecutable mongodExe = MongodStarter.getDefaultInstance().prepare(mongodConfig);
 			MongodProcess mongod = mongodExe.start();
 
 			if (useMongodb) {

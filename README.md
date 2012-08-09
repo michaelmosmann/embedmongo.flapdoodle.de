@@ -127,7 +127,7 @@ Support for Linux, Windows and MacOSX.
 	MongodProcess mongod = null;
 	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port,Network.localhostIsIPv6());
 	
-	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+	MongodStarter runtime = MongodStarter.getDefaultInstance();
 	
 	try {
 		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -150,7 +150,7 @@ Support for Linux, Windows and MacOSX.
 	
 	RuntimeConfig runtimeConfig=new RuntimeConfig();
 	runtimeConfig.setExecutableNaming(new UserTempNaming());
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	
 	try {
 		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -176,7 +176,7 @@ Support for Linux, Windows and MacOSX.
 		@Override
 		protected void setUp() throws Exception {
 	
-			MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+			MongodStarter runtime = MongodStarter.getDefaultInstance();
 			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
 			_mongod = _mongodExe.start();
 	
@@ -227,7 +227,7 @@ Support for Linux, Windows and MacOSX.
 	runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
 	runtimeConfig.setExecutableNaming(executableNaming);
 
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 	...
 
@@ -238,7 +238,7 @@ Support for Linux, Windows and MacOSX.
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
 	runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.namedConsole("[mongod>]"),
 		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
 #### ... to file
@@ -250,7 +250,7 @@ Support for Linux, Windows and MacOSX.
 		
 	runtimeConfig.setMongodOutputConfig(new ProcessOutput(mongodOutput,
 		mongodError, commandsOutput));
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 	
 	...
@@ -289,7 +289,7 @@ Support for Linux, Windows and MacOSX.
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
 	runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 			Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
 #### ... to default java logging (the easy way)	
@@ -298,7 +298,7 @@ Support for Linux, Windows and MacOSX.
 	Logger logger=...
 	
 	RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
-	MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
 ### Custom Version
@@ -308,7 +308,7 @@ Support for Linux, Windows and MacOSX.
 	MongodProcess mongod = null;
 	MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
 
-	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 	try {
 		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
@@ -336,7 +336,7 @@ Support for Linux, Windows and MacOSX.
 	MongodProcess mongod = null;
 	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
 
-	MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 	try {
 		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);

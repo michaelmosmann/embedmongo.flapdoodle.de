@@ -51,7 +51,7 @@ public class MongoDBRuntimeTest extends TestCase {
 	}
 
 	public void testDistributions() throws IOException {
-		MongoDBRuntime runtime = MongoDBRuntime.getDefaultInstance();
+		MongodStarter runtime = MongodStarter.getDefaultInstance();
 		check(runtime, new Distribution(Version.Main.V1_8, Platform.Linux, BitSize.B32));
 		check(runtime, new Distribution(Version.Main.V1_8, Platform.Windows, BitSize.B32));
 		check(runtime, new Distribution(Version.Main.V1_8, Platform.OS_X, BitSize.B32));
@@ -63,7 +63,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		check(runtime, new Distribution(Version.Main.V2_1, Platform.OS_X, BitSize.B32));
 	}
 
-	private void check(MongoDBRuntime runtime, Distribution distribution) throws IOException {
+	private void check(MongodStarter runtime, Distribution distribution) throws IOException {
 		assertTrue("Check", runtime.checkDistribution(distribution));
 		File mongod = runtime.extractMongod(distribution);
 		assertNotNull("Extracted", mongod);
@@ -80,7 +80,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setMongodOutputConfig(MongodProcessOutputConfig.getDefaultInstance());
 		//		runtimeConfig.setExecutableNaming(new UserTempNaming());
-		MongoDBRuntime runtime = MongoDBRuntime.getInstance(runtimeConfig);
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 		timer.check("After Runtime");
 

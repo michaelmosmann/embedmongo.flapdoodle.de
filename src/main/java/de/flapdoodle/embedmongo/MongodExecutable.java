@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,7 @@ import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.process.runtime.Executable;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,51 +35,19 @@ import java.util.logging.Logger;
 /**
  *
  */
-public class MongodExecutable {
+public class MongodExecutable extends Executable<MongodConfig, MongodProcess> {
+
+	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig, IRuntimeConfig runtimeConfig,
+			File mongodExecutable) {
+		super(distribution, mongodConfig, runtimeConfig, mongodExecutable);
+	}
 
 	private static Logger logger = Logger.getLogger(MongodExecutable.class.getName());
 
-	private final MongodConfig mongodConfig;
-	private final IRuntimeConfig runtimeConfig;
-	private final File mongodExecutable;
-	private boolean stopped;
-
-	private final Distribution distribution;
-
-	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig,
-			IRuntimeConfig runtimeConfig, File mongodExecutable) {
-		this.distribution = distribution;
-		this.mongodConfig = mongodConfig;
-		this.runtimeConfig = runtimeConfig;
-		this.mongodExecutable = mongodExecutable;
-		Runtime.getRuntime().addShutdownHook(new JobKiller());
-	}
-
-	public synchronized void cleanup() {
-		if (!stopped) {
-			if (mongodExecutable.exists() && !Files.forceDelete(mongodExecutable))
-				logger.warning("Could not delete mongod executable NOW: " + mongodExecutable);
-			stopped = true;
-		}
-	}
-
-	/**
-	 *
-	 */
-	class JobKiller extends Thread {
-
-		@Override
-		public void run() {
-			cleanup();
-		}
-	}
-
-	public File getFile() {
-		return mongodExecutable;
-	}
-
-	public MongodProcess start() throws IOException {
-		return new MongodProcess(distribution, mongodConfig, runtimeConfig, this);
+	@Override
+	protected MongodProcess start(Distribution distribution, MongodConfig config, IRuntimeConfig runtime)
+			throws IOException {
+		return new MongodProcess(distribution, config, runtime, this);
 	}
 
 }

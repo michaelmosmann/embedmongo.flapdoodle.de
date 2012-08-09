@@ -23,15 +23,15 @@ package de.flapdoodle.embedmongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.process.config.ExecutableProcessConfig;
 import de.flapdoodle.process.distribution.IVersion;
 import de.flapdoodle.process.runtime.Network;
 
 /**
  *
  */
-public class MongodConfig {
+public class MongodConfig extends ExecutableProcessConfig {
 
-	private final IVersion version;
 	private final int port;
 	private final String databaseDir;
 	private final boolean ipv6;
@@ -45,14 +45,10 @@ public class MongodConfig {
 	}
 
 	public MongodConfig(IVersion version, int port, boolean ipv6, String databaseDir) {
-		this.version = version;
+		super(version);
 		this.port = port;
 		this.ipv6 = ipv6;
 		this.databaseDir = databaseDir;
-	}
-
-	public IVersion getVersion() {
-		return version;
 	}
 
 	public int getPort() {
