@@ -20,9 +20,11 @@
  */
 package de.flapdoodle.embedmongo.config;
 
+import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
 import de.flapdoodle.process.io.progress.IProgressListener;
@@ -35,7 +37,7 @@ public class DownloadConfig implements IDownloadConfig {
 	private String downloadPath = "http://fastdl.mongodb.org/";
 
 	private IProgressListener progressListener = new StandardConsoleProgressListener();
-	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome();
+	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome(".embedmongo");
 
 	@Override
 	public ITempNaming getFileNaming() {
@@ -74,4 +76,8 @@ public class DownloadConfig implements IDownloadConfig {
 		return artifactStorePath;
 	}
 
+	@Override
+	public String getPath(Distribution distribution) {
+		return Paths.getPath(distribution);
+	}
 }

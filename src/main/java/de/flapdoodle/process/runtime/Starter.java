@@ -27,13 +27,12 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.Downloader;
-import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.Paths;
-import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.config.ExecutableProcessConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
@@ -85,7 +84,7 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 	protected File extractMongod(Distribution distribution) throws IOException {
 		IDownloadConfig downloadConfig = runtime.getDownloadConfig();
 		File artifact = LocalArtifactStore.getArtifact(downloadConfig, distribution);
-		IExtractor extractor = Extractors.getExtractor(distribution);
+		IExtractor extractor = Extractors.getExtractor(getArchiveType(distribution));
 
 		File mongodExe = Files.createTempFile(
 				runtime.getExecutableNaming().nameFor("extract", executableFilename(distribution)));
@@ -98,5 +97,8 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 	protected abstract Pattern executeablePattern(Distribution distribution);
 
 	protected abstract String executableFilename(Distribution distribution);
+	
+	protected abstract ArchiveType getArchiveType(Distribution distribution);
+
 
 }

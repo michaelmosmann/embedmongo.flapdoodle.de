@@ -20,15 +20,16 @@
  */
 package de.flapdoodle.process.runtime;
 
-import de.flapdoodle.process.collections.Collections;
-import de.flapdoodle.process.distribution.Platform;
-import de.flapdoodle.process.io.Readers;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
+
+import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.config.ISupportConfig;
+import de.flapdoodle.process.distribution.Platform;
+import de.flapdoodle.process.io.Readers;
 
 /**
  *
@@ -37,10 +38,10 @@ public class NUMA {
 
 	private static Logger logger = Logger.getLogger(NUMA.class.getName());
 
-	public static synchronized boolean isNUMA(Platform platform) {
+	public static synchronized boolean isNUMA(ISupportConfig support, Platform platform) {
 		Boolean ret = NUMA_STATUS_MAP.get(platform);
 		if (ret == null) {
-			ret = isNUMAOnce(platform);
+			ret = isNUMAOnce(support, platform);
 			NUMA_STATUS_MAP.put(platform, ret);
 		}
 		return ret;
@@ -49,11 +50,11 @@ public class NUMA {
 	static final Map<Platform, Boolean> NUMA_STATUS_MAP = new HashMap<Platform, Boolean>();
 
 
-	public static boolean isNUMAOnce(Platform platform) {
+	public static boolean isNUMAOnce(ISupportConfig support, Platform platform) {
 		if (platform == Platform.Linux) {
 			try {
 				ProcessControl process = ProcessControl
-						.fromCommandLine(Collections.newArrayList("grep", "NUMA=y", "/boot/config-`uname -r`"), true);
+						.fromCommandLine(support, Collections.newArrayList("grep", "NUMA=y", "/boot/config-`uname -r`"), true);
 				Reader reader = process.getReader();
 				String content = Readers.readAll(reader);
 				process.stop();

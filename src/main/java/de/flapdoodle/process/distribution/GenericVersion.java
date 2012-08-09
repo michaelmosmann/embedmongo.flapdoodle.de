@@ -21,7 +21,7 @@
 package de.flapdoodle.process.distribution;
 
 /**
- * Generic version implementation for currently unsupported mongodb versions by embedmongo.
+ * Generic version implementation for currently unsupported versions.
  */
 public class GenericVersion implements IVersion {
 

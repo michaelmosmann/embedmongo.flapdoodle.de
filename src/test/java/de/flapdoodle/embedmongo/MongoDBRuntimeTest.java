@@ -78,7 +78,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		MongodProcess mongodProcess = null;
 		MongodExecutable mongod = null;
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(MongodProcessOutputConfig.getDefaultInstance());
+		runtimeConfig.setProcessOutput(MongodProcessOutputConfig.getDefaultInstance());
 		//		runtimeConfig.setExecutableNaming(new UserTempNaming());
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 

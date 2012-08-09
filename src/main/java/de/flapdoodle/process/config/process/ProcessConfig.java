@@ -20,11 +20,11 @@
  */
 package de.flapdoodle.process.config.process;
 
-import de.flapdoodle.process.io.IStreamProcessor;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import de.flapdoodle.process.io.IStreamProcessor;
 
 /**
  *

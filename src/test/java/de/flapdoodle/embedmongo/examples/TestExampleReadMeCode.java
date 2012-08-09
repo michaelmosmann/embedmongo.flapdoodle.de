@@ -160,7 +160,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomOutputToConsolePrefix() {
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.namedConsole("[mongod>]"),
+		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
@@ -174,7 +174,7 @@ public class TestExampleReadMeCode extends TestCase {
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 
-		runtimeConfig.setMongodOutputConfig(new ProcessOutput(mongodOutput, mongodError, commandsOutput));
+		runtimeConfig.setProcessOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput));
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
@@ -183,7 +183,7 @@ public class TestExampleReadMeCode extends TestCase {
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
+		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
 		runtimeConfig.getDownloadConfig().setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);

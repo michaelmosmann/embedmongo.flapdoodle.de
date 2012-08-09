@@ -66,11 +66,11 @@ public class RuntimeConfig implements IRuntimeConfig {
 	}
 
 	@Override
-	public ProcessOutput getMongodOutputConfig() {
+	public ProcessOutput getProcessOutput() {
 		return mongodOutputConfig;
 	}
 
-	public void setMongodOutputConfig(ProcessOutput mongodOutputConfig) {
+	public void setProcessOutput(ProcessOutput mongodOutputConfig) {
 		this.mongodOutputConfig = mongodOutputConfig;
 	}
 
@@ -90,7 +90,7 @@ public class RuntimeConfig implements IRuntimeConfig {
 
 	public static RuntimeConfig getInstance(Logger logger) {
 		RuntimeConfig ret = new RuntimeConfig();
-		ret.setMongodOutputConfig(MongodProcessOutputConfig.getInstance(logger));
+		ret.setProcessOutput(MongodProcessOutputConfig.getInstance(logger));
 		ret.getDownloadConfig().setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		return ret;
 	}

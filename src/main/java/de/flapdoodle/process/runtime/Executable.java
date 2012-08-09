@@ -24,8 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.MongodProcess;
-import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.process.config.ExecutableProcessConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;

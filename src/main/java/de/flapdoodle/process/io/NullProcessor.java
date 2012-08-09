@@ -20,7 +20,6 @@
  */
 package de.flapdoodle.process.io;
 
-import de.flapdoodle.process.io.IStreamProcessor;
 
 /**
  * Don't output anything. 

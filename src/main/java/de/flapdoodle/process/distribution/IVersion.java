@@ -21,7 +21,7 @@
 package de.flapdoodle.process.distribution;
 
 /**
- * Interface for mongodb versions
+ * Interface for versions
  */
 public interface IVersion {
 

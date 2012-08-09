@@ -24,7 +24,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.store.IDownloadConfig;
 
 /**

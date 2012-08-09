@@ -34,8 +34,7 @@ public interface IRuntimeConfig {
 
 	ITempNaming getExecutableNaming();
 
-	ProcessOutput getMongodOutputConfig();
+	ProcessOutput getProcessOutput();
 
 	ICommandLinePostProcessor getCommandLinePostProcessor();
-
 }

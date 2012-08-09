@@ -22,8 +22,6 @@ package de.flapdoodle.process.store;
 
 import java.io.File;
 
-import de.flapdoodle.embedmongo.Paths;
-import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.file.Files;
@@ -40,11 +38,11 @@ public class LocalArtifactStore {
 
 	public static boolean store(IDownloadConfig runtime, Distribution distribution, File download) {
 		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, Paths.getPath(distribution));
+		File artifactFile = new File(dir, runtime.getPath(distribution));
 		createOrCheckDir(artifactFile.getParentFile());
 		if (!Files.moveFile(download, artifactFile))
 			throw new IllegalArgumentException("Could not move " + download + " to " + artifactFile);
-		File checkFile = new File(dir, Paths.getPath(distribution));
+		File checkFile = new File(dir, runtime.getPath(distribution));
 		return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
 	}
 
@@ -66,7 +64,7 @@ public class LocalArtifactStore {
 
 	public static File getArtifact(IDownloadConfig runtime, Distribution distribution) {
 		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, Paths.getPath(distribution));
+		File artifactFile = new File(dir, runtime.getPath(distribution));
 		if ((artifactFile.exists()) && (artifactFile.isFile()))
 			return artifactFile;
 		return null;

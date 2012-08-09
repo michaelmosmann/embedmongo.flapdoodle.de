@@ -20,21 +20,19 @@
  */
 package de.flapdoodle.process.extract;
 
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.config.store.IDownloadConfig;
-import de.flapdoodle.process.io.file.Files;
-import de.flapdoodle.process.io.progress.IProgressListener;
-
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
-import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
-import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
+
+import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
+
+import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.process.io.progress.IProgressListener;
 
 /**
  *

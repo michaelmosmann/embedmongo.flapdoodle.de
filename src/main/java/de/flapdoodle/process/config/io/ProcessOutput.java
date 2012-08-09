@@ -29,27 +29,27 @@ import de.flapdoodle.process.io.Processors;
 
 public class ProcessOutput {
 
-	protected final IStreamProcessor mongodOutput;
-	protected final IStreamProcessor mongodError;
-	protected final IStreamProcessor commandsOutput;
+	protected final IStreamProcessor output;
+	protected final IStreamProcessor error;
+	protected final IStreamProcessor commands;
 
-	public ProcessOutput(IStreamProcessor mongodOutput, IStreamProcessor mongodError,
-			IStreamProcessor commandsOutput) {
-		this.mongodOutput = mongodOutput;
-		this.mongodError = mongodError;
-		this.commandsOutput = commandsOutput;
+	public ProcessOutput(IStreamProcessor output, IStreamProcessor error,
+			IStreamProcessor commands) {
+		this.output = output;
+		this.error = error;
+		this.commands = commands;
 	}
 	
-	public IStreamProcessor getMongodOutput() {
-		return mongodOutput;
+	public IStreamProcessor getOutput() {
+		return output;
 	}
 
-	public IStreamProcessor getMongodError() {
-		return mongodError;
+	public IStreamProcessor getError() {
+		return error;
 	}
 
-	public IStreamProcessor getCommandsOutput() {
-		return commandsOutput;
+	public IStreamProcessor getCommands() {
+		return commands;
 	}
 
 	public static ProcessOutput getDefaultInstance(String label) {

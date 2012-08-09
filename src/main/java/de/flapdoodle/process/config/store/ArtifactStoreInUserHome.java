@@ -25,10 +25,14 @@ package de.flapdoodle.process.config.store;
  *
  */
 public class ArtifactStoreInUserHome implements IArtifactStoragePathNaming {
-	static final String STORE_POSTFIX = ".embedmongo";
+	private String postFix;
 
+	public ArtifactStoreInUserHome(String postFix) {
+		this.postFix=postFix;
+	}
+	
 	@Override
 	public String getPath() {
-		return System.getProperty("user.home") + "/" + STORE_POSTFIX + "/"; //"/.embedmongo/";
+		return System.getProperty("user.home") + "/" + postFix + "/";
 	}
 }

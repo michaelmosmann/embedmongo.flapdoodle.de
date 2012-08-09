@@ -20,12 +20,6 @@
  */
 package de.flapdoodle.process.runtime;
 
-import de.flapdoodle.process.collections.Collections;
-import de.flapdoodle.process.config.process.ProcessConfig;
-import de.flapdoodle.process.distribution.Platform;
-import de.flapdoodle.process.io.IStreamProcessor;
-import de.flapdoodle.process.io.Processors;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -35,6 +29,14 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.ISupportConfig;
+import de.flapdoodle.process.config.process.ProcessConfig;
+import de.flapdoodle.process.distribution.Platform;
+import de.flapdoodle.process.io.IStreamProcessor;
+import de.flapdoodle.process.io.Processors;
 
 /**
  *
@@ -50,9 +52,11 @@ public class ProcessControl {
 	private InputStreamReader error;
 
 	private Integer pid;
+	private ISupportConfig runtime;
 
-	public ProcessControl(Process process) {
+	public ProcessControl(ISupportConfig runtime, Process process) {
 		this.process = process;
+		this.runtime = runtime;
 		reader = new InputStreamReader(this.process.getInputStream());
 		error = new InputStreamReader(this.process.getErrorStream());
 		pid = getProcessID();
@@ -126,31 +130,31 @@ public class ProcessControl {
 		if (!state.isKilled()) {
 			timer.cancel();
 			String message = "\n\n" + "----------------------------------------------------\n"
-					+ "Something bad happend. We couldn't kill mongod process, and tried a lot.\n"
-					+ "If you want this problem solved you can help us if you open a new issue on github.\n" + "\n"
-					+ "Follow this link:\n" + "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n" +
+					+ "Something bad happend. We couldn't kill "+runtime.getName()+" process, and tried a lot.\n"
+					+ "If you want this problem solved you can help us if you open a new issue.\n" + "\n"
+					+ "Follow this link:\n" + runtime.getSupportUrl() +
 					"\n"
 					+ "Thank you:)\n" + "----------------------------------------------------\n\n";
-			throw new IllegalStateException("Couldn't kill mongod process!" + message);
+			throw new IllegalStateException("Couldn't kill "+runtime.getName()+" process!" + message);
 		}
 		return state.returnCode;
 	}
 
 	//CHECKSTYLE:ON
-	public static ProcessControl fromCommandLine(List<String> commandLine, boolean redirectErrorStream)
+	public static ProcessControl fromCommandLine(ISupportConfig runtime, List<String> commandLine, boolean redirectErrorStream)
 			throws IOException {
 		ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
 		if (redirectErrorStream)
 			processBuilder.redirectErrorStream();
-		return new ProcessControl(processBuilder.start());
+		return new ProcessControl(runtime,processBuilder.start());
 	}
 
-	public static boolean executeCommandLine(String label, ProcessConfig processConfig) {
+	public static boolean executeCommandLine(ISupportConfig support, String label, ProcessConfig processConfig) {
 		boolean ret = false;
 
 		List<String> commandLine = processConfig.getCommandLine();
 		try {
-			ProcessControl process = fromCommandLine(processConfig.getCommandLine(), processConfig.getError() == null);
+			ProcessControl process = fromCommandLine(support, processConfig.getCommandLine(), processConfig.getError() == null);
 			Processors.connect(process.getReader(), processConfig.getOutput());
 			Thread.sleep(SLEEPT_TIMEOUT);
 			ret = process.stop() == 0;
@@ -164,17 +168,17 @@ public class ProcessControl {
 		return false;
 	}
 
-	public static boolean killProcess(Platform platform, IStreamProcessor output, int pid) {
+	public static boolean killProcess(ISupportConfig support,Platform platform, IStreamProcessor output, int pid) {
 		if ((platform == Platform.Linux) || (platform == Platform.OS_X)) {
-			return executeCommandLine("[kill process]",
+			return executeCommandLine(support, "[kill process]",
 					new ProcessConfig(Collections.newArrayList("kill", "-2", "" + pid), output));
 		}
 		return false;
 	}
 
-	public static boolean tryKillProcess(Platform platform, IStreamProcessor output, int pid) {
+	public static boolean tryKillProcess(ISupportConfig support,Platform platform, IStreamProcessor output, int pid) {
 		if (platform == Platform.Windows) {
-			return executeCommandLine("[taskkill process]",
+			return executeCommandLine(support, "[taskkill process]",
 					new ProcessConfig(Collections.newArrayList("taskkill", "/F", "/pid", "" + pid), output));
 		}
 		return false;

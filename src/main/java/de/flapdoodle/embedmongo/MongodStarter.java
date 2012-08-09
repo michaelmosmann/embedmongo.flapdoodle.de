@@ -30,6 +30,7 @@ import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
@@ -99,6 +100,11 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 
 	protected String executableFilename(Distribution distribution) {
 		return Paths.getMongodExecutable(distribution);
+	}
+	
+	@Override
+	protected ArchiveType getArchiveType(Distribution distribution) {
+		return Paths.getArchiveType(distribution);
 	}
 
 
