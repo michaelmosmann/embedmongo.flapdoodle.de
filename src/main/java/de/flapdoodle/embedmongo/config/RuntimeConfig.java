@@ -23,6 +23,7 @@ package de.flapdoodle.embedmongo.config;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
@@ -37,7 +38,7 @@ import de.flapdoodle.process.runtime.ICommandLinePostProcessor;
 /**
  *
  */
-public class RuntimeConfig {
+public class RuntimeConfig implements IRuntimeConfig {
 
 	private IProgressListener progressListener = new StandardConsoleProgressListener();
 	private String downloadPath = "http://fastdl.mongodb.org/";
@@ -51,6 +52,7 @@ public class RuntimeConfig {
 		this.downloadPath = downloadPath;
 	}
 
+	@Override
 	public String getDownloadPath() {
 		return downloadPath;
 	}
@@ -59,6 +61,7 @@ public class RuntimeConfig {
 		this.progressListener = progressListener;
 	}
 
+	@Override
 	public ITempNaming getDefaultfileNaming() {
 		return defaultfileNaming;
 	}
@@ -67,6 +70,7 @@ public class RuntimeConfig {
 		this.defaultfileNaming = defaultfileNaming;
 	}
 
+	@Override
 	public ITempNaming getExecutableNaming() {
 		return executableNaming;
 	}
@@ -75,10 +79,12 @@ public class RuntimeConfig {
 		this.executableNaming = executableNaming;
 	}
 
+	@Override
 	public IProgressListener getProgressListener() {
 		return progressListener;
 	}
 
+	@Override
 	public IArtifactStoragePathNaming getArtifactStorePathNaming() {
 		return artifactStorePath;
 	}
@@ -87,6 +93,7 @@ public class RuntimeConfig {
 		this.artifactStorePath = value;
 	}
 
+	@Override
 	public ProcessOutput getMongodOutputConfig() {
 		return mongodOutputConfig;
 	}
@@ -99,6 +106,7 @@ public class RuntimeConfig {
 		this.commandLinePostProcessor = commandLinePostProcessor;
 	}
 
+	@Override
 	public ICommandLinePostProcessor getCommandLinePostProcessor() {
 		return commandLinePostProcessor;
 	}

@@ -18,19 +18,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.extract;
+package de.flapdoodle.process.config;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.regex.Pattern;
+import de.flapdoodle.process.config.io.ProcessOutput;
+import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
+import de.flapdoodle.process.extract.ITempNaming;
+import de.flapdoodle.process.io.progress.IProgressListener;
+import de.flapdoodle.process.runtime.ICommandLinePostProcessor;
 
-import de.flapdoodle.process.config.IRuntimeConfig;
 
-/**
- * Extractor interface
- */
-public interface IExtractor {
+public interface IRuntimeConfig {
 
-	void extract(IRuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
+	String getDownloadPath();
+
+	ITempNaming getDefaultfileNaming();
+
+	ITempNaming getExecutableNaming();
+
+	IProgressListener getProgressListener();
+
+	IArtifactStoragePathNaming getArtifactStorePathNaming();
+
+	ProcessOutput getMongodOutputConfig();
+
+	ICommandLinePostProcessor getCommandLinePostProcessor();
 
 }

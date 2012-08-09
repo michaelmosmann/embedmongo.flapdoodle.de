@@ -21,6 +21,7 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.file.Files;
 import de.flapdoodle.process.io.progress.IProgressListener;
@@ -58,11 +59,11 @@ public class Downloader {
 	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz
 	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-tiger-1.7.6.tgz
 	 */
-	public static String getDownloadUrl(RuntimeConfig runtime, Distribution distribution) {
+	public static String getDownloadUrl(IRuntimeConfig runtime, Distribution distribution) {
 		return runtime.getDownloadPath() + Paths.getPath(distribution);
 	}
 
-	public static File download(RuntimeConfig runtime, Distribution distribution) throws IOException {
+	public static File download(IRuntimeConfig runtime, Distribution distribution) throws IOException {
 
 		String progressLabel = "Download " + distribution;
 		IProgressListener progress = runtime.getProgressListener();

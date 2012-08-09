@@ -21,6 +21,7 @@
 package de.flapdoodle.process.extract;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.io.file.Files;
 import de.flapdoodle.process.io.progress.IProgressListener;
 
@@ -40,7 +41,7 @@ import java.util.regex.Pattern;
 public class TgzExtractor implements IExtractor {
 
 	@Override
-	public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
+	public void extract(IRuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
 
 		IProgressListener progressListener = runtime.getProgressListener();
 		String progressLabel = "Extract " + source;

@@ -20,25 +20,25 @@
  */
 package de.flapdoodle.process.extract;
 
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.io.file.Files;
-import de.flapdoodle.process.io.progress.IProgressListener;
-
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
-import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
+
+import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.process.io.progress.IProgressListener;
+
 /**
  *
  */
 public class ZipExtractor implements IExtractor {
 	@Override
-	public void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
+	public void extract(IRuntimeConfig runtime, File source, File destination, Pattern file) throws IOException {
 		IProgressListener progressListener = runtime.getProgressListener();
 		String progressLabel = "Extract " + source;
 		progressListener.start(progressLabel);

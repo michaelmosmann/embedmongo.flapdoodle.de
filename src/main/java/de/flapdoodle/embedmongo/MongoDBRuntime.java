@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.exceptions.MongodException;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
@@ -41,13 +42,13 @@ public class MongoDBRuntime {
 
 	private static Logger logger = Logger.getLogger(MongoDBRuntime.class.getName());
 
-	private final RuntimeConfig runtime;
+	private final IRuntimeConfig runtime;
 
-	private MongoDBRuntime(RuntimeConfig config) {
+	private MongoDBRuntime(IRuntimeConfig config) {
 		runtime = config;
 	}
 
-	public static MongoDBRuntime getInstance(RuntimeConfig config) {
+	public static MongoDBRuntime getInstance(IRuntimeConfig config) {
 		return new MongoDBRuntime(config);
 	}
 

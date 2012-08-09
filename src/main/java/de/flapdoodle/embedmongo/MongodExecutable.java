@@ -23,6 +23,7 @@ package de.flapdoodle.embedmongo;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.file.Files;
 
@@ -38,14 +39,14 @@ public class MongodExecutable {
 	private static Logger logger = Logger.getLogger(MongodExecutable.class.getName());
 
 	private final MongodConfig mongodConfig;
-	private final RuntimeConfig runtimeConfig;
+	private final IRuntimeConfig runtimeConfig;
 	private final File mongodExecutable;
 	private boolean stopped;
 
 	private final Distribution distribution;
 
 	public MongodExecutable(Distribution distribution, MongodConfig mongodConfig,
-	                        RuntimeConfig runtimeConfig, File mongodExecutable) {
+			IRuntimeConfig runtimeConfig, File mongodExecutable) {
 		this.distribution = distribution;
 		this.mongodConfig = mongodConfig;
 		this.runtimeConfig = runtimeConfig;

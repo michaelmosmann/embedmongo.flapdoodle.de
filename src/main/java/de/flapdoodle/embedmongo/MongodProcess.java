@@ -23,6 +23,7 @@ package de.flapdoodle.embedmongo;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.runtime.Mongod;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.LogWatchStreamProcessor;
@@ -47,7 +48,7 @@ public class MongodProcess {
 	public static final int TIMEOUT = 20000;
 
 	private final MongodConfig config;
-	private final RuntimeConfig runtimeConfig;
+	private final IRuntimeConfig runtimeConfig;
 	private final MongodExecutable mongodExecutable;
 	private ProcessControl process;
 	private int mongodProcessId;
@@ -58,7 +59,7 @@ public class MongodProcess {
 
 	private Distribution distribution;
 
-	public MongodProcess(Distribution distribution, MongodConfig config, RuntimeConfig runtimeConfig,
+	public MongodProcess(Distribution distribution, MongodConfig config, IRuntimeConfig runtimeConfig,
 			MongodExecutable mongodExecutable) throws IOException {
 		this.config = config;
 		this.runtimeConfig = runtimeConfig;

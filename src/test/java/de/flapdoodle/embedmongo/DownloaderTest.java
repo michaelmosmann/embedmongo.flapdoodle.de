@@ -21,6 +21,7 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
+import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.distribution.BitSize;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.GenericVersion;
@@ -58,7 +59,7 @@ public class DownloaderTest {
 
 	@Rule
 	public TemporaryFolder tempDir = new TemporaryFolder();
-	private RuntimeConfig rc;
+	private IRuntimeConfig rc;
 	private IProgressListener pl;
 
 	@Before
