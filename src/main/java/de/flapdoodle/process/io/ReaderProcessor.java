@@ -18,32 +18,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
+package de.flapdoodle.process.io;
+
+import java.io.IOException;
+import java.io.Reader;
 
 /**
  *
  */
-public class NamedOutputStreamProcessor implements IStreamProcessor {
+public class ReaderProcessor extends Thread {
 
+	public static final int CHAR_BUFFER_LENGTH = 512;
+	private final Reader reader;
+	private final IStreamProcessor streamProcessor;
 
-	private final IStreamProcessor destination;
-	private final String name;
+	protected ReaderProcessor(Reader reader, IStreamProcessor streamProcessor) {
+		this.reader = reader;
+		this.streamProcessor = streamProcessor;
 
-	public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
-		this.name = name;
-		this.destination = destination;
+		setDaemon(true);
+		start();
 	}
 
 	@Override
-	public void process(String block) {
-		destination.process(block.replace("\n", "\n" + name + " "));
+	public void run() {
+		try {
+			int read;
+			char[] buf = new char[CHAR_BUFFER_LENGTH];
+			while ((read = reader.read(buf)) != -1) {
+				streamProcessor.process(new String(buf, 0, read));
+			}
+			//CHECKSTYLE:OFF
+		} catch (IOException iox) {
+			// _logger.log(Level.SEVERE,"out",iox);
+		}
+		//CHECKSTYLE:ON
+
+		streamProcessor.onProcessed();
 	}
-
-	@Override
-	public void onProcessed() {
-		destination.onProcessed();
-
-	}
-
-
 }

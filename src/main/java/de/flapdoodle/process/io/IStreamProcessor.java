@@ -18,12 +18,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.config;
+package de.flapdoodle.process.io;
+
 
 /**
- * Interface for artifact storage
+ * Stream Processor interface
  */
-public interface IArtifactStoragePathNaming {
+public interface IStreamProcessor {
+	void process(String block);
 
-	String getPath();
+	void onProcessed();
 }

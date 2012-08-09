@@ -21,8 +21,8 @@
 package de.flapdoodle.embedmongo.runtime;
 
 import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.io.Readers;
 import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.io.Readers;
 
 import java.io.IOException;
 import java.io.Reader;

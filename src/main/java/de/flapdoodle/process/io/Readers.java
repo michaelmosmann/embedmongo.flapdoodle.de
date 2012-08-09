@@ -18,28 +18,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
+package de.flapdoodle.process.io;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.IOException;
+import java.io.Reader;
 
-public class LoggingOutputStreamProcessor implements IStreamProcessor {
+/**
+ *
+ */
+public class Readers {
 
-	private final Logger _logger;
-	private final Level _level;
+	public static final int CHAR_BUFFER_LENGTH = 512;
 
-	public LoggingOutputStreamProcessor(Logger logger, Level level) {
-		_logger = logger;
-		_level = level;
+	private Readers() {
+		throw new IllegalAccessError("singleton");
 	}
 
-	@Override
-	public void process(String block) {
-		_logger.log(_level, block);
+	public static String readAll(Reader reader) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int read;
+		char[] buf = new char[CHAR_BUFFER_LENGTH];
+		while ((read = reader.read(buf)) != -1) {
+			sb.append(new String(buf, 0, read));
+		}
+		return sb.toString();
 	}
-
-	@Override
-	public void onProcessed() {
-	}
-
 }

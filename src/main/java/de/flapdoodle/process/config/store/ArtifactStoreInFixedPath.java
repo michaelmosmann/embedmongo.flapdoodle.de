@@ -18,18 +18,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.extract;
-
-import java.util.UUID;
+package de.flapdoodle.process.config.store;
 
 /**
  *
  */
-public class UUIDTempNaming implements ITempNaming {
+public class ArtifactStoreInFixedPath implements IArtifactStoragePathNaming {
 
-	@Override
-	public String nameFor(String prefix, String postfix) {
-		return prefix + "-" + UUID.randomUUID().toString() + postfix;
+	private String path;
+
+	public ArtifactStoreInFixedPath(String path) {
+		this.path = path;
 	}
 
+	@Override
+	public String getPath() {
+		return this.path;
+	}
 }

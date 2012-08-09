@@ -18,9 +18,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
+package de.flapdoodle.process.io;
 
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
+import de.flapdoodle.process.io.IStreamProcessor;
 
 /**
  * Don't output anything. 

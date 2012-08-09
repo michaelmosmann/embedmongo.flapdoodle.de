@@ -18,42 +18,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
+package de.flapdoodle.process.io;
 
-import java.io.IOException;
 import java.io.Reader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  */
-public class ReaderProcessor extends Thread {
+public class Processors {
 
-	public static final int CHAR_BUFFER_LENGTH = 512;
-	private final Reader reader;
-	private final IStreamProcessor streamProcessor;
-
-	protected ReaderProcessor(Reader reader, IStreamProcessor streamProcessor) {
-		this.reader = reader;
-		this.streamProcessor = streamProcessor;
-
-		setDaemon(true);
-		start();
+	private Processors() {
+		throw new IllegalAccessError("singleton");
 	}
 
-	@Override
-	public void run() {
-		try {
-			int read;
-			char[] buf = new char[CHAR_BUFFER_LENGTH];
-			while ((read = reader.read(buf)) != -1) {
-				streamProcessor.process(new String(buf, 0, read));
-			}
-			//CHECKSTYLE:OFF
-		} catch (IOException iox) {
-			// _logger.log(Level.SEVERE,"out",iox);
-		}
-		//CHECKSTYLE:ON
+	public static IStreamProcessor console() {
+		return new ConsoleOutputStreamProcessor();
+	}
 
-		streamProcessor.onProcessed();
+	public static IStreamProcessor named(String name, IStreamProcessor destination) {
+		return new NamedOutputStreamProcessor(name, destination);
+	}
+
+	public static IStreamProcessor namedConsole(String name) {
+		return named(name, console());
+	}
+
+	public static IStreamProcessor logTo(Logger logger, Level level) {
+		return new LoggingOutputStreamProcessor(logger, level);
+	}
+	
+	public static ReaderProcessor connect(Reader reader, IStreamProcessor processor) {
+		return new ReaderProcessor(reader, processor);
 	}
 }

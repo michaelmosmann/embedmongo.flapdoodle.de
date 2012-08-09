@@ -18,21 +18,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.config;
+package de.flapdoodle.process.extract;
 
 /**
- *
+ * Interface for temp naming
  */
-public class ArtifactStoreInFixedPath implements IArtifactStoragePathNaming {
-
-	private String path;
-
-	public ArtifactStoreInFixedPath(String path) {
-		this.path = path;
-	}
-
-	@Override
-	public String getPath() {
-		return this.path;
-	}
+public interface ITempNaming {
+	String nameFor(String prefix, String postfix);
 }

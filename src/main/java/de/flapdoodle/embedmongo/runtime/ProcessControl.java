@@ -22,9 +22,9 @@ package de.flapdoodle.embedmongo.runtime;
 
 import de.flapdoodle.embedmongo.config.ProcessConfig;
 import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
-import de.flapdoodle.embedmongo.io.Processors;
 import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.io.IStreamProcessor;
+import de.flapdoodle.process.io.Processors;
 
 import java.io.IOException;
 import java.io.InputStreamReader;

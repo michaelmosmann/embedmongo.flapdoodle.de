@@ -18,14 +18,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
-
+package de.flapdoodle.process.io;
 
 /**
- * Stream Processor interface
+ *
  */
-public interface IStreamProcessor {
-	void process(String block);
+public class ConsoleOutputStreamProcessor implements IStreamProcessor {
 
-	void onProcessed();
+	@Override
+	public void process(String block) {
+		System.out.print(block);
+		System.out.flush();
+	}
+
+	@Override
+	public void onProcessed() {
+		System.out.println();
+	}
+
 }

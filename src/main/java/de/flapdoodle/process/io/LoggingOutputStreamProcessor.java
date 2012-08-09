@@ -18,11 +18,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.extract;
+package de.flapdoodle.process.io;
 
-/**
- * Interface for temp naming
- */
-public interface ITempNaming {
-	String nameFor(String prefix, String postfix);
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class LoggingOutputStreamProcessor implements IStreamProcessor {
+
+	private final Logger _logger;
+	private final Level _level;
+
+	public LoggingOutputStreamProcessor(Logger logger, Level level) {
+		_logger = logger;
+		_level = level;
+	}
+
+	@Override
+	public void process(String block) {
+		_logger.log(_level, block);
+	}
+
+	@Override
+	public void onProcessed() {
+	}
+
 }

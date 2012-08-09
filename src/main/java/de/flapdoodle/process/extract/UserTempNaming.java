@@ -18,29 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.io;
-
-import java.io.IOException;
-import java.io.Reader;
+package de.flapdoodle.process.extract;
 
 /**
  *
  */
-public class Readers {
+public class UserTempNaming implements ITempNaming {
 
-	public static final int CHAR_BUFFER_LENGTH = 512;
-
-	private Readers() {
-		throw new IllegalAccessError("singleton");
+	@Override
+	public String nameFor(String prefix, String postfix) {
+		String username = System.getProperty("user.name");
+		return prefix + "-" + username + "-" + postfix;
 	}
 
-	public static String readAll(Reader reader) throws IOException {
-		StringBuilder sb = new StringBuilder();
-		int read;
-		char[] buf = new char[CHAR_BUFFER_LENGTH];
-		while ((read = reader.read(buf)) != -1) {
-			sb.append(new String(buf, 0, read));
-		}
-		return sb.toString();
-	}
 }

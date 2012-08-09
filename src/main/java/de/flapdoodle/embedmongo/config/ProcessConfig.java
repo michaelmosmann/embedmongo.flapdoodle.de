@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
+import de.flapdoodle.process.io.IStreamProcessor;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -23,8 +23,8 @@ package de.flapdoodle.process.config.io;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.io.IStreamProcessor;
-import de.flapdoodle.embedmongo.io.Processors;
+import de.flapdoodle.process.io.IStreamProcessor;
+import de.flapdoodle.process.io.Processors;
 
 
 public class ProcessOutput {

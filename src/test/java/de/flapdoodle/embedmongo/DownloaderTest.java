@@ -25,8 +25,9 @@ import de.flapdoodle.embedmongo.distribution.BitSize;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.distribution.GenericVersion;
 import de.flapdoodle.embedmongo.distribution.Platform;
-import de.flapdoodle.embedmongo.extract.UUIDTempNaming;
 import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.process.extract.UUIDTempNaming;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;

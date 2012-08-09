@@ -18,19 +18,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.extract;
-
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.regex.Pattern;
+package de.flapdoodle.process.config.store;
 
 /**
- * Extractor interface
+ * Interface for artifact storage
  */
-public interface IExtractor {
+public interface IArtifactStoragePathNaming {
 
-	void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
-
+	String getPath();
 }

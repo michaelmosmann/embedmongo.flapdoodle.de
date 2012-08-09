@@ -18,17 +18,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.config;
+package de.flapdoodle.process.extract;
 
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.regex.Pattern;
 
 /**
- *
+ * Extractor interface
  */
-public class ArtifactStoreInUserHome implements IArtifactStoragePathNaming {
-	static final String STORE_POSTFIX = ".embedmongo";
+public interface IExtractor {
 
-	@Override
-	public String getPath() {
-		return System.getProperty("user.home") + "/" + STORE_POSTFIX + "/"; //"/.embedmongo/";
-	}
+	void extract(RuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
+
 }

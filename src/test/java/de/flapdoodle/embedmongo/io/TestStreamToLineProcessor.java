@@ -21,6 +21,8 @@
 package de.flapdoodle.embedmongo.io;
 
 import de.flapdoodle.process.collections.Collections;
+import de.flapdoodle.process.io.IStreamProcessor;
+import de.flapdoodle.process.io.StreamToLineProcessor;
 
 import junit.framework.TestCase;
 

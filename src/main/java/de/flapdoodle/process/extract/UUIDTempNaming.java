@@ -18,29 +18,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.extract;
+package de.flapdoodle.process.extract;
 
-import de.flapdoodle.embedmongo.Paths;
-import de.flapdoodle.embedmongo.distribution.ArchiveType;
-import de.flapdoodle.embedmongo.distribution.Distribution;
+import java.util.UUID;
 
 /**
- * Extractor Helper
+ *
  */
-public class Extractors {
-	private Extractors() {
+public class UUIDTempNaming implements ITempNaming {
 
+	@Override
+	public String nameFor(String prefix, String postfix) {
+		return prefix + "-" + UUID.randomUUID().toString() + postfix;
 	}
 
-	public static IExtractor getExtractor(Distribution distribution) {
-		ArchiveType archiveType = Paths.getArchiveType(distribution);
-		switch (archiveType) {
-			case TGZ:
-				return new TgzExtractor();
-			case ZIP:
-				return new ZipExtractor();
-			default:
-				throw new IllegalArgumentException("ArciveType " + archiveType + " not supported");
-		}
-	}
 }

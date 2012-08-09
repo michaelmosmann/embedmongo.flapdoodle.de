@@ -18,17 +18,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.extract;
+package de.flapdoodle.process.config.store;
+
 
 /**
  *
  */
-public class UserTempNaming implements ITempNaming {
+public class ArtifactStoreInUserHome implements IArtifactStoragePathNaming {
+	static final String STORE_POSTFIX = ".embedmongo";
 
 	@Override
-	public String nameFor(String prefix, String postfix) {
-		String username = System.getProperty("user.name");
-		return prefix + "-" + username + "-" + postfix;
+	public String getPath() {
+		return System.getProperty("user.home") + "/" + STORE_POSTFIX + "/"; //"/.embedmongo/";
 	}
-
 }

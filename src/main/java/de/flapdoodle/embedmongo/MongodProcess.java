@@ -23,13 +23,13 @@ package de.flapdoodle.embedmongo;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
-import de.flapdoodle.embedmongo.io.LogWatchStreamProcessor;
-import de.flapdoodle.embedmongo.io.Processors;
-import de.flapdoodle.embedmongo.io.StreamToLineProcessor;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.runtime.ProcessControl;
 import de.flapdoodle.process.config.io.ProcessOutput;
+import de.flapdoodle.process.io.LogWatchStreamProcessor;
+import de.flapdoodle.process.io.Processors;
+import de.flapdoodle.process.io.StreamToLineProcessor;
 
 import java.io.File;
 import java.io.IOException;
