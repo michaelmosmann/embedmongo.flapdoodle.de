@@ -72,7 +72,7 @@ public class MongoDBRuntime {
 				progress.done("Check Distribution");
 				File mongodExe = extractMongod(distribution);
 
-				return new MongodExecutable(distribution, mongodConfig, runtime.getMongodOutputConfig(), mongodExe);
+				return new MongodExecutable(distribution, mongodConfig, runtime, mongodExe);
 			} else {
 				throw new MongodException("could not find Distribution",distribution);
 			}

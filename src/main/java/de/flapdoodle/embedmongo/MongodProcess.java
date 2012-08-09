@@ -22,6 +22,7 @@ package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
+import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Distribution;
 import de.flapdoodle.embedmongo.io.LogWatchStreamProcessor;
 import de.flapdoodle.embedmongo.io.Processors;
@@ -45,7 +46,7 @@ public class MongodProcess {
 	public static final int TIMEOUT = 20000;
 
 	private final MongodConfig config;
-	private final MongodProcessOutputConfig outputConfig;
+	private final RuntimeConfig runtimeConfig;
 	private final MongodExecutable mongodExecutable;
 	private ProcessControl process;
 	private int mongodProcessId;
@@ -56,13 +57,15 @@ public class MongodProcess {
 
 	private Distribution distribution;
 
-	public MongodProcess(Distribution distribution, MongodConfig config, MongodProcessOutputConfig outputConfig,
+	public MongodProcess(Distribution distribution, MongodConfig config, RuntimeConfig runtimeConfig,
 	                     MongodExecutable mongodExecutable) throws IOException {
 		this.config = config;
-		this.outputConfig = outputConfig;
+		this.runtimeConfig = runtimeConfig;
 		this.mongodExecutable = mongodExecutable;
 		this.distribution = distribution;
 
+		MongodProcessOutputConfig outputConfig = runtimeConfig.getMongodOutputConfig();
+		
 		try {
 			File tmpDbDir;
 			if (config.getDatabaseDir() != null) {
@@ -77,6 +80,7 @@ public class MongodProcess {
 
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
+			
 			LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
 					StreamToLineProcessor.wrap(outputConfig.getMongodOutput()));
 			Processors.connect(process.getReader(), logWatch);
@@ -130,7 +134,7 @@ public class MongodProcess {
 	private boolean sendKillToMongodProcess() {
 		if (mongodProcessId > 0) {
 			return ProcessControl.killProcess(distribution.getPlatform(),
-					StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
+					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()),
 					mongodProcessId);
 		}
 		return false;
@@ -139,7 +143,7 @@ public class MongodProcess {
 	private boolean tryKillToMongodProcess() {
 		if (mongodProcessId > 0) {
 			return ProcessControl.tryKillProcess(distribution.getPlatform(),
-					StreamToLineProcessor.wrap(outputConfig.getCommandsOutput()),
+					StreamToLineProcessor.wrap(runtimeConfig.getMongodOutputConfig().getCommandsOutput()),
 					mongodProcessId);
 		}
 		return false;
