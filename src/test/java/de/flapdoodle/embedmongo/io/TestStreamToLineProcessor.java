@@ -20,7 +20,8 @@
  */
 package de.flapdoodle.embedmongo.io;
 
-import de.flapdoodle.embedmongo.collections.Collections;
+import de.flapdoodle.process.collections.Collections;
+
 import junit.framework.TestCase;
 
 import java.util.List;

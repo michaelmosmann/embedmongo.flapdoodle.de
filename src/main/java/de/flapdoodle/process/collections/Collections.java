@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.collections;
+package de.flapdoodle.process.collections;
 
 import java.util.ArrayList;
 
