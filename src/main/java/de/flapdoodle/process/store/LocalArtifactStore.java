@@ -18,11 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo;
+package de.flapdoodle.process.store;
 
 import java.io.File;
 
+import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.io.file.Files;
 
@@ -31,12 +33,12 @@ import de.flapdoodle.process.io.file.Files;
  */
 public class LocalArtifactStore {
 
-	public static boolean checkArtifact(IRuntimeConfig runtime, Distribution distribution) {
+	public static boolean checkArtifact(IDownloadConfig runtime, Distribution distribution) {
 		return getArtifact(runtime, distribution) != null;
 	}
 
 
-	public static boolean store(IRuntimeConfig runtime, Distribution distribution, File download) {
+	public static boolean store(IDownloadConfig runtime, Distribution distribution, File download) {
 		File dir = createOrGetBaseDir(runtime);
 		File artifactFile = new File(dir, Paths.getPath(distribution));
 		createOrCheckDir(artifactFile.getParentFile());
@@ -46,7 +48,7 @@ public class LocalArtifactStore {
 		return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
 	}
 
-	private static File createOrGetBaseDir(IRuntimeConfig runtime) {
+	private static File createOrGetBaseDir(IDownloadConfig runtime) {
 		File dir = new File(runtime.getArtifactStorePathNaming().getPath());
 		createOrCheckDir(dir);
 		return dir;
@@ -62,7 +64,7 @@ public class LocalArtifactStore {
 	}
 
 
-	public static File getArtifact(IRuntimeConfig runtime, Distribution distribution) {
+	public static File getArtifact(IDownloadConfig runtime, Distribution distribution) {
 		File dir = createOrGetBaseDir(runtime);
 		File artifactFile = new File(dir, Paths.getPath(distribution));
 		if ((artifactFile.exists()) && (artifactFile.isFile()))

@@ -21,23 +21,18 @@
 package de.flapdoodle.process.config;
 
 import de.flapdoodle.process.config.io.ProcessOutput;
-import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
+import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.extract.ITempNaming;
-import de.flapdoodle.process.io.progress.IProgressListener;
 import de.flapdoodle.process.runtime.ICommandLinePostProcessor;
 
 
 public interface IRuntimeConfig {
 
-	String getDownloadPath();
+	IDownloadConfig getDownloadConfig();
 
 	ITempNaming getDefaultfileNaming();
 
 	ITempNaming getExecutableNaming();
-
-	IProgressListener getProgressListener();
-
-	IArtifactStoragePathNaming getArtifactStorePathNaming();
 
 	ProcessOutput getMongodOutputConfig();
 

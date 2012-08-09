@@ -143,7 +143,7 @@ public class TestExampleReadMeCode extends TestCase {
 		ITempNaming executableNaming = new UUIDTempNaming();
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
+		runtimeConfig.getDownloadConfig().setArtifactStorePathNaming(artifactStorePath);
 		runtimeConfig.setExecutableNaming(executableNaming);
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
@@ -185,7 +185,7 @@ public class TestExampleReadMeCode extends TestCase {
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setMongodOutputConfig(new ProcessOutput(Processors.logTo(logger, Level.INFO),
 				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
-		runtimeConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
+		runtimeConfig.getDownloadConfig().setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 

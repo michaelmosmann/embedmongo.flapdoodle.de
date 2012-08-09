@@ -58,6 +58,16 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 		return getInstance(new RuntimeConfig());
 	}
 
+	@Override
+	protected boolean checkDistribution(Distribution distribution) throws IOException {
+		return super.checkDistribution(distribution);
+	}
+	
+	@Override
+	protected File extractMongod(Distribution distribution) throws IOException {
+		return super.extractMongod(distribution);
+	}
+	
 //	public MongodExecutable prepare(MongodConfig mongodConfig) {
 //		Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
 //		

@@ -20,8 +20,10 @@
  */
 package de.flapdoodle.embedmongo;
 
+import de.flapdoodle.embedmongo.config.DownloadConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.distribution.BitSize;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.GenericVersion;
@@ -60,6 +62,7 @@ public class DownloaderTest {
 	@Rule
 	public TemporaryFolder tempDir = new TemporaryFolder();
 	private IRuntimeConfig rc;
+	private IDownloadConfig dc;
 	private IProgressListener pl;
 
 	@Before
@@ -87,6 +90,7 @@ public class DownloaderTest {
 			Thread.sleep(100);
 		}
 		rc = mock(RuntimeConfig.class);
+		dc = mock(DownloadConfig.class);
 		pl = mock(IProgressListener.class);
 	}
 
@@ -99,19 +103,19 @@ public class DownloaderTest {
 	public void testDownload() throws Exception {
 		initRuntime();
 		Distribution d = new Distribution(new GenericVersion("3.1.1"), Platform.detect(), BitSize.B64);
-		File f = Downloader.download(rc, d);
+		File f = Downloader.download(dc, d);
 	}
 
 	private void initRuntime() {
 		when(rc.getDefaultfileNaming()).thenReturn(new UUIDTempNaming());
-		when(rc.getDownloadPath()).thenReturn("http://localhost:" + LISTEN_PORT + "/");
-		when(rc.getProgressListener()).thenReturn(pl);
+		when(dc.getDownloadPath()).thenReturn("http://localhost:" + LISTEN_PORT + "/");
+		when(dc.getProgressListener()).thenReturn(pl);
 	}
 
 	@Test(expected = Exception.class)
 	public void testDownloadShouldThrowExceptionForUnknownVersion() throws Exception {
 		initRuntime();
 		Distribution d = new Distribution(new GenericVersion("3013.1.1"), Platform.detect(), BitSize.B64);
-		File f = Downloader.download(rc, d);
+		File f = Downloader.download(dc, d);
 	}
 }

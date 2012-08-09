@@ -25,12 +25,13 @@ import java.io.IOException;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.store.IDownloadConfig;
 
 /**
  * Extractor interface
  */
 public interface IExtractor {
 
-	void extract(IRuntimeConfig runtime, File source, File destination, Pattern file) throws IOException;
+	void extract(IDownloadConfig runtime, File source, File destination, Pattern file) throws IOException;
 
 }

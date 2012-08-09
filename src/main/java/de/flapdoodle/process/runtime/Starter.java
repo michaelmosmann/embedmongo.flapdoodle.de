@@ -7,18 +7,19 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.Downloader;
-import de.flapdoodle.embedmongo.LocalArtifactStore;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.config.ExecutableProcessConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
 import de.flapdoodle.process.io.file.Files;
 import de.flapdoodle.process.io.progress.IProgressListener;
+import de.flapdoodle.process.store.LocalArtifactStore;
 
 
 public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE extends Executable<CONFIG, PROCESS>,PROCESS> {
@@ -32,19 +33,20 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 	}
 
 	protected boolean checkDistribution(Distribution distribution) throws IOException {
-		if (!LocalArtifactStore.checkArtifact(runtime, distribution)) {
-			return LocalArtifactStore.store(runtime, distribution, Downloader.download(runtime, distribution));
+		IDownloadConfig downloadConfig = runtime.getDownloadConfig();
+		if (!LocalArtifactStore.checkArtifact(downloadConfig, distribution)) {
+			return LocalArtifactStore.store(downloadConfig, distribution, Downloader.download(downloadConfig, distribution));
 		}
 		return true;
 	}
 
 	public EXECUTABLE prepare(CONFIG mongodConfig) {
+		IProgressListener progress = runtime.getDownloadConfig().getProgressListener();
+		
 		Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
+		progress.done("Detect Distribution");
 		
 		try {
-			IProgressListener progress = runtime.getProgressListener();
-
-			progress.done("Detect Distribution");
 			if (checkDistribution(distribution)) {
 				progress.done("Check Distribution");
 				File mongodExe = extractMongod(distribution);
@@ -61,12 +63,13 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 
 
 	protected File extractMongod(Distribution distribution) throws IOException {
-		File artifact = LocalArtifactStore.getArtifact(runtime, distribution);
+		IDownloadConfig downloadConfig = runtime.getDownloadConfig();
+		File artifact = LocalArtifactStore.getArtifact(downloadConfig, distribution);
 		IExtractor extractor = Extractors.getExtractor(distribution);
 
 		File mongodExe = Files.createTempFile(
 				runtime.getExecutableNaming().nameFor("extract", executableFilename(distribution)));
-		extractor.extract(runtime, artifact, mongodExe, executeablePattern(distribution));
+		extractor.extract(downloadConfig, artifact, mongodExe, executeablePattern(distribution));
 		return mongodExe;
 	}
 

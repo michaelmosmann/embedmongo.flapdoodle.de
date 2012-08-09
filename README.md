@@ -224,7 +224,7 @@ Support for Linux, Windows and MacOSX.
 	ITempNaming executableNaming = ...
 		
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setArtifactStorePathNaming(artifactStorePath);
+	runtimeConfig.getDownloadConfig().setArtifactStorePathNaming(artifactStorePath);
 	runtimeConfig.setExecutableNaming(executableNaming);
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
