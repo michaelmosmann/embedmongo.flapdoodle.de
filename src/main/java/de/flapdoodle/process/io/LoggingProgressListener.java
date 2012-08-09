@@ -18,18 +18,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.output;
+package de.flapdoodle.process.io;
 
-/**
- * Progress listener interface
- */
-public interface IProgressListener {
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-	void progress(String label, int percent);
+public class LoggingProgressListener implements IProgressListener {
 
-	void done(String label);
+	private final Logger _logger;
+	private final Level _level;
 
-	void start(String label);
+	public LoggingProgressListener(Logger logger, Level level) {
+		_logger = logger;
+		_level=level;
+	}
 
-	void info(String label, String message);
+	@Override
+	public void start(String label) {
+		_logger.log(_level,label + " starting...");
+	}
+
+	@Override
+	public void progress(String label, int percent) {
+		_logger.log(_level,label + ": " + percent + "% achieved.");
+	}
+
+	@Override
+	public void info(String label, String message) {
+		_logger.log(_level,label + ": " + message);
+	}
+
+	@Override
+	public void done(String label) {
+		_logger.log(_level,label + " achieved successfully.");
+	}
 }

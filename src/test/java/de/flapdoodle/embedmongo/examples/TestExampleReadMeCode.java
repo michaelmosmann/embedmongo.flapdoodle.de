@@ -45,7 +45,6 @@ import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.embedmongo.output.LoggingProgressListener;
 import de.flapdoodle.embedmongo.runtime.Network;
 import de.flapdoodle.embedmongo.tests.MongodForTestsFactory;
 import de.flapdoodle.process.config.io.ProcessOutput;
@@ -56,6 +55,7 @@ import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
 import de.flapdoodle.process.extract.UserTempNaming;
 import de.flapdoodle.process.io.IStreamProcessor;
+import de.flapdoodle.process.io.LoggingProgressListener;
 import de.flapdoodle.process.io.Processors;
 
 public class TestExampleReadMeCode extends TestCase {

@@ -23,16 +23,16 @@ package de.flapdoodle.embedmongo.config;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embedmongo.output.IProgressListener;
-import de.flapdoodle.embedmongo.output.LoggingProgressListener;
-import de.flapdoodle.embedmongo.output.StandardConsoleProgressListener;
 import de.flapdoodle.embedmongo.runtime.ICommandLinePostProcessor;
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
+import de.flapdoodle.process.io.IProgressListener;
 import de.flapdoodle.process.io.LoggingOutputStreamProcessor;
+import de.flapdoodle.process.io.LoggingProgressListener;
+import de.flapdoodle.process.io.StandardConsoleProgressListener;
 
 /**
  *

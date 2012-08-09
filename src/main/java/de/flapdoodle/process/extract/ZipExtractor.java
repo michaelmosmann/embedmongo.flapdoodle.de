@@ -22,7 +22,8 @@ package de.flapdoodle.process.extract;
 
 import de.flapdoodle.embedmongo.Files;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.output.IProgressListener;
+import de.flapdoodle.process.io.IProgressListener;
+
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.archivers.zip.ZipArchiveInputStream;
 
