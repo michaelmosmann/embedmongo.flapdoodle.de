@@ -47,6 +47,13 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
+SOME REFACTORINGS AHEAD
+
+I will do some refactorings, so that i can use this for nodejs too. So some names will change, but i hope i will not break much things.
+That's why here comes a new release.
+
+SOME REFACTORINGS AHEAD
+
 #### 1.18 (SNAPSHOT)
 
 - added some unit test support (thanx to trajano)
