@@ -20,28 +20,19 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import java.io.IOException;
-
-import junit.framework.TestCase;
+import de.flapdoodle.process.config.ISupportConfig;
 
 
-public class NodejsStarterTest extends TestCase {
+public class NodejsSupportConfig implements ISupportConfig {
 
-	public void testNodejs() throws IOException {
-		NodejsProcess node = null;
-		NodejsConfig nodejsConfig = new NodejsConfig(NodejsVersion.V0_8_6);
-
-		NodejsStarter runtime = new NodejsStarter(new NodejsRuntimeConfig());
-
-		try {
-			NodejsExecutable mongodExecutable = runtime.prepare(nodejsConfig);
-			node = mongodExecutable.start();
-
-
-		} finally {
-			if (node != null)
-				node.stop();
-		}
-
+	@Override
+	public String getName() {
+		return "node";
 	}
+
+	@Override
+	public String getSupportUrl() {
+		return "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n";
+	}
+
 }

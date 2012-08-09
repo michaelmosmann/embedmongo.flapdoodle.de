@@ -20,8 +20,34 @@
  */
 package de.flapdoodle.embed.nodejs;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
-public class NodejsProcess {
+import com.google.common.collect.Lists;
+
+import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.config.ISupportConfig;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.runtime.AbstractProcess;
+
+
+public class NodejsProcess extends AbstractProcess<NodejsConfig, NodejsExecutable, NodejsProcess> {
+
+	public NodejsProcess(Distribution distribution, NodejsConfig config, IRuntimeConfig runtime,
+			NodejsExecutable nodejsExecutable) throws IOException {
+		super(distribution,config,runtime,nodejsExecutable);
+	}
+	
+	@Override
+	protected List<String> getCommandLine(Distribution distribution, NodejsConfig config, File exe) throws IOException {
+		return Lists.newArrayList(exe.getAbsolutePath(),"--version");
+	}
+	
+	@Override
+	protected ISupportConfig supportConfig() {
+		return new NodejsSupportConfig();
+	}
 
 	public void stop() {
 		

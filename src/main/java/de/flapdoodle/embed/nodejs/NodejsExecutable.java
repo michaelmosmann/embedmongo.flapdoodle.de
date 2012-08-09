@@ -37,7 +37,7 @@ public class NodejsExecutable extends Executable<NodejsConfig, NodejsProcess>{
 	@Override
 	protected NodejsProcess start(Distribution distribution, NodejsConfig config, IRuntimeConfig runtime)
 			throws IOException {
-		return null;
+		return new NodejsProcess(distribution, config, runtime, this);
 	}
 
 }
