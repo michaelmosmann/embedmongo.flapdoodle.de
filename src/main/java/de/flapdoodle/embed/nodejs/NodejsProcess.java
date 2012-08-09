@@ -18,11 +18,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.distribution;
+package de.flapdoodle.embed.nodejs;
 
-/**
- *
- */
-public enum ArchiveType {
-	TGZ, ZIP, EXE;
+
+public class NodejsProcess {
+
+	public void stop() {
+		
+	}
+
 }

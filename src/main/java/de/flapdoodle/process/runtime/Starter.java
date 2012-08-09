@@ -85,14 +85,14 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 		IExtractor extractor = Extractors.getExtractor(downloadConfig.getArchiveType(distribution));
 
 		File exe = Files.createTempFile(
-				runtime.getExecutableNaming().nameFor("extract", executableFilename(distribution)));
-		extractor.extract(downloadConfig, artifact, exe, executeablePattern(distribution));
+				runtime.getExecutableNaming().nameFor("extract", downloadConfig.executableFilename(distribution)));
+		extractor.extract(downloadConfig, artifact, exe, downloadConfig.executeablePattern(distribution));
 		return exe;
 	}
 
 	protected abstract EXECUTABLE newExecutable(CONFIG config, Distribution distribution, IRuntimeConfig runtime, File exe);
 	
-	protected abstract Pattern executeablePattern(Distribution distribution);
-
-	protected abstract String executableFilename(Distribution distribution);
+//	protected abstract Pattern executeablePattern(Distribution distribution);
+//
+//	protected abstract String executableFilename(Distribution distribution);
 }

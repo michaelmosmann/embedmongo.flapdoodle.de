@@ -18,11 +18,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo.config;
+package de.flapdoodle.embed.nodejs;
 
 import java.util.regex.Pattern;
 
-import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
@@ -33,50 +32,28 @@ import de.flapdoodle.process.extract.UUIDTempNaming;
 import de.flapdoodle.process.io.progress.IProgressListener;
 import de.flapdoodle.process.io.progress.StandardConsoleProgressListener;
 
-public class DownloadConfig implements IDownloadConfig {
+public class NodejsDownloadConfig implements IDownloadConfig {
 
 	private ITempNaming fileNaming = new UUIDTempNaming();
-	
-	private String downloadPath = "http://fastdl.mongodb.org/";
+
+	private String downloadPath = "http://nodejs.org/dist/";
 
 	private IProgressListener progressListener = new StandardConsoleProgressListener();
-	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome(".embedmongo");
+	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome(".nodejs");
 
-	private String downloadPrefix="embedmongo-download";
+	private String downloadPrefix = "nodejs-download";
 
-	private String userAgent="Mozilla/5.0 (compatible; "
-			+  "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)";
-
-	@Override
-	public ITempNaming getFileNaming() {
-		return fileNaming;
-	}
-
-	public void setFileNaming(ITempNaming fileNaming) {
-		this.fileNaming = fileNaming;
-	}
-
-
-	public void setDownloadPath(String downloadPath) {
-		this.downloadPath = downloadPath;
-	}
+	private String userAgent = "Mozilla/5.0 (compatible; "
+			+ "Embedded node.js; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)"; // change to embednodejs
 
 	@Override
 	public String getDownloadPath() {
 		return downloadPath;
 	}
 
-	public void setProgressListener(IProgressListener progressListener) {
-		this.progressListener = progressListener;
-	}
-
 	@Override
 	public IProgressListener getProgressListener() {
 		return progressListener;
-	}
-
-	public void setArtifactStorePathNaming(IArtifactStoragePathNaming value) {
-		this.artifactStorePath = value;
 	}
 
 	@Override
@@ -85,32 +62,36 @@ public class DownloadConfig implements IDownloadConfig {
 	}
 
 	@Override
+	public ITempNaming getFileNaming() {
+		return fileNaming;
+	}
+
+	@Override
+	public String getPath(Distribution distribution) {
+		return NodejsPaths.getPath(distribution);
+	}
+
+	@Override
+	public ArchiveType getArchiveType(Distribution distribution) {
+		return NodejsPaths.getArchiveType(distribution);
+	}
+
+	@Override
 	public String getDownloadPrefix() {
 		return downloadPrefix;
 	}
-	
+
 	@Override
 	public String getUserAgent() {
 		return userAgent;
 	}
-	
-	@Override
-	public String getPath(Distribution distribution) {
-		return Paths.getPath(distribution);
-	}
-	
-	@Override
-	public ArchiveType getArchiveType(Distribution distribution) {
-		return Paths.getArchiveType(distribution);
-	}
-	
+
 	@Override
 	public String executableFilename(Distribution distribution) {
-		return Paths.getMongodExecutable(distribution);
+		return NodejsPaths.getExecutable(distribution);
 	}
-	
-	@Override
+
 	public Pattern executeablePattern(Distribution distribution) {
-		return Paths.getMongodExecutablePattern(distribution);
-	}
+		return NodejsPaths.getExecutablePattern(distribution);
+	};
 }

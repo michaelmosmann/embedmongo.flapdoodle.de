@@ -18,11 +18,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.distribution;
+package de.flapdoodle.embed.nodejs;
 
-/**
- *
- */
-public enum ArchiveType {
-	TGZ, ZIP, EXE;
+import de.flapdoodle.process.config.ExecutableProcessConfig;
+import de.flapdoodle.process.distribution.IVersion;
+
+
+public class NodejsConfig extends ExecutableProcessConfig {
+
+	public NodejsConfig(IVersion version) {
+		super(version);
+	}
+
 }

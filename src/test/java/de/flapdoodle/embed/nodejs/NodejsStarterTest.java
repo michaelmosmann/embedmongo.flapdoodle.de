@@ -18,11 +18,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.distribution;
+package de.flapdoodle.embed.nodejs;
 
-/**
- *
- */
-public enum ArchiveType {
-	TGZ, ZIP, EXE;
+import java.io.IOException;
+
+import junit.framework.TestCase;
+
+
+public class NodejsStarterTest extends TestCase {
+
+	public void testNodejs() throws IOException {
+		NodejsProcess mongod = null;
+		NodejsConfig mongodConfig = new NodejsConfig(NodejsVersion.V0_8_6);
+
+		NodejsStarter runtime = new NodejsStarter(new NodejsRuntimeConfig());
+
+		try {
+			NodejsExecutable mongodExecutable = runtime.prepare(mongodConfig);
+			mongod = mongodExecutable.start();
+
+
+		} finally {
+			if (mongod != null)
+				mongod.stop();
+		}
+
+	}
 }

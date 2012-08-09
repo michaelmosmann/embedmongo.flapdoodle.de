@@ -18,11 +18,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.distribution;
+package de.flapdoodle.embed.nodejs;
 
-/**
- *
- */
-public enum ArchiveType {
-	TGZ, ZIP, EXE;
+import java.io.File;
+import java.io.IOException;
+
+import de.flapdoodle.process.config.IRuntimeConfig;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.runtime.Executable;
+
+
+public class NodejsExecutable extends Executable<NodejsConfig, NodejsProcess>{
+
+	public NodejsExecutable(Distribution distribution, NodejsConfig config, IRuntimeConfig runtimeConfig, File executable) {
+		super(distribution, config, runtimeConfig, executable);
+	}
+
+	@Override
+	protected NodejsProcess start(Distribution distribution, NodejsConfig config, IRuntimeConfig runtime)
+			throws IOException {
+		return null;
+	}
+
 }

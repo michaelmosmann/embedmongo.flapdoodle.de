@@ -18,11 +18,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.distribution;
+package de.flapdoodle.embed.nodejs;
 
-/**
- *
- */
-public enum ArchiveType {
-	TGZ, ZIP, EXE;
+import de.flapdoodle.process.distribution.IVersion;
+
+public enum NodejsVersion implements IVersion {
+	V0_8_6("v0.8.6"), ;
+
+	private String version;
+
+	private NodejsVersion(String sversion) {
+		this.version = sversion;
+	}
+
+	@Override
+	public String asInDownloadPath() {
+		return version;
+	}
+
 }

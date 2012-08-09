@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.process.config.store;
 
+import java.util.regex.Pattern;
+
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
@@ -43,5 +45,9 @@ public interface IDownloadConfig {
 	String getDownloadPrefix();
 
 	String getUserAgent();
+
+	String executableFilename(Distribution distribution);
+
+	Pattern executeablePattern(Distribution distribution);
 
 }
