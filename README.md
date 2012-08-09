@@ -23,12 +23,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-Stable (Maven Central Repository, Released: 02.08.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.17</version>
+		<version>1.18</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -36,7 +36,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embedmongo</groupId>
 		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.18-SNAPSHOT</version>
+		<version>1.19-SNAPSHOT</version>
 	</dependency>
 
 ### Other ways to use Embedded MongoDB
@@ -54,7 +54,9 @@ That's why here comes a new release.
 
 SOME REFACTORINGS AHEAD
 
-#### 1.18 (SNAPSHOT)
+#### 1.19 (SNAPSHOT)
+
+#### 1.18
 
 - added some unit test support (thanx to trajano)
 - added some logging only runtime config option
