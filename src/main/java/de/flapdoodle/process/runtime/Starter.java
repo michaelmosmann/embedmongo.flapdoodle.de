@@ -26,18 +26,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import de.flapdoodle.embedmongo.Downloader;
-import de.flapdoodle.embedmongo.Paths;
-import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.config.ExecutableProcessConfig;
 import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.store.IDownloadConfig;
-import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.exceptions.DistributionException;
 import de.flapdoodle.process.extract.Extractors;
 import de.flapdoodle.process.extract.IExtractor;
 import de.flapdoodle.process.io.file.Files;
 import de.flapdoodle.process.io.progress.IProgressListener;
+import de.flapdoodle.process.store.Downloader;
 import de.flapdoodle.process.store.LocalArtifactStore;
 
 
@@ -59,46 +57,42 @@ public abstract class Starter<CONFIG extends ExecutableProcessConfig,EXECUTABLE 
 		return true;
 	}
 
-	public EXECUTABLE prepare(CONFIG mongodConfig) {
+	public EXECUTABLE prepare(CONFIG config) {
 		IProgressListener progress = runtime.getDownloadConfig().getProgressListener();
 		
-		Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
+		Distribution distribution = Distribution.detectFor(config.getVersion());
 		progress.done("Detect Distribution");
 		
 		try {
 			if (checkDistribution(distribution)) {
 				progress.done("Check Distribution");
-				File mongodExe = extractMongod(distribution);
+				File exe = extractExe(distribution);
 
-				return newExecutable(mongodConfig, distribution, runtime, mongodExe);
+				return newExecutable(config, distribution, runtime, exe);
 			} else {
-				throw new MongodException("could not find Distribution",distribution);
+				throw new DistributionException("could not find Distribution",distribution);
 			}
 		} catch (IOException iox) {
 			logger.log(Level.SEVERE, "start", iox);
-			throw new MongodException(distribution,iox);
+			throw new DistributionException(distribution,iox);
 		}
 	}
 
 
-	protected File extractMongod(Distribution distribution) throws IOException {
+	protected File extractExe(Distribution distribution) throws IOException {
 		IDownloadConfig downloadConfig = runtime.getDownloadConfig();
 		File artifact = LocalArtifactStore.getArtifact(downloadConfig, distribution);
-		IExtractor extractor = Extractors.getExtractor(getArchiveType(distribution));
+		IExtractor extractor = Extractors.getExtractor(downloadConfig.getArchiveType(distribution));
 
-		File mongodExe = Files.createTempFile(
+		File exe = Files.createTempFile(
 				runtime.getExecutableNaming().nameFor("extract", executableFilename(distribution)));
-		extractor.extract(downloadConfig, artifact, mongodExe, executeablePattern(distribution));
-		return mongodExe;
+		extractor.extract(downloadConfig, artifact, exe, executeablePattern(distribution));
+		return exe;
 	}
 
-	protected abstract EXECUTABLE newExecutable(CONFIG mongodConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe);
+	protected abstract EXECUTABLE newExecutable(CONFIG config, Distribution distribution, IRuntimeConfig runtime, File exe);
 	
 	protected abstract Pattern executeablePattern(Distribution distribution);
 
 	protected abstract String executableFilename(Distribution distribution);
-	
-	protected abstract ArchiveType getArchiveType(Distribution distribution);
-
-
 }

@@ -65,8 +65,8 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 	}
 	
 	@Override
-	protected File extractMongod(Distribution distribution) throws IOException {
-		return super.extractMongod(distribution);
+	protected File extractExe(Distribution distribution) throws IOException {
+		return super.extractExe(distribution);
 	}
 	
 //	public MongodExecutable prepare(MongodConfig mongodConfig) {
@@ -101,11 +101,4 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 	protected String executableFilename(Distribution distribution) {
 		return Paths.getMongodExecutable(distribution);
 	}
-	
-	@Override
-	protected ArchiveType getArchiveType(Distribution distribution) {
-		return Paths.getArchiveType(distribution);
-	}
-
-
 }

@@ -18,14 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embedmongo;
-
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.config.store.IDownloadConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.io.file.Files;
-import de.flapdoodle.process.io.progress.IProgressListener;
+package de.flapdoodle.process.store;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -36,8 +29,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 
+import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.process.io.progress.IProgressListener;
+
 /**
- * Class for downloading mongodb runtime
+ * Class for downloading runtime
  */
 public class Downloader {
 
@@ -51,17 +49,8 @@ public class Downloader {
 
 	}
 
-	/**
-	 * http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-1.6.5.tgz
-	 * http://fastdl.mongodb.org/linux/mongodb-linux-i686-1.7.6.tgz
-	 * http://fastdl.mongodb.org/win32/mongodb-win32-x86_64-1.6.5.zip
-	 * http://fastdl.mongodb.org/win32/mongodb-win32-i386-1.7.6.zip
-	 * <p/>
-	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-1.6.5.tgz
-	 * http://fastdl.mongodb.org/osx/mongodb-osx-i386-tiger-1.7.6.tgz
-	 */
 	public static String getDownloadUrl(IDownloadConfig runtime, Distribution distribution) {
-		return runtime.getDownloadPath() + Paths.getPath(distribution);
+		return runtime.getDownloadPath() + runtime.getPath(distribution);
 	}
 
 	public static File download(IDownloadConfig runtime, Distribution distribution) throws IOException {
@@ -71,16 +60,14 @@ public class Downloader {
 		progress.start(progressLabel);
 
 		File ret = Files.createTempFile(runtime.getFileNaming()
-				.nameFor("embedmongo-download", "." + Paths.getArchiveType(distribution)));
+				.nameFor(runtime.getDownloadPrefix(), "." + runtime.getArchiveType(distribution)));
 		if (ret.canWrite()) {
 
 			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(ret));
 
 			URL url = new URL(getDownloadUrl(runtime, distribution));
 			URLConnection openConnection = url.openConnection();
-			openConnection.setRequestProperty("User-Agent",
-					"Mozilla/5.0 (compatible; "
-							+ "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)");
+			openConnection.setRequestProperty("User-Agent",runtime.getUserAgent());
 			openConnection.setConnectTimeout(CONNECTION_TIMEOUT);
 			openConnection.setReadTimeout(READ_TIMEOUT);
 

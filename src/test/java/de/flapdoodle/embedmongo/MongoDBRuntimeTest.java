@@ -65,7 +65,7 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	private void check(MongodStarter runtime, Distribution distribution) throws IOException {
 		assertTrue("Check", runtime.checkDistribution(distribution));
-		File mongod = runtime.extractMongod(distribution);
+		File mongod = runtime.extractExe(distribution);
 		assertNotNull("Extracted", mongod);
 		assertTrue("Delete", mongod.delete());
 	}

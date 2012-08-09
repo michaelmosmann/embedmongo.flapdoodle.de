@@ -18,30 +18,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.process.config.store;
+package de.flapdoodle.process.exceptions;
 
-import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.extract.ITempNaming;
-import de.flapdoodle.process.io.progress.IProgressListener;
 
+public class DistributionException extends RuntimeException {
 
-public interface IDownloadConfig {
+	private final Distribution _distribution;
+
+	public DistributionException(Distribution distribution) {
+		super();
+		_distribution = distribution;
+	}
+
+	public DistributionException(String message, Distribution distribution, Throwable cause) {
+		super(message, cause);
+		_distribution = distribution;
+	}
+
+	public DistributionException(String message, Distribution distribution) {
+		super(message);
+		_distribution = distribution;
+	}
+
+	public DistributionException(Distribution distribution, Throwable cause) {
+		super(cause);
+		_distribution = distribution;
+	}
 	
-	String getDownloadPath();
 	
-	IProgressListener getProgressListener();
-
-	IArtifactStoragePathNaming getArtifactStorePathNaming();
-	
-	ITempNaming getFileNaming();
-
-	String getPath(Distribution distribution);
-
-	ArchiveType getArchiveType(Distribution distribution);
-
-	String getDownloadPrefix();
-
-	String getUserAgent();
-
+	public Distribution withDistribution() {
+		return _distribution;
+	}
 }

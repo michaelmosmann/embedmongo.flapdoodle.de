@@ -33,26 +33,26 @@ public abstract class Executable<T extends ExecutableProcessConfig,P> {
 
 	private static Logger logger = Logger.getLogger(Executable.class.getName());
 
-	private final T mongodConfig;
+	private final T config;
 	private final IRuntimeConfig runtimeConfig;
-	private final File mongodExecutable;
+	private final File executable;
 	private boolean stopped;
 
 	private final Distribution distribution;
 
-	public Executable(Distribution distribution, T mongodConfig,
-			IRuntimeConfig runtimeConfig, File mongodExecutable) {
+	public Executable(Distribution distribution, T config,
+			IRuntimeConfig runtimeConfig, File executable) {
 		this.distribution = distribution;
-		this.mongodConfig = mongodConfig;
+		this.config = config;
 		this.runtimeConfig = runtimeConfig;
-		this.mongodExecutable = mongodExecutable;
+		this.executable = executable;
 		Runtime.getRuntime().addShutdownHook(new JobKiller());
 	}
 
 	public synchronized void cleanup() {
 		if (!stopped) {
-			if (mongodExecutable.exists() && !Files.forceDelete(mongodExecutable))
-				logger.warning("Could not delete mongod executable NOW: " + mongodExecutable);
+			if (executable.exists() && !Files.forceDelete(executable))
+				logger.warning("Could not delete executable NOW: " + executable);
 			stopped = true;
 		}
 	}
@@ -69,11 +69,11 @@ public abstract class Executable<T extends ExecutableProcessConfig,P> {
 	}
 
 	public File getFile() {
-		return mongodExecutable;
+		return executable;
 	}
 
 	public P start() throws IOException {
-		return start(distribution, mongodConfig, runtimeConfig);
+		return start(distribution, config, runtimeConfig);
 	}
 
 	protected abstract P start(Distribution distribution, T config, IRuntimeConfig runtime) throws IOException;

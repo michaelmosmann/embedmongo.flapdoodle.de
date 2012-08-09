@@ -24,6 +24,7 @@ import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
@@ -38,6 +39,11 @@ public class DownloadConfig implements IDownloadConfig {
 
 	private IProgressListener progressListener = new StandardConsoleProgressListener();
 	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome(".embedmongo");
+
+	private String downloadPrefix="embedmongo-download";
+
+	private String userAgent="Mozilla/5.0 (compatible; "
+			+  "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)";
 
 	@Override
 	public ITempNaming getFileNaming() {
@@ -77,7 +83,22 @@ public class DownloadConfig implements IDownloadConfig {
 	}
 
 	@Override
+	public String getDownloadPrefix() {
+		return downloadPrefix;
+	}
+	
+	@Override
+	public String getUserAgent() {
+		return userAgent;
+	}
+	
+	@Override
 	public String getPath(Distribution distribution) {
 		return Paths.getPath(distribution);
+	}
+	
+	@Override
+	public ArchiveType getArchiveType(Distribution distribution) {
+		return Paths.getArchiveType(distribution);
 	}
 }
