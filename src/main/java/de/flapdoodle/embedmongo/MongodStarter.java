@@ -22,20 +22,13 @@ package de.flapdoodle.embedmongo;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.embedmongo.exceptions.MongodException;
 import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.extract.Extractors;
-import de.flapdoodle.process.extract.IExtractor;
-import de.flapdoodle.process.io.file.Files;
-import de.flapdoodle.process.io.progress.IProgressListener;
 import de.flapdoodle.process.runtime.Starter;
 
 /**
