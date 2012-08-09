@@ -20,27 +20,52 @@
  */
 package de.flapdoodle.embed.nodejs;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.process.runtime.ICommandLinePostProcessor;
 
 import junit.framework.TestCase;
 
 
 public class NodejsStarterTest extends TestCase {
 
-	public void testNodejs() throws IOException {
+	public void testNodejs() throws IOException, InterruptedException {
 		NodejsProcess node = null;
 		NodejsConfig nodejsConfig = new NodejsConfig(NodejsVersion.V0_8_6);
-
-		NodejsStarter runtime = new NodejsStarter(new NodejsRuntimeConfig());
-
+		
+		final File helloWorld = Files.createTempFile("node-hello-world.js");
+		Files.write("console.log(\"Running Hello World inside NodeJS\");", helloWorld);
+		
+		NodejsRuntimeConfig config = new NodejsRuntimeConfig();
+		ICommandLinePostProcessor processor=new ICommandLinePostProcessor() {
+			@Override
+			public List<String> process(Distribution distribution, List<String> args) {
+				ArrayList<String> ret = Lists.newArrayList(args);
+				ret.add(helloWorld.getAbsolutePath());
+				return ret;
+			}
+		};
+		config.setCommandLinePostProcessor(processor);
+		NodejsStarter runtime = new NodejsStarter(config);
+		
 		try {
 			NodejsExecutable mongodExecutable = runtime.prepare(nodejsConfig);
 			node = mongodExecutable.start();
 
+			Thread.sleep(1000);
 
 		} finally {
 			if (node != null)
 				node.stop();
+			
+			Files.forceDelete(helloWorld);
 		}
 
 	}

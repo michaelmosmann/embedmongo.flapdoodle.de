@@ -61,4 +61,31 @@ public class NodejsRuntimeConfig implements IRuntimeConfig {
 		return commandLinePostProcessor;
 	}
 
+	
+	public void setDefaultfileNaming(ITempNaming defaultfileNaming) {
+		this.defaultfileNaming = defaultfileNaming;
+	}
+
+	
+	public void setExecutableNaming(ITempNaming executableNaming) {
+		this.executableNaming = executableNaming;
+	}
+
+	
+	public void setProcessOutput(ProcessOutput processOutput) {
+		this.processOutput = processOutput;
+	}
+
+	
+	public void setCommandLinePostProcessor(ICommandLinePostProcessor commandLinePostProcessor) {
+		this.commandLinePostProcessor = commandLinePostProcessor;
+	}
+
+	
+	public void setDownloadConfig(NodejsDownloadConfig downloadConfig) {
+		this.downloadConfig = downloadConfig;
+	}
+	
+	
+
 }

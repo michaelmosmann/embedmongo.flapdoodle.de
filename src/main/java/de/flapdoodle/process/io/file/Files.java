@@ -27,6 +27,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStreamWriter;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -117,6 +118,18 @@ public class Files {
 				if (left > size)
 					left = (int) size;
 			}
+		} finally {
+			out.close();
+		}
+	}
+	
+	public static void write(String content, File output) throws IOException {
+		FileOutputStream out = new FileOutputStream(output);
+		OutputStreamWriter w=new OutputStreamWriter(out);
+		
+		try {
+			w.write(content);
+			w.flush();
 		} finally {
 			out.close();
 		}

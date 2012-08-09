@@ -124,8 +124,6 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 	@Override
 	protected void onAfterProcess(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
-		super.onAfterProcess(process, runtimeConfig);
-
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
 		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
 				StreamToLineProcessor.wrap(outputConfig.getOutput()));

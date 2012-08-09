@@ -31,6 +31,7 @@ import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.ISupportConfig;
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.io.Processors;
 import de.flapdoodle.process.io.StreamToLineProcessor;
 
 public abstract class AbstractProcess<T extends ExecutableProcessConfig, E extends Executable<T, P>, P> {
@@ -82,7 +83,9 @@ public abstract class AbstractProcess<T extends ExecutableProcessConfig, E exten
 	}
 
 	protected void onAfterProcess(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
-
+		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
+		Processors.connect(process.getReader(), outputConfig.getOutput());
+		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
 	}
 
 	protected void onBeforeProcess(IRuntimeConfig runtimeConfig2) throws IOException {

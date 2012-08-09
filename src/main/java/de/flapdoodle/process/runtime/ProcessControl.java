@@ -60,6 +60,15 @@ public class ProcessControl {
 		reader = new InputStreamReader(this.process.getInputStream());
 		error = new InputStreamReader(this.process.getErrorStream());
 		pid = getProcessID();
+		
+		// waiting a little seams to let the scheduler start this process..
+		try {
+			Thread.sleep(1);
+		} catch (InterruptedException e) {
+			logger.severe(e.getMessage());
+			Thread.currentThread().interrupt();
+		}
+
 	}
 
 	public Reader getReader() {
@@ -126,6 +135,7 @@ public class ProcessControl {
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				logger.severe(e.getMessage());
+				Thread.currentThread().interrupt();
 			}
 		if (!state.isKilled()) {
 			timer.cancel();
