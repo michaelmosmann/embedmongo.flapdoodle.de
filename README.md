@@ -6,6 +6,7 @@ We are now a github organisation. You are invited to participate.
 
 Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
 
+
 ## Why?
 
 - dropping databases causing some pains (often you have to wait long time after each test)
@@ -17,9 +18,8 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests
 http://www.cubeia.com/index.php/blog/archives/436
 
+
 ## Howto
-
-
 
 ### Maven
 
