@@ -56,7 +56,7 @@ SOME REFACTORINGS AHEAD
 
 #### 1.19 (SNAPSHOT)
 
-- massive refactoring, maybe some api breaks (but not much)
+- massive refactoring, maybe some api breaks (but not that much)
 - alpha support for node.js (not sure if this will lead to some renaming)
 
 #### 1.18
