@@ -20,6 +20,7 @@
  */
 package de.flapdoodle.embedmongo;
 
+import de.flapdoodle.process.config.store.IPackageResolver;
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.IVersion;
@@ -30,16 +31,18 @@ import java.util.regex.Pattern;
 /**
  *
  */
-public class Paths {
+public class Paths implements IPackageResolver {
 
 	private static Logger logger = Logger.getLogger(Paths.class.getName());
 
-	public static Pattern getMongodExecutablePattern(Distribution distribution) {
-		return Pattern.compile(".*" + getMongodExecutable(distribution));
+	@Override
+	public Pattern executeablePattern(Distribution distribution) {
+		return Pattern.compile(".*" + executableFilename(distribution));
 	}
 
 	//CHECKSTYLE:OFF
-	public static String getMongodExecutable(Distribution distribution) {
+	@Override
+	public String executableFilename(Distribution distribution) {
 		String mongodPattern;
 		switch (distribution.getPlatform()) {
 			case Linux:
@@ -57,7 +60,8 @@ public class Paths {
 		return mongodPattern;
 	}
 
-	public static ArchiveType getArchiveType(Distribution distribution) {
+	@Override
+	public ArchiveType getArchiveType(Distribution distribution) {
 		ArchiveType archiveType;
 		switch (distribution.getPlatform()) {
 			case Linux:
@@ -75,7 +79,8 @@ public class Paths {
 		return archiveType;
 	}
 
-	public static String getPath(Distribution distribution) {
+	@Override
+	public String getPath(Distribution distribution) {
 		String sversion = getVersionPart(distribution.getVersion());
 
 		ArchiveType archiveType = getArchiveType(distribution);

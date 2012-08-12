@@ -26,6 +26,7 @@ import de.flapdoodle.embedmongo.Paths;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.config.store.IPackageResolver;
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
@@ -46,6 +47,8 @@ public class DownloadConfig implements IDownloadConfig {
 
 	private String userAgent="Mozilla/5.0 (compatible; "
 			+  "Embedded MongoDB; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)";
+
+	private IPackageResolver packageResolver=new Paths();
 
 	@Override
 	public ITempNaming getFileNaming() {
@@ -93,24 +96,9 @@ public class DownloadConfig implements IDownloadConfig {
 	public String getUserAgent() {
 		return userAgent;
 	}
-	
+
 	@Override
-	public String getPath(Distribution distribution) {
-		return Paths.getPath(distribution);
-	}
-	
-	@Override
-	public ArchiveType getArchiveType(Distribution distribution) {
-		return Paths.getArchiveType(distribution);
-	}
-	
-	@Override
-	public String executableFilename(Distribution distribution) {
-		return Paths.getMongodExecutable(distribution);
-	}
-	
-	@Override
-	public Pattern executeablePattern(Distribution distribution) {
-		return Paths.getMongodExecutablePattern(distribution);
+	public IPackageResolver getPackageResolver() {
+		return packageResolver;
 	}
 }

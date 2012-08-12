@@ -83,15 +83,8 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 //		}
 //	}
 
+	@Override
 	protected MongodExecutable newExecutable(MongodConfig mongodConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe) {
 		return new MongodExecutable(distribution, mongodConfig, runtime, mongodExe);
-	}
-
-	protected Pattern executeablePattern(Distribution distribution) {
-		return Paths.getMongodExecutablePattern(distribution);
-	}
-
-	protected String executableFilename(Distribution distribution) {
-		return Paths.getMongodExecutable(distribution);
 	}
 }

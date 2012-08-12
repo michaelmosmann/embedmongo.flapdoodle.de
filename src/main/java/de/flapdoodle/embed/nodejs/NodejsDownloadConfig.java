@@ -25,6 +25,7 @@ import java.util.regex.Pattern;
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
+import de.flapdoodle.process.config.store.IPackageResolver;
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
@@ -45,6 +46,8 @@ public class NodejsDownloadConfig implements IDownloadConfig {
 
 	private String userAgent = "Mozilla/5.0 (compatible; "
 			+ "Embedded node.js; +https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de)"; // change to embednodejs
+
+	private NodejsPaths nodejsPaths = new NodejsPaths();
 
 	@Override
 	public String getDownloadPath() {
@@ -67,16 +70,6 @@ public class NodejsDownloadConfig implements IDownloadConfig {
 	}
 
 	@Override
-	public String getPath(Distribution distribution) {
-		return NodejsPaths.getPath(distribution);
-	}
-
-	@Override
-	public ArchiveType getArchiveType(Distribution distribution) {
-		return NodejsPaths.getArchiveType(distribution);
-	}
-
-	@Override
 	public String getDownloadPrefix() {
 		return downloadPrefix;
 	}
@@ -87,11 +80,7 @@ public class NodejsDownloadConfig implements IDownloadConfig {
 	}
 
 	@Override
-	public String executableFilename(Distribution distribution) {
-		return NodejsPaths.getExecutable(distribution);
+	public IPackageResolver getPackageResolver() {
+		return nodejsPaths;
 	}
-
-	public Pattern executeablePattern(Distribution distribution) {
-		return NodejsPaths.getExecutablePattern(distribution);
-	};
 }

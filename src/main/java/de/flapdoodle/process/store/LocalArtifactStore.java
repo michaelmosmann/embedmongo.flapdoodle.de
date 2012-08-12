@@ -38,11 +38,11 @@ public class LocalArtifactStore {
 
 	public static boolean store(IDownloadConfig runtime, Distribution distribution, File download) {
 		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, runtime.getPath(distribution));
+		File artifactFile = new File(dir, runtime.getPackageResolver().getPath(distribution));
 		createOrCheckDir(artifactFile.getParentFile());
 		if (!Files.moveFile(download, artifactFile))
 			throw new IllegalArgumentException("Could not move " + download + " to " + artifactFile);
-		File checkFile = new File(dir, runtime.getPath(distribution));
+		File checkFile = new File(dir, runtime.getPackageResolver().getPath(distribution));
 		return checkFile.exists() & checkFile.isFile() & checkFile.canRead();
 	}
 
@@ -64,7 +64,7 @@ public class LocalArtifactStore {
 
 	public static File getArtifact(IDownloadConfig runtime, Distribution distribution) {
 		File dir = createOrGetBaseDir(runtime);
-		File artifactFile = new File(dir, runtime.getPath(distribution));
+		File artifactFile = new File(dir, runtime.getPackageResolver().getPath(distribution));
 		if ((artifactFile.exists()) && (artifactFile.isFile()))
 			return artifactFile;
 		return null;

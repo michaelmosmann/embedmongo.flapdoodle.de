@@ -24,23 +24,15 @@ import java.util.regex.Pattern;
 
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.extract.ITempNaming;
-import de.flapdoodle.process.io.progress.IProgressListener;
 
+public interface IPackageResolver {
 
-public interface IDownloadConfig {
-	
-	String getDownloadPath();
-	
-	IProgressListener getProgressListener();
+	String getPath(Distribution distribution);
 
-	IArtifactStoragePathNaming getArtifactStorePathNaming();
-	
-	ITempNaming getFileNaming();
+	ArchiveType getArchiveType(Distribution distribution);
 
-	String getDownloadPrefix();
+	String executableFilename(Distribution distribution);
 
-	String getUserAgent();
-	
-	IPackageResolver getPackageResolver();
+	Pattern executeablePattern(Distribution distribution);
+
 }

@@ -21,6 +21,7 @@
 package de.flapdoodle.embedmongo;
 
 import de.flapdoodle.embedmongo.distribution.Version;
+import de.flapdoodle.process.config.store.IPackageResolver;
 import de.flapdoodle.process.distribution.BitSize;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.Platform;
@@ -30,7 +31,16 @@ import junit.framework.TestCase;
 //CHECKSTYLE:OFF
 public class TestPaths extends TestCase {
 
+	private Paths paths;
+
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		paths=new Paths();
+	}
+	
 	public void testDistributionPaths() {
+		
 		checkPath(new Distribution(Version.V1_6_5, Platform.Windows, BitSize.B32),
 				"win32/mongodb-win32-i386-1.6.5.zip");
 		checkPath(new Distribution(Version.V1_6_5, Platform.Windows, BitSize.B64),
@@ -48,7 +58,7 @@ public class TestPaths extends TestCase {
 	}
 
 	private void checkPath(Distribution distribution, String match) {
-		assertEquals("" + distribution, match, Paths.getPath(distribution));
+		assertEquals("" + distribution, match, paths.getPath(distribution));
 	}
 
 	public void testPaths() {
