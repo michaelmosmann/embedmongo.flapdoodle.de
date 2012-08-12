@@ -23,7 +23,6 @@ package de.flapdoodle.embedmongo;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;

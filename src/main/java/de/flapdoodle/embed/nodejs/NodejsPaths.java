@@ -20,13 +20,13 @@
  */
 package de.flapdoodle.embed.nodejs;
 
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
+
 import de.flapdoodle.process.config.store.IPackageResolver;
 import de.flapdoodle.process.distribution.ArchiveType;
 import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.distribution.IVersion;
-
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
 
 /**
  *

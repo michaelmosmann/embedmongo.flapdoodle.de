@@ -20,14 +20,10 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import java.util.regex.Pattern;
-
 import de.flapdoodle.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.config.store.IPackageResolver;
-import de.flapdoodle.process.distribution.ArchiveType;
-import de.flapdoodle.process.distribution.Distribution;
 import de.flapdoodle.process.extract.ITempNaming;
 import de.flapdoodle.process.extract.UUIDTempNaming;
 import de.flapdoodle.process.io.progress.IProgressListener;

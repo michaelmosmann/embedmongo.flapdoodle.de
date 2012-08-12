@@ -31,7 +31,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.flapdoodle.process.collections.Collections;
-import de.flapdoodle.process.config.IRuntimeConfig;
 import de.flapdoodle.process.config.ISupportConfig;
 import de.flapdoodle.process.config.process.ProcessConfig;
 import de.flapdoodle.process.distribution.Platform;

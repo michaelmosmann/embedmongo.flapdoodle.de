@@ -20,8 +20,14 @@
  */
 package de.flapdoodle.embedmongo;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.UnknownHostException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import de.flapdoodle.embedmongo.config.MongodConfig;
-import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.config.SupportConfig;
 import de.flapdoodle.embedmongo.runtime.Mongod;
 import de.flapdoodle.process.config.IRuntimeConfig;
@@ -35,13 +41,6 @@ import de.flapdoodle.process.io.file.Files;
 import de.flapdoodle.process.runtime.AbstractProcess;
 import de.flapdoodle.process.runtime.Network;
 import de.flapdoodle.process.runtime.ProcessControl;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.UnknownHostException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

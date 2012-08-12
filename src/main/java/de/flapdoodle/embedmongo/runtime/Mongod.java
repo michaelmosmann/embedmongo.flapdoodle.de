@@ -20,11 +20,6 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
-import de.flapdoodle.embedmongo.config.MongodConfig;
-import de.flapdoodle.embedmongo.config.SupportConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.runtime.NUMA;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,6 +35,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.flapdoodle.embedmongo.config.MongodConfig;
+import de.flapdoodle.embedmongo.config.SupportConfig;
+import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.process.runtime.NUMA;
 
 /**
  *
