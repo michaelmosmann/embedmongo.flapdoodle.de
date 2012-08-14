@@ -57,8 +57,8 @@ public class NodejsProcess extends AbstractProcess<NodejsConfig, NodejsExecutabl
 		return new NodejsSupportConfig();
 	}
 
+	@Override
 	public void stop() {
 		stopProcess();
 	}
-
 }

@@ -267,6 +267,10 @@ public class ProcessControl {
 		return null;
 	}
 
+	public int waitFor() throws InterruptedException {
+		return process.waitFor();
+	}
+
 //	/**
 //	 *
 //	 */

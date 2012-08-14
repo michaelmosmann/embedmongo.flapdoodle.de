@@ -30,7 +30,7 @@ public class NodejsStarterTest extends TestCase {
 
 	public void testNodejs() throws IOException, InterruptedException {
 		final File helloWorld = Files.createTempFile("node-hello-world.js");
-		Files.write("console.log(\"Running Hello World inside NodeJS in \"+process.cwd());", helloWorld);
+		Files.write("console.log(\"Running Hello World inside NodeJS in \"+process.cwd());setTimeout(function(){},1000);", helloWorld);
 		try {
 			Nodejs.call(NodejsVersion.V0_8_6, helloWorld.getAbsolutePath(), "/tmp");
 		} finally {

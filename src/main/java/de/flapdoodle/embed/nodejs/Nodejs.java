@@ -45,6 +45,9 @@ public class Nodejs {
 		try {
 			NodejsExecutable nodeExecutable = runtime.prepare(nodejsConfig);
 			node = nodeExecutable.start();
+			node.waitFor();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		} finally {
 			if (node != null)
 				node.stop();

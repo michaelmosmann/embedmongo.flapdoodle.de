@@ -106,8 +106,12 @@ public abstract class AbstractProcess<T extends ExecutableProcessConfig, E exten
 
 	public abstract void stop();
 
-	protected void stopProcess() {
+	protected final void stopProcess() {
 		process.stop();
+	}
+
+	public int waitFor() throws InterruptedException {
+		return process.waitFor();
 	}
 
 	protected void setProcessId(int processId) {
