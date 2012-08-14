@@ -25,14 +25,16 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 **IMPORTANT NOTE:**
 **maven groupId and artifactId change**
+**groupId from de.flapdoodle.embedmongo to de.flapdoodle.embed**
+**artifactId from de.flapdoodle.embedmongo to de.flapdoodle.embed.mongo**
 **NOT released yet**
 
-Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 14.08.2012 - wait 24hrs for maven central)
 
 	<dependency>
-		<groupId>de.flapdoodle.embedmongo</groupId>
-		<artifactId>de.flapdoodle.embedmongo</artifactId>
-		<version>1.18</version>
+		<groupId>de.flapdoodle.embed</groupId>
+		<artifactId>de.flapdoodle.embed.mongo</artifactId>
+		<version>1.19</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -40,7 +42,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.19-SNAPSHOT</version>
+		<version>1.20-SNAPSHOT</version>
 	</dependency>
 
 ### Build on top of
