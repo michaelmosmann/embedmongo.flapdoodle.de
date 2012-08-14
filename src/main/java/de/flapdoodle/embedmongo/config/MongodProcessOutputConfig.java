@@ -22,7 +22,7 @@ package de.flapdoodle.embedmongo.config;
 
 import java.util.logging.Logger;
 
-import de.flapdoodle.process.config.io.ProcessOutput;
+import de.flapdoodle.embed.process.config.io.ProcessOutput;
 
 /**
  *

@@ -20,17 +20,17 @@
  */
 package de.flapdoodle.embedmongo;
 
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.config.store.IDownloadConfig;
+import de.flapdoodle.embed.process.distribution.BitSize;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.GenericVersion;
+import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.extract.UUIDTempNaming;
+import de.flapdoodle.embed.process.io.progress.IProgressListener;
+import de.flapdoodle.embed.process.store.Downloader;
 import de.flapdoodle.embedmongo.config.DownloadConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.config.store.IDownloadConfig;
-import de.flapdoodle.process.distribution.BitSize;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.distribution.GenericVersion;
-import de.flapdoodle.process.distribution.Platform;
-import de.flapdoodle.process.extract.UUIDTempNaming;
-import de.flapdoodle.process.io.progress.IProgressListener;
-import de.flapdoodle.process.store.Downloader;
 
 import org.junit.After;
 import org.junit.Before;

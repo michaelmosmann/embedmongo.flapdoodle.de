@@ -20,8 +20,8 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import de.flapdoodle.process.config.ExecutableProcessConfig;
-import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
+import de.flapdoodle.embed.process.distribution.IVersion;
 
 public class NodejsConfig extends ExecutableProcessConfig {
 

@@ -24,12 +24,12 @@ import junit.framework.TestCase;
 
 import com.mongodb.Mongo;
 
+import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embedmongo.MongodStarter;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.process.runtime.Network;
 
 public abstract class AbstractMongoDBTest extends TestCase {
 

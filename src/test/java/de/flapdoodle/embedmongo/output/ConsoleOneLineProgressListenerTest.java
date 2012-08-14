@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embedmongo.output;
 
-import de.flapdoodle.process.io.progress.ConsoleOneLineProgressListener;
+import de.flapdoodle.embed.process.io.progress.ConsoleOneLineProgressListener;
 
 import junit.framework.TestCase;
 

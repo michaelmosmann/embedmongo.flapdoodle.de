@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embedmongo.config;
 
-import de.flapdoodle.process.config.ISupportConfig;
+import de.flapdoodle.embed.process.config.ISupportConfig;
 
 
 public class SupportConfig implements ISupportConfig {

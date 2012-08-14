@@ -20,10 +20,10 @@
  */
 package de.flapdoodle.embedmongo.runtime;
 
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.runtime.NUMA;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.SupportConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.runtime.NUMA;
 
 import java.io.File;
 import java.io.IOException;

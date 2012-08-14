@@ -38,6 +38,17 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.process.config.io.ProcessOutput;
+import de.flapdoodle.embed.process.config.store.ArtifactStoreInFixedPath;
+import de.flapdoodle.embed.process.config.store.IArtifactStoragePathNaming;
+import de.flapdoodle.embed.process.distribution.GenericVersion;
+import de.flapdoodle.embed.process.extract.ITempNaming;
+import de.flapdoodle.embed.process.extract.UUIDTempNaming;
+import de.flapdoodle.embed.process.extract.UserTempNaming;
+import de.flapdoodle.embed.process.io.IStreamProcessor;
+import de.flapdoodle.embed.process.io.Processors;
+import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
+import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embedmongo.MongodStarter;
 import de.flapdoodle.embedmongo.MongodExecutable;
 import de.flapdoodle.embedmongo.MongodProcess;
@@ -46,17 +57,6 @@ import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
 import de.flapdoodle.embedmongo.tests.MongodForTestsFactory;
-import de.flapdoodle.process.config.io.ProcessOutput;
-import de.flapdoodle.process.config.store.ArtifactStoreInFixedPath;
-import de.flapdoodle.process.config.store.IArtifactStoragePathNaming;
-import de.flapdoodle.process.distribution.GenericVersion;
-import de.flapdoodle.process.extract.ITempNaming;
-import de.flapdoodle.process.extract.UUIDTempNaming;
-import de.flapdoodle.process.extract.UserTempNaming;
-import de.flapdoodle.process.io.IStreamProcessor;
-import de.flapdoodle.process.io.Processors;
-import de.flapdoodle.process.io.progress.LoggingProgressListener;
-import de.flapdoodle.process.runtime.Network;
 
 public class TestExampleReadMeCode extends TestCase {
 

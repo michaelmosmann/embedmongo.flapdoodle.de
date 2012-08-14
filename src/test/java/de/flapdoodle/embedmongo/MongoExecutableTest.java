@@ -25,9 +25,10 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
+
+import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.process.runtime.Network;
 
 import junit.framework.TestCase;
 import org.junit.Test;

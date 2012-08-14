@@ -20,13 +20,13 @@
  */
 package de.flapdoodle.embedmongo;
 
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.io.file.Files;
+import de.flapdoodle.embed.process.runtime.Executable;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embedmongo.config.RuntimeConfig;
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.io.file.Files;
-import de.flapdoodle.process.runtime.Executable;
 
 import java.io.File;
 import java.io.IOException;

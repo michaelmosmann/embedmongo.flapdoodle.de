@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.IVersion;
 
 public enum NodejsVersion implements IVersion {
 	V0_8_6("v0.8.6"), ;

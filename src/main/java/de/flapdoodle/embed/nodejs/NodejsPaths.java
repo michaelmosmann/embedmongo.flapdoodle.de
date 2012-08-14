@@ -20,9 +20,9 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import de.flapdoodle.process.distribution.ArchiveType;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.ArchiveType;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.IVersion;
 
 import java.util.logging.Logger;
 import java.util.regex.Pattern;

@@ -23,9 +23,9 @@ package de.flapdoodle.embedmongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
-import de.flapdoodle.process.config.ExecutableProcessConfig;
-import de.flapdoodle.process.distribution.IVersion;
-import de.flapdoodle.process.runtime.Network;
+import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
+import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  *

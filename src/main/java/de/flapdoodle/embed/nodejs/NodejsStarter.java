@@ -22,9 +22,9 @@ package de.flapdoodle.embed.nodejs;
 
 import java.io.File;
 
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.runtime.Starter;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.runtime.Starter;
 
 
 public class NodejsStarter extends Starter<NodejsConfig, NodejsExecutable, NodejsProcess>{

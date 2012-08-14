@@ -26,10 +26,10 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.runtime.Network;
 import de.flapdoodle.embedmongo.config.MongodConfig;
 import de.flapdoodle.embedmongo.distribution.Version;
-import de.flapdoodle.process.distribution.IVersion;
-import de.flapdoodle.process.runtime.Network;
 
 import org.junit.After;
 import org.junit.Before;

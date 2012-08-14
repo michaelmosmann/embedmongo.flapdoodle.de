@@ -22,7 +22,7 @@ package de.flapdoodle.embed.nodejs;
 
 import java.io.IOException;
 
-import de.flapdoodle.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.IVersion;
 
 public class Nodejs {
 

@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embedmongo.distribution;
 
-import de.flapdoodle.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.Distribution;
 
 import junit.framework.TestCase;
 

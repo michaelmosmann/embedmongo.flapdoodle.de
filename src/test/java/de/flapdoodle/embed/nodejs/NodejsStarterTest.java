@@ -24,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 
 import junit.framework.TestCase;
-import de.flapdoodle.process.io.file.Files;
+import de.flapdoodle.embed.process.io.file.Files;
 
 public class NodejsStarterTest extends TestCase {
 

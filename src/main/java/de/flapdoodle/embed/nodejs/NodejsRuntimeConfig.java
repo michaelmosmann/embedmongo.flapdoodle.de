@@ -20,12 +20,12 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.config.io.ProcessOutput;
-import de.flapdoodle.process.config.store.IDownloadConfig;
-import de.flapdoodle.process.extract.ITempNaming;
-import de.flapdoodle.process.extract.UUIDTempNaming;
-import de.flapdoodle.process.runtime.ICommandLinePostProcessor;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.config.io.ProcessOutput;
+import de.flapdoodle.embed.process.config.store.IDownloadConfig;
+import de.flapdoodle.embed.process.extract.ITempNaming;
+import de.flapdoodle.embed.process.extract.UUIDTempNaming;
+import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
 
 
 public class NodejsRuntimeConfig implements IRuntimeConfig {

@@ -20,7 +20,7 @@
  */
 package de.flapdoodle.embed.nodejs;
 
-import de.flapdoodle.process.config.ISupportConfig;
+import de.flapdoodle.embed.process.config.ISupportConfig;
 
 
 public class NodejsSupportConfig implements ISupportConfig {

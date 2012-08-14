@@ -25,11 +25,11 @@ import java.io.IOException;
 
 import junit.framework.TestCase;
 
-import de.flapdoodle.process.distribution.BitSize;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.distribution.Platform;
-import de.flapdoodle.process.store.Downloader;
-import de.flapdoodle.process.store.LocalArtifactStore;
+import de.flapdoodle.embed.process.distribution.BitSize;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.store.Downloader;
+import de.flapdoodle.embed.process.store.LocalArtifactStore;
 
 
 public class TestDownloads extends TestCase {

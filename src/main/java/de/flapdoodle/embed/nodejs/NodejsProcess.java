@@ -26,11 +26,11 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 
-import de.flapdoodle.process.config.IRuntimeConfig;
-import de.flapdoodle.process.config.ISupportConfig;
-import de.flapdoodle.process.distribution.Distribution;
-import de.flapdoodle.process.runtime.AbstractProcess;
-import de.flapdoodle.process.runtime.ProcessControl;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.config.ISupportConfig;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.runtime.AbstractProcess;
+import de.flapdoodle.embed.process.runtime.ProcessControl;
 
 
 public class NodejsProcess extends AbstractProcess<NodejsConfig, NodejsExecutable, NodejsProcess> {
