@@ -39,6 +39,7 @@ http://www.cubeia.com/index.php/blog/archives/436
 ### Maven
 
 **IMPORTANT NOTE: maven groupId and artifactId change**
+
 	groupId from de.flapdoodle.embedmongo to de.flapdoodle.embed
 	artifactId from de.flapdoodle.embedmongo to de.flapdoodle.embed.mongo
 
