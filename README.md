@@ -60,6 +60,7 @@ SOME REFACTORINGS AHEAD
 
 - massive refactoring, maybe some api breaks (but not that much)
 - alpha support for node.js (not sure if this will lead to some renaming)
+- some relevant process.stop() improvements
 
 #### 1.18
 

@@ -102,16 +102,13 @@ public class ProcessControl {
 		
 		try {
 			returnCode=process.exitValue();
-//			logger.severe("Exited "+runtime.getName()+" before with "+returnCode);
 		} catch (IllegalThreadStateException itsx) {
 			
 			Callable<Integer> callable=new Callable<Integer>() {
 				
 				@Override
 				public Integer call() throws Exception {
-					int ret = process.waitFor();
-//					logger.severe("Exited "+runtime.getName()+" in waitFor with "+ret);
-					return ret;
+					return process.waitFor();
 				}
 			};
 			FutureTask<Integer> task = new FutureTask<Integer>(callable);
@@ -120,16 +117,22 @@ public class ProcessControl {
 			boolean stopped=false;
 			try {
 				returnCode=task.get(100, TimeUnit.MILLISECONDS);
-				closeIOAndDestroy();
+				stopped=true;
+			} catch (InterruptedException e) {
+			} catch (ExecutionException e) {
+			} catch (TimeoutException e) {
+			}
+			
+			closeIOAndDestroy();
+			
+			try {
 				returnCode=task.get(900, TimeUnit.MILLISECONDS);
 				stopped=true;
 			} catch (InterruptedException e) {
-				e.printStackTrace();
 			} catch (ExecutionException e) {
-				e.printStackTrace();
 			} catch (TimeoutException e) {
-				e.printStackTrace();
 			}
+
 			if (!stopped)	{
 //				logger.severe(""+runtime.getName()+" NOT exited, thats why we destroy");
 				process.destroy();
