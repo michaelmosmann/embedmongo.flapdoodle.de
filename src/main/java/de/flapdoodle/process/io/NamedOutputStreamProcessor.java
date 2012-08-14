@@ -28,6 +28,7 @@ public class NamedOutputStreamProcessor implements IStreamProcessor {
 
 	private final IStreamProcessor destination;
 	private final String name;
+	boolean firstBlock=true;
 
 	public NamedOutputStreamProcessor(String name, IStreamProcessor destination) {
 		this.name = name;
@@ -36,7 +37,12 @@ public class NamedOutputStreamProcessor implements IStreamProcessor {
 
 	@Override
 	public void process(String block) {
-		destination.process(block.replace("\n", "\n" + name + " "));
+		String replaced = block.replace("\n", "\n" + name + " ");
+		if (firstBlock) {
+			replaced=name+replaced;
+			firstBlock=false;
+		}
+		destination.process(replaced);
 	}
 
 	@Override

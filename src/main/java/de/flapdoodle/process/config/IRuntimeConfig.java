@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.process.config;
 
+import java.io.File;
+
 import de.flapdoodle.process.config.io.ProcessOutput;
 import de.flapdoodle.process.config.store.IDownloadConfig;
 import de.flapdoodle.process.extract.ITempNaming;

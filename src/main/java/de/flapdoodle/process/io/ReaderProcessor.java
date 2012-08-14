@@ -51,9 +51,10 @@ public class ReaderProcessor extends Thread {
 			//CHECKSTYLE:OFF
 		} catch (IOException iox) {
 			// _logger.log(Level.SEVERE,"out",iox);
+		} finally {
+			streamProcessor.onProcessed();
 		}
 		//CHECKSTYLE:ON
 
-		streamProcessor.onProcessed();
 	}
 }

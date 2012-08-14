@@ -41,8 +41,15 @@ public class NodejsProcess extends AbstractProcess<NodejsConfig, NodejsExecutabl
 	}
 	
 	@Override
+	protected void onBeforeProcessStart(ProcessBuilder processBuilder, NodejsConfig config, IRuntimeConfig runtimeConfig) {
+		super.onBeforeProcessStart(processBuilder, config, runtimeConfig);
+		
+		processBuilder.directory(new File(config.getWorkingDirectory()));
+	}
+	
+	@Override
 	protected List<String> getCommandLine(Distribution distribution, NodejsConfig config, File exe) throws IOException {
-		return Lists.newArrayList(exe.getAbsolutePath());
+		return Lists.newArrayList(exe.getAbsolutePath(),config.getFilename());
 	}
 	
 	@Override
@@ -51,7 +58,7 @@ public class NodejsProcess extends AbstractProcess<NodejsConfig, NodejsExecutabl
 	}
 
 	public void stop() {
-		
+		stopProcess();
 	}
 
 }

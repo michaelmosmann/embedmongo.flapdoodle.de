@@ -27,6 +27,13 @@ import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RunnableFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,15 +67,6 @@ public class ProcessControl {
 		reader = new InputStreamReader(this.process.getInputStream());
 		error = new InputStreamReader(this.process.getErrorStream());
 		pid = getProcessID();
-		
-		// waiting a little seams to let the scheduler start this process..
-		try {
-			Thread.sleep(1);
-		} catch (InterruptedException e) {
-			logger.severe(e.getMessage());
-			Thread.currentThread().interrupt();
-		}
-
 	}
 
 	public Reader getReader() {
@@ -80,7 +78,6 @@ public class ProcessControl {
 	}
 
 	public int stop() {
-		closeIOAndDestroy();
 		return waitForProcessGotKilled();
 	}
 
@@ -95,11 +92,51 @@ public class ProcessControl {
 
 			} catch (IOException e) {
 				logger.severe(e.getMessage());
-			} finally {
-				process.destroy();
 			}
 			reader = null;
 		}
+	}
+
+	private Integer stopOrDestroyProcess() {
+		Integer returnCode=null;
+		
+		try {
+			returnCode=process.exitValue();
+//			logger.severe("Exited "+runtime.getName()+" before with "+returnCode);
+		} catch (IllegalThreadStateException itsx) {
+			
+			Callable<Integer> callable=new Callable<Integer>() {
+				
+				@Override
+				public Integer call() throws Exception {
+					int ret = process.waitFor();
+//					logger.severe("Exited "+runtime.getName()+" in waitFor with "+ret);
+					return ret;
+				}
+			};
+			FutureTask<Integer> task = new FutureTask<Integer>(callable);
+			new Thread(task).start();
+
+			boolean stopped=false;
+			try {
+				returnCode=task.get(100, TimeUnit.MILLISECONDS);
+				closeIOAndDestroy();
+				returnCode=task.get(900, TimeUnit.MILLISECONDS);
+				stopped=true;
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				e.printStackTrace();
+			} catch (TimeoutException e) {
+				e.printStackTrace();
+			}
+			if (!stopped)	{
+//				logger.severe(""+runtime.getName()+" NOT exited, thats why we destroy");
+				process.destroy();
+			}
+		}
+		
+		return returnCode;
 	}
 
 	//CHECKSTYLE:OFF
@@ -111,34 +148,35 @@ public class ProcessControl {
 	 * for a second (in 10 ms steps) that the process got really killed.
 	 */
 	private int waitForProcessGotKilled() {
-		final ProcessState state = new ProcessState();
+//		final ProcessState state = new ProcessState();
 
-		final Timer timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
+//		final Timer timer = new Timer();
+//		timer.scheduleAtFixedRate(new TimerTask() {
+//
+//			public void run() {
+//				try {
+//					state.returnCode = process.waitFor();
+//				} catch (InterruptedException e) {
+//					logger.severe(e.getMessage());
+//				} finally {
+//					state.setKilled(true);
+//					timer.cancel();
+//				}
+//			}
+//		}, 0, 10);
+//		// wait for max. 1 second that process got killed
+		Integer retCode=stopOrDestroyProcess();
 
-			public void run() {
-				try {
-					state.returnCode = process.waitFor();
-				} catch (InterruptedException e) {
-					logger.severe(e.getMessage());
-				} finally {
-					state.setKilled(true);
-					timer.cancel();
-				}
-			}
-		}, 0, 10);
-		// wait for max. 1 second that process got killed
-
-		int countDown = 100;
-		while (!state.isKilled() && (countDown-- > 0))
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				logger.severe(e.getMessage());
-				Thread.currentThread().interrupt();
-			}
-		if (!state.isKilled()) {
-			timer.cancel();
+//		int countDown = 100;
+//		while (!state.isKilled() && (countDown-- > 0))
+//			try {
+//				Thread.sleep(10);
+//			} catch (InterruptedException e) {
+//				logger.severe(e.getMessage());
+//				Thread.currentThread().interrupt();
+//			}
+		if (retCode==null) {
+//			timer.cancel();
 			String message = "\n\n" + "----------------------------------------------------\n"
 					+ "Something bad happend. We couldn't kill "+runtime.getName()+" process, and tried a lot.\n"
 					+ "If you want this problem solved you can help us if you open a new issue.\n" + "\n"
@@ -147,16 +185,25 @@ public class ProcessControl {
 					+ "Thank you:)\n" + "----------------------------------------------------\n\n";
 			throw new IllegalStateException("Couldn't kill "+runtime.getName()+" process!" + message);
 		}
-		return state.returnCode;
+		return retCode;
 	}
 
 	//CHECKSTYLE:ON
 	public static ProcessControl fromCommandLine(ISupportConfig runtime, List<String> commandLine, boolean redirectErrorStream)
 			throws IOException {
+		ProcessBuilder processBuilder = newProcessBuilder(commandLine, redirectErrorStream);
+		return start(runtime, processBuilder);
+	}
+
+	public static ProcessControl start(ISupportConfig runtime, ProcessBuilder processBuilder) throws IOException {
+		return new ProcessControl(runtime,processBuilder.start());
+	}
+
+	public static ProcessBuilder newProcessBuilder(List<String> commandLine, boolean redirectErrorStream) {
 		ProcessBuilder processBuilder = new ProcessBuilder(commandLine);
 		if (redirectErrorStream)
 			processBuilder.redirectErrorStream();
-		return new ProcessControl(runtime,processBuilder.start());
+		return processBuilder;
 	}
 
 	public static boolean executeCommandLine(ISupportConfig support, String label, ProcessConfig processConfig) {
@@ -217,21 +264,21 @@ public class ProcessControl {
 		return null;
 	}
 
-	/**
-	 *
-	 */
-	static class ProcessState {
-
-		protected int returnCode;
-
-		public boolean isKilled() {
-			return killed;
-		}
-
-		public void setKilled(boolean killed) {
-			this.killed = killed;
-		}
-
-		private boolean killed = false;
-	}
+//	/**
+//	 *
+//	 */
+//	static class ProcessState {
+//
+//		protected int returnCode;
+//
+//		public boolean isKilled() {
+//			return killed;
+//		}
+//
+//		public void setKilled(boolean killed) {
+//			this.killed = killed;
+//		}
+//
+//		private boolean killed = false;
+//	}
 }

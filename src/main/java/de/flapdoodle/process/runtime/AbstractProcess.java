@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -63,33 +63,41 @@ public abstract class AbstractProcess<T extends ExecutableProcessConfig, E exten
 
 			onBeforeProcess(runtimeConfig);
 
-			process = ProcessControl.fromCommandLine(
-					supportConfig(),
+			ProcessBuilder processBuilder = ProcessControl.newProcessBuilder(
 					runtimeConfig.getCommandLinePostProcessor().process(distribution,
 							getCommandLine(distribution, config, this.executable.getFile())), true);
 
+			onBeforeProcessStart(processBuilder,config, runtimeConfig);
+			
+			process = ProcessControl.start(supportConfig(), processBuilder);
+
 			Runtime.getRuntime().addShutdownHook(new JobKiller());
 
-			onAfterProcess(process, runtimeConfig);
+			onAfterProcessStart(process, runtimeConfig);
 
 		} catch (IOException iox) {
 			stop();
 			throw iox;
 		}
 	}
-	
+
+
 	public T getConfig() {
 		return config;
 	}
 
-	protected void onAfterProcess(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
+	protected void onBeforeProcess(IRuntimeConfig runtimeConfig) throws IOException {
+
+	}
+
+	protected void onBeforeProcessStart(ProcessBuilder processBuilder, T config2, IRuntimeConfig runtimeConfig) {
+		
+	}
+	
+	protected void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
 		Processors.connect(process.getReader(), outputConfig.getOutput());
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
-	}
-
-	protected void onBeforeProcess(IRuntimeConfig runtimeConfig2) throws IOException {
-
 	}
 
 	protected abstract List<String> getCommandLine(Distribution distribution, T config, File exe) throws IOException;
