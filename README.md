@@ -23,7 +23,9 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-**IMPORTANT NOTE: maven groupId and artifactId change**
+**IMPORTANT NOTE:**
+**maven groupId and artifactId change**
+**NOT released yet**
 
 Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
 
@@ -41,6 +43,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 		<version>1.19-SNAPSHOT</version>
 	</dependency>
 
+### Build on top of
+
+- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
+
 ### Other ways to use Embedded MongoDB
 
 - In a Maven build using [embedmongo-maven-plugin](https://github.com/joelittlejohn/embedmongo-maven-plugin)
@@ -49,20 +55,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-**SOME REFACTORINGS AHEAD**
-
-I will do some refactorings, so that i can use this for nodejs too. So some names will change, but i hope i will not break much things.
-That's why here comes a new release.
-
-Project split ahead:
-- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
-
-**SOME REFACTORINGS AHEAD**
-
 #### 1.19 (SNAPSHOT)
 
 - **massive refactoring, some api breaks**
-- **alpha support for node.js**
+- **project split**
 - some relevant process.stop() improvements
 
 #### 1.18
