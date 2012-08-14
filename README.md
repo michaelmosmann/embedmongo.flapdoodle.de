@@ -23,7 +23,7 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-_IMPORTANT NOTE: maven groupId and artifactId change_
+**IMPORTANT NOTE: maven groupId and artifactId change**
 
 Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
 
@@ -49,7 +49,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-_SOME REFACTORINGS AHEAD_
+**SOME REFACTORINGS AHEAD**
 
 I will do some refactorings, so that i can use this for nodejs too. So some names will change, but i hope i will not break much things.
 That's why here comes a new release.
@@ -58,12 +58,12 @@ Project split ahead:
 
 - Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
 
-_SOME REFACTORINGS AHEAD_
+**SOME REFACTORINGS AHEAD**
 
 #### 1.19 (SNAPSHOT)
 
-- massive refactoring, maybe some api breaks (but not that much)
-- alpha support for node.js (not sure if this will lead to some renaming)
+- **massive refactoring, some api breaks**
+- **alpha support for node.js**
 - some relevant process.stop() improvements
 
 #### 1.18
