@@ -43,12 +43,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 14.08.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 15.08.2012 - wait 24hrs for maven central)
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.19</version>
+		<version>1.20</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -56,12 +56,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.20-SNAPSHOT</version>
+		<version>1.21-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.20 (SNAPSHOT)
+#### 1.21 (SNAPSHOT)
+
+#### 1.20
 
 - NPE fix with custom database directory
 - custom database directory will not be deleted
