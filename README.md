@@ -12,11 +12,27 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 - its easy, much easier as installing right version by hand
 - you can change version per test
 
-## Comments about Embedded MongoDB in the Wild
+## Dependencies
+
+### Build on top of
+
+- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
+
+### Other ways to use Embedded MongoDB
+
+- In a Maven build using [embedmongo-maven-plugin](https://github.com/joelittlejohn/embedmongo-maven-plugin)
+- In a Clojure/Leiningen project using [lein-embongo](https://github.com/joelittlejohn/lein-embongo)
+- In a Scala/specs2 specification using [specs2-embedmongo](https://github.com/athieriot/specs2-embedmongo)
+
+### Comments about Embedded MongoDB in the Wild
 
 http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests
 http://www.cubeia.com/index.php/blog/archives/436
 
+### Other MongoDB Stuff
+
+- https://github.com/thiloplanz/jmockmongo - mongodb mocking
+- https://github.com/lordofthejars/nosql-unit - extended nosql unit testing
 
 ## Howto
 
@@ -43,16 +59,6 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
 		<version>1.20-SNAPSHOT</version>
 	</dependency>
-
-### Build on top of
-
-- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
-
-### Other ways to use Embedded MongoDB
-
-- In a Maven build using [embedmongo-maven-plugin](https://github.com/joelittlejohn/embedmongo-maven-plugin)
-- In a Clojure/Leiningen project using [lein-embongo](https://github.com/joelittlejohn/lein-embongo)
-- In a Scala/specs2 specification using [specs2-embedmongo](https://github.com/athieriot/specs2-embedmongo)
 
 ### Changelog
 
@@ -363,8 +369,4 @@ Support for Linux, Windows and MacOSX.
 	...
 
 
-## Other MongoDB Stuff
-
-- https://github.com/thiloplanz/jmockmongo - mongodb mocking
-- https://github.com/lordofthejars/nosql-unit - extended nosql unit testing
 
