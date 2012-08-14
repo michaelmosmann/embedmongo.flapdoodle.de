@@ -55,7 +55,6 @@ I will do some refactorings, so that i can use this for nodejs too. So some name
 That's why here comes a new release.
 
 Project split ahead:
-
 - Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
 
 **SOME REFACTORINGS AHEAD**
