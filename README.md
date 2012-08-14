@@ -63,6 +63,8 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.20 (SNAPSHOT)
 
+- NPE fix with custom database directory
+
 #### 1.19
 
 - **massive refactoring, some api breaks**
