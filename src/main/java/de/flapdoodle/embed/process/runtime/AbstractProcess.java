@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.ISupportConfig;
@@ -32,7 +33,6 @@ import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.io.Processors;
 import de.flapdoodle.embed.process.io.StreamToLineProcessor;
-import de.flapdoodle.embedmongo.MongodExecutable;
 
 public abstract class AbstractProcess<T extends ExecutableProcessConfig, E extends Executable<T, P>, P> {
 
