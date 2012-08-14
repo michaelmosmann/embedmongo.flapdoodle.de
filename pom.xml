@@ -8,8 +8,8 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>de.flapdoodle.embedmongo</groupId>
-    <artifactId>de.flapdoodle.embedmongo</artifactId>
+    <groupId>de.flapdoodle.embed</groupId>
+    <artifactId>de.flapdoodle.embed.mongo</artifactId>
     <name>Flapdoodle Embedded MongoDB</name>
     <version>1.19-SNAPSHOT</version>
 

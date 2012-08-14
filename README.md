@@ -23,6 +23,8 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
+IMPORTANT NOTE: maven groupId and artifactId change
+
 Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
 
 	<dependency>
@@ -34,8 +36,8 @@ Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven ce
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 	<dependency>
-		<groupId>de.flapdoodle.embedmongo</groupId>
-		<artifactId>de.flapdoodle.embedmongo</artifactId>
+		<groupId>de.flapdoodle.embed</groupId>
+		<artifactId>de.flapdoodle.embed.mongo</artifactId>
 		<version>1.19-SNAPSHOT</version>
 	</dependency>
 
@@ -52,7 +54,9 @@ SOME REFACTORINGS AHEAD
 I will do some refactorings, so that i can use this for nodejs too. So some names will change, but i hope i will not break much things.
 That's why here comes a new release.
 
-I think, i will split this into two projects soon.
+Project split ahead:
+
+- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
 
 SOME REFACTORINGS AHEAD
 
