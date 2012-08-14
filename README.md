@@ -6,6 +6,7 @@ We are now a github organisation. You are invited to participate.
 
 Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
 
+
 ## Why?
 
 - dropping databases causing some pains (often you have to wait long time after each test)
@@ -17,11 +18,14 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 http://stackoverflow.com/questions/6437226/embedded-mongodb-when-running-integration-tests
 http://www.cubeia.com/index.php/blog/archives/436
 
+
 ## Howto
 
-
-
 ### Maven
+
+**IMPORTANT NOTE:**
+**maven groupId and artifactId change**
+**NOT released yet**
 
 Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven central)
 
@@ -34,10 +38,14 @@ Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven ce
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 	<dependency>
-		<groupId>de.flapdoodle.embedmongo</groupId>
-		<artifactId>de.flapdoodle.embedmongo</artifactId>
+		<groupId>de.flapdoodle.embed</groupId>
+		<artifactId>de.flapdoodle.embed.mongo</artifactId>
 		<version>1.19-SNAPSHOT</version>
 	</dependency>
+
+### Build on top of
+
+- Embed Process Util [de.flapdoodle.embed.process](https://github.com/flapdoodle-oss/de.flapdoodle.embed.process)
 
 ### Other ways to use Embedded MongoDB
 
@@ -47,17 +55,11 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-SOME REFACTORINGS AHEAD
-
-I will do some refactorings, so that i can use this for nodejs too. So some names will change, but i hope i will not break much things.
-That's why here comes a new release.
-
-SOME REFACTORINGS AHEAD
-
 #### 1.19 (SNAPSHOT)
 
-- massive refactoring, maybe some api breaks (but not much)
-- alpha support for node.js (not sure if this will lead to some renaming)
+- **massive refactoring, some api breaks**
+- **project split**
+- some relevant process.stop() improvements
 
 #### 1.18
 
