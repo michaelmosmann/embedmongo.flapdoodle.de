@@ -36,8 +36,8 @@ Stable (Maven Central Repository, Released: 09.08.2012 - wait 24hrs for maven ce
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 	<dependency>
-		<groupId>de.flapdoodle.embed</groupId>
-		<artifactId>de.flapdoodle.embed.mongo</artifactId>
+		*<groupId>de.flapdoodle.embed</groupId>*
+		*<artifactId>de.flapdoodle.embed.mongo</artifactId>*
 		<version>1.19-SNAPSHOT</version>
 	</dependency>
 
