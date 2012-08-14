@@ -38,10 +38,9 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 ### Maven
 
-	**IMPORTANT NOTE:**
-	**maven groupId and artifactId change**
-	**groupId from de.flapdoodle.embedmongo to de.flapdoodle.embed**
-	**artifactId from de.flapdoodle.embedmongo to de.flapdoodle.embed.mongo**
+**IMPORTANT NOTE: maven groupId and artifactId change**
+	groupId from de.flapdoodle.embedmongo to de.flapdoodle.embed
+	artifactId from de.flapdoodle.embedmongo to de.flapdoodle.embed.mongo
 
 Stable (Maven Central Repository, Released: 14.08.2012 - wait 24hrs for maven central)
 
