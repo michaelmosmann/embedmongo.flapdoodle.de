@@ -57,7 +57,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Changelog
 
-#### 1.19 (SNAPSHOT)
+#### 1.20 (SNAPSHOT)
+
+#### 1.19
 
 - **massive refactoring, some api breaks**
 - **project split**
