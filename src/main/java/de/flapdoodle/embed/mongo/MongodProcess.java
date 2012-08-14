@@ -118,8 +118,8 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 			tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
 		} else {
 			tmpDbDir = Files.createTempDir("embedmongo-db");
-			this.dbDir = tmpDbDir;
 		}
+		this.dbDir = tmpDbDir;
 	}
 
 	@Override
