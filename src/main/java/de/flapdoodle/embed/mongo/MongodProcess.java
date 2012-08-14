@@ -57,7 +57,8 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 	//	private int mongodProcessId;
 
 	private File dbDir;
-
+	boolean dbDirIsTemp=false;
+	
 	private boolean stopped = false;
 
 	//
@@ -118,6 +119,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 			tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
 		} else {
 			tmpDbDir = Files.createTempDir("embedmongo-db");
+			dbDirIsTemp=true;
 		}
 		this.dbDir = tmpDbDir;
 	}
@@ -168,7 +170,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 				stopProcess();
 
-				if ((dbDir != null) && (!Files.forceDelete(dbDir)))
+				if ((dbDir != null) && (dbDirIsTemp) && (!Files.forceDelete(dbDir)))
 					logger.warning("Could not delete temp db dir: " + dbDir);
 
 			}

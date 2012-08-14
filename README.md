@@ -64,6 +64,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 #### 1.20 (SNAPSHOT)
 
 - NPE fix with custom database directory
+- custom database directory will not be deleted
 
 #### 1.19
 
