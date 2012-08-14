@@ -31,10 +31,16 @@ public class Nodejs {
 	}
 
 	public static void call(IVersion version, String filename, String workingDirectory) throws IOException {
+		NodejsRuntimeConfig runtimeConfig = new NodejsRuntimeConfig();
+		
+		call(version, runtimeConfig, filename, workingDirectory);
+	}
+
+	public static void call(IVersion version, NodejsRuntimeConfig runtimeConfig, String filename, String workingDirectory)
+			throws IOException {
 		NodejsProcess node = null;
 		NodejsConfig nodejsConfig = new NodejsConfig(version, filename, workingDirectory);
-
-		NodejsStarter runtime = new NodejsStarter(new NodejsRuntimeConfig());
+		NodejsStarter runtime = new NodejsStarter(runtimeConfig);
 
 		try {
 			NodejsExecutable nodeExecutable = runtime.prepare(nodejsConfig);
