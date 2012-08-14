@@ -6,7 +6,6 @@ We are now a github organisation. You are invited to participate.
 
 Embedded MongoDB will provide a platform neutral way for running mongodb in unittests.
 
-
 ## Why?
 
 - dropping databases causing some pains (often you have to wait long time after each test)
