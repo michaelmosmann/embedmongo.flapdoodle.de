@@ -48,7 +48,7 @@ Stable (Maven Central Repository, Released: 15.08.2012 - wait 24hrs for maven ce
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.20</version>
+		<version>1.21</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -56,12 +56,16 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.21-SNAPSHOT</version>
+		<version>1.22-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.21 (SNAPSHOT)
+#### 1.22 (SNAPSHOT)
+
+#### 1.21
+
+- dependency version range for de.flapdoodle.embed.process
 
 #### 1.20
 
