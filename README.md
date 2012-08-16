@@ -43,12 +43,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 15.08.2012 - wait 24hrs for maven central)
+Stable (Maven Central Repository, Released: 16.08.2012 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.21</version>
+		<version>1.22</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -56,12 +56,14 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.22-SNAPSHOT</version>
+		<version>1.23-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.22 (SNAPSHOT)
+#### 1.23 (SNAPSHOT)
+
+#### 1.22
 
 - maven dep version range does not work as expected -> disabled
 
