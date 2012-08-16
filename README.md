@@ -63,7 +63,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.22 (SNAPSHOT)
 
-- maven dep version range does not work as expected, disabled
+- maven dep version range does not work as expected -> disabled
 
 #### 1.21
 
