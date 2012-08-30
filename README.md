@@ -63,6 +63,9 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 #### 1.23 (SNAPSHOT)
 
+- added 2.0.7, 2.2.0
+- mongodb java driver update to 2.9.0 (test dependency)
+
 #### 1.22
 
 - maven dep version range does not work as expected -> disabled
