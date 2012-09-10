@@ -21,12 +21,12 @@
 package de.flapdoodle.embed.mongo.config;
 
 import de.flapdoodle.embed.mongo.Paths;
-import de.flapdoodle.embed.process.config.store.ArtifactStoreInUserHome;
-import de.flapdoodle.embed.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
 import de.flapdoodle.embed.process.extract.ITempNaming;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
+import de.flapdoodle.embed.process.io.directories.UserHome;
+import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.progress.IProgressListener;
 import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
 
@@ -37,7 +37,7 @@ public class DownloadConfig implements IDownloadConfig {
 	private String downloadPath = "http://fastdl.mongodb.org/";
 
 	private IProgressListener progressListener = new StandardConsoleProgressListener();
-	private IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInUserHome(".embedmongo");
+	private IDirectory artifactStorePath = new UserHome(".embedmongo");
 
 	private String downloadPrefix="embedmongo-download";
 
@@ -74,12 +74,12 @@ public class DownloadConfig implements IDownloadConfig {
 		return progressListener;
 	}
 
-	public void setArtifactStorePathNaming(IArtifactStoragePathNaming value) {
+	public void setArtifactStorePathNaming(IDirectory value) {
 		this.artifactStorePath = value;
 	}
 
 	@Override
-	public IArtifactStoragePathNaming getArtifactStorePathNaming() {
+	public IDirectory getArtifactStorePath() {
 		return artifactStorePath;
 	}
 

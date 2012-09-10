@@ -47,7 +47,6 @@ import de.flapdoodle.embed.mongo.config.RuntimeConfig;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
-import de.flapdoodle.embed.process.config.store.ArtifactStoreInFixedPath;
 import de.flapdoodle.embed.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
 import de.flapdoodle.embed.process.extract.ITempNaming;
@@ -55,6 +54,8 @@ import de.flapdoodle.embed.process.extract.UUIDTempNaming;
 import de.flapdoodle.embed.process.extract.UserTempNaming;
 import de.flapdoodle.embed.process.io.IStreamProcessor;
 import de.flapdoodle.embed.process.io.Processors;
+import de.flapdoodle.embed.process.io.directories.FixedPath;
+import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
 import de.flapdoodle.embed.process.runtime.Network;
 
@@ -138,7 +139,7 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6());
 
 		/// - 8<- - - - 
-		IArtifactStoragePathNaming artifactStorePath = new ArtifactStoreInFixedPath(System.getProperty("user.home")
+		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home")
 				+ "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
 

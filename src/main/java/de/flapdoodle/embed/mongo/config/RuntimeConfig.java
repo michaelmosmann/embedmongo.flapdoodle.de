@@ -25,12 +25,14 @@ import java.util.logging.Logger;
 
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
-import de.flapdoodle.embed.process.config.store.ArtifactStoreInUserHome;
 import de.flapdoodle.embed.process.config.store.IArtifactStoragePathNaming;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.extract.ITempNaming;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
 import de.flapdoodle.embed.process.io.LoggingOutputStreamProcessor;
+import de.flapdoodle.embed.process.io.directories.UserHome;
+import de.flapdoodle.embed.process.io.directories.IDirectory;
+import de.flapdoodle.embed.process.io.directories.PropertyOrPlatformTempDir;
 import de.flapdoodle.embed.process.io.progress.IProgressListener;
 import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
 import de.flapdoodle.embed.process.io.progress.StandardConsoleProgressListener;
@@ -41,12 +43,23 @@ import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
  */
 public class RuntimeConfig implements IRuntimeConfig {
 
+	private IDirectory directory = new PropertyOrPlatformTempDir();
 	private ITempNaming defaultfileNaming = new UUIDTempNaming();
 	private ITempNaming executableNaming = defaultfileNaming;
 	private ProcessOutput mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
 	private ICommandLinePostProcessor commandLinePostProcessor = new ICommandLinePostProcessor.Noop();
 	private DownloadConfig downloadConfig=new DownloadConfig();
 
+	@Override
+	public IDirectory getTempDirFactory() {
+		return directory;
+	}
+	
+	public void setTempDirFactory(IDirectory directory) {
+		this.directory = directory;
+	}
+	
+	
 	@Override
 	public ITempNaming getDefaultfileNaming() {
 		return defaultfileNaming;
