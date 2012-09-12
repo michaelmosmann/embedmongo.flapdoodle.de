@@ -57,7 +57,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 	//	private int mongodProcessId;
 
 	private File dbDir;
-	boolean dbDirIsTemp=false;
+	boolean dbDirIsTemp;
 	
 	private boolean stopped = false;
 
