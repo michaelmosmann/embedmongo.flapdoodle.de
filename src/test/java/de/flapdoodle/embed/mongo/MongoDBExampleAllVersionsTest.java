@@ -92,7 +92,7 @@ public class MongoDBExampleAllVersionsTest {
 	public void tearDown() throws Exception {
 
 		mongod.stop();
-		mongodExe.cleanup();
+		mongodExe.stop();
 	}
 
 	public Mongo getMongo() {

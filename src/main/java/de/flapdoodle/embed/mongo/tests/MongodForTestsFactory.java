@@ -106,6 +106,6 @@ public class MongodForTestsFactory {
 	 */
 	public void shutdown() {
 		mongodProcess.stop();
-		mongodExecutable.cleanup();
+		mongodExecutable.stop();
 	}
 }

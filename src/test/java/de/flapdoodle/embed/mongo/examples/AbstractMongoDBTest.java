@@ -54,7 +54,7 @@ public abstract class AbstractMongoDBTest extends TestCase {
 		super.tearDown();
 
 		_mongod.stop();
-		_mongodExe.cleanup();
+		_mongodExe.stop();
 	}
 
 	public Mongo getMongo() {

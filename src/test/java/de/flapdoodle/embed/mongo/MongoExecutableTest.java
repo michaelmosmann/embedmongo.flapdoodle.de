@@ -72,7 +72,7 @@ public class MongoExecutableTest extends TestCase {
 			}
 
 			mongod.stop();
-			mongodExe.cleanup();
+			mongodExe.stop();
 		}
 
 	}
