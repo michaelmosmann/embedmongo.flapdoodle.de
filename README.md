@@ -43,12 +43,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 10.09.2012 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 12.09.2012 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.24</version>
+		<version>1.25</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -56,12 +56,16 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.25-SNAPSHOT</version>
+		<version>1.26-SNAPSHOT</version>
 	</dependency>
 
 ### Changelog
 
-#### 1.25 (SNAPSHOT)
+#### 1.26 (SNAPSHOT)
+
+#### 1.25
+
+- dep version change
 
 #### 1.24
 
