@@ -59,6 +59,22 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 		<version>1.26-SNAPSHOT</version>
 	</dependency>
 
+
+### Build from source
+
+When you fork or clone our branch you should always be able to build the library by running 
+
+	mvn package
+
+There is also a build.gradle file available which might sometimes be outdated but we try to keep it working. So the gradle command is
+
+	gradle build
+
+Or if you want to use the gradle wrapper:
+
+	./gradlew build
+ 
+
 ### Changelog
 
 #### 1.26 (SNAPSHOT)
@@ -392,6 +408,7 @@ Support for Linux, Windows and MacOSX.
 	RuntimeConfig runtimeConfig = new RuntimeConfig();
 	runtimeConfig.setsetCommandLinePostProcessor(postProcessor);
 	...
+
 
 
 
