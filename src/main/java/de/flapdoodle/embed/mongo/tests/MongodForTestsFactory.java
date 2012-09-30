@@ -90,7 +90,7 @@ public class MongodForTestsFactory {
 	 * @throws UnknownHostException
 	 */
 	public Mongo newMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(Network.getLocalHost(),
+		return new Mongo(new ServerAddress(mongodProcess.getConfig().getServerAddress(),
 				mongodProcess.getConfig().getPort()));
 	}
 	

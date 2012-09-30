@@ -22,6 +22,7 @@ package de.flapdoodle.embed.mongo;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.logging.Level;
@@ -179,13 +180,12 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 	private boolean sendStopToMongoInstance() {
 		try {
-			return Mongod.sendShutdown(Network.getLocalHost(), getConfig().getPort());
+			return Mongod.sendShutdown(getConfig().getServerAddress(), getConfig().getPort());
 		} catch (UnknownHostException e) {
 			logger.log(Level.SEVERE, "sendStop", e);
 		}
 		return false;
 	}
-
 	//	public MongodConfig getConfig() {
 	//		return config;
 	//	}

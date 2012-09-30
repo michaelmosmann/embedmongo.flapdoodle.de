@@ -126,6 +126,10 @@ public class Mongod {
 		if (config.isIpv6()) {
 			ret.add("--ipv6");
 		}
+		if (config.getBindIp()!=null) {
+			ret.add("--bind_ip");
+			ret.add(config.getBindIp());
+		}
 		return ret;
 	}
 
