@@ -79,6 +79,8 @@ Or if you want to use the gradle wrapper:
 
 #### 1.26 (SNAPSHOT)
 
+- bind_ip configuration parameter support (MongodConfig constructor)
+
 #### 1.25
 
 - dep version change
