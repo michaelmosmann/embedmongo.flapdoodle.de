@@ -1,6 +1,6 @@
 # Organisation Flapdoodle OSS
 
-We are now a github organisation. You are invited to participate.
+We are now a github organisation. You are invited to participate. :)
 
 # Embedded MongoDB
 
