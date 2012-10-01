@@ -203,7 +203,7 @@
         <dependency>
 						<groupId>de.flapdoodle.embed</groupId>
 						<artifactId>de.flapdoodle.embed.process</artifactId>
-						<version>1.23</version>
+						<version>1.24</version>
         </dependency>
 
         <dependency>
