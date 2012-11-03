@@ -130,6 +130,10 @@ public class Mongod {
 			ret.add("--bind_ip");
 			ret.add(config.getBindIp());
 		}
+		if (config.getReplSetName()!=null) {
+			ret.add("--replSet");
+			ret.add(config.getReplSetName());
+		}
 		return ret;
 	}
 

@@ -33,30 +33,36 @@ import de.flapdoodle.embed.process.runtime.Network;
  */
 public class MongodConfig extends ExecutableProcessConfig {
 
+	private final String replSetName;
+	public String getReplSetName() {
+		return replSetName;
+	}
+
 	private final String bindIp;
 	private final int port;
 	private final String databaseDir;
 	private final boolean ipv6;
 
 	public MongodConfig(IVersion version) throws UnknownHostException, IOException {
-		this(version, null, Network.getFreeServerPort(), Network.localhostIsIPv6(), null);
+		this(version, null, Network.getFreeServerPort(), Network.localhostIsIPv6(), null, null);
 	}
 
 	public MongodConfig(IVersion version, int port, boolean ipv6) {
-		this(version, null, port, ipv6, null);
+		this(version, null, port, ipv6, null, null);
 	}
 
 	@Deprecated
 	public MongodConfig(IVersion version, int port, boolean ipv6, String databaseDir) {
-		this(version, null, port, ipv6, databaseDir);
+		this(version, null, port, ipv6, databaseDir, null);
 	}
 
-	public MongodConfig(IVersion version, String bindIp, int port, boolean ipv6, String databaseDir) {
+	public MongodConfig(IVersion version, String bindIp, int port, boolean ipv6, String databaseDir, String replSetName) {
 		super(version);
 		this.bindIp = bindIp;
 		this.port = port;
 		this.ipv6 = ipv6;
 		this.databaseDir = databaseDir;
+		this.replSetName = replSetName;
 	}
 
 	public String getBindIp() {
