@@ -134,6 +134,10 @@ public class Mongod {
 			ret.add("--replSet");
 			ret.add(config.getReplSetName());
 		}
+		if (config.getOplogSize()!=0) {
+			ret.add("--oplogSize");
+			ret.add(String.valueOf(config.getOplogSize()));
+		}
 		return ret;
 	}
 
