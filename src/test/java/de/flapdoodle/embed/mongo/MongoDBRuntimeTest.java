@@ -20,32 +20,28 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
-
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.config.io.ProcessOutput;
-import de.flapdoodle.embed.process.distribution.BitSize;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.distribution.Platform;
-import de.flapdoodle.embed.process.io.Processors;
-import de.flapdoodle.embed.process.runtime.Network;
-
-import junit.framework.TestCase;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import junit.framework.TestCase;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+
+import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.distribution.BitSize;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.runtime.Network;
 
 // CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
@@ -56,15 +52,15 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	public void testDistributions() throws IOException {
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		check(runtime, new Distribution(Version.Main.V1_8, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V1_8, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V1_8, Platform.OS_X, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_0, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_0, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_0, Platform.OS_X, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_1, Platform.Linux, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_1, Platform.Windows, BitSize.B32));
-		check(runtime, new Distribution(Version.Main.V2_1, Platform.OS_X, BitSize.B32));
+		for (IVersion version : Version.Main.values()) {
+			for (Platform platform : Platform.values()) {
+				for (BitSize bitsize : BitSize.values()) {
+					// there is no osx 32bit version for v2.2.1
+					boolean skip=((version.asInDownloadPath().equals(Version.V2_2_1.asInDownloadPath())) && (platform==Platform.OS_X) && (bitsize==BitSize.B32));
+					if (!skip) check(runtime, new Distribution(version, platform, bitsize));
+				}
+			}
+		}
 	}
 
 	private void check(MongodStarter runtime, Distribution distribution) throws IOException {
@@ -89,7 +85,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6()));
+			mongod = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6()));
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess = mongod.start();

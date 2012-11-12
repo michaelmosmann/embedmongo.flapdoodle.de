@@ -27,6 +27,7 @@ import de.flapdoodle.embed.process.distribution.IVersion;
  */
 public enum Version implements IVersion {
 
+	@Deprecated
 	V1_6_5("1.6.5"),
 	@Deprecated
 	V1_7_6("1.7.6"),
@@ -89,7 +90,6 @@ public enum Version implements IVersion {
 	}
 
 	public static enum Main implements IVersion {
-		V1_6(V1_6_5),
 		V1_8(V1_8_5),
 		V2_0(V2_0_7),
 		V2_1(V2_1_2),

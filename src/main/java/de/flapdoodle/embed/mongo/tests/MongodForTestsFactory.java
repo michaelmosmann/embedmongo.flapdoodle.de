@@ -64,7 +64,7 @@ public class MongodForTestsFactory {
 	 * @throws IOException
 	 */
 	public MongodForTestsFactory() throws IOException {
-		this(Version.Main.V2_0);
+		this(Version.Main.PRODUCTION);
 	}
 
 	/**

@@ -20,25 +20,23 @@
  */
 package de.flapdoodle.embed.mongo;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.logging.Logger;
+
+import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
-
-import junit.framework.TestCase;
-import org.junit.Test;
-
-import java.io.IOException;
-import java.util.Date;
-import java.util.logging.Logger;
 
 /**
  * Integration test for starting and stopping MongodExecutable
@@ -55,7 +53,7 @@ public class MongoExecutableTest extends TestCase {
 		boolean useMongodb = true;
 		int loops = 10;
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345,
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345,
 				Network.localhostIsIPv6());
 
 		for (int i = 0; i < loops; i++) {

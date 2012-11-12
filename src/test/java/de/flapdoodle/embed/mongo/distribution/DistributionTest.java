@@ -20,10 +20,8 @@
  */
 package de.flapdoodle.embed.mongo.distribution;
 
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.distribution.Distribution;
-
 import junit.framework.TestCase;
+import de.flapdoodle.embed.process.distribution.Distribution;
 
 //CHECKSTYLE:OFF
 public class DistributionTest extends TestCase {
@@ -33,7 +31,6 @@ public class DistributionTest extends TestCase {
 	}
 
 	public void NOtestDetection() {
-		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V1_6));
 		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V1_8));
 		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V2_0));
 		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V2_1));

@@ -55,13 +55,9 @@ public class MongoDBExampleAllVersionsTest {
 	@Parameters
 	public static Collection<Object[]> data() {
 		Collection<Object[]> result = new ArrayList<Object[]>();
-		result.add(new Object[]{Version.Main.V1_8});
-		result.add(new Object[]{Version.Main.V2_0});
-		result.add(new Object[]{Version.Main.V2_1});
-		result.add(new Object[]{Version.Main.V2_2});
-		result.add(new Object[]{Version.Main.V2_3});
-		result.add(new Object[]{Version.Main.DEVELOPMENT});
-		result.add(new Object[]{Version.Main.PRODUCTION});
+		for (IVersion version : Version.Main.values()) {
+			result.add(new Object[]{version});
+		}
 		return result;
 	}
 
