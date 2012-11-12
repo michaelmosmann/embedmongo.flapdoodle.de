@@ -20,19 +20,9 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
-import com.mongodb.ServerAddress;
-
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.distribution.IVersion;
-import de.flapdoodle.embed.process.runtime.Network;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,9 +31,16 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DB;
+import com.mongodb.DBCollection;
+import com.mongodb.Mongo;
+import com.mongodb.ServerAddress;
+
+import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  * Test whether a race condition occurs between setup and tear down of setting
@@ -62,11 +59,14 @@ public class MongoDBExampleAllVersionsTest {
 		result.add(new Object[]{Version.Main.V2_0});
 		result.add(new Object[]{Version.Main.V2_1});
 		result.add(new Object[]{Version.Main.V2_2});
+		result.add(new Object[]{Version.Main.V2_3});
+		result.add(new Object[]{Version.Main.DEVELOPMENT});
+		result.add(new Object[]{Version.Main.PRODUCTION});
 		return result;
 	}
 
 	private static final int PORT = 12345;
-	private IVersion mongoVersion;
+	private final IVersion mongoVersion;
 	private MongodExecutable mongodExe;
 	private MongodProcess mongod;
 

@@ -79,6 +79,7 @@ Or if you want to use the gradle wrapper:
 
 #### 1.27 (SNAPSHOT)
 
+- dep version change
 
 #### 1.26
 

@@ -43,6 +43,7 @@ public enum Version implements IVersion {
 	@Deprecated
 	V1_8_4("1.8.4"),
 	V1_8_5("1.8.5"),
+	
 	@Deprecated
 	V1_9_0("1.9.0"),
 	@Deprecated
@@ -54,6 +55,7 @@ public enum Version implements IVersion {
 	@Deprecated
 	V2_0_7_RC1("2.0.7-rc1"),
 	V2_0_7("2.0.7"),
+	V2_0_8_RC0("2.0.8-rc0"),
 
 	@Deprecated
 	V2_1_0("2.1.0"),
@@ -62,7 +64,12 @@ public enum Version implements IVersion {
 	V2_1_2("2.1.2"),
 	@Deprecated
 	V2_2_0_RC0("2.2.0-rc0"),
+	@Deprecated
 	V2_2_0("2.2.0"),
+	V2_2_1("2.2.1"),
+	
+	V2_3_0("2.3.0"),
+
 	;
 
 	private final String specificVersion;
@@ -86,11 +93,16 @@ public enum Version implements IVersion {
 		V1_8(V1_8_5),
 		V2_0(V2_0_7),
 		V2_1(V2_1_2),
-		V2_2(V2_2_0);
+		V2_2(V2_2_1),
+		V2_3(V2_3_0),
+		
+		PRODUCTION(V2_2),
+		DEVELOPMENT(V2_3),
+		;
 
-		private final Version _latest;
+		private final IVersion _latest;
 
-		Main(Version latest) {
+		Main(IVersion latest) {
 			_latest = latest;
 		}
 
