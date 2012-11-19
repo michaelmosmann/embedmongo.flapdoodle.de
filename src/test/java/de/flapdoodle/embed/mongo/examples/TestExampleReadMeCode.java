@@ -48,6 +48,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
+import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.extract.ITempNaming;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
 import de.flapdoodle.embed.process.extract.UserTempNaming;
@@ -250,6 +251,16 @@ public class TestExampleReadMeCode extends TestCase {
 		}
 
 	}
+	// ### Main Versions
+	public void testMainVersions() throws UnknownHostException, IOException {
+		IVersion version=Version.V2_0_1;
+		// uses latest supported 2.1.x Version
+		version=Version.Main.V2_1;
+		// uses latest supported production version
+		version=Version.Main.PRODUCTION;
+		// uses latest supported development version
+		version=Version.Main.DEVELOPMENT;
+	}
 
 	// ### Use Free Server Port
 	// #### ... by hand
@@ -277,6 +288,11 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongod != null)
 				mongod.stop();
 		}
+	}
+
+	// ### ... custom timeouts
+	public void testCustomTimeouts() throws UnknownHostException, IOException {
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0,new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout(30000));
 	}
 
 }

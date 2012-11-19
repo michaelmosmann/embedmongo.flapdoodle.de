@@ -79,6 +79,9 @@ Or if you want to use the gradle wrapper:
 
 #### 1.28 (SNAPSHOT)
 
+- mongod config refactor
+- configurable startup timeout
+
 #### 1.27
 
 - dep version change
@@ -384,6 +387,16 @@ Support for Linux, Windows and MacOSX.
 			mongod.stop();
 	}
 	...
+### Main Versions
+	...
+	IVersion version=Version.V2_0_1;
+	// uses latest supported 2.1.x Version
+	version=Version.Main.V2_1;
+	// uses latest supported production version
+	version=Version.Main.PRODUCTION;
+	// uses latest supported development version
+	version=Version.Main.DEVELOPMENT;
+
 
 ### Use Free Server Port
 
@@ -405,7 +418,7 @@ Support for Linux, Windows and MacOSX.
 		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
 		mongod = mongodExecutable.start();
 
-		Mongo mongo = new Mongo(new ServerAddress(Network.getLocalHost(), mongodConfig.getPort()));
+		Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 	}
 	...
 
