@@ -77,9 +77,13 @@ public class MongodForTestsFactory {
 
 		final MongodStarter runtime = MongodStarter.getInstance(RuntimeConfig
 				.getInstance(logger));
-		mongodExecutable = runtime.prepare(new MongodConfig(version, new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout()));
+		mongodExecutable = runtime.prepare(newMongodConfig(version));
 		mongodProcess = mongodExecutable.start();
 
+	}
+
+	protected MongodConfig newMongodConfig(final IVersion version) throws UnknownHostException, IOException {
+		return new MongodConfig(version, new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout());
 	}
 
 	/**
