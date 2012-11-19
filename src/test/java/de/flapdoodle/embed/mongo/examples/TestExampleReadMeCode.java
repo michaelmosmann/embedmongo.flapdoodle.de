@@ -268,7 +268,7 @@ public class TestExampleReadMeCode extends TestCase {
 			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
 			mongod = mongodExecutable.start();
 
-			Mongo mongo = new Mongo(new ServerAddress(mongodConfig.getServerAddress(), mongodConfig.getPort()));
+			Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));

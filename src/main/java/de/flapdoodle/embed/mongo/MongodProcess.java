@@ -50,7 +50,6 @@ import de.flapdoodle.embed.process.runtime.ProcessControl;
 public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutable, MongodProcess> {
 
 	private static Logger logger = Logger.getLogger(MongodProcess.class.getName());
-	public static final int TIMEOUT = 20000;
 
 	//	private final IRuntimeConfig runtimeConfig;
 	//	private final MongodExecutable mongodExecutable;
@@ -116,8 +115,8 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 		MongodConfig config=getConfig();
 		
 		File tmpDbDir;
-		if (config.getDatabaseDir() != null) {
-			tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
+		if (config.replication().getDatabaseDir() != null) {
+			tmpDbDir = Files.createOrCheckDir(config.replication().getDatabaseDir());
 		} else {
 			tmpDbDir = Files.createTempDir("embedmongo-db");
 			dbDirIsTemp=true;
@@ -132,7 +131,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 				StreamToLineProcessor.wrap(outputConfig.getOutput()));
 		Processors.connect(process.getReader(), logWatch);
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
-		logWatch.waitForResult(TIMEOUT);
+		logWatch.waitForResult(getConfig().timeout().getStartupTimeout());
 		if (logWatch.isInitWithSuccess()) {
 			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
 		} else {
@@ -180,7 +179,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 	private boolean sendStopToMongoInstance() {
 		try {
-			return Mongod.sendShutdown(getConfig().getServerAddress(), getConfig().getPort());
+			return Mongod.sendShutdown(getConfig().net().getServerAddress(), getConfig().net().getPort());
 		} catch (UnknownHostException e) {
 			logger.log(Level.SEVERE, "sendStop", e);
 		}

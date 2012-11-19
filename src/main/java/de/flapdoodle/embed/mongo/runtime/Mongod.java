@@ -119,24 +119,24 @@ public class Mongod {
 	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(),
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),
 				"--dbpath",
 				"" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal",
 				"--noauth"));
-		if (config.isIpv6()) {
+		if (config.net().isIpv6()) {
 			ret.add("--ipv6");
 		}
-		if (config.getBindIp()!=null) {
+		if (config.net().getBindIp()!=null) {
 			ret.add("--bind_ip");
-			ret.add(config.getBindIp());
+			ret.add(config.net().getBindIp());
 		}
-		if (config.getReplSetName()!=null) {
+		if (config.replication().getReplSetName()!=null) {
 			ret.add("--replSet");
-			ret.add(config.getReplSetName());
+			ret.add(config.replication().getReplSetName());
 		}
-		if (config.getOplogSize()!=0) {
+		if (config.replication().getOplogSize()!=0) {
 			ret.add("--oplogSize");
-			ret.add(String.valueOf(config.getOplogSize()));
+			ret.add(String.valueOf(config.replication().getOplogSize()));
 		}
 		return ret;
 	}
