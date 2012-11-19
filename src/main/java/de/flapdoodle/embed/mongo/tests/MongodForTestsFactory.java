@@ -77,8 +77,7 @@ public class MongodForTestsFactory {
 
 		final MongodStarter runtime = MongodStarter.getInstance(RuntimeConfig
 				.getInstance(logger));
-		mongodExecutable = runtime.prepare(new MongodConfig(version, Network
-				.getFreeServerPort(), Network.localhostIsIPv6()));
+		mongodExecutable = runtime.prepare(new MongodConfig(version, new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout()));
 		mongodProcess = mongodExecutable.start();
 
 	}
