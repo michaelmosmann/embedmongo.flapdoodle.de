@@ -72,15 +72,12 @@ public class MongoDBRuntimeTest extends TestCase {
 			}
 		});
 		
-		for (Platform platform : Platform.values()) {
-			for (IVersion version : Version.Main.values()) {
-				for (BitSize bitsize : BitSize.values()) {
-					// there is no osx 32bit version for v2.2.1
-					boolean skip=((version.asInDownloadPath().equals(Version.V2_2_1.asInDownloadPath())) && (platform==Platform.OS_X) && (bitsize==BitSize.B32));
-					if (!skip)  skip=((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath())) && (platform==Platform.Windows) && (bitsize==BitSize.B64));
-					if (!skip) check(runtime, new Distribution(version, platform, bitsize));
-				}
-			}
+		Platform platform=Platform.Windows;
+		BitSize bitsize=BitSize.B64;
+		for (IVersion version : Version.Main.values()) {
+			// there is no windows 2008 version for 1.8.5 
+			boolean skip=((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath())) && (platform==Platform.Windows) && (bitsize==BitSize.B64));
+			if (!skip) check(runtime, new Distribution(version, platform, bitsize));
 		}
 		
 	}
