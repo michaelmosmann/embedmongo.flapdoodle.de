@@ -97,4 +97,8 @@ public class DownloadConfig implements IDownloadConfig {
 	public IPackageResolver getPackageResolver() {
 		return packageResolver;
 	}
+	
+	public void setPackageResolver(IPackageResolver packageResolver) {
+		this.packageResolver = packageResolver;
+	}
 }

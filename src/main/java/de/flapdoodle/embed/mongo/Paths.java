@@ -24,8 +24,10 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.embed.process.distribution.ArchiveType;
+import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.IVersion;
+import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
 
@@ -135,8 +137,18 @@ public class Paths implements IPackageResolver {
 			default:
 				throw new IllegalArgumentException("Unknown BitSize " + distribution.getBitsize());
 		}
+		
+		if ((distribution.getBitsize()==BitSize.B64) && (distribution.getPlatform()==Platform.Windows)) {
+			if (isWindows2008()) {
+				sversion="2008plus-"+sversion;
+			}
+		}
 
 		return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
+	}
+
+	protected boolean isWindows2008() {
+		return System.getProperty("os.name").contains("2008");
 	}
 
 	protected static String getVersionPart(IVersion version) {

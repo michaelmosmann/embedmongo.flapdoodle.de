@@ -51,9 +51,11 @@ public class MongoDBRuntimeTest extends TestCase {
 	}
 
 	public void testDistributions() throws IOException {
-		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		for (IVersion version : Version.Main.values()) {
-			for (Platform platform : Platform.values()) {
+		RuntimeConfig config = new RuntimeConfig();
+		MongodStarter runtime = MongodStarter.getInstance(config);
+		
+		for (Platform platform : Platform.values()) {
+			for (IVersion version : Version.Main.values()) {
 				for (BitSize bitsize : BitSize.values()) {
 					// there is no osx 32bit version for v2.2.1
 					boolean skip=((version.asInDownloadPath().equals(Version.V2_2_1.asInDownloadPath())) && (platform==Platform.OS_X) && (bitsize==BitSize.B32));
@@ -61,6 +63,26 @@ public class MongoDBRuntimeTest extends TestCase {
 				}
 			}
 		}
+		
+		// fake win 2008 test
+		config.getDownloadConfig().setPackageResolver(new Paths() {
+			@Override
+			protected boolean isWindows2008() {
+				return true;
+			}
+		});
+		
+		for (Platform platform : Platform.values()) {
+			for (IVersion version : Version.Main.values()) {
+				for (BitSize bitsize : BitSize.values()) {
+					// there is no osx 32bit version for v2.2.1
+					boolean skip=((version.asInDownloadPath().equals(Version.V2_2_1.asInDownloadPath())) && (platform==Platform.OS_X) && (bitsize==BitSize.B32));
+					if (!skip)  skip=((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath())) && (platform==Platform.Windows) && (bitsize==BitSize.B64));
+					if (!skip) check(runtime, new Distribution(version, platform, bitsize));
+				}
+			}
+		}
+		
 	}
 
 	private void check(MongodStarter runtime, Distribution distribution) throws IOException {

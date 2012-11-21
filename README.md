@@ -81,6 +81,7 @@ Or if you want to use the gradle wrapper:
 
 - mongod config refactor
 - configurable startup timeout
+- added windows2008 support
 
 #### 1.27
 
