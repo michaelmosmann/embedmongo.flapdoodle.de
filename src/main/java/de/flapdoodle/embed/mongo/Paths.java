@@ -139,7 +139,7 @@ public class Paths implements IPackageResolver {
 		}
 		
 		if ((distribution.getBitsize()==BitSize.B64) && (distribution.getPlatform()==Platform.Windows)) {
-			if (isWindows2008()) {
+			if (useWindows2008PlusVersion()) {
 				sversion="2008plus-"+sversion;
 			}
 		}
@@ -147,8 +147,11 @@ public class Paths implements IPackageResolver {
 		return splatform + "/mongodb-" + splatform + "-" + sbitSize + "-" + sversion + "." + sarchiveType;
 	}
 
-	protected boolean isWindows2008() {
-		return System.getProperty("os.name").contains("2008");
+	protected boolean useWindows2008PlusVersion() {
+		// Windows Server 2008 R2  or Windows 7
+		String osName = System.getProperty("os.name");
+		if (osName.contains("Windows Server 2008 R2")) return true;
+		return osName.contains("Windows 7");
 	}
 
 	protected static String getVersionPart(IVersion version) {

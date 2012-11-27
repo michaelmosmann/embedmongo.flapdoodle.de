@@ -67,7 +67,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		// fake win 2008 test
 		config.getDownloadConfig().setPackageResolver(new Paths() {
 			@Override
-			protected boolean isWindows2008() {
+			protected boolean useWindows2008PlusVersion() {
 				return true;
 			}
 		});
