@@ -138,6 +138,9 @@ public class Mongod {
 			ret.add("--oplogSize");
 			ret.add(String.valueOf(config.replication().getOplogSize()));
 		}
+		if (config.isConfigServer()) {
+			ret.add("--configsvr");
+		}
 		return ret;
 	}
 

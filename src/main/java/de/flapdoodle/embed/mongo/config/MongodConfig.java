@@ -36,6 +36,7 @@ public class MongodConfig extends ExecutableProcessConfig {
 	private final Net network;
 	private final Storage storage;
 	private final Timeout timeout;
+	private final boolean configServer;
 
 	public MongodConfig(IVersion version) throws UnknownHostException, IOException {
 		this(version, new Net(), new Storage(), new Timeout());
@@ -56,11 +57,23 @@ public class MongodConfig extends ExecutableProcessConfig {
 		this(version, new Net(bindIp, port, ipv6), new Storage(databaseDir, replSetName, oplogSize), new Timeout());
 	}
 
+	/*
+	 * Preferred constructor to Mongod config server
+	 */
+	public static MongodConfig getConfigInstance(IVersion version, Net network) {
+		return new MongodConfig(version, network, new Storage(), new Timeout(), true);
+	}
+
 	public MongodConfig(IVersion version, Net network, Storage storage, Timeout timeout) {
+		this(version, network, storage, timeout, false);
+	}
+
+	public MongodConfig(IVersion version, Net network, Storage storage, Timeout timeout, boolean configServer) {
 		super(version);
 		this.network = network;
 		this.storage = storage;
 		this.timeout = timeout;
+		this.configServer = configServer;
 	}
 
 	public Net net() {
@@ -73,6 +86,10 @@ public class MongodConfig extends ExecutableProcessConfig {
 
 	public Timeout timeout() {
 		return timeout;
+	}
+
+	public boolean isConfigServer() {
+		return configServer;
 	}
 
 	/**
