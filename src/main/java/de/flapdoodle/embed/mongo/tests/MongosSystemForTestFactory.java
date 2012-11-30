@@ -1,7 +1,7 @@
 /**
  * Copyright (C) 2011
  *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
+ *   Martin JÃ¶hren <m.joehren@googlemail.com>
  *
  * with contributions from
  * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
