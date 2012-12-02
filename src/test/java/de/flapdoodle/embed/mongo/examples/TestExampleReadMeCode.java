@@ -41,6 +41,7 @@ import com.mongodb.ServerAddress;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.AbstractMongoConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfig;
@@ -292,7 +293,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 	// ### ... custom timeouts
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0,new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout(30000));
+		AbstractMongoConfig mongodConfig = new MongodConfig(Version.Main.V2_0,new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout(30000));
 	}
 
 }

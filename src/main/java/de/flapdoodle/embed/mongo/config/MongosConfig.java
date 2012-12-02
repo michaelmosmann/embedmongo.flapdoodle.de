@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Net;
+import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Storage;
+import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Timeout;
 import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -31,49 +34,46 @@ import de.flapdoodle.embed.process.runtime.Network;
 /**
  *
  */
-public class MongosConfig extends ExecutableProcessConfig {
+public class MongosConfig extends AbstractMongoConfig {
 
-	private final String bindIp;
-	private final int port;
-	private final boolean ipv6;
+	private final Net network;
+	
 	private final String configDB;
 
 	public MongosConfig(IVersion version, String configDB) throws UnknownHostException, IOException {
 		this(version, null, Network.getFreeServerPort(), Network.localhostIsIPv6(), configDB);
 	}
 
+	@Deprecated
 	public MongosConfig(IVersion version, int port, boolean ipv6, String configDB) {
-		this(version, null, port, ipv6, configDB);
+		this(version, new Net(port,ipv6), configDB);
 	}
+	
+	@Deprecated
 	public MongosConfig(IVersion version, String bindIp, int port, boolean ipv6, String configDB) {
+		this(version,new Net(bindIp,port,ipv6),configDB);
+	}
+
+	public MongosConfig(IVersion version, Net network, String configDB) {
 		super(version);
-		this.bindIp = bindIp;
-		this.port = port;
-		this.ipv6 = ipv6;
+		this.network = network;
 		this.configDB = configDB; 
+	}
+
+	public Net net() {
+		return network;
 	}
 
 	public String getConfigDB() {
 		return configDB;
 	}
 
-	public String getBindIp() {
-		return bindIp;
-	}
-
-	public int getPort() {
-		return port;
-	}
-
-	public boolean isIpv6() {
-		return ipv6;
-	}
-
-	public InetAddress getServerAddress() throws UnknownHostException {
-		if (bindIp!=null) {
-			return InetAddress.getByName(bindIp);
-		}
-		return Network.getLocalHost();
-	}
+//
+//	public InetAddress getServerAddress() throws UnknownHostException {
+//		if (bindIp!=null) {
+//			return InetAddress.getByName(bindIp);
+//		}
+//		return Network.getLocalHost();
+//	}
 
 }

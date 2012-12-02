@@ -23,6 +23,8 @@ package de.flapdoodle.embed.mongo.config;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.Paths;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
@@ -43,7 +45,7 @@ public class MongosRuntimeConfig implements IRuntimeConfig {
 	private ITempNaming executableNaming = defaultfileNaming;
 	private ProcessOutput mongodOutputConfig = MongodProcessOutputConfig.getDefaultInstance();
 	private ICommandLinePostProcessor commandLinePostProcessor = new ICommandLinePostProcessor.Noop();
-	private MongosDownloadConfig downloadConfig=new MongosDownloadConfig();
+	private DownloadConfig downloadConfig=new DownloadConfig(new Paths(Command.MongoS));
 
 	@Override
 	public IDirectory getTempDirFactory() {
@@ -99,7 +101,7 @@ public class MongosRuntimeConfig implements IRuntimeConfig {
 	public static MongosRuntimeConfig getInstance(Logger logger) {
 		MongosRuntimeConfig ret = new MongosRuntimeConfig();
 		ret.setProcessOutput(MongodProcessOutputConfig.getInstance(logger));
-		((MongosDownloadConfig)ret.getDownloadConfig()).setProgressListener(new LoggingProgressListener(logger, Level.FINE));
+		ret.downloadConfig.setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		return ret;
 	}
 }

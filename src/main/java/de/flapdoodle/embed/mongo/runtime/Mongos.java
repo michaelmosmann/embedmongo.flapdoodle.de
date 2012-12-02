@@ -44,6 +44,7 @@ import de.flapdoodle.embed.process.runtime.NUMA;
 /**
  *
  */
+@Deprecated
 public class Mongos {
 
 	private static Logger logger = Logger.getLogger(Mongos.class.getName());
@@ -119,15 +120,15 @@ public class Mongos {
 	public static List<String> getCommandLine(MongosConfig config, File mongosExecutable, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongosExecutable.getAbsolutePath(), "-v", "--port", "" + config.getPort(),
+		ret.addAll(Arrays.asList(mongosExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),
 				"--nohttpinterface", 
 				"--chunkSize", "1"));
-		if (config.isIpv6()) {
+		if (config.net().isIpv6()) {
 			ret.add("--ipv6");
 		}
-		if (config.getBindIp()!=null) {
+		if (config.net().getBindIp()!=null) {
 			ret.add("--bind_ip");
-			ret.add(config.getBindIp());
+			ret.add(config.net().getBindIp());
 		}
 		if (config.getConfigDB()!=null) {
 			ret.add("--configdb");

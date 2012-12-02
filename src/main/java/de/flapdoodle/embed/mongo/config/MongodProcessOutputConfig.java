@@ -22,6 +22,7 @@ package de.flapdoodle.embed.mongo.config;
 
 import java.util.logging.Logger;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 
 /**
@@ -30,10 +31,10 @@ import de.flapdoodle.embed.process.config.io.ProcessOutput;
 public class MongodProcessOutputConfig {
 
 	public static ProcessOutput getDefaultInstance() {
-		return ProcessOutput.getDefaultInstance("mongod");
+		return ProcessOutput.getDefaultInstance(Command.MongoD.commandName());
 	}
 
 	public static ProcessOutput getInstance(Logger logger) {
-		return ProcessOutput.getInstance("mongod", logger);
+		return ProcessOutput.getInstance(Command.MongoD.commandName(), logger);
 	}
 }

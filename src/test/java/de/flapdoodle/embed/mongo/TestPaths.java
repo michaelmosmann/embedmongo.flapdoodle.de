@@ -36,7 +36,7 @@ public class TestPaths extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		paths=new Paths();
+		paths=new Paths(Command.MongoD);
 	}
 	
 	public void testDistributionPaths() {

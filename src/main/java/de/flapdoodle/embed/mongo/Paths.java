@@ -37,7 +37,12 @@ import de.flapdoodle.embed.process.config.store.IPackageResolver;
 public class Paths implements IPackageResolver {
 
 	private static Logger logger = Logger.getLogger(Paths.class.getName());
+	private final Command command;
 
+	public Paths(Command command) {
+		this.command=command;
+	}
+	
 	@Override
 	public Pattern executeablePattern(Distribution distribution) {
 		return Pattern.compile(".*" + executableFilename(distribution));
@@ -49,13 +54,11 @@ public class Paths implements IPackageResolver {
 		String mongodPattern;
 		switch (distribution.getPlatform()) {
 			case Linux:
-				mongodPattern = "mongod";
+			case OS_X:
+				mongodPattern = command.commandName();
 				break;
 			case Windows:
-				mongodPattern = "mongod.exe";
-				break;
-			case OS_X:
-				mongodPattern = "mongod";
+				mongodPattern = command.commandName()+".exe";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());

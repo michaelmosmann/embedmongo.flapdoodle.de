@@ -33,6 +33,7 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 
+import de.flapdoodle.embed.mongo.config.DownloadConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfig;
@@ -65,12 +66,12 @@ public class MongoDBRuntimeTest extends TestCase {
 		}
 		
 		// fake win 2008 test
-		config.getDownloadConfig().setPackageResolver(new Paths() {
+		config.setDownloadConfig(new DownloadConfig(new Paths(Command.MongoD) {
 			@Override
 			protected boolean useWindows2008PlusVersion() {
 				return true;
 			}
-		});
+		}));
 		
 		Platform platform=Platform.Windows;
 		BitSize bitsize=BitSize.B64;

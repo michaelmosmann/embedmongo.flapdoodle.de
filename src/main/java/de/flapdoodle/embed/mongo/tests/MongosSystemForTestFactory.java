@@ -204,8 +204,8 @@ public class MongosSystemForTestFactory {
 		CommandResult cr;
 		MongoOptions mo = new MongoOptions();
 		mo.autoConnectRetry = true;
-		Mongo mongo = new Mongo(new ServerAddress(this.config
-				.getServerAddress().getHostName(), this.config.getPort()), mo);
+		Mongo mongo = new Mongo(new ServerAddress(this.config.
+				net().getServerAddress().getHostName(), this.config.net().getPort()), mo);
 		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
 
 		// Add shard from the replica set list
@@ -261,8 +261,8 @@ public class MongosSystemForTestFactory {
 	}
 
 	public Mongo getMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(mongosProcess.getConfig()
-				.getServerAddress(), mongosProcess.getConfig().getPort()));
+		return new Mongo(new ServerAddress(mongosProcess.getConfig().net()
+				.getServerAddress(), mongosProcess.getConfig().net().getPort()));
 	}
 
 	public void stop() {

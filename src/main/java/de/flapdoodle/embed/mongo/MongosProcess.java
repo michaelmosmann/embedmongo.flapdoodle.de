@@ -139,7 +139,7 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 
 	private boolean sendStopToMongoInstance() {
 		try {
-			return Mongos.sendShutdown(getConfig().getServerAddress(), getConfig().getPort());
+			return Mongos.sendShutdown(getConfig().net().getServerAddress(), getConfig().net().getPort());
 		} catch (UnknownHostException e) {
 			logger.log(Level.SEVERE, "sendStop", e);
 		}
