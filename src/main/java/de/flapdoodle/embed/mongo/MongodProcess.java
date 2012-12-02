@@ -141,7 +141,7 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 	@Override
 	protected ISupportConfig supportConfig() {
-		return SupportConfig.getInstance();
+		return new SupportConfig(Command.MongoS);
 	}
 	
 	@Override

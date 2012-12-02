@@ -20,6 +20,7 @@
  */
 package de.flapdoodle.embed.mongo.runtime;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
@@ -145,7 +146,7 @@ public class Mongod {
 	}
 
 	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
-		if (NUMA.isNUMA(SupportConfig.getInstance(),distribution.getPlatform())) {
+		if (NUMA.isNUMA(new SupportConfig(Command.MongoD),distribution.getPlatform())) {
 			switch (distribution.getPlatform()) {
 				case Linux:
 					List<String> ret = new ArrayList<String>();

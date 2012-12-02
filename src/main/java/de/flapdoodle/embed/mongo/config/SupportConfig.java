@@ -20,25 +20,25 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.config.ISupportConfig;
 
 
 public class SupportConfig implements ISupportConfig {
+	private final Command command;
 
-	static SupportConfig _instance=new SupportConfig();
+	public SupportConfig(Command command) {
+		this.command = command;
+	}
 	
 	@Override
 	public String getName() {
-		return "mongod";
+		return command.commandName();
 	}
 
 	@Override
 	public String getSupportUrl() {
 		return "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n";
-	}
-	
-	public static ISupportConfig getInstance() {
-		return _instance;
 	}
 
 }

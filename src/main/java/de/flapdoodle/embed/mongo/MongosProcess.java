@@ -50,38 +50,11 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 	private static Logger logger = Logger.getLogger(MongosProcess.class.getName());
 	public static final int TIMEOUT = 20000;
 
-	//	private final IRuntimeConfig runtimeConfig;
-	//	private final MongodExecutable mongodExecutable;
-	//	private ProcessControl process;
-	//	private int mongodProcessId;
-
-	private File dbDir;
-	boolean dbDirIsTemp;
-	
 	private boolean stopped = false;
-
-	//
-	//	private Distribution distribution;
 
 	public MongosProcess(Distribution distribution, MongosConfig config, IRuntimeConfig runtimeConfig,
 			MongosExecutable mongosExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongosExecutable);
-	}
-
-	@Override
-	protected void onBeforeProcess(IRuntimeConfig runtimeConfig) throws IOException {
-		super.onBeforeProcess(runtimeConfig);
-
-		MongosConfig config=getConfig();
-		
-		File tmpDbDir;
-//		if (config.getDatabaseDir() != null) {
-//			tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
-//		} else {
-			tmpDbDir = Files.createTempDir("embedmongo-db");
-			dbDirIsTemp=true;
-//		}
-		this.dbDir = tmpDbDir;
 	}
 
 	@Override
@@ -93,7 +66,7 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
 		logWatch.waitForResult(TIMEOUT);
 		if (logWatch.isInitWithSuccess()) {
-			setProcessId(Mongos.getMongosProcessId(logWatch.getOutput(), -1));
+			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
 		} else {
 			throw new IOException("Could not start mongod process");
 		}
@@ -106,7 +79,7 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 	
 	@Override
 	protected List<String> getCommandLine(Distribution distribution, MongosConfig config, File exe) throws IOException {
-		return Mongod.enhanceCommandLinePlattformSpecific(distribution, Mongos.getCommandLine(getConfig(), exe, dbDir));
+		return Mongos.getCommandLine(getConfig(), exe);
 	}
 
 	@Override
@@ -129,34 +102,16 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 				}
 
 				stopProcess();
-
-				if ((dbDir != null) && (dbDirIsTemp) && (!Files.forceDelete(dbDir)))
-					logger.warning("Could not delete temp db dir: " + dbDir);
-
 			}
 		}
 	}
 
 	private boolean sendStopToMongoInstance() {
 		try {
-			return Mongos.sendShutdown(getConfig().net().getServerAddress(), getConfig().net().getPort());
+			return Mongod.sendShutdown(getConfig().net().getServerAddress(), getConfig().net().getPort());
 		} catch (UnknownHostException e) {
 			logger.log(Level.SEVERE, "sendStop", e);
 		}
 		return false;
 	}
-	//	public MongodConfig getConfig() {
-	//		return config;
-	//	}
-
-	//	/**
-	//	 *
-	//	 */
-	//	class JobKiller extends Thread {
-	//
-	//		@Override
-	//		public void run() {
-	//			MongodProcess.this.stop();
-	//		}
-	//	}
 }

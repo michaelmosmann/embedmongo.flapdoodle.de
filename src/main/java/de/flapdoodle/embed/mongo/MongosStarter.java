@@ -37,8 +37,6 @@ public class MongosStarter extends Starter<MongosConfig,MongosExecutable,MongosP
 
 	private static Logger logger = Logger.getLogger(MongosStarter.class.getName());
 
-//	private final IRuntimeConfig runtime;
-
 	private MongosStarter(IRuntimeConfig config) {
 		super(config);
 	}
@@ -50,37 +48,6 @@ public class MongosStarter extends Starter<MongosConfig,MongosExecutable,MongosP
 	public static MongosStarter getDefaultInstance() {
 		return getInstance(new RuntimeConfig());
 	}
-
-	@Override
-	protected boolean checkDistribution(Distribution distribution) throws IOException {
-		return super.checkDistribution(distribution);
-	}
-	
-	@Override
-	protected File extractExe(Distribution distribution) throws IOException {
-		return super.extractExe(distribution);
-	}
-	
-//	public MongodExecutable prepare(MongodConfig mongodConfig) {
-//		Distribution distribution = Distribution.detectFor(mongodConfig.getVersion());
-//		
-//		try {
-//			IProgressListener progress = runtime.getProgressListener();
-//
-//			progress.done("Detect Distribution");
-//			if (checkDistribution(distribution)) {
-//				progress.done("Check Distribution");
-//				File mongodExe = extractMongod(distribution);
-//
-//				return new MongodExecutable(distribution, mongodConfig, runtime, mongodExe);
-//			} else {
-//				throw new MongodException("could not find Distribution",distribution);
-//			}
-//		} catch (IOException iox) {
-//			logger.log(Level.SEVERE, "start", iox);
-//			throw new MongodException(distribution,iox);
-//		}
-//	}
 
 	@Override
 	protected MongosExecutable newExecutable(MongosConfig mongosConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe) {
