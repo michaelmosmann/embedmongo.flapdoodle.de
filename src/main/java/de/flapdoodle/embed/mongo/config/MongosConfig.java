@@ -37,26 +37,28 @@ import de.flapdoodle.embed.process.runtime.Network;
 public class MongosConfig extends AbstractMongoConfig {
 
 	private final Net network;
+	private final Timeout timeout;
 	
 	private final String configDB;
 
 	public MongosConfig(IVersion version, String configDB) throws UnknownHostException, IOException {
-		this(version, null, Network.getFreeServerPort(), Network.localhostIsIPv6(), configDB);
+		this(version, new Net(Network.getFreeServerPort(), Network.localhostIsIPv6()), new Timeout(), configDB);
 	}
 
 	@Deprecated
 	public MongosConfig(IVersion version, int port, boolean ipv6, String configDB) {
-		this(version, new Net(port,ipv6), configDB);
+		this(version, new Net(port,ipv6), new Timeout(), configDB);
 	}
 	
 	@Deprecated
 	public MongosConfig(IVersion version, String bindIp, int port, boolean ipv6, String configDB) {
-		this(version,new Net(bindIp,port,ipv6),configDB);
+		this(version,new Net(bindIp,port,ipv6),new Timeout(), configDB);
 	}
 
-	public MongosConfig(IVersion version, Net network, String configDB) {
+	public MongosConfig(IVersion version, Net network, Timeout timeout, String configDB) {
 		super(version);
 		this.network = network;
+		this.timeout = timeout;
 		this.configDB = configDB; 
 	}
 
@@ -64,6 +66,10 @@ public class MongosConfig extends AbstractMongoConfig {
 		return network;
 	}
 
+	public Timeout timeout() {
+		return timeout;
+	}
+	
 	public String getConfigDB() {
 		return configDB;
 	}

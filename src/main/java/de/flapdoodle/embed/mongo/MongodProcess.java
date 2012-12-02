@@ -51,61 +51,15 @@ public class MongodProcess extends AbstractProcess<MongodConfig, MongodExecutabl
 
 	private static Logger logger = Logger.getLogger(MongodProcess.class.getName());
 
-	//	private final IRuntimeConfig runtimeConfig;
-	//	private final MongodExecutable mongodExecutable;
-	//	private ProcessControl process;
-	//	private int mongodProcessId;
-
 	private File dbDir;
 	boolean dbDirIsTemp;
 	
 	private boolean stopped = false;
 
-	//
-	//	private Distribution distribution;
-
 	public MongodProcess(Distribution distribution, MongodConfig config, IRuntimeConfig runtimeConfig,
 			MongodExecutable mongodExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongodExecutable);
 
-		//		this.config = config;
-		//		this.runtimeConfig = runtimeConfig;
-		//		this.mongodExecutable = mongodExecutable;
-		//		this.distribution = distribution;
-		//
-		//		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
-		//
-		//		try {
-		//			File tmpDbDir;
-		//			if (config.getDatabaseDir() != null) {
-		//				tmpDbDir = Files.createOrCheckDir(config.getDatabaseDir());
-		//			} else {
-		//				tmpDbDir = Files.createTempDir("embedmongo-db");
-		//				this.dbDir = tmpDbDir;
-		//			}
-		//			process = ProcessControl.fromCommandLine(SupportConfig.getInstance(),
-		//					runtimeConfig.getCommandLinePostProcessor().process(
-		//							distribution,
-		//							Mongod.enhanceCommandLinePlattformSpecific(distribution,
-		//									Mongod.getCommandLine(this.config, this.mongodExecutable.getFile(), tmpDbDir))), true);
-		//
-		//			Runtime.getRuntime().addShutdownHook(new JobKiller());
-		//
-		//			LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
-		//					StreamToLineProcessor.wrap(outputConfig.getOutput()));
-		//			Processors.connect(process.getReader(), logWatch);
-		//			Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
-		//			logWatch.waitForResult(TIMEOUT);
-		//			if (logWatch.isInitWithSuccess()) {
-		//				mongodProcessId = Mongod.getMongodProcessId(logWatch.getOutput(), -1);
-		//			} else {
-		//				throw new IOException("Could not start mongod process");
-		//			}
-		//
-		//		} catch (IOException iox) {
-		//			stop();
-		//			throw iox;
-		//		}
 	}
 
 	@Override
