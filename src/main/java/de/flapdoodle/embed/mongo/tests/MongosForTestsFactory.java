@@ -37,6 +37,7 @@ import de.flapdoodle.embed.mongo.MongosExecutable;
 import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Net;
+import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Timeout;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosRuntimeConfig;
@@ -95,7 +96,7 @@ public class MongosForTestsFactory {
 
 		final MongosStarter runtime = MongosStarter.getInstance(MongosRuntimeConfig
 				.getInstance(logger));
-		mongosExecutable = runtime.prepare(new MongosConfig(version, new Net(mongosPort, Network.localhostIsIPv6()), Network.getLocalHost().getHostName() + ":" + configServerPort));
+		mongosExecutable = runtime.prepare(new MongosConfig(version, new Net(mongosPort, Network.localhostIsIPv6()), new Timeout(), Network.getLocalHost().getHostName() + ":" + configServerPort));
 		mongosProcess = mongosExecutable.start();
 	}
 

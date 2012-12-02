@@ -45,31 +45,11 @@ import de.flapdoodle.embed.process.runtime.ProcessControl;
 /**
  *
  */
-public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutable, MongosProcess> {
-
-	private static Logger logger = Logger.getLogger(MongosProcess.class.getName());
-	public static final int TIMEOUT = 20000;
-
-	private boolean stopped = false;
+public class MongosProcess extends AbstractMongoProcess<MongosConfig, MongosExecutable, MongosProcess> {
 
 	public MongosProcess(Distribution distribution, MongosConfig config, IRuntimeConfig runtimeConfig,
 			MongosExecutable mongosExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongosExecutable);
-	}
-
-	@Override
-	protected void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
-		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
-		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
-				StreamToLineProcessor.wrap(outputConfig.getOutput()));
-		Processors.connect(process.getReader(), logWatch);
-		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
-		logWatch.waitForResult(TIMEOUT);
-		if (logWatch.isInitWithSuccess()) {
-			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
-		} else {
-			throw new IOException("Could not start mongod process");
-		}
 	}
 
 	@Override
@@ -80,38 +60,5 @@ public class MongosProcess extends AbstractProcess<MongosConfig, MongosExecutabl
 	@Override
 	protected List<String> getCommandLine(Distribution distribution, MongosConfig config, File exe) throws IOException {
 		return Mongos.getCommandLine(getConfig(), exe);
-	}
-
-	@Override
-	public void stop() {
-
-		synchronized (this) {
-			if (!stopped) {
-
-				stopped = true;
-
-				logger.info("try to stop mongos");
-				if (!sendStopToMongoInstance()) {
-					logger.warning("could not stop mongos with db command, try next");
-					if (!sendKillToProcess()) {
-						logger.warning("could not stop mongos, try next");
-						if (!tryKillToProcess()) {
-							logger.warning("could not stop mongos the second time, try one last thing");
-						}
-					}
-				}
-
-				stopProcess();
-			}
-		}
-	}
-
-	private boolean sendStopToMongoInstance() {
-		try {
-			return Mongod.sendShutdown(getConfig().net().getServerAddress(), getConfig().net().getPort());
-		} catch (UnknownHostException e) {
-			logger.log(Level.SEVERE, "sendStop", e);
-		}
-		return false;
 	}
 }

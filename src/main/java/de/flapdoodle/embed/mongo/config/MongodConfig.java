@@ -31,9 +31,7 @@ import de.flapdoodle.embed.process.distribution.IVersion;
  */
 public class MongodConfig extends AbstractMongoConfig {
 
-	private final Net network;
 	private final Storage storage;
-	private final Timeout timeout;
 	private final boolean configServer;
 
 	public MongodConfig(IVersion version) throws UnknownHostException, IOException {
@@ -67,23 +65,13 @@ public class MongodConfig extends AbstractMongoConfig {
 	}
 
 	public MongodConfig(IVersion version, Net network, Storage storage, Timeout timeout, boolean configServer) {
-		super(version);
-		this.network = network;
+		super(version,network,timeout);
 		this.storage = storage;
-		this.timeout = timeout;
 		this.configServer = configServer;
-	}
-
-	public Net net() {
-		return network;
 	}
 
 	public Storage replication() {
 		return storage;
-	}
-
-	public Timeout timeout() {
-		return timeout;
 	}
 
 	public boolean isConfigServer() {

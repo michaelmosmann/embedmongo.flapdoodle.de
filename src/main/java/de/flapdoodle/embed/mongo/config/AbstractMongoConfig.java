@@ -31,6 +31,23 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 public abstract class AbstractMongoConfig extends ExecutableProcessConfig {
 
+	protected final Net network;
+	protected final Timeout timeout;
+
+	public AbstractMongoConfig(IVersion version,Net networt, Timeout timeout) {
+		super(version);
+		this.network = networt;
+		this.timeout = timeout;
+	}
+
+	public Net net() {
+		return network;
+	}
+
+	public Timeout timeout() {
+		return timeout;
+	}
+
 	public static class Storage {
 	
 		private final int oplogSize;
@@ -116,10 +133,6 @@ public abstract class AbstractMongoConfig extends ExecutableProcessConfig {
 		public long getStartupTimeout() {
 			return startupTimeout;
 		}
-	}
-
-	public AbstractMongoConfig(IVersion version) {
-		super(version);
 	}
 
 }
