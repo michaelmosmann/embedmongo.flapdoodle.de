@@ -244,9 +244,9 @@ public class MongosSystemForTestFactory {
 		db.getCollection(this.shardCollection).ensureIndex(this.shardKey);
 
 		// Shard the collection
-		logger.info("Shard the collection: " + this.shardCollection);
+		logger.info("Shard the collection: " + this.shardDatabase + "." + this.shardCollection);
 		DBObject cmd = (DBObject) JSON.parse("{ 'shardCollection' : '"
-				+ this.shardCollection + "', 'key' : {'" + this.shardKey
+				+ this.shardDatabase + "." + this.shardCollection + "', 'key' : {'" + this.shardKey
 				+ "':1} }");
 		cr = mongoAdminDB.command(cmd);
 		logger.info(cr.toString());
