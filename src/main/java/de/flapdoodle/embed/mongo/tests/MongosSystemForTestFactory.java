@@ -37,7 +37,6 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
-import com.mongodb.util.JSON;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
@@ -126,25 +125,26 @@ public class MongosSystemForTestFactory {
 
 		CommandResult cr = mongoAdminDB
 				.command(new BasicDBObject("isMaster", 1));
-		System.out.println("isMaster: " + cr);
+		logger.info("isMaster: " + cr);
 
-		// Build json replica set setting
-		String replicaSetSetting = "{'_id': '" + replicaName
-				+ "', 'members': [";
+		// Build BSON object replica set settings
+		DBObject replicaSetSetting = new BasicDBObject();
+		replicaSetSetting.put("_id", replicaName);
+		BasicDBList members = new BasicDBList();
 		int i = 0;
 		for (MongodConfig mongoConfig : mongoConfigList) {
-			if (i > 0) {
-				replicaSetSetting += ", ";
-			}
-			replicaSetSetting += "{'_id': " + i++ + ", 'host': '"
-					+ mongoConfig.net().getServerAddress().getHostName() + ":"
-					+ mongoConfig.net().getPort() + "'}";
+			DBObject host = new BasicDBObject();
+			host.put("_id", i++);
+			host.put("host", mongoConfig.net().getServerAddress().getHostName()
+					+ ":" + mongoConfig.net().getPort());
+			members.add(host);
 		}
-		replicaSetSetting += "]}";
-		System.out.println(replicaSetSetting);
+
+		replicaSetSetting.put("members", members);
+		logger.info(replicaSetSetting.toString());
 		// Initialize replica set
 		cr = mongoAdminDB.command(new BasicDBObject("replSetInitiate",
-				(DBObject) JSON.parse(replicaSetSetting)));
+				replicaSetSetting));
 		logger.info("replSetInitiate: " + cr);
 
 		Thread.sleep(5000);
@@ -204,14 +204,14 @@ public class MongosSystemForTestFactory {
 		CommandResult cr;
 		MongoOptions mo = new MongoOptions();
 		mo.autoConnectRetry = true;
-		Mongo mongo = new Mongo(new ServerAddress(this.config.
-				net().getServerAddress().getHostName(), this.config.net().getPort()), mo);
+		Mongo mongo = new Mongo(
+				new ServerAddress(this.config.net().getServerAddress()
+						.getHostName(), this.config.net().getPort()), mo);
 		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
 
 		// Add shard from the replica set list
 		for (Entry<String, List<MongodConfig>> entry : this.replicaSets
 				.entrySet()) {
-			int i = 0;
 			String replicaName = entry.getKey();
 			String command = "";
 			for (MongodConfig mongodConfig : entry.getValue()) {
@@ -220,8 +220,8 @@ public class MongosSystemForTestFactory {
 				} else {
 					command += ",";
 				}
-				command += mongodConfig.net().getServerAddress().getHostName() + ":"
-						+ mongodConfig.net().getPort();
+				command += mongodConfig.net().getServerAddress().getHostName()
+						+ ":" + mongodConfig.net().getPort();
 			}
 			logger.info("Execute add shard command: " + command);
 			cr = mongoAdminDB.command(new BasicDBObject("addShard", command));
@@ -244,10 +244,11 @@ public class MongosSystemForTestFactory {
 		db.getCollection(this.shardCollection).ensureIndex(this.shardKey);
 
 		// Shard the collection
-		logger.info("Shard the collection: " + this.shardDatabase + "." + this.shardCollection);
-		DBObject cmd = (DBObject) JSON.parse("{ 'shardCollection' : '"
-				+ this.shardDatabase + "." + this.shardCollection + "', 'key' : {'" + this.shardKey
-				+ "':1} }");
+		logger.info("Shard the collection: " + this.shardDatabase + "."
+				+ this.shardCollection);
+		DBObject cmd = new BasicDBObject();
+		cmd.put("shardCollection", this.shardDatabase + "." + this.shardCollection);
+		cmd.put("key", new BasicDBObject(this.shardKey, 1));
 		cr = mongoAdminDB.command(cmd);
 		logger.info(cr.toString());
 
