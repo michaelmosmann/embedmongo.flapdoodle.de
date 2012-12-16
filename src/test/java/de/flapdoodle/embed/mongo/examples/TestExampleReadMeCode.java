@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -65,14 +65,14 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Usage
 	public void testStandard() throws UnknownHostException, IOException {
 		int port = 12345;
-		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
+		MongodExecutable mongodExecutable = null;
 		try {
-			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-			mongod = mongodExecutable.start();
+			mongodExecutable = runtime.prepare(mongodConfig);
+			MongodProcess mongod = mongodExecutable.start();
 
 			Mongo mongo = new Mongo("localhost", port);
 			DB db = mongo.getDB("test");
@@ -80,8 +80,8 @@ public class TestExampleReadMeCode extends TestCase {
 			col.save(new BasicDBObject("testDoc", new Date()));
 
 		} finally {
-			if (mongod != null)
-				mongod.stop();
+			if (mongodExecutable != null)
+				mongodExecutable.stop();
 		}
 	}
 
@@ -89,16 +89,16 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
 
 		int port = 12345;
-		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		runtimeConfig.setExecutableNaming(new UserTempNaming());
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
+		MongodExecutable mongodExecutable = null;
 		try {
-			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-			mongod = mongodExecutable.start();
+			mongodExecutable = runtime.prepare(mongodConfig);
+			MongodProcess mongod = mongodExecutable.start();
 
 			Mongo mongo = new Mongo("localhost", port);
 			DB db = mongo.getDB("test");
@@ -106,8 +106,8 @@ public class TestExampleReadMeCode extends TestCase {
 			col.save(new BasicDBObject("testDoc", new Date()));
 
 		} finally {
-			if (mongod != null)
-				mongod.stop();
+			if (mongodExecutable != null)
+				mongodExecutable.stop();
 		}
 	}
 
@@ -115,7 +115,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testUnitTests() {
 		Class<?> see = AbstractMongoDBTest.class;
 	}
-	
+
 	// #### ... with some more help
 	public void testMongodForTests() throws IOException {
 		MongodForTestsFactory factory = null;
@@ -133,15 +133,13 @@ public class TestExampleReadMeCode extends TestCase {
 		}
 	}
 
-
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {
 
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6());
 
 		/// - 8<- - - - 
-		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home")
-				+ "/.embeddedMongodbCustomPath");
+		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
@@ -154,7 +152,7 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodProcess mongod = mongodExe.start();
 
 		mongod.stop();
-		mongodExe.cleanup();
+		mongodExe.stop();
 	}
 
 	// ### Usage - custom mongod process output
@@ -185,8 +183,8 @@ public class TestExampleReadMeCode extends TestCase {
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.logTo(logger, Level.INFO),
-				Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
+		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
+				Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
 		runtimeConfig.getDownloadConfig().setProgressListener(new LoggingProgressListener(logger, Level.FINE));
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
@@ -232,14 +230,14 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Custom Version
 	public void testCustomVersion() throws UnknownHostException, IOException {
 		int port = 12345;
-		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
+		MongodExecutable mongodExecutable = null;
 		try {
-			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-			mongod = mongodExecutable.start();
+			mongodExecutable = runtime.prepare(mongodConfig);
+			MongodProcess mongod = mongodExecutable.start();
 
 			Mongo mongo = new Mongo("localhost", port);
 			DB db = mongo.getDB("test");
@@ -247,20 +245,21 @@ public class TestExampleReadMeCode extends TestCase {
 			col.save(new BasicDBObject("testDoc", new Date()));
 
 		} finally {
-			if (mongod != null)
-				mongod.stop();
+			if (mongodExecutable != null)
+				mongodExecutable.stop();
 		}
 
 	}
+
 	// ### Main Versions
 	public void testMainVersions() throws UnknownHostException, IOException {
-		IVersion version=Version.V2_0_1;
+		IVersion version = Version.V2_0_1;
 		// uses latest supported 2.1.x Version
-		version=Version.Main.V2_1;
+		version = Version.Main.V2_1;
 		// uses latest supported production version
-		version=Version.Main.PRODUCTION;
+		version = Version.Main.PRODUCTION;
 		// uses latest supported development version
-		version=Version.Main.DEVELOPMENT;
+		version = Version.Main.DEVELOPMENT;
 	}
 
 	// ### Use Free Server Port
@@ -271,14 +270,14 @@ public class TestExampleReadMeCode extends TestCase {
 
 	// ### ... automagic
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
-		MongodProcess mongod = null;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
+		MongodExecutable mongodExecutable = null;
 		try {
-			MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-			mongod = mongodExecutable.start();
+			mongodExecutable = runtime.prepare(mongodConfig);
+			MongodProcess mongod = mongodExecutable.start();
 
 			Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 			DB db = mongo.getDB("test");
@@ -286,14 +285,15 @@ public class TestExampleReadMeCode extends TestCase {
 			col.save(new BasicDBObject("testDoc", new Date()));
 
 		} finally {
-			if (mongod != null)
-				mongod.stop();
+			if (mongodExecutable != null)
+				mongodExecutable.stop();
 		}
 	}
 
 	// ### ... custom timeouts
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
-		AbstractMongoConfig mongodConfig = new MongodConfig(Version.Main.V2_0,new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout(30000));
+		AbstractMongoConfig mongodConfig = new MongodConfig(Version.Main.V2_0, new MongodConfig.Net(),
+				new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
 	}
 
 }

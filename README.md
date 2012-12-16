@@ -191,14 +191,14 @@ Support for Linux, Windows and MacOSX.
 ### Usage
 
 	int port = 12345;
-	MongodProcess mongod = null;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port,Network.localhostIsIPv6());
-	
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
-	
+
+	MongodExecutable mongodExecutable = null; 
 	try {
-		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-		mongod = mongodExecutable.start();
+		mongodExecutable = runtime.prepare(mongodConfig);
+		MongodProcess mongod = mongodExecutable.start();
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -206,22 +206,23 @@ Support for Linux, Windows and MacOSX.
 		col.save(new BasicDBObject("testDoc", new Date()));
 
 	} finally {
-		if (mongod != null)	mongod.stop();
+		if (mongodExecutable != null)
+			mongodExecutable.stop();
 	}
 
 ### Usage - custom mongod filename 
 
 	int port = 12345;
-	MongodProcess mongod = null;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port,Network.localhostIsIPv6());
-	
-	RuntimeConfig runtimeConfig=new RuntimeConfig();
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+
+	RuntimeConfig runtimeConfig = new RuntimeConfig();
 	runtimeConfig.setExecutableNaming(new UserTempNaming());
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
-	
+
+	MongodExecutable mongodExecutable=null;
 	try {
-		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
-		mongod = mongodExecutable.start();
+		mongodExecutable = runtime.prepare(mongodConfig);
+		MongodProcess mongod = mongodExecutable.start();
 
 		Mongo mongo = new Mongo("localhost", port);
 		DB db = mongo.getDB("test");
@@ -229,40 +230,42 @@ Support for Linux, Windows and MacOSX.
 		col.save(new BasicDBObject("testDoc", new Date()));
 
 	} finally {
-		if (mongod != null)	mongod.stop();
+		if (mongodExecutable != null)
+			mongodExecutable.stop();
 	}
 
 ### Unit Tests
 
 	public abstract class AbstractMongoDBTest extends TestCase {
-	
+
 		private MongodExecutable _mongodExe;
 		private MongodProcess _mongod;
-	
+
 		private Mongo _mongo;
 		@Override
 		protected void setUp() throws Exception {
-	
+
 			MongodStarter runtime = MongodStarter.getDefaultInstance();
 			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
 			_mongod = _mongodExe.start();
-	
+
 			super.setUp();
-	
+
 			_mongo = new Mongo("localhost", 12345);
 		}
-	
+
 		@Override
 		protected void tearDown() throws Exception {
 			super.tearDown();
-	
+
 			_mongod.stop();
-			_mongodExe.cleanup();
+			_mongodExe.stop();
 		}
-	
+
 		public Mongo getMongo() {
 			return _mongo;
 		}
+
 	}
 	
 #### ... with some more help
