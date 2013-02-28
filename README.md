@@ -438,6 +438,7 @@ Support for Linux, Windows and MacOSX.
 	runtimeConfig.setsetCommandLinePostProcessor(postProcessor);
 	...
 
+----
 
 YourKit is kindly supporting open source projects with its full-featured Java Profiler.
 YourKit, LLC is the creator of innovative and intelligent tools for profiling
