@@ -20,17 +20,10 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import de.flapdoodle.embed.mongo.config.DownloadConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
-import de.flapdoodle.embed.process.config.IRuntimeConfig;
-import de.flapdoodle.embed.process.config.store.IDownloadConfig;
-import de.flapdoodle.embed.process.distribution.BitSize;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.distribution.GenericVersion;
-import de.flapdoodle.embed.process.distribution.Platform;
-import de.flapdoodle.embed.process.extract.UUIDTempNaming;
-import de.flapdoodle.embed.process.io.progress.IProgressListener;
-import de.flapdoodle.embed.process.store.Downloader;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
@@ -42,11 +35,14 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.handler.ResourceHandler;
 
-import java.io.File;
-import java.io.IOException;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.config.store.IDownloadConfig;
+import de.flapdoodle.embed.process.distribution.BitSize;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.distribution.GenericVersion;
+import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.io.progress.IProgressListener;
+import de.flapdoodle.embed.process.store.Downloader;
 
 /**
  * Created with IntelliJ IDEA.
@@ -90,8 +86,8 @@ public class DownloaderTest {
 			}
 			Thread.sleep(100);
 		}
-		rc = mock(RuntimeConfig.class);
-		dc = mock(DownloadConfig.class);
+		rc = mock(IRuntimeConfig.class);
+		dc = mock(IDownloadConfig.class);
 		pl = mock(IProgressListener.class);
 	}
 
@@ -108,7 +104,7 @@ public class DownloaderTest {
 	}
 
 	private void initRuntime() {
-		when(rc.getDefaultfileNaming()).thenReturn(new UUIDTempNaming());
+		//when(rc.getDefaultfileNaming()).thenReturn(new UUIDTempNaming());
 		when(dc.getDownloadPath()).thenReturn("http://localhost:" + LISTEN_PORT + "/");
 		when(dc.getProgressListener()).thenReturn(pl);
 	}

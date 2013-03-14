@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -33,11 +33,12 @@ import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 
-import de.flapdoodle.embed.mongo.config.DownloadConfig;
+import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.IVersion;
@@ -52,40 +53,61 @@ public class MongoDBRuntimeTest extends TestCase {
 	}
 
 	public void testDistributions() throws IOException {
-		RuntimeConfig config = new RuntimeConfig();
-		MongodStarter runtime = MongodStarter.getInstance(config);
+		RuntimeConfigBuilder defaultBuilder = new RuntimeConfigBuilder()
+				.defaults(Command.MongoD);
 		
+		IRuntimeConfig config = defaultBuilder.build();
+
 		for (Platform platform : Platform.values()) {
 			for (IVersion version : Version.Main.values()) {
 				for (BitSize bitsize : BitSize.values()) {
 					// there is no osx 32bit version for v2.2.1
-					boolean skip=((version.asInDownloadPath().equals(Version.V2_2_1.asInDownloadPath())) && (platform==Platform.OS_X) && (bitsize==BitSize.B32));
-					if (!skip) check(runtime, new Distribution(version, platform, bitsize));
+					if (!shipThisVersion(platform, version, bitsize)) {
+						check(config, new Distribution(version, platform, bitsize));
+					}
 				}
 			}
 		}
+
+		config = defaultBuilder.artifactStore(new ArtifactStoreBuilder()
+						.defaults(Command.MongoD)
+						.download(new DownloadConfigBuilder()
+								.defaults()
+								.packageResolver(new Paths(Command.MongoD) {
+										@Override
+										protected boolean useWindows2008PlusVersion() {
+											return true;
+										}
+									}))).build();
 		
-		// fake win 2008 test
-		config.setDownloadConfig(new DownloadConfig(new Paths(Command.MongoD) {
-			@Override
-			protected boolean useWindows2008PlusVersion() {
-				return true;
-			}
-		}));
-		
-		Platform platform=Platform.Windows;
-		BitSize bitsize=BitSize.B64;
+		Platform platform = Platform.Windows;
+		BitSize bitsize = BitSize.B64;
 		for (IVersion version : Version.Main.values()) {
 			// there is no windows 2008 version for 1.8.5 
-			boolean skip=((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath())) && (platform==Platform.Windows) && (bitsize==BitSize.B64));
-			if (!skip) check(runtime, new Distribution(version, platform, bitsize));
+			boolean skip = ((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath()))
+					&& (platform == Platform.Windows) && (bitsize == BitSize.B64));
+			if (!skip)
+				check(config, new Distribution(version, platform, bitsize));
 		}
-		
+
 	}
 
-	private void check(MongodStarter runtime, Distribution distribution) throws IOException {
-		assertTrue("Check", runtime.checkDistribution(distribution));
-		File mongod = runtime.extractExe(distribution);
+	private boolean shipThisVersion(Platform platform, IVersion version, BitSize bitsize) {
+		// there is no osx 32bit version for v2.2.1 and above
+		String currentVersion = version.asInDownloadPath();
+		boolean isOSX32 = (platform == Platform.OS_X) && (bitsize == BitSize.B32);
+		if (isOSX32) {
+			if (currentVersion.equals(Version.V2_2_1.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_2_3.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
+		}
+		return false;
+	}
+
+	private void check(IRuntimeConfig runtime, Distribution distribution) throws IOException {
+		assertTrue("Check", runtime.getArtifactStore().checkDistribution(distribution));
+		File mongod = runtime.getArtifactStore().extractExe(distribution);
 		assertNotNull("Extracted", mongod);
 		assertTrue("Delete", mongod.delete());
 	}
@@ -97,9 +119,8 @@ public class MongoDBRuntimeTest extends TestCase {
 		int port = 12345;
 		MongodProcess mongodProcess = null;
 		MongodExecutable mongod = null;
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setProcessOutput(MongodProcessOutputConfig.getDefaultInstance());
-		//		runtimeConfig.setExecutableNaming(new UserTempNaming());
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 		timer.check("After Runtime");

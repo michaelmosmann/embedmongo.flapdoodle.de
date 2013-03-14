@@ -50,6 +50,11 @@ public class MongosConfig extends AbstractMongoConfig {
 	public String getConfigDB() {
 		return configDB;
 	}
+	
+	public static MongosConfig getConfigInstance(IVersion version, Net network,String configDB) {
+		return new MongosConfig(version, network, new Timeout(),configDB);
+	}
+
 
 //
 //	public InetAddress getServerAddress() throws UnknownHostException {

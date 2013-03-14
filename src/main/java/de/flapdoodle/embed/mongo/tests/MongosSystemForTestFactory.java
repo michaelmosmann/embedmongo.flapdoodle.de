@@ -38,6 +38,7 @@ import com.mongodb.MongoException;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -46,7 +47,7 @@ import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
-import de.flapdoodle.embed.mongo.config.MongosRuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 
 public class MongosSystemForTestFactory {
 
@@ -194,8 +195,10 @@ public class MongosSystemForTestFactory {
 	}
 
 	private void initializeMongos() throws Exception {
-		MongosStarter runtime = MongosStarter.getInstance(MongosRuntimeConfig
-				.getInstance(logger));
+		MongosStarter runtime = MongosStarter.getInstance(new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoS,logger)
+			.build());
+		
 		mongosExecutable = runtime.prepare(config);
 		mongosProcess = mongosExecutable.start();
 	}

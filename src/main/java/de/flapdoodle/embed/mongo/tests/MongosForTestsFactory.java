@@ -30,18 +30,14 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
-import de.flapdoodle.embed.mongo.MongodExecutable;
-import de.flapdoodle.embed.mongo.MongodProcess;
-import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongosExecutable;
 import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Net;
 import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Timeout;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
-import de.flapdoodle.embed.mongo.config.MongosRuntimeConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -60,9 +56,9 @@ public class MongosForTestsFactory {
 		return new MongosForTestsFactory(version);
 	}
 
-	private final MongodExecutable mongoConfigExecutable;
+	private final MongosExecutable mongoConfigExecutable;
 
-	private final MongodProcess mongoConfigProcess;
+	private final MongosProcess mongoConfigProcess;
 
 	private final MongosExecutable mongosExecutable;
 
@@ -86,16 +82,19 @@ public class MongosForTestsFactory {
 	 */
 	public MongosForTestsFactory(final IVersion version) throws IOException {
 
-		final MongodStarter mongoConfigRuntime = MongodStarter.getInstance(RuntimeConfig
-				.getInstance(logger));
+		final MongosStarter mongoConfigRuntime = MongosStarter.getInstance(new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoS,logger)
+			.build());
 
 		int configServerPort = 27019;
 		int mongosPort = 27017;
-		mongoConfigExecutable = mongoConfigRuntime.prepare(MongodConfig.getConfigInstance(version, new Net(configServerPort, Network.localhostIsIPv6())));
+		mongoConfigExecutable = mongoConfigRuntime.prepare(MongosConfig.getConfigInstance(version, new Net(configServerPort, Network.localhostIsIPv6()),"testDB"));
 		mongoConfigProcess = mongoConfigExecutable.start();
 
-		final MongosStarter runtime = MongosStarter.getInstance(MongosRuntimeConfig
-				.getInstance(logger));
+		final MongosStarter runtime = MongosStarter.getInstance(new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoS, logger)
+			.build());
+		
 		mongosExecutable = runtime.prepare(new MongosConfig(version, new Net(mongosPort, Network.localhostIsIPv6()), new Timeout(), Network.getLocalHost().getHostName() + ":" + configServerPort));
 		mongosProcess = mongosExecutable.start();
 	}

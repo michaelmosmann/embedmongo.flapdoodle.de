@@ -30,14 +30,14 @@ import com.mongodb.Mongo;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
-import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  * This class encapsulates everything that would be needed to do embedded
@@ -75,8 +75,9 @@ public class MongodForTestsFactory {
 	 */
 	public MongodForTestsFactory(final IVersion version) throws IOException {
 
-		final MongodStarter runtime = MongodStarter.getInstance(RuntimeConfig
-				.getInstance(logger));
+		final MongodStarter runtime = MongodStarter.getInstance(new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoD, logger)
+			.build());
 		mongodExecutable = runtime.prepare(newMongodConfig(version));
 		mongodProcess = mongodExecutable.start();
 

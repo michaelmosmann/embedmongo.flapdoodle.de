@@ -21,11 +21,10 @@
 package de.flapdoodle.embed.mongo;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embed.mongo.config.MongosConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.runtime.Starter;
@@ -46,7 +45,7 @@ public class MongosStarter extends Starter<MongosConfig,MongosExecutable,MongosP
 	}
 
 	public static MongosStarter getDefaultInstance() {
-		return getInstance(new RuntimeConfig());
+		return getInstance(new RuntimeConfigBuilder().defaults(Command.MongoS).build());
 	}
 
 	@Override

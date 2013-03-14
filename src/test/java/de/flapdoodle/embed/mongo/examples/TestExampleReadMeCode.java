@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,15 +38,18 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.AbstractMongoConfig;
+import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
-import de.flapdoodle.embed.mongo.config.RuntimeConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
 import de.flapdoodle.embed.process.distribution.IVersion;
@@ -91,8 +94,17 @@ public class TestExampleReadMeCode extends TestCase {
 		int port = 12345;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
 
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setExecutableNaming(new UserTempNaming());
+		Command command = Command.MongoD;
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(command)
+			.artifactStore(new ArtifactStoreBuilder()
+				.defaults(command)
+				.download(new DownloadConfigBuilder()
+					.defaultsForCommand(command))
+					.executableNaming(new UserTempNaming()))
+			.build();
+		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 		MongodExecutable mongodExecutable = null;
@@ -142,9 +154,17 @@ public class TestExampleReadMeCode extends TestCase {
 		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
 
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.getDownloadConfig().setArtifactStorePathNaming(artifactStorePath);
-		runtimeConfig.setExecutableNaming(executableNaming);
+		Command command = Command.MongoD;
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(command)
+			.artifactStore(new ArtifactStoreBuilder()
+				.defaults(command)
+				.download(new DownloadConfigBuilder()
+					.defaultsForCommand(command)
+					.artifactStorePath(artifactStorePath))
+				.executableNaming(executableNaming))
+			.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
@@ -159,22 +179,30 @@ public class TestExampleReadMeCode extends TestCase {
 	// #### ... to console with line prefix
 	public void testCustomOutputToConsolePrefix() {
 
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.namedConsole("[mongod>]"),
-				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
+		ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
+				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(Command.MongoD)
+			.processOutput(processOutput)
+			.build();
+		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 	}
 
 	// #### ... to file
 	public void testCustomOutputToFile() throws FileNotFoundException, IOException {
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
 		IStreamProcessor mongodOutput = Processors.named("[mongod>]",
 				new FileStreamProcessor(File.createTempFile("mongod", "log")));
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 
-		runtimeConfig.setProcessOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput));
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(Command.MongoD)
+			.processOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput))
+			.build();
+		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
@@ -182,17 +210,30 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
 		Logger logger = Logger.getLogger(getClass().getName());
 
-		RuntimeConfig runtimeConfig = new RuntimeConfig();
-		runtimeConfig.setProcessOutput(new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
-				Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE))));
-		runtimeConfig.getDownloadConfig().setProgressListener(new LoggingProgressListener(logger, Level.FINE));
+		ProcessOutput processOutput = new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
+				Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE)));
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoD,logger)
+			.processOutput(processOutput)
+			.artifactStore(new ArtifactStoreBuilder()
+				.defaults(Command.MongoD)
+				.download(new DownloadConfigBuilder()
+					.defaultsForCommand(Command.MongoD)
+					.progressListener(new LoggingProgressListener(logger, Level.FINE))))
+			.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
 	// #### ... to default java logging (the easy way)
 	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
 		Logger logger = Logger.getLogger(getClass().getName());
-		RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoD, logger)
+			.build();
+		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	}
 
