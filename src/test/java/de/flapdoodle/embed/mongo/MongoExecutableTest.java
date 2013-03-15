@@ -35,7 +35,9 @@ import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.runtime.Network;
 
 /**
@@ -56,10 +58,11 @@ public class MongoExecutableTest extends TestCase {
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345,
 				Network.localhostIsIPv6());
 
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
+		
 		for (int i = 0; i < loops; i++) {
 			_logger.info("Loop: " + i);
-
-			MongodExecutable mongodExe = MongodStarter.getDefaultInstance().prepare(mongodConfig);
+			MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
 			MongodProcess mongod = mongodExe.start();
 
 			if (useMongodb) {
