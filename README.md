@@ -33,6 +33,7 @@ http://www.cubeia.com/index.php/blog/archives/436
 
 - https://github.com/thiloplanz/jmockmongo - mongodb mocking
 - https://github.com/lordofthejars/nosql-unit - extended nosql unit testing
+- https://github.com/jirutka/embedmongo-spring - Spring Factory Bean for EmbedMongo
 
 ## Howto
 
