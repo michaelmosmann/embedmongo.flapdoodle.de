@@ -73,6 +73,7 @@ public enum Version implements IVersion {
 	
 	V2_3_0("2.3.0"),
 	V2_4_0_RC3("2.4.0-rc3"),
+	V2_4_0("2.4.0"),
 
 	;
 
