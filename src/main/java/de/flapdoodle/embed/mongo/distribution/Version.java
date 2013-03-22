@@ -99,7 +99,7 @@ public enum Version implements IVersion {
 		V2_1(V2_1_2),
 		V2_2(V2_2_3),
 		V2_3(V2_3_0),
-		V2_4(V2_4_0_RC3),
+		V2_4(V2_4_0),
 		
 		PRODUCTION(V2_2),
 		DEVELOPMENT(V2_4),
