@@ -82,7 +82,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		
 		Platform platform = Platform.Windows;
 		BitSize bitsize = BitSize.B64;
-		for (IVersion version : Version.Main.values()) {
+		for (IVersion version : Versions.testableVersions(Version.Main.class)) {
 			// there is no windows 2008 version for 1.8.5 
 			boolean skip = ((version.asInDownloadPath().equals(Version.V1_8_5.asInDownloadPath()))
 					&& (platform == Platform.Windows) && (bitsize == BitSize.B64));
