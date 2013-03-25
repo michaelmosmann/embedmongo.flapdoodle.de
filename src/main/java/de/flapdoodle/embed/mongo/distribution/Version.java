@@ -43,19 +43,24 @@ public enum Version implements IVersion {
 	V1_8_2("1.8.2"),
 	@Deprecated
 	V1_8_4("1.8.4"),
+	@Deprecated
 	V1_8_5("1.8.5"),
-	
+
 	@Deprecated
 	V1_9_0("1.9.0"),
 	@Deprecated
 	V2_0_1("2.0.1"),
 	@Deprecated
 	V2_0_4("2.0.4"),
+	@Deprecated
 	V2_0_5("2.0.5"),
+	@Deprecated
 	V2_0_6("2.0.6"),
 	@Deprecated
 	V2_0_7_RC1("2.0.7-rc1"),
+	@Deprecated
 	V2_0_7("2.0.7"),
+	@Deprecated
 	V2_0_8_RC0("2.0.8-rc0"),
 
 	@Deprecated
@@ -69,11 +74,21 @@ public enum Version implements IVersion {
 	V2_2_0("2.2.0"),
 	@Deprecated
 	V2_2_1("2.2.1"),
+	/**
+	 * last production release
+	 */
 	V2_2_3("2.2.3"),
-	
+
+	@Deprecated
 	V2_3_0("2.3.0"),
+	@Deprecated
 	V2_4_0_RC3("2.4.0-rc3"),
+	@Deprecated
 	V2_4_0("2.4.0"),
+	/**
+	 * new production release
+	 */
+	V2_4_1("2.4.1"),
 
 	;
 
@@ -94,16 +109,25 @@ public enum Version implements IVersion {
 	}
 
 	public static enum Main implements IVersion {
+		@Deprecated
 		V1_8(V1_8_5),
+		@Deprecated
 		V2_0(V2_0_7),
+		@Deprecated
 		V2_1(V2_1_2),
+		/**
+		 * last production release
+		 */
 		V2_2(V2_2_3),
+		@Deprecated
 		V2_3(V2_3_0),
-		V2_4(V2_4_0),
-		
+		/**
+		 * current production release
+		 */
+		V2_4(V2_4_1),
+
 		PRODUCTION(V2_2),
-		DEVELOPMENT(V2_4),
-		;
+		DEVELOPMENT(V2_4), ;
 
 		private final IVersion _latest;
 
@@ -116,5 +140,4 @@ public enum Version implements IVersion {
 			return _latest.asInDownloadPath();
 		}
 	}
-
 }

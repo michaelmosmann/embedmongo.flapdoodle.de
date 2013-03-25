@@ -68,7 +68,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Usage
 	public void testStandard() throws UnknownHostException, IOException {
 		int port = 12345;
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -92,7 +92,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
 
 		int port = 12345;
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
 		Command command = Command.MongoD;
 		
@@ -132,7 +132,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testMongodForTests() throws IOException {
 		MongodForTestsFactory factory = null;
 		try {
-			factory = MongodForTestsFactory.with(Version.Main.V2_0);
+			factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 
 			Mongo mongo = factory.newMongo();
 			DB db = mongo.getDB("test-" + UUID.randomUUID());
@@ -148,7 +148,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6());
 
 		/// - 8<- - - - 
 		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
@@ -294,9 +294,9 @@ public class TestExampleReadMeCode extends TestCase {
 
 	// ### Main Versions
 	public void testMainVersions() throws UnknownHostException, IOException {
-		IVersion version = Version.V2_0_1;
+		IVersion version = Version.V2_2_3;
 		// uses latest supported 2.1.x Version
-		version = Version.Main.V2_1;
+		version = Version.Main.V2_2;
 		// uses latest supported production version
 		version = Version.Main.PRODUCTION;
 		// uses latest supported development version
@@ -311,7 +311,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 	// ### ... automagic
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION);
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -333,7 +333,7 @@ public class TestExampleReadMeCode extends TestCase {
 
 	// ### ... custom timeouts
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
-		AbstractMongoConfig mongodConfig = new MongodConfig(Version.Main.V2_0, new MongodConfig.Net(),
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, new MongodConfig.Net(),
 				new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
 	}
 

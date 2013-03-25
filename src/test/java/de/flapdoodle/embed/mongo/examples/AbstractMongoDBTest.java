@@ -41,7 +41,7 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	protected void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
+		_mongodExe = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6()));
 		_mongod = _mongodExe.start();
 
 		super.setUp();

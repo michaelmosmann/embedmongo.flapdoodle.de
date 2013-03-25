@@ -45,7 +45,7 @@ public class ConfigServerMongoDBTest extends TestCase {
 	protected void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		MongodConfig config = MongodConfig.getConfigInstance(Version.Main.V2_0,
+		MongodConfig config = MongodConfig.getConfigInstance(Version.Main.PRODUCTION,
 				new MongodConfig.Net());
 		_mongodExe = runtime.prepare(config);
 		_mongod = _mongodExe.start();

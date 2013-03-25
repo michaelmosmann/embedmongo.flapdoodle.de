@@ -80,6 +80,10 @@ Or if you want to use the gradle wrapper:
 
 #### 1.30 (SNAPSHOT)
 
+- deprecate old versions (left current production(2.4.1) and previous version left(2.2.3))
+- coming versions will change use the 2.4 branch of mongodb as production version
+- no release time check for deprecated versions, so use with care
+
 #### 1.29
 
 - major api changes, speed improvement, easier configuration, need to update documentation

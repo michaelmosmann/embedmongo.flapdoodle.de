@@ -71,7 +71,7 @@ public class MongosForTestsFactory {
 	 * @throws IOException
 	 */
 	public MongosForTestsFactory() throws IOException {
-		this(Version.Main.V2_0);
+		this(Version.Main.PRODUCTION);
 	}
 
 	/**

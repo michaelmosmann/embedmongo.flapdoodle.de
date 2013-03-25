@@ -59,7 +59,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		IRuntimeConfig config = defaultBuilder.build();
 
 		for (Platform platform : Platform.values()) {
-			for (IVersion version : Version.Main.values()) {
+			for (IVersion version : Versions.testableVersions(Version.Main.class)) {
 				for (BitSize bitsize : BitSize.values()) {
 					// there is no osx 32bit version for v2.2.1
 					if (!shipThisVersion(platform, version, bitsize)) {
@@ -102,6 +102,7 @@ public class MongoDBRuntimeTest extends TestCase {
 			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_4_1.asInDownloadPath())) return true;
 		}
 		return false;
 	}

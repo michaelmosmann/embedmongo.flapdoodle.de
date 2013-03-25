@@ -18,21 +18,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo.distribution;
+package de.flapdoodle.embed.mongo;
 
-import junit.framework.TestCase;
-import de.flapdoodle.embed.process.distribution.Distribution;
+import java.util.Collection;
+import java.util.Comparator;
 
-//CHECKSTYLE:OFF
-public class DistributionTest extends TestCase {
+import de.flapdoodle.embed.process.distribution.IVersion;
 
-	public void testNothing() {
+public class Versions {
 
+	private Versions() {
+		// no instance
 	}
 
-	public void NOtestDetection() {
-		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V1_8));
-		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V2_0));
-		assertNotNull("Linux32", Distribution.detectFor(Version.Main.V2_1));
+	public static <T extends Enum<T> & IVersion> Collection<T> testableVersions(Class<T> type) {
+		return Enums.unique(Enums.filter(Enums.values(type), new Enums.NotDeprecated<T>(type)), new IVersionComparator<T>());
+	}
+
+	static class IVersionComparator<T extends Enum<T> & IVersion> implements Comparator<T> {
+
+		@Override
+		public int compare(T o1, T o2) {
+			return o1.asInDownloadPath().compareTo(o2.asInDownloadPath());
+		}
+
 	}
 }
