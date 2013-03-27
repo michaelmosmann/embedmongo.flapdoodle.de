@@ -202,13 +202,13 @@ Versions: some older, 1.8.5, 1.9.0, 2.0.6, 2.1.2
 Support for Linux, Windows and MacOSX.
 
 ### Usage
-
+	
 	int port = 12345;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
-	MongodExecutable mongodExecutable = null; 
+	MongodExecutable mongodExecutable = null;
 	try {
 		mongodExecutable = runtime.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
@@ -226,13 +226,22 @@ Support for Linux, Windows and MacOSX.
 ### Usage - custom mongod filename 
 
 	int port = 12345;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0, port, Network.localhostIsIPv6());
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
-	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setExecutableNaming(new UserTempNaming());
+	Command command = Command.MongoD;
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(command)
+		.artifactStore(new ArtifactStoreBuilder()
+			.defaults(command)
+			.download(new DownloadConfigBuilder()
+				.defaultsForCommand(command))
+				.executableNaming(new UserTempNaming()))
+		.build();
+
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
-	MongodExecutable mongodExecutable=null;
+	MongodExecutable mongodExecutable = null;
 	try {
 		mongodExecutable = runtime.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
@@ -259,7 +268,7 @@ Support for Linux, Windows and MacOSX.
 		protected void setUp() throws Exception {
 
 			MongodStarter runtime = MongodStarter.getDefaultInstance();
-			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.V2_0, 12345, Network.localhostIsIPv6()));
+			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6()));
 			_mongod = _mongodExe.start();
 
 			super.setUp();
@@ -280,13 +289,13 @@ Support for Linux, Windows and MacOSX.
 		}
 
 	}
-	
+
 #### ... with some more help
 
 	...
 	MongodForTestsFactory factory = null;
 	try {
-		factory = MongodForTestsFactory.with(Version.Main.V2_0);
+		factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 
 		Mongo mongo = factory.newMongo();
 		DB db = mongo.getDB("test-" + UUID.randomUUID());
@@ -299,52 +308,69 @@ Support for Linux, Windows and MacOSX.
 	}
 	...
 
-
 ### Customize Artifact Storage
 
 	...
-	IArtifactStoragePathNaming artifactStorePath = ...
-	ITempNaming executableNaming = ...
-		
-	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.getDownloadConfig().setArtifactStorePathNaming(artifactStorePath);
-	runtimeConfig.setExecutableNaming(executableNaming);
+	IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
+	ITempNaming executableNaming = new UUIDTempNaming();
+
+	Command command = Command.MongoD;
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(command)
+		.artifactStore(new ArtifactStoreBuilder()
+			.defaults(command)
+			.download(new DownloadConfigBuilder()
+				.defaultsForCommand(command)
+				.artifactStorePath(artifactStorePath))
+			.executableNaming(executableNaming))
+		.build();
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 	...
 
-### Usage - custom mongod process output 
+### Usage - custom mongod process output
 
 #### ... to console with line prefix
+
 	...
-	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setProcessOutput(new ProcessOutput(Processors.namedConsole("[mongod>]"),
-		Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]")));
+	ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
+			Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(Command.MongoD)
+		.processOutput(processOutput)
+		.build();
+
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
 #### ... to file
+
 	...
-	RuntimeConfig runtimeConfig=new RuntimeConfig();
-	IStreamProcessor mongodOutput = Processors.named("[mongod>]", new FileStreamProcessor(File.createTempFile("mongod", "log")));
+	IStreamProcessor mongodOutput = Processors.named("[mongod>]",
+			new FileStreamProcessor(File.createTempFile("mongod", "log")));
 	IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
 	IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
-		
-	runtimeConfig.setProcessOutput(new ProcessOutput(mongodOutput,
-		mongodError, commandsOutput));
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(Command.MongoD)
+		.processOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput))
+		.build();
+
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
-	
+
 	...
 	public class FileStreamProcessor implements IStreamProcessor {
-	
+
 		private FileOutputStream outputStream;
 
 		public FileStreamProcessor(File file) throws FileNotFoundException {
 			outputStream = new FileOutputStream(file);
 		}
-		
+
 		@Override
 		public void process(String block) {
 			try {
@@ -361,26 +387,41 @@ Support for Linux, Windows and MacOSX.
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-		}	
+		}
+
 	}
 	...
-	
+
 #### ... to java logging
+
 	...
-	Logger logger=...
-	
-	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setProcessOutput(new ProcessOutput(Processors.logTo(logger, Level.INFO),
-			Processors.logTo(logger, Level.SEVERE), Processors.named("[console>]",Processors.logTo(logger, Level.FINE))));
+	Logger logger = Logger.getLogger(getClass().getName());
+
+	ProcessOutput processOutput = new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
+			Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE)));
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaultsWithLogger(Command.MongoD,logger)
+		.processOutput(processOutput)
+		.artifactStore(new ArtifactStoreBuilder()
+			.defaults(Command.MongoD)
+			.download(new DownloadConfigBuilder()
+				.defaultsForCommand(Command.MongoD)
+				.progressListener(new LoggingProgressListener(logger, Level.FINE))))
+		.build();
+
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
-#### ... to default java logging (the easy way)	
+#### ... to default java logging (the easy way)
+
 	...
-	
-	Logger logger=...
-	
-	RuntimeConfig runtimeConfig = RuntimeConfig.getInstance(logger);
+	Logger logger = Logger.getLogger(getClass().getName());
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaultsWithLogger(Command.MongoD, logger)
+		.build();
+
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
 
@@ -388,63 +429,88 @@ Support for Linux, Windows and MacOSX.
 
 	...
 	int port = 12345;
-	MongodProcess mongod = null;
 	MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
+	MongodProcess mongod = null;
 
+	MongodExecutable mongodExecutable = null;
 	try {
-		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongodExecutable = runtime.prepare(mongodConfig);
 		mongod = mongodExecutable.start();
 
 		...
-		
+
 	} finally {
-		if (mongod != null)
+		if (mongod != null) {
 			mongod.stop();
+		}
+		if (mongodExecutable != null)
+			mongodExecutable.stop();
 	}
 	...
-### Main Versions
-	...
-	IVersion version=Version.V2_0_1;
-	// uses latest supported 2.1.x Version
-	version=Version.Main.V2_1;
-	// uses latest supported production version
-	version=Version.Main.PRODUCTION;
-	// uses latest supported development version
-	version=Version.Main.DEVELOPMENT;
 
+### Main Versions
+
+	IVersion version = Version.V2_2_3;
+	// uses latest supported 2.2.x Version
+	version = Version.Main.V2_2;
+	// uses latest supported production version
+	version = Version.Main.PRODUCTION;
+	// uses latest supported development version
+	version = Version.Main.DEVELOPMENT;
 
 ### Use Free Server Port
 
 	Warning: maybe not as stable, as expected.
 
 #### ... by hand
+
 	...
 	int port = Network.getFreeServerPort();
 	...
-	
+
 #### ... automagic
+
 	...
-	MongodProcess mongod = null;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.V2_0);
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION);
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
+	MongodExecutable mongodExecutable = null;
+	MongodProcess mongod = null;
 	try {
-		MongodExecutable mongodExecutable = runtime.prepare(mongodConfig);
+		mongodExecutable = runtime.prepare(mongodConfig);
 		mongod = mongodExecutable.start();
 
 		Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+		...
+
+	} finally {
+		if (mongod != null) {
+			mongod.stop();
+		}
+		if (mongodExecutable != null)
+			mongodExecutable.stop();
 	}
 	...
 
-### Command Line Post Processing
+### ... custom timeouts
+
 	...
-	ICommandLinePostProcessor postProcessort=...
-	
-	RuntimeConfig runtimeConfig = new RuntimeConfig();
-	runtimeConfig.setsetCommandLinePostProcessor(postProcessor);
+	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, new MongodConfig.Net(),
+			new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
+	...
+
+### Command Line Post Processing
+
+	...
+	ICommandLinePostProcessor postProcessor= ...
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(Command.MongoD)
+		.commandLinePostProcessor(postProcessor)
+		.build();
 	...
 
 ----

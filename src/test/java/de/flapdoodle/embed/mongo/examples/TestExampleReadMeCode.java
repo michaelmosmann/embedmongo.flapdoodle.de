@@ -4,7 +4,7 @@
  *   Martin Jöhren <m.joehren@googlemail.com>
  *
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 	konstantin-ba@github,Archimedes Trajano	(trajano@github)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,7 +43,6 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
-import de.flapdoodle.embed.mongo.config.AbstractMongoConfig;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
@@ -51,6 +51,7 @@ import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
+import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.extract.ITempNaming;
@@ -61,12 +62,14 @@ import de.flapdoodle.embed.process.io.Processors;
 import de.flapdoodle.embed.process.io.directories.FixedPath;
 import de.flapdoodle.embed.process.io.directories.IDirectory;
 import de.flapdoodle.embed.process.io.progress.LoggingProgressListener;
+import de.flapdoodle.embed.process.runtime.ICommandLinePostProcessor;
 import de.flapdoodle.embed.process.runtime.Network;
 
 public class TestExampleReadMeCode extends TestCase {
 
 	// ### Usage
 	public void testStandard() throws UnknownHostException, IOException {
+		// ->
 		int port = 12345;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
@@ -86,11 +89,12 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		// <-
 	}
 
 	// ### Usage - custom mongod filename 
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
-
+		// ->		
 		int port = 12345;
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
@@ -121,15 +125,19 @@ public class TestExampleReadMeCode extends TestCase {
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		// <-
 	}
 
 	// ### Unit Tests
 	public void testUnitTests() {
+		// @include AbstractMongoDBTest.java
 		Class<?> see = AbstractMongoDBTest.class;
 	}
 
 	// #### ... with some more help
 	public void testMongodForTests() throws IOException {
+		// ->
+		// ...
 		MongodForTestsFactory factory = null;
 		try {
 			factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
@@ -143,6 +151,8 @@ public class TestExampleReadMeCode extends TestCase {
 			if (factory != null)
 				factory.shutdown();
 		}
+		// ...
+		// <-
 	}
 
 	// ### Customize Artifact Storage
@@ -150,7 +160,8 @@ public class TestExampleReadMeCode extends TestCase {
 
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6());
 
-		/// - 8<- - - - 
+		// ->
+		// ...
 		IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
 		ITempNaming executableNaming = new UUIDTempNaming();
 
@@ -168,7 +179,8 @@ public class TestExampleReadMeCode extends TestCase {
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
-		/// - >8- - - - 
+		// ...
+		// <-
 		MongodProcess mongod = mongodExe.start();
 
 		mongod.stop();
@@ -178,7 +190,8 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Usage - custom mongod process output
 	// #### ... to console with line prefix
 	public void testCustomOutputToConsolePrefix() {
-
+		// ->
+		// ...
 		ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
 		
@@ -188,11 +201,14 @@ public class TestExampleReadMeCode extends TestCase {
 			.build();
 		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
-
+		// ...
+		// <-
 	}
 
 	// #### ... to file
 	public void testCustomOutputToFile() throws FileNotFoundException, IOException {
+		// ->
+		// ...
 		IStreamProcessor mongodOutput = Processors.named("[mongod>]",
 				new FileStreamProcessor(File.createTempFile("mongod", "log")));
 		IStreamProcessor mongodError = new FileStreamProcessor(File.createTempFile("mongod-error", "log"));
@@ -204,10 +220,50 @@ public class TestExampleReadMeCode extends TestCase {
 			.build();
 		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		// ...
+		// <-
 	}
+
+	/*
+	 * Ist fürs Readme, deshalb nicht statisch und public
+	 */
+	// ->
+	
+		// ...
+		public class FileStreamProcessor implements IStreamProcessor {
+	
+			private FileOutputStream outputStream;
+	
+			public FileStreamProcessor(File file) throws FileNotFoundException {
+				outputStream = new FileOutputStream(file);
+			}
+	
+			@Override
+			public void process(String block) {
+				try {
+					outputStream.write(block.getBytes());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	
+			@Override
+			public void onProcessed() {
+				try {
+					outputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+	
+		}
+		// ...
+	// <-
 
 	// #### ... to java logging
 	public void testCustomOutputToLogging() throws FileNotFoundException, IOException {
+		// ->
+		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
 
 		ProcessOutput processOutput = new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
@@ -224,10 +280,14 @@ public class TestExampleReadMeCode extends TestCase {
 			.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		// ...
+		// <-
 	}
 
 	// #### ... to default java logging (the easy way)
 	public void testDefaultOutputToLogging() throws FileNotFoundException, IOException {
+		// ->
+		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
 		
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
@@ -235,106 +295,138 @@ public class TestExampleReadMeCode extends TestCase {
 			.build();
 		
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
-	}
-
-	/*
-	 * Ist fürs Readme, deshalb nicht statisch und public
-	 */
-	public class FileStreamProcessor implements IStreamProcessor {
-
-		private FileOutputStream outputStream;
-
-		public FileStreamProcessor(File file) throws FileNotFoundException {
-			outputStream = new FileOutputStream(file);
-		}
-
-		@Override
-		public void process(String block) {
-			try {
-				outputStream.write(block.getBytes());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void onProcessed() {
-			try {
-				outputStream.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-
+		// ...
+		// <-
 	}
 
 	// ### Custom Version
 	public void testCustomVersion() throws UnknownHostException, IOException {
+		// ->
+		// ...
 		int port = 12345;
 		MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
+		MongodProcess mongod = null;
 
 		MongodExecutable mongodExecutable = null;
 		try {
 			mongodExecutable = runtime.prepare(mongodConfig);
-			MongodProcess mongod = mongodExecutable.start();
+			mongod = mongodExecutable.start();
 
+			// <-
 			Mongo mongo = new Mongo("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
+			// ->
+			// ...
 
 		} finally {
+			if (mongod != null) {
+				mongod.stop();
+			}
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		// ...
+		// <-
 
 	}
 
 	// ### Main Versions
 	public void testMainVersions() throws UnknownHostException, IOException {
+		// ->
 		IVersion version = Version.V2_2_3;
-		// uses latest supported 2.1.x Version
+		// uses latest supported 2.2.x Version
 		version = Version.Main.V2_2;
 		// uses latest supported production version
 		version = Version.Main.PRODUCTION;
 		// uses latest supported development version
 		version = Version.Main.DEVELOPMENT;
+		// <-
 	}
 
 	// ### Use Free Server Port
+	/*
+	// ->
+		Warning: maybe not as stable, as expected.
+	// <-
+	 */
 	// #### ... by hand
 	public void testFreeServerPort() throws UnknownHostException, IOException {
+		// ->
+		// ...
 		int port = Network.getFreeServerPort();
+		// ...
+		// <-
 	}
 
-	// ### ... automagic
+	// #### ... automagic
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
+		// ->
+		// ...
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION);
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
 		MongodExecutable mongodExecutable = null;
+		MongodProcess mongod = null;
 		try {
 			mongodExecutable = runtime.prepare(mongodConfig);
-			MongodProcess mongod = mongodExecutable.start();
+			mongod = mongodExecutable.start();
 
 			Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+			// <-
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
+			// ->
+			// ...
 
 		} finally {
+			if (mongod != null) {
+				mongod.stop();
+			}
 			if (mongodExecutable != null)
 				mongodExecutable.stop();
 		}
+		// ...
+		// <-
 	}
 
 	// ### ... custom timeouts
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
+		// ->
+		// ...
 		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, new MongodConfig.Net(),
 				new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
+		// ...
+		// <-
+	}
+	
+	// ### Command Line Post Processing
+	public void testCommandLinePostProcessing() {
+
+		// ->
+		// ...
+		ICommandLinePostProcessor postProcessor= // ...
+		// <-
+		new ICommandLinePostProcessor() {
+			@Override
+			public List<String> process(Distribution distribution, List<String> args) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+		};
+		// ->
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(Command.MongoD)
+			.commandLinePostProcessor(postProcessor)
+			.build();
+		// ...
+		// <-
 	}
 
 }
