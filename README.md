@@ -44,12 +44,12 @@ http://www.cubeia.com/index.php/blog/archives/436
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 27.03.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 03.04.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.30</version>
+		<version>1.31</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -57,7 +57,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.31-SNAPSHOT</version>
+		<version>1.32-SNAPSHOT</version>
 	</dependency>
 
 
@@ -78,7 +78,11 @@ Or if you want to use the gradle wrapper:
 
 ### Changelog
 
-#### 1.31 (SNAPSHOT)
+#### 1.32 (SNAPSHOT)
+
+#### 1.31
+
+- minor bugfixes
 
 #### 1.30
 
