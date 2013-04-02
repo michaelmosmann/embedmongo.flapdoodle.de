@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- * Michael Mosmann <michael@mosmann.de>
- * Martin Jöhren <m.joehren@googlemail.com>
- * 
+ *   Michael Mosmann <michael@mosmann.de>
+ *   Martin Jöhren <m.joehren@googlemail.com>
+ *
  * with contributions from
- * konstantin-ba@github,Archimedes Trajano (trajano@github)
- * 
+ * 	konstantin-ba@github,Archimedes Trajano	(trajano@github)
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
- * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,6 +37,7 @@ import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -64,25 +65,29 @@ public class MongoExecutableTest extends TestCase {
 		for (int i = 0; i < loops; i++) {
 			_logger.info("Loop: " + i);
 			MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
-			MongodProcess mongod = mongodExe.start();
+			try {
+				MongodProcess mongod = mongodExe.start();
 
-			if (useMongodb) {
-				Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
-				DB db = mongo.getDB("test");
-				DBCollection col = db.createCollection("testCol", new BasicDBObject());
-				col.save(new BasicDBObject("testDoc", new Date()));
+				if (useMongodb) {
+					Mongo mongo = new Mongo(
+							new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+					DB db = mongo.getDB("test");
+					DBCollection col = db.createCollection("testCol", new BasicDBObject());
+					col.save(new BasicDBObject("testDoc", new Date()));
+				}
+
+				mongod.stop();
+			} finally {
+				mongodExe.stop();
 			}
-
-			mongod.stop();
-			mongodExe.stop();
 		}
 
 	}
 
 	@Test
-	public void testStartMongodOnNonFreePort() throws IOException {
+	public void testStartMongodOnNonFreePort() throws IOException, InterruptedException {
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.V1_8, 12345, Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V1_8, 12346, Network.localhostIsIPv6());
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
@@ -91,6 +96,8 @@ public class MongoExecutableTest extends TestCase {
 
 		boolean innerMongodCouldNotStart = false;
 		{
+			Thread.sleep(500);
+
 			MongodExecutable innerExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
 			try {
 				MongodProcess innerMongod = innerExe.start();
