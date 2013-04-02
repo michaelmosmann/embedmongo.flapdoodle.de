@@ -123,7 +123,7 @@ public abstract class AbstractMongoConfig extends ExecutableProcessConfig {
 		private final long startupTimeout;
 	
 		public Timeout() {
-			this(20000);
+			this(60000);
 		}
 	
 		public Timeout(long startupTimeout) {
