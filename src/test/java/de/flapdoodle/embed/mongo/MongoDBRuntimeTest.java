@@ -99,6 +99,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		if (isOSX32) {
 			if (currentVersion.equals(Version.V2_2_1.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_2_3.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_2_4.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0.asInDownloadPath())) return true;
