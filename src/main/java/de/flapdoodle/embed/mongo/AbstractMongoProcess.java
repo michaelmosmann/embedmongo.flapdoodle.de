@@ -55,7 +55,7 @@ public abstract class AbstractMongoProcess<T extends AbstractMongoConfig, E exte
 	@Override
 	protected final void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
-		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "failed",
+		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "dbexit:",
 				StreamToLineProcessor.wrap(outputConfig.getOutput()));
 		Processors.connect(process.getReader(), logWatch);
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
