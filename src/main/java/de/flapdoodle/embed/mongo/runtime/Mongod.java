@@ -90,7 +90,7 @@ public class Mongod {
 			}
 			return true;
 		} catch (IOException iox) {
-			logger.log(Level.WARNING, "sendShutdown", iox);
+			logger.log(Level.WARNING, String.format("sendShutdown %s:%d", hostname, port), iox);
 			if (tryToReadErrorResponse) {
 				return true;
 			}
@@ -99,9 +99,9 @@ public class Mongod {
 				s.close();
 				Thread.sleep(WAITING_TIME_SHUTDOWN_IN_MS);
 			} catch (InterruptedException ix) {
-				logger.log(Level.WARNING, "sendShutdown", ix);
+				logger.log(Level.WARNING, String.format("sendShutdown closing %s:%d", hostname, port), ix);
 			} catch (IOException iox) {
-				logger.log(Level.WARNING, "sendShutdown", iox);
+				logger.log(Level.WARNING, String.format("sendShutdown closing %s:%s", hostname, port), iox);
 			}
 		}
 		return false;
