@@ -22,8 +22,12 @@ package de.flapdoodle.embed.mongo;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.google.common.collect.Sets;
 
 import de.flapdoodle.embed.mongo.config.AbstractMongoConfig;
 import de.flapdoodle.embed.mongo.runtime.Mongod;
@@ -55,7 +59,7 @@ public abstract class AbstractMongoProcess<T extends AbstractMongoConfig, E exte
 	@Override
 	protected final void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
-		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", "dbexit:",
+		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", knownFailureMessages(),
 				StreamToLineProcessor.wrap(outputConfig.getOutput()));
 		Processors.connect(process.getReader(), logWatch);
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
@@ -67,6 +71,13 @@ public abstract class AbstractMongoProcess<T extends AbstractMongoConfig, E exte
 		}
 	}
 	
+	private Set<String> knownFailureMessages() {
+		HashSet<String> ret = new HashSet<String>();
+		ret.add("failed errno");
+		ret.add("ERROR:");
+		return ret;
+	}
+
 	@Override
 	public final void stop() {
 

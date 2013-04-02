@@ -1,17 +1,17 @@
 /**
  * Copyright (C) 2011
- *   Michael Mosmann <michael@mosmann.de>
- *   Martin Jöhren <m.joehren@googlemail.com>
- *
+ * Michael Mosmann <michael@mosmann.de>
+ * Martin Jöhren <m.joehren@googlemail.com>
+ * 
  * with contributions from
- * 	konstantin-ba@github,Archimedes Trajano	(trajano@github)
- *
+ * konstantin-ba@github,Archimedes Trajano (trajano@github)
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *         http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +21,11 @@
 package de.flapdoodle.embed.mongo;
 
 import java.io.IOException;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.logging.Logger;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -42,7 +44,7 @@ import de.flapdoodle.embed.process.runtime.Network;
 
 /**
  * Integration test for starting and stopping MongodExecutable
- *
+ * 
  * @author m.joehren
  */
 //CHECKSTYLE:OFF
@@ -55,11 +57,10 @@ public class MongoExecutableTest extends TestCase {
 		boolean useMongodb = true;
 		int loops = 10;
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345,
-				Network.localhostIsIPv6());
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6());
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
-		
+
 		for (int i = 0; i < loops; i++) {
 			_logger.info("Loop: " + i);
 			MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
@@ -78,5 +79,31 @@ public class MongoExecutableTest extends TestCase {
 
 	}
 
+	@Test
+	public void testStartMongodOnNonFreePort() throws IOException {
+
+		MongodConfig mongodConfig = new MongodConfig(Version.Main.V1_8, 12345, Network.localhostIsIPv6());
+
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
+
+		MongodExecutable mongodExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
+		MongodProcess mongod = mongodExe.start();
+
+		boolean innerMongodCouldNotStart = false;
+		{
+			MongodExecutable innerExe = MongodStarter.getInstance(runtimeConfig).prepare(mongodConfig);
+			try {
+				MongodProcess innerMongod = innerExe.start();
+			} catch (IOException iox) {
+				innerMongodCouldNotStart = true;
+			} finally {
+				innerExe.stop();
+				Assert.assertTrue("inner Mongod could not start", innerMongodCouldNotStart);
+			}
+		}
+
+		mongod.stop();
+		mongodExe.stop();
+	}
 
 }
