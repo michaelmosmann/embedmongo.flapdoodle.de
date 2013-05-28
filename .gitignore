@@ -7,3 +7,5 @@ velocity.log
 .settings
 .externalToolBuilders
 .idea
+.gradle
+build/
