@@ -20,19 +20,10 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
-
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
@@ -44,6 +35,13 @@ import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 // CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
@@ -95,15 +93,15 @@ public class MongoDBRuntimeTest extends TestCase {
 	private boolean shipThisVersion(Platform platform, IVersion version, BitSize bitsize) {
 		// there is no osx 32bit version for v2.2.1 and above
 		String currentVersion = version.asInDownloadPath();
-		boolean isOSX32 = (platform == Platform.OS_X) && (bitsize == BitSize.B32);
-		if (isOSX32) {
+        if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
 			if (currentVersion.equals(Version.V2_2_1.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_2_3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_2_4.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_4_1.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.Main.PRODUCTION.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.Main.DEVELOPMENT.asInDownloadPath())) return true;
 		}
 		return false;
 	}
