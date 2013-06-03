@@ -74,10 +74,11 @@ public enum Version implements IVersion {
 	V2_2_0("2.2.0"),
 	@Deprecated
 	V2_2_1("2.2.1"),
-	/**
-	 * last production release
-	 */
-	V2_2_3("2.2.3"),
+    @Deprecated
+    V2_2_3("2.2.3"),
+    /**
+      * last production release
+     */    
 	V2_2_4("2.2.4"),
 
 	@Deprecated
@@ -86,12 +87,20 @@ public enum Version implements IVersion {
 	V2_4_0_RC3("2.4.0-rc3"),
 	@Deprecated
 	V2_4_0("2.4.0"),
+    @Deprecated
+    V2_4_1("2.4.1"),
+    @Deprecated
+   	V2_4_2("2.4.2"),
 	/**
 	 * new production release
 	 */
-	V2_4_1("2.4.1"),
+	V2_4_3("2.4.3"),
 
-	;
+    /**
+     * new developement release
+     */
+    V2_5("2.5.0"),
+    ;
 
 	private final String specificVersion;
 
@@ -125,9 +134,9 @@ public enum Version implements IVersion {
 		/**
 		 * current production release
 		 */
-		V2_4(V2_4_1),
+		V2_4(V2_4_3),
 
-		PRODUCTION(V2_2),
+		PRODUCTION(V2_4),
 		DEVELOPMENT(V2_4), ;
 
 		private final IVersion _latest;
