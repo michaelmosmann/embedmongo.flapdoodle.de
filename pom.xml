@@ -166,6 +166,37 @@
 				</executions>
 			</plugin>
 
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+		
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>deploy-to-sonatype</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+							<goal>close</goal>
+							<goal>release</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<serverId>sonatype.nexus</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<stagingRepositoryId>de.flapdoodle</stagingRepositoryId>
+					<deployUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2</deployUrl>
+					<description>${project.version}</description>
+				</configuration>
+			</plugin>
+		
 		</plugins>
 	</build>
 
