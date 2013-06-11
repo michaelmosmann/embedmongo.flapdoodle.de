@@ -194,6 +194,9 @@
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<stagingRepositoryId>de.flapdoodle</stagingRepositoryId>
 					<deployUrl>https://oss.sonatype.org/service/local/staging/deploy/maven2</deployUrl>
+					<! - -
+										 https://oss.sonatype.org/service/local/staging/deploy/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/1.33/de.flapdoodle.embed.mongo-1.33-sources.jar.asc
+										 - - >
 					<description>${project.version}</description>
 				</configuration>
 			</plugin>

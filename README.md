@@ -45,12 +45,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 03.04.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 11.06.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.31</version>
+		<version>1.33</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -58,7 +58,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.32-SNAPSHOT</version>
+		<version>1.34-SNAPSHOT</version>
 	</dependency>
 
 
@@ -79,7 +79,11 @@ Or if you want to use the gradle wrapper:
 
 ### Changelog
 
-#### 1.32 (SNAPSHOT)
+#### 1.34 (SNAPSHOT)
+
+#### 1.33 (not public)
+
+#### 1.32
 
 - added 2.5.0 as new development version
 - added example for custom download path
