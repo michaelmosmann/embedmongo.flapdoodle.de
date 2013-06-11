@@ -81,7 +81,8 @@ Or if you want to use the gradle wrapper:
 
 #### 1.32 (SNAPSHOT)
 
-
+- added 2.5.0 as new development version
+- added example for custom download path
 
 #### 1.31
 
@@ -205,11 +206,11 @@ Or if you want to use the gradle wrapper:
 
 ### Supported Versions
 
-Versions: some older, 1.8.5, 1.9.0, 2.0.6, 2.1.2
+Versions: some older, a stable and a development version
 Support for Linux, Windows and MacOSX.
 
 ### Usage
-	
+
 	int port = 12345;
 	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
@@ -313,6 +314,21 @@ Support for Linux, Windows and MacOSX.
 		if (factory != null)
 			factory.shutdown();
 	}
+	...
+
+### Customize Download URL
+
+	...
+	Command command = Command.MongoD;
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(command)
+		.artifactStore(new ArtifactStoreBuilder()
+			.defaults(command)
+			.download(new DownloadConfigBuilder()
+				.defaultsForCommand(command)
+				.downloadPath("http://my.custom.download.domain/")))
+		.build();
 	...
 
 ### Customize Artifact Storage

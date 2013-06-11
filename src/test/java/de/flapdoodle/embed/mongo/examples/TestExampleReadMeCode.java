@@ -154,6 +154,24 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		// <-
 	}
+	
+	// ### Customize Download URL
+	public void testCustomizeDownloadURL() {
+		// ->
+		// ...
+		Command command = Command.MongoD;
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaults(command)
+			.artifactStore(new ArtifactStoreBuilder()
+				.defaults(command)
+				.download(new DownloadConfigBuilder()
+					.defaultsForCommand(command)
+					.downloadPath("http://my.custom.download.domain/")))
+			.build();
+		// ...
+		// <-
+	}
 
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {

@@ -99,7 +99,7 @@ public enum Version implements IVersion {
     /**
      * new developement release
      */
-    V2_5("2.5.0"),
+    V2_5_0("2.5.0"),
     ;
 
 	private final String specificVersion;
@@ -135,9 +135,13 @@ public enum Version implements IVersion {
 		 * current production release
 		 */
 		V2_4(V2_4_3),
+		/**
+		 * development release
+		 */
+		V2_5(V2_5_0),
 
 		PRODUCTION(V2_4),
-		DEVELOPMENT(V2_4), ;
+		DEVELOPMENT(V2_5), ;
 
 		private final IVersion _latest;
 
