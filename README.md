@@ -214,7 +214,10 @@ Versions: some older, a stable and a development version
 Support for Linux, Windows and MacOSX.
 
 ### Usage
-
+	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+	
+	...
+	
 	int port = 12345;
 	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
 
@@ -236,6 +239,9 @@ Support for Linux, Windows and MacOSX.
 	}
 
 ### Usage - custom mongod filename 
+	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
+	
+	...
 
 	int port = 12345;
 	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
