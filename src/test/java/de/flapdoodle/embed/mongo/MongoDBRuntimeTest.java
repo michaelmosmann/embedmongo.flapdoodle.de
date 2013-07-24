@@ -27,6 +27,8 @@ import com.mongodb.Mongo;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -97,6 +99,7 @@ public class MongoDBRuntimeTest extends TestCase {
 			if (currentVersion.equals(Version.V2_2_1.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_2_3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_2_4.asInDownloadPath())) return true;
+			if (currentVersion.equals(Version.V2_2_5.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.V2_4_0.asInDownloadPath())) return true;
@@ -127,7 +130,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		timer.check("After Runtime");
 
 		try {
-			mongod = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6()));
+			mongod = runtime.prepare(new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(port, Network.localhostIsIPv6())).build());
 			timer.check("After mongod");
 			assertNotNull("Mongod", mongod);
 			mongodProcess = mongod.start();

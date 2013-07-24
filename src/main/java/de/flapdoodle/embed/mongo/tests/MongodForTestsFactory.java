@@ -34,8 +34,13 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Storage;
+import de.flapdoodle.embed.mongo.config.Timeout;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
@@ -83,8 +88,8 @@ public class MongodForTestsFactory {
 
 	}
 
-	protected MongodConfig newMongodConfig(final IVersion version) throws UnknownHostException, IOException {
-		return new MongodConfig(version, new MongodConfig.Net(),new MongodConfig.Storage(),new MongodConfig.Timeout());
+	protected IMongodConfig newMongodConfig(final IVersion version) throws UnknownHostException, IOException {
+		return new MongodConfigBuilder().version(version).build();
 	}
 
 	/**

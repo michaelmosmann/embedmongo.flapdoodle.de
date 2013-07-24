@@ -23,7 +23,7 @@ package de.flapdoodle.embed.mongo;
 import java.io.File;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
@@ -32,7 +32,7 @@ import de.flapdoodle.embed.process.runtime.Starter;
 /**
  *
  */
-public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodProcess> {
+public class MongodStarter extends Starter<IMongodConfig,MongodExecutable,MongodProcess> {
 
 	private static Logger logger = Logger.getLogger(MongodStarter.class.getName());
 
@@ -49,7 +49,7 @@ public class MongodStarter extends Starter<MongodConfig,MongodExecutable,MongodP
 	}
 	
 	@Override
-	protected MongodExecutable newExecutable(MongodConfig mongodConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe) {
+	protected MongodExecutable newExecutable(IMongodConfig mongodConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe) {
 		return new MongodExecutable(distribution, mongodConfig, runtime, mongodExe);
 	}
 }

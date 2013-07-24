@@ -23,21 +23,26 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import javax.xml.ws.ServiceMode;
+
 import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
 /**
- *
+ * @see MongodConfigBuilder
  */
-public class MongodConfig extends AbstractMongoConfig {
+@Deprecated
+public class MongodConfig extends AbstractMongoConfig implements IMongodConfig {
 
 	private final Storage storage;
 	private final boolean configServer;
 
+	@Deprecated
 	public MongodConfig(IVersion version) throws UnknownHostException, IOException {
 		this(version, new Net(), new Storage(), new Timeout());
 	}
 
+	@Deprecated
 	public MongodConfig(IVersion version, int port, boolean ipv6) {
 		this(version, new Net(null, port, ipv6), new Storage(), new Timeout());
 	}
@@ -56,52 +61,30 @@ public class MongodConfig extends AbstractMongoConfig {
 	/*
 	 * Preferred constructor to Mongod config server
 	 */
+	@Deprecated
 	public static MongodConfig getConfigInstance(IVersion version, Net network) {
 		return new MongodConfig(version, network, new Storage(), new Timeout(), true);
 	}
 
+	@Deprecated
 	public MongodConfig(IVersion version, Net network, Storage storage, Timeout timeout) {
 		this(version, network, storage, timeout, false);
 	}
 
+	@Deprecated
 	public MongodConfig(IVersion version, Net network, Storage storage, Timeout timeout, boolean configServer) {
 		super(version,network,timeout);
 		this.storage = storage;
 		this.configServer = configServer;
 	}
 
+	@Override
 	public Storage replication() {
 		return storage;
 	}
 
+	@Override
 	public boolean isConfigServer() {
 		return configServer;
-	}
-
-	/**
-	 * @see MongodConfig#net()
-	 * @return
-	 */
-	@Deprecated
-	public String getBindIp() {
-		return network.getBindIp();
-	}
-
-	/**
-	 * @see MongodConfig#net()
-	 * @return
-	 */
-	@Deprecated
-	public int getPort() {
-		return network.getPort();
-	}
-
-	/**
-	 * @see MongodConfig#net()
-	 * @return
-	 */
-	@Deprecated
-	public boolean isIpv6() {
-		return network.isIpv6();
 	}
 }

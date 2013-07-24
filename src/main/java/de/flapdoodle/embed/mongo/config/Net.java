@@ -24,37 +24,44 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
-import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
 
-/**
- * @see MongosConfigBuilder
- */
-@Deprecated
-public class MongosConfig extends AbstractMongoConfig implements IMongosConfig {
+public class Net {
 
-	private final String configDB;
+	private final String bindIp;
+	private final int port;
+	private final boolean ipv6;
 
-	@Deprecated
-	public MongosConfig(IVersion version, String configDB) throws UnknownHostException, IOException {
-		this(version, new Net(), new Timeout(), configDB);
+	public Net() throws UnknownHostException, IOException {
+		this(null, Network.getFreeServerPort(), Network.localhostIsIPv6());
 	}
 
-	@Deprecated
-	public MongosConfig(IVersion version, Net network, Timeout timeout, String configDB) {
-		super(version,network,timeout);
-		this.configDB = configDB; 
+	public Net(int port, boolean ipv6) {
+		this(null, port, ipv6);
 	}
 
-	@Deprecated
-	public static MongosConfig getConfigInstance(IVersion version, Net network,String configDB) {
-		return new MongosConfig(version, network, new Timeout(),configDB);
+	public Net(String bindIp, int port, boolean ipv6) {
+		this.bindIp = bindIp;
+		this.port = port;
+		this.ipv6 = ipv6;
 	}
 
-	@Override
-	public String getConfigDB() {
-		return configDB;
+	public String getBindIp() {
+		return bindIp;
 	}
 
+	public int getPort() {
+		return port;
+	}
+
+	public boolean isIpv6() {
+		return ipv6;
+	}
+
+	public InetAddress getServerAddress() throws UnknownHostException {
+		if (bindIp != null) {
+			return InetAddress.getByName(bindIp);
+		}
+		return Network.getLocalHost();
+	}
 }

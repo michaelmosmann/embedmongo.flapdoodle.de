@@ -36,6 +36,7 @@ import org.mortbay.jetty.handler.HandlerList;
 import org.mortbay.jetty.handler.ResourceHandler;
 
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.config.store.DownloadPath;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
@@ -105,7 +106,7 @@ public class DownloaderTest {
 
 	private void initRuntime() {
 		//when(rc.getDefaultfileNaming()).thenReturn(new UUIDTempNaming());
-		when(dc.getDownloadPath()).thenReturn("http://localhost:" + LISTEN_PORT + "/");
+		when(dc.getDownloadPath()).thenReturn(new DownloadPath("http://localhost:" + LISTEN_PORT + "/"));
 		when(dc.getProgressListener()).thenReturn(pl);
 	}
 

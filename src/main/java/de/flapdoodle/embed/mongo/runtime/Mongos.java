@@ -36,6 +36,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
@@ -48,7 +49,7 @@ public class Mongos {
 
 	private static Logger logger = Logger.getLogger(Mongos.class.getName());
 
-	public static List<String> getCommandLine(MongosConfig config, File mongosExecutable)
+	public static List<String> getCommandLine(IMongosConfig config, File mongosExecutable)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
 		ret.addAll(Arrays.asList(mongosExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),

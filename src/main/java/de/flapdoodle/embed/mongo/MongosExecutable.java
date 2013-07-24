@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -33,9 +34,9 @@ import de.flapdoodle.embed.process.runtime.Executable;
 /**
  *
  */
-public class MongosExecutable extends Executable<MongosConfig, MongosProcess> {
+public class MongosExecutable extends Executable<IMongosConfig, MongosProcess> {
 
-	public MongosExecutable(Distribution distribution, MongosConfig mongodConfig, IRuntimeConfig runtimeConfig,
+	public MongosExecutable(Distribution distribution, IMongosConfig mongodConfig, IRuntimeConfig runtimeConfig,
 			File mongodExecutable) {
 		super(distribution, mongodConfig, runtimeConfig, mongodExecutable);
 	}
@@ -43,7 +44,7 @@ public class MongosExecutable extends Executable<MongosConfig, MongosProcess> {
 	private static Logger logger = Logger.getLogger(MongosExecutable.class.getName());
 
 	@Override
-	protected MongosProcess start(Distribution distribution, MongosConfig config, IRuntimeConfig runtime)
+	protected MongosProcess start(Distribution distribution, IMongosConfig config, IRuntimeConfig runtime)
 			throws IOException {
 		return new MongosProcess(distribution, config, runtime, this);
 	}

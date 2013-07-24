@@ -45,8 +45,13 @@ import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Storage;
+import de.flapdoodle.embed.mongo.config.Timeout;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -71,7 +76,10 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testStandard() throws UnknownHostException, IOException {
 		// ->
 		int port = 12345;
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(port, Network.localhostIsIPv6()))
+			.build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -96,7 +104,10 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
 		// ->		
 		int port = 12345;
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(port, Network.localhostIsIPv6()))
+			.build();
 
 		Command command = Command.MongoD;
 		
@@ -176,7 +187,10 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(12345, Network.localhostIsIPv6()))
+			.build();
 
 		// ->
 		// ...
@@ -322,7 +336,10 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->
 		// ...
 		int port = 12345;
-		MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(new GenericVersion("2.0.7-rc1"))
+			.net(new Net(port, Network.localhostIsIPv6()))
+			.build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 		MongodProcess mongod = null;
@@ -355,7 +372,7 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Main Versions
 	public void testMainVersions() throws UnknownHostException, IOException {
 		// ->
-		IVersion version = Version.V2_2_3;
+		IVersion version = Version.V2_2_5;
 		// uses latest supported 2.2.x Version
 		version = Version.Main.V2_2;
 		// uses latest supported production version
@@ -384,7 +401,7 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testFreeServerPortAuto() throws UnknownHostException, IOException {
 		// ->
 		// ...
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION);
+		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -417,8 +434,10 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomTimeouts() throws UnknownHostException, IOException {
 		// ->
 		// ...
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, new MongodConfig.Net(),
-				new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.timeout(new Timeout(30000))
+			.build();
 		// ...
 		// <-
 	}

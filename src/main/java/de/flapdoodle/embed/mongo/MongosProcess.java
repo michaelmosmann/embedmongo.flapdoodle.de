@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosSupportConfig;
 import de.flapdoodle.embed.mongo.runtime.Mongod;
@@ -45,9 +46,9 @@ import de.flapdoodle.embed.process.runtime.ProcessControl;
 /**
  *
  */
-public class MongosProcess extends AbstractMongoProcess<MongosConfig, MongosExecutable, MongosProcess> {
+public class MongosProcess extends AbstractMongoProcess<IMongosConfig, MongosExecutable, MongosProcess> {
 
-	public MongosProcess(Distribution distribution, MongosConfig config, IRuntimeConfig runtimeConfig,
+	public MongosProcess(Distribution distribution, IMongosConfig config, IRuntimeConfig runtimeConfig,
 			MongosExecutable mongosExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongosExecutable);
 	}
@@ -58,7 +59,7 @@ public class MongosProcess extends AbstractMongoProcess<MongosConfig, MongosExec
 	}
 	
 	@Override
-	protected List<String> getCommandLine(Distribution distribution, MongosConfig config, File exe) throws IOException {
+	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, File exe) throws IOException {
 		return Mongos.getCommandLine(getConfig(), exe);
 	}
 }

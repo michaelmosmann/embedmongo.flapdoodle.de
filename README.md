@@ -81,6 +81,9 @@ Or if you want to use the gradle wrapper:
 
 #### 1.34 (SNAPSHOT)
 
+- added builder for mongod and mongos config
+- dependencies updated
+
 #### 1.33 (not public)
 
 #### 1.32
@@ -216,7 +219,10 @@ Support for Linux, Windows and MacOSX.
 ### Usage
 
 	int port = 12345;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.net(new Net(port, Network.localhostIsIPv6()))
+		.build();
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -238,7 +244,10 @@ Support for Linux, Windows and MacOSX.
 ### Usage - custom mongod filename 
 
 	int port = 12345;
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, port, Network.localhostIsIPv6());
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.net(new Net(port, Network.localhostIsIPv6()))
+		.build();
 
 	Command command = Command.MongoD;
 
@@ -280,7 +289,10 @@ Support for Linux, Windows and MacOSX.
 		protected void setUp() throws Exception {
 
 			MongodStarter runtime = MongodStarter.getDefaultInstance();
-			_mongodExe = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6()));
+			_mongodExe = runtime.prepare(new MongodConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(12345, Network.localhostIsIPv6()))
+				.build());
 			_mongod = _mongodExe.start();
 
 			super.setUp();
@@ -456,7 +468,10 @@ Support for Linux, Windows and MacOSX.
 
 	...
 	int port = 12345;
-	MongodConfig mongodConfig = new MongodConfig(new GenericVersion("2.0.7-rc1"), port, Network.localhostIsIPv6());
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(new GenericVersion("2.0.7-rc1"))
+		.net(new Net(port, Network.localhostIsIPv6()))
+		.build();
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 	MongodProcess mongod = null;
@@ -479,7 +494,7 @@ Support for Linux, Windows and MacOSX.
 
 ### Main Versions
 
-	IVersion version = Version.V2_2_3;
+	IVersion version = Version.V2_2_5;
 	// uses latest supported 2.2.x Version
 	version = Version.Main.V2_2;
 	// uses latest supported production version
@@ -500,7 +515,7 @@ Support for Linux, Windows and MacOSX.
 #### ... automagic
 
 	...
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION);
+	IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).build();
 
 	MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -525,8 +540,10 @@ Support for Linux, Windows and MacOSX.
 ### ... custom timeouts
 
 	...
-	MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, new MongodConfig.Net(),
-			new MongodConfig.Storage(), new MongodConfig.Timeout(30000));
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.timeout(new Timeout(30000))
+		.build();
 	...
 
 ### Command Line Post Processing

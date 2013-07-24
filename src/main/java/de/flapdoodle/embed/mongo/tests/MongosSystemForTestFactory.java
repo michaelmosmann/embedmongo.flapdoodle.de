@@ -45,6 +45,8 @@ import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.MongosExecutable;
 import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
@@ -59,9 +61,9 @@ public class MongosSystemForTestFactory {
 	public static final String REPLICA_SET_NAME = "rep1";
 	public static final String OPLOG_COLLECTION = "oplog.rs";
 
-	private final MongosConfig config;
-	private final Map<String, List<MongodConfig>> replicaSets;
-	private final List<MongodConfig> configServers;
+	private final IMongosConfig config;
+	private final Map<String, List<IMongodConfig>> replicaSets;
+	private final List<IMongodConfig> configServers;
 	private final String shardDatabase;
 	private final String shardCollection;
 	private final String shardKey;
@@ -71,9 +73,9 @@ public class MongosSystemForTestFactory {
 	private List<MongodProcess> mongodProcessList;
 	private List<MongodProcess> mongodConfigProcessList;
 
-	public MongosSystemForTestFactory(MongosConfig config,
-			Map<String, List<MongodConfig>> replicaSets,
-			List<MongodConfig> configServers, String shardDatabase,
+	public MongosSystemForTestFactory(IMongosConfig config,
+			Map<String, List<IMongodConfig>> replicaSets,
+			List<IMongodConfig> configServers, String shardDatabase,
 			String shardCollection, String shardKey) {
 		this.config = config;
 		this.replicaSets = replicaSets;
@@ -86,27 +88,27 @@ public class MongosSystemForTestFactory {
 	public void start() throws Throwable {
 		this.mongodProcessList = new ArrayList<MongodProcess>();
 		this.mongodConfigProcessList = new ArrayList<MongodProcess>();
-		for (Entry<String, List<MongodConfig>> entry : replicaSets.entrySet()) {
+		for (Entry<String, List<IMongodConfig>> entry : replicaSets.entrySet()) {
 			initializeReplicaSet(entry);
 		}
-		for (MongodConfig config : configServers) {
+		for (IMongodConfig config : configServers) {
 			initializeConfigServer(config);
 		}
 		initializeMongos();
 		configureMongos();
 	}
 
-	private void initializeReplicaSet(Entry<String, List<MongodConfig>> entry)
+	private void initializeReplicaSet(Entry<String, List<IMongodConfig>> entry)
 			throws Exception {
 		String replicaName = entry.getKey();
-		List<MongodConfig> mongoConfigList = entry.getValue();
+		List<IMongodConfig> mongoConfigList = entry.getValue();
 
 		if (mongoConfigList.size() < 3) {
 			throw new Exception(
 					"A replica set must contain at least 3 members.");
 		}
 		// Create 3 mongod processes
-		for (MongodConfig mongoConfig : mongoConfigList) {
+		for (IMongodConfig mongoConfig : mongoConfigList) {
 			if (!mongoConfig.replication().getReplSetName().equals(replicaName)) {
 				throw new Exception(
 						"Replica set name must match in mongo configuration");
@@ -133,7 +135,7 @@ public class MongosSystemForTestFactory {
 		replicaSetSetting.put("_id", replicaName);
 		BasicDBList members = new BasicDBList();
 		int i = 0;
-		for (MongodConfig mongoConfig : mongoConfigList) {
+		for (IMongodConfig mongoConfig : mongoConfigList) {
 			DBObject host = new BasicDBObject();
 			host.put("_id", i++);
 			host.put("host", mongoConfig.net().getServerAddress().getHostName()
@@ -183,7 +185,7 @@ public class MongosSystemForTestFactory {
 		return true;
 	}
 
-	private void initializeConfigServer(MongodConfig config) throws Exception {
+	private void initializeConfigServer(IMongodConfig config) throws Exception {
 		if (!config.isConfigServer()) {
 			throw new Exception(
 					"Mongo configuration is not a defined for a config server.");
@@ -213,11 +215,11 @@ public class MongosSystemForTestFactory {
 		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);
 
 		// Add shard from the replica set list
-		for (Entry<String, List<MongodConfig>> entry : this.replicaSets
+		for (Entry<String, List<IMongodConfig>> entry : this.replicaSets
 				.entrySet()) {
 			String replicaName = entry.getKey();
 			String command = "";
-			for (MongodConfig mongodConfig : entry.getValue()) {
+			for (IMongodConfig mongodConfig : entry.getValue()) {
 				if (command.isEmpty()) {
 					command = replicaName + "/";
 				} else {

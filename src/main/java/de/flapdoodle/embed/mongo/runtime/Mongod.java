@@ -20,12 +20,6 @@
  */
 package de.flapdoodle.embed.mongo.runtime;
 
-import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.SupportConfig;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.runtime.NUMA;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +35,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.SupportConfig;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.runtime.NUMA;
 
 /**
  *
@@ -117,7 +117,7 @@ public class Mongod {
 		return defaultValue;
 	}
 
-	public static List<String> getCommandLine(MongodConfig config, File mongodExecutable, File dbDir)
+	public static List<String> getCommandLine(IMongodConfig config, File mongodExecutable, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
 		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),

@@ -34,10 +34,12 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongosExecutable;
 import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
-import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Net;
-import de.flapdoodle.embed.mongo.config.AbstractMongoConfig.Timeout;
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfig;
+import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Timeout;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -88,14 +90,26 @@ public class MongosForTestsFactory {
 
 		int configServerPort = 27019;
 		int mongosPort = 27017;
-		mongoConfigExecutable = mongoConfigRuntime.prepare(MongosConfig.getConfigInstance(version, new Net(configServerPort, Network.localhostIsIPv6()),"testDB"));
+		IMongosConfig config = new MongosConfigBuilder()
+			.version(version)
+			.net(new Net(configServerPort, Network.localhostIsIPv6()))
+			.configDB("testDB")
+			.build();
+		
+		mongoConfigExecutable = mongoConfigRuntime.prepare(config);
 		mongoConfigProcess = mongoConfigExecutable.start();
 
 		final MongosStarter runtime = MongosStarter.getInstance(new RuntimeConfigBuilder()
 			.defaultsWithLogger(Command.MongoS, logger)
 			.build());
 		
-		mongosExecutable = runtime.prepare(new MongosConfig(version, new Net(mongosPort, Network.localhostIsIPv6()), new Timeout(), Network.getLocalHost().getHostName() + ":" + configServerPort));
+		config = new MongosConfigBuilder()
+			.version(version)
+			.net(new Net(mongosPort, Network.localhostIsIPv6()))
+			.configDB(Network.getLocalHost().getHostName() + ":" + configServerPort)
+			.build();
+		
+		mongosExecutable = runtime.prepare(config);
 		mongosProcess = mongosExecutable.start();
 	}
 

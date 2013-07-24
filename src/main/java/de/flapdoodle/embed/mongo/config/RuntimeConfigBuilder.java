@@ -33,22 +33,21 @@ public class RuntimeConfigBuilder extends de.flapdoodle.embed.process.config.Run
 
 	public RuntimeConfigBuilder defaultsWithLogger(Command command, Logger logger) {
 		defaults(command);
-		processOutput(MongodProcessOutputConfig.getInstance(logger));
+		processOutput().overwriteDefault(MongodProcessOutputConfig.getInstance(logger));
 
 		IDownloadConfig downloadConfig = new DownloadConfigBuilder()
 				.defaultsForCommand(command)
 				.progressListener(new LoggingProgressListener(logger, Level.FINE))
 				.build();
 
-		artifactStore(new ArtifactStoreBuilder().defaults(command).download(downloadConfig).build());
+		artifactStore().overwriteDefault(new ArtifactStoreBuilder().defaults(command).download(downloadConfig).build());
 		return this;
 	}
 	
 	public RuntimeConfigBuilder defaults(Command command) {
-		processOutput(MongodProcessOutputConfig.getDefaultInstance());
-		commandLinePostProcessor(new ICommandLinePostProcessor.Noop());
-		artifactStore(new ArtifactStoreBuilder().defaults(command));
-		setOverride(true);
+		processOutput().setDefault(MongodProcessOutputConfig.getDefaultInstance());
+		commandLinePostProcessor().setDefault(new ICommandLinePostProcessor.Noop());
+		artifactStore().setDefault(new ArtifactStoreBuilder().defaults(command).build());
 		return this;
 	}
 }

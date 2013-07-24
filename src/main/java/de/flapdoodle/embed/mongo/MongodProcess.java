@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
 import de.flapdoodle.embed.mongo.runtime.Mongod;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -37,14 +37,14 @@ import de.flapdoodle.embed.process.io.file.Files;
 /**
  *
  */
-public class MongodProcess extends AbstractMongoProcess<MongodConfig, MongodExecutable, MongodProcess> {
+public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExecutable, MongodProcess> {
 
 	private static Logger logger = Logger.getLogger(MongodProcess.class.getName());
 
 	private File dbDir;
 	boolean dbDirIsTemp;
 
-	public MongodProcess(Distribution distribution, MongodConfig config, IRuntimeConfig runtimeConfig,
+	public MongodProcess(Distribution distribution, IMongodConfig config, IRuntimeConfig runtimeConfig,
 			MongodExecutable mongodExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongodExecutable);
 
@@ -54,7 +54,7 @@ public class MongodProcess extends AbstractMongoProcess<MongodConfig, MongodExec
 	protected void onBeforeProcess(IRuntimeConfig runtimeConfig) throws IOException {
 		super.onBeforeProcess(runtimeConfig);
 
-		MongodConfig config = getConfig();
+		IMongodConfig config = getConfig();
 
 		File tmpDbDir;
 		if (config.replication().getDatabaseDir() != null) {
@@ -72,7 +72,7 @@ public class MongodProcess extends AbstractMongoProcess<MongodConfig, MongodExec
 	}
 
 	@Override
-	protected List<String> getCommandLine(Distribution distribution, MongodConfig config, File exe) throws IOException {
+	protected List<String> getCommandLine(Distribution distribution, IMongodConfig config, File exe) throws IOException {
 		return Mongod.enhanceCommandLinePlattformSpecific(distribution, Mongod.getCommandLine(getConfig(), exe, dbDir));
 	}
 

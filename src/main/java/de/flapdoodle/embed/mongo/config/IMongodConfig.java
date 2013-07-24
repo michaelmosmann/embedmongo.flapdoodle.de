@@ -21,29 +21,10 @@
 package de.flapdoodle.embed.mongo.config;
 
 
-import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
-import de.flapdoodle.embed.process.distribution.IVersion;
+public interface IMongodConfig extends IMongoConfig {
 
+	Storage replication();
 
-public abstract class AbstractMongoConfig extends ExecutableProcessConfig implements IMongoConfig {
-
-	protected final Net network;
-	protected final Timeout timeout;
-
-	public AbstractMongoConfig(IVersion version,Net networt, Timeout timeout) {
-		super(version);
-		this.network = networt;
-		this.timeout = timeout;
-	}
-
-	@Override
-	public Net net() {
-		return network;
-	}
-
-	@Override
-	public Timeout timeout() {
-		return timeout;
-	}
+	boolean isConfigServer();
 
 }

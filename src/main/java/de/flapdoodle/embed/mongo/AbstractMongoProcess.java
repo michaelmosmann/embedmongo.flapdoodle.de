@@ -27,25 +27,21 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.google.common.collect.Sets;
-
-import de.flapdoodle.embed.mongo.config.AbstractMongoConfig;
+import de.flapdoodle.embed.mongo.config.IMongoConfig;
 import de.flapdoodle.embed.mongo.runtime.Mongod;
-import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.io.LogWatchStreamProcessor;
 import de.flapdoodle.embed.process.io.Processors;
 import de.flapdoodle.embed.process.io.StreamToLineProcessor;
-import de.flapdoodle.embed.process.io.file.Files;
 import de.flapdoodle.embed.process.runtime.AbstractProcess;
 import de.flapdoodle.embed.process.runtime.Executable;
 import de.flapdoodle.embed.process.runtime.IStopable;
 import de.flapdoodle.embed.process.runtime.ProcessControl;
 
 
-public abstract class AbstractMongoProcess<T extends AbstractMongoConfig, E extends Executable<T, P>, P extends IStopable> extends AbstractProcess<T, E, P> {
+public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Executable<T, P>, P extends IStopable> extends AbstractProcess<T, E, P> {
 
 	private static Logger logger = Logger.getLogger(AbstractMongoProcess.class.getName());
 	

@@ -38,6 +38,8 @@ import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -77,8 +79,8 @@ public class MongoDBExampleAllVersionsTest {
 	public void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		mongodExe = runtime.prepare(new MongodConfig(this.mongoVersion, PORT,
-				Network.localhostIsIPv6()));
+		mongodExe = runtime.prepare(new MongodConfigBuilder().version(this.mongoVersion).net(new Net(PORT,
+				Network.localhostIsIPv6())).build());
 		mongod = mongodExe.start();
 
 		mongo = new Mongo(new ServerAddress(Network.getLocalHost(), PORT));

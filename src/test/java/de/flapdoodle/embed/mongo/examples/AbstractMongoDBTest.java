@@ -28,6 +28,8 @@ import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 
@@ -42,7 +44,10 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	protected void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		_mongodExe = runtime.prepare(new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6()));
+		_mongodExe = runtime.prepare(new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(12345, Network.localhostIsIPv6()))
+			.build());
 		_mongod = _mongodExe.start();
 
 		super.setUp();

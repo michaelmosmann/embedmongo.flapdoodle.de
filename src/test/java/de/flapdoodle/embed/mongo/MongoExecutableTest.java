@@ -36,8 +36,11 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfig;
+import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
@@ -58,7 +61,7 @@ public class MongoExecutableTest extends TestCase {
 		boolean useMongodb = true;
 		int loops = 10;
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12345, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(12345, Network.localhostIsIPv6())).build();
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
@@ -87,7 +90,7 @@ public class MongoExecutableTest extends TestCase {
 	@Test
 	public void testStartMongodOnNonFreePort() throws IOException, InterruptedException {
 
-		MongodConfig mongodConfig = new MongodConfig(Version.Main.PRODUCTION, 12346, Network.localhostIsIPv6());
+		IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).net(new Net(12346, Network.localhostIsIPv6())).build();
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder().defaults(Command.MongoD).build();
 
