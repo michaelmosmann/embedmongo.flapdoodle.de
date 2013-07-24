@@ -45,12 +45,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 11.06.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 24.07.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.33</version>
+		<version>1.34</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -58,7 +58,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.34-SNAPSHOT</version>
+		<version>1.35-SNAPSHOT</version>
 	</dependency>
 
 
@@ -79,7 +79,9 @@ Or if you want to use the gradle wrapper:
 
 ### Changelog
 
-#### 1.34 (SNAPSHOT)
+#### 1.35 (SNAPSHOT)
+
+#### 1.34
 
 - added builder for mongod and mongos config
 - dependencies updated
