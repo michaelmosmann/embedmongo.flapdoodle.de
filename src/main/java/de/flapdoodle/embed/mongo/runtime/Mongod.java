@@ -123,6 +123,7 @@ public class Mongod {
 		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),
 				"--dbpath",
 				"" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal",
+				"--setParameter", "syncdelay=0",
 				"--noauth"));
 		if (config.net().isIpv6()) {
 			ret.add("--ipv6");
