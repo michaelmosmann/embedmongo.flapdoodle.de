@@ -21,6 +21,7 @@
 package de.flapdoodle.embed.mongo.config;
 
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
@@ -29,11 +30,21 @@ public abstract class AbstractMongoConfig extends ExecutableProcessConfig implem
 
 	protected final Net network;
 	protected final Timeout timeout;
+	private final IMongoCmdOptions _cmdOptions;
+	
+	private final IFeatureAwareVersion _featureVersion;
 
-	public AbstractMongoConfig(IVersion version,Net networt, Timeout timeout) {
+	public AbstractMongoConfig(IFeatureAwareVersion version,Net networt, Timeout timeout,IMongoCmdOptions cmdOptions) {
 		super(version);
+		_featureVersion = version;
 		this.network = networt;
 		this.timeout = timeout;
+		_cmdOptions = cmdOptions;
+	}
+	
+	@Override
+	public IFeatureAwareVersion version() {
+		return _featureVersion;
 	}
 
 	@Override
@@ -46,4 +57,8 @@ public abstract class AbstractMongoConfig extends ExecutableProcessConfig implem
 		return timeout;
 	}
 
+	@Override
+	public IMongoCmdOptions cmdOptions() {
+		return _cmdOptions;
+	}
 }

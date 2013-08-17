@@ -37,9 +37,9 @@ import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
 import com.mongodb.ServerAddress;
 
-import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -64,14 +64,14 @@ public class MongoDBExampleAllVersionsTest {
 	}
 
 	private static final int PORT = 12345;
-	private final IVersion mongoVersion;
+	private final IFeatureAwareVersion mongoVersion;
 	private MongodExecutable mongodExe;
 	private MongodProcess mongod;
 
 	private Mongo mongo;
 	private static final String DATABASENAME = "mongo_test";
 
-	public MongoDBExampleAllVersionsTest(IVersion v) {
+	public MongoDBExampleAllVersionsTest(IFeatureAwareVersion v) {
 		this.mongoVersion = v;
 	}
 

@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.AbstractBuilder;
 import de.flapdoodle.embed.process.builder.IProperty;
 import de.flapdoodle.embed.process.builder.TypedProperty;
@@ -30,17 +31,19 @@ import de.flapdoodle.embed.process.distribution.IVersion;
 
 public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends AbstractBuilder<T> {
 
-	protected static final TypedProperty<IVersion> VERSION = TypedProperty.with("Version", IVersion.class);
+	protected static final TypedProperty<IFeatureAwareVersion> VERSION = TypedProperty.with("Version", IFeatureAwareVersion.class);
 	protected static final TypedProperty<Timeout> TIMEOUT = TypedProperty.with("Timeout", Timeout.class);
 	protected static final TypedProperty<Net> NET = TypedProperty.with("Net", Net.class);
+	protected static final TypedProperty<IMongoCmdOptions> CMD_OPTIONS = TypedProperty.with("CmdOptions", IMongoCmdOptions.class);
 
 	
 	public AbstractMongoConfigBuilder() throws UnknownHostException, IOException  {
 		timeout().setDefault(new Timeout());
 		net().setDefault(new Net());
+		cmdOptions().setDefault(new MongoCmdOptionsBuilder().build());
 	}
 	
-	protected IProperty<IVersion> version() {
+	protected IProperty<IFeatureAwareVersion> version() {
 		return property(VERSION);
 	}
 
@@ -52,21 +55,27 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 		return property(NET);
 	}
 
+	protected IProperty<IMongoCmdOptions> cmdOptions() {
+		return property(CMD_OPTIONS);
+	}
+	
 	static class ImmutableMongoConfig implements IMongoConfig {
 
-		private final IVersion _version;
+		private final IFeatureAwareVersion _version;
 		private final Timeout _timeout;
 		private final Net _net;
+		private final IMongoCmdOptions _cmdOptions;
 
-		public ImmutableMongoConfig(IVersion version, Net net, Timeout timeout) {
+		public ImmutableMongoConfig(IFeatureAwareVersion version, Net net, Timeout timeout,IMongoCmdOptions cmdOptions) {
 			super();
 			_version = version;
 			_net = net;
 			_timeout = timeout;
+			_cmdOptions = cmdOptions;
 		}
 
 		@Override
-		public IVersion version() {
+		public IFeatureAwareVersion version() {
 			return _version;
 		}
 
@@ -78,6 +87,11 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 		@Override
 		public Net net() {
 			return _net;
+		}
+
+		@Override
+		public IMongoCmdOptions cmdOptions() {
+			return _cmdOptions;
 		}
 
 	}

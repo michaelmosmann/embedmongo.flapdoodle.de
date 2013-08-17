@@ -20,13 +20,17 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.config.IExecutableProcessConfig;
 
-
 public interface IMongoConfig extends IExecutableProcessConfig {
+
+	@Override
+	public IFeatureAwareVersion version();
 
 	Timeout timeout();
 
 	Net net();
 
+	IMongoCmdOptions cmdOptions();
 }

@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
@@ -37,7 +38,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		property(CONFIG_SERVER).setDefault(false);
 	}
 
-	public MongodConfigBuilder version(IVersion version) {
+	public MongodConfigBuilder version(IFeatureAwareVersion version) {
 		version().set(version);
 		return this;
 	}
@@ -51,7 +52,12 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		net().set(net);
 		return this;
 	}
-	
+
+	public MongodConfigBuilder cmdOptions(IMongoCmdOptions cmdOptions) {
+		cmdOptions().set(cmdOptions);
+		return this;
+	}
+
 	public MongodConfigBuilder replication(Storage replication) {
 		set(REPLICATION,replication);
 		return this;
@@ -64,13 +70,14 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 	
 	@Override
 	public IMongodConfig build() {
-		IVersion version=version().get();
+		IFeatureAwareVersion version=version().get();
 		Net net=net().get();
 		Timeout timeout=timeout().get();
 		Storage replication=get(REPLICATION);
 		boolean configServer=get(CONFIG_SERVER);
+		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		
-		return new ImmutableMongodConfig(version, net, timeout, replication, configServer);
+		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, replication, configServer);
 	}
 
 	static class ImmutableMongodConfig extends ImmutableMongoConfig implements IMongodConfig {
@@ -78,8 +85,8 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		private final Storage _replication;
 		private final boolean _configServer;
 
-		public ImmutableMongodConfig(IVersion version, Net net, Timeout timeout,Storage replication,boolean configServer) {
-			super(version, net, timeout);
+		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, Storage replication,boolean configServer) {
+			super(version, net, timeout,cmdOptions);
 			_replication = replication;
 			_configServer = configServer;
 		}

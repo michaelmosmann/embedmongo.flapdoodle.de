@@ -35,11 +35,10 @@ import de.flapdoodle.embed.mongo.MongosExecutable;
 import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
-import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Timeout;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.runtime.Network;
@@ -53,7 +52,7 @@ public class MongosForTestsFactory {
 	private static Logger logger = Logger.getLogger(MongosForTestsFactory.class
 			.getName());
 
-	public static MongosForTestsFactory with(final IVersion version)
+	public static MongosForTestsFactory with(final IFeatureAwareVersion version)
 			throws IOException {
 		return new MongosForTestsFactory(version);
 	}
@@ -82,7 +81,7 @@ public class MongosForTestsFactory {
 	 * @param version
 	 *            version of MongoDB.
 	 */
-	public MongosForTestsFactory(final IVersion version) throws IOException {
+	public MongosForTestsFactory(final IFeatureAwareVersion version) throws IOException {
 
 		final MongosStarter mongoConfigRuntime = MongosStarter.getInstance(new RuntimeConfigBuilder()
 			.defaultsWithLogger(Command.MongoS,logger)

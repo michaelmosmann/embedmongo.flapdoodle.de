@@ -34,6 +34,8 @@ import com.mongodb.DB;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoException;
 import com.mongodb.MongoOptions;
 import com.mongodb.ServerAddress;
@@ -47,8 +49,6 @@ import de.flapdoodle.embed.mongo.MongosProcess;
 import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
-import de.flapdoodle.embed.mongo.config.MongosConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 
 public class MongosSystemForTestFactory {
@@ -119,9 +119,10 @@ public class MongosSystemForTestFactory {
 			mongodProcessList.add(process);
 		}
 		Thread.sleep(1000);
-		MongoOptions mo = new MongoOptions();
-		mo.autoConnectRetry = true;
-		Mongo mongo = new Mongo(new ServerAddress(mongoConfigList.get(0).net()
+		MongoClientOptions mo = MongoClientOptions.builder()
+				.autoConnectRetry(true)
+				.build();
+		MongoClient mongo = new MongoClient(new ServerAddress(mongoConfigList.get(0).net()
 				.getServerAddress().getHostName(), mongoConfigList.get(0).net()
 				.getPort()), mo);
 		DB mongoAdminDB = mongo.getDB(ADMIN_DATABASE_NAME);

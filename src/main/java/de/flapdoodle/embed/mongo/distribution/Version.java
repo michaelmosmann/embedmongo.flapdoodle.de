@@ -20,12 +20,14 @@
  */
 package de.flapdoodle.embed.mongo.distribution;
 
+import java.util.EnumSet;
+
 import de.flapdoodle.embed.process.distribution.IVersion;
 
 /**
  * MongoDB Version enum
  */
-public enum Version implements IVersion {
+public enum Version implements IFeatureAwareVersion {
 
 	@Deprecated
 	V1_6_5("1.6.5"),
@@ -90,43 +92,50 @@ public enum Version implements IVersion {
 	@Deprecated
 	V2_4_0_RC3("2.4.0-rc3"),
 	@Deprecated
-	V2_4_0("2.4.0"),
+	V2_4_0("2.4.0",Feature.SYNC_DELAY),
   @Deprecated
-  V2_4_1("2.4.1"),
+  V2_4_1("2.4.1",Feature.SYNC_DELAY),
   @Deprecated
- 	V2_4_2("2.4.2"),
+ 	V2_4_2("2.4.2",Feature.SYNC_DELAY),
   @Deprecated
-	V2_4_3("2.4.3"),
+	V2_4_3("2.4.3",Feature.SYNC_DELAY),
 	/**
 	 * new production release
 	 */
-  	V2_4_5("2.4.5"),
+  	V2_4_5("2.4.5",Feature.SYNC_DELAY),
 
   @Deprecated
-  V2_5_0("2.5.0"),
+  V2_5_0("2.5.0",Feature.SYNC_DELAY),
     /**
      * new developement release
      */
-    V2_5_1("2.5.1"),
+    V2_5_1("2.5.1",Feature.SYNC_DELAY),
     ;
 
 	private final String specificVersion;
+	private EnumSet<Feature> features;
 
-	Version(String vName) {
+	Version(String vName,Feature...features) {
 		this.specificVersion = vName;
+		this.features = Feature.asSet(features);
 	}
 
 	@Override
 	public String asInDownloadPath() {
 		return specificVersion;
 	}
+	
+	@Override
+		public boolean enabled(Feature feature) {
+			return features.contains(feature);
+		}
 
 	@Override
 	public String toString() {
 		return "Version{" + specificVersion + '}';
 	}
 
-	public static enum Main implements IVersion {
+	public static enum Main implements IFeatureAwareVersion {
 		@Deprecated
 		V1_8(V1_8_5),
 		@Deprecated
@@ -151,15 +160,20 @@ public enum Version implements IVersion {
 		PRODUCTION(V2_4),
 		DEVELOPMENT(V2_5), ;
 
-		private final IVersion _latest;
+		private final IFeatureAwareVersion _latest;
 
-		Main(IVersion latest) {
+		Main(IFeatureAwareVersion latest) {
 			_latest = latest;
 		}
 
 		@Override
 		public String asInDownloadPath() {
 			return _latest.asInDownloadPath();
+		}
+		
+		@Override
+		public boolean enabled(Feature feature) {
+			return _latest.enabled(feature);
 		}
 	}
 }

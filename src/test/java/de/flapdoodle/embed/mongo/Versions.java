@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo;
 import java.util.Collection;
 import java.util.Comparator;
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
 public class Versions {
@@ -31,7 +32,7 @@ public class Versions {
 		// no instance
 	}
 
-	public static <T extends Enum<T> & IVersion> Collection<T> testableVersions(Class<T> type) {
+	public static <T extends Enum<T> & IFeatureAwareVersion> Collection<T> testableVersions(Class<T> type) {
 		return Enums.unique(Enums.filter(Enums.values(type), new Enums.NotDeprecated<T>(type)), new IVersionComparator<T>());
 	}
 

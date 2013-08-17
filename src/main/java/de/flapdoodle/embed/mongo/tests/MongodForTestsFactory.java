@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.MongoException;
 import com.mongodb.ServerAddress;
 
@@ -35,14 +36,10 @@ import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Storage;
-import de.flapdoodle.embed.mongo.config.Timeout;
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.mongo.distribution.Version;
-import de.flapdoodle.embed.process.distribution.IVersion;
 
 /**
  * This class encapsulates everything that would be needed to do embedded
@@ -53,7 +50,7 @@ public class MongodForTestsFactory {
 	private static Logger logger = Logger.getLogger(MongodForTestsFactory.class
 			.getName());
 
-	public static MongodForTestsFactory with(final IVersion version)
+	public static MongodForTestsFactory with(final IFeatureAwareVersion version)
 			throws IOException {
 		return new MongodForTestsFactory(version);
 	}
@@ -78,7 +75,7 @@ public class MongodForTestsFactory {
 	 * @param version
 	 *            version of MongoDB.
 	 */
-	public MongodForTestsFactory(final IVersion version) throws IOException {
+	public MongodForTestsFactory(final IFeatureAwareVersion version) throws IOException {
 
 		final MongodStarter runtime = MongodStarter.getInstance(new RuntimeConfigBuilder()
 			.defaultsWithLogger(Command.MongoD, logger)
@@ -88,7 +85,7 @@ public class MongodForTestsFactory {
 
 	}
 
-	protected IMongodConfig newMongodConfig(final IVersion version) throws UnknownHostException, IOException {
+	protected IMongodConfig newMongodConfig(final IFeatureAwareVersion version) throws UnknownHostException, IOException {
 		return new MongodConfigBuilder().version(version).build();
 	}
 
@@ -98,8 +95,8 @@ public class MongodForTestsFactory {
 	 * @throws MongoException
 	 * @throws UnknownHostException
 	 */
-	public Mongo newMongo() throws UnknownHostException, MongoException {
-		return new Mongo(new ServerAddress(mongodProcess.getConfig().net().getServerAddress(),
+	public MongoClient newMongo() throws UnknownHostException, MongoException {
+		return new MongoClient(new ServerAddress(mongodProcess.getConfig().net().getServerAddress(),
 				mongodProcess.getConfig().net().getPort()));
 	}
 	

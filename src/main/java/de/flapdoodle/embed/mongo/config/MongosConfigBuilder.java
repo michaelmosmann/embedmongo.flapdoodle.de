@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
@@ -34,7 +35,7 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 		super();
 	}
 
-	public MongosConfigBuilder version(IVersion version) {
+	public MongosConfigBuilder version(IFeatureAwareVersion version) {
 		version().set(version);
 		return this;
 	}
@@ -49,6 +50,11 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 		return this;
 	}
 
+	public MongosConfigBuilder cmdOptions(IMongoCmdOptions cmdOptions) {
+		cmdOptions().set(cmdOptions);
+		return this;
+	}
+
 	public MongosConfigBuilder configDB(String configDB) {
 		set(CONFIG_DB, configDB);
 		return this;
@@ -56,20 +62,21 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 
 	@Override
 	public IMongosConfig build() {
-		IVersion version = version().get();
+		IFeatureAwareVersion version = version().get();
 		Net net = net().get();
 		Timeout timeout = timeout().get();
 		String configDB = get(CONFIG_DB);
+		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 
-		return new ImmutableMongosConfig(version, net, timeout, configDB);
+		return new ImmutableMongosConfig(version, net, timeout, cmdOptions, configDB);
 	}
 
 	static class ImmutableMongosConfig extends ImmutableMongoConfig implements IMongosConfig {
 
 		private final String _configDB;
 
-		public ImmutableMongosConfig(IVersion version, Net net, Timeout timeout, String configDB) {
-			super(version, net, timeout);
+		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String configDB) {
+			super(version, net, timeout,cmdOptions);
 			_configDB = configDB;
 		}
 

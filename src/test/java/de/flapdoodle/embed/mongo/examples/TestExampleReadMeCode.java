@@ -36,7 +36,7 @@ import junit.framework.TestCase;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
-import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.Command;
@@ -50,7 +50,9 @@ import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Timeout;
+import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.mongo.distribution.Version;
+import de.flapdoodle.embed.mongo.distribution.Versions;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
@@ -86,7 +88,7 @@ public class TestExampleReadMeCode extends TestCase {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			MongodProcess mongod = mongodExecutable.start();
 
-			Mongo mongo = new Mongo("localhost", port);
+			MongoClient mongo = new MongoClient("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
@@ -125,7 +127,7 @@ public class TestExampleReadMeCode extends TestCase {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			MongodProcess mongod = mongodExecutable.start();
 
-			Mongo mongo = new Mongo("localhost", port);
+			MongoClient mongo = new MongoClient("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
@@ -151,7 +153,7 @@ public class TestExampleReadMeCode extends TestCase {
 		try {
 			factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 
-			Mongo mongo = factory.newMongo();
+			MongoClient mongo = factory.newMongo();
 			DB db = mongo.getDB("test-" + UUID.randomUUID());
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
@@ -335,7 +337,7 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(new GenericVersion("2.0.7-rc1"))
+			.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"),Feature.SYNC_DELAY))
 			.net(new Net(port, Network.localhostIsIPv6()))
 			.build();
 
@@ -348,7 +350,7 @@ public class TestExampleReadMeCode extends TestCase {
 			mongod = mongodExecutable.start();
 
 			// <-
-			Mongo mongo = new Mongo("localhost", port);
+			MongoClient mongo = new MongoClient("localhost", port);
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
 			col.save(new BasicDBObject("testDoc", new Date()));
@@ -409,7 +411,7 @@ public class TestExampleReadMeCode extends TestCase {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			mongod = mongodExecutable.start();
 
-			Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+			MongoClient mongo = new MongoClient(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 			// <-
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());

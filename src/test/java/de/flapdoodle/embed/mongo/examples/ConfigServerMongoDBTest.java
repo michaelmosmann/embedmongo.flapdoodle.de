@@ -27,16 +27,14 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.CommandResult;
 import com.mongodb.DB;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientOptions;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.MongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.Storage;
-import de.flapdoodle.embed.mongo.config.Timeout;
 import de.flapdoodle.embed.mongo.distribution.Version;
 
 public class ConfigServerMongoDBTest extends TestCase {
@@ -44,7 +42,7 @@ public class ConfigServerMongoDBTest extends TestCase {
 	private MongodExecutable _mongodExe;
 	private MongodProcess _mongod;
 
-	private Mongo _mongo;
+	private MongoClient _mongo;
 
 	@Override
 	protected void setUp() throws Exception {
@@ -57,7 +55,7 @@ public class ConfigServerMongoDBTest extends TestCase {
 
 		super.setUp();
 
-		_mongo = new Mongo(config.net().getServerAddress().getHostName(),
+		_mongo = new MongoClient(config.net().getServerAddress().getHostName(),
 				config.net().getPort());
 	}
 

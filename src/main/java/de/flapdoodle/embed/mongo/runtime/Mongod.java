@@ -45,7 +45,7 @@ import de.flapdoodle.embed.process.runtime.NUMA;
 /**
  *
  */
-public class Mongod {
+public class Mongod extends AbstractMongo {
 
 	private static Logger logger = Logger.getLogger(Mongod.class.getName());
 
@@ -120,18 +120,14 @@ public class Mongod {
 	public static List<String> getCommandLine(IMongodConfig config, File mongodExecutable, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", "--port", "" + config.net().getPort(),
+		ret.addAll(Arrays.asList(mongodExecutable.getAbsolutePath(), "-v", 
 				"--dbpath",
-				"" + dbDir.getAbsolutePath(), "--noprealloc", "--nohttpinterface", "--smallfiles", "--nojournal",
-				"--setParameter", "syncdelay=0",
+				"" + dbDir.getAbsolutePath(), "--noprealloc", "--smallfiles", "--nojournal",
 				"--noauth"));
-		if (config.net().isIpv6()) {
-			ret.add("--ipv6");
-		}
-		if (config.net().getBindIp()!=null) {
-			ret.add("--bind_ip");
-			ret.add(config.net().getBindIp());
-		}
+		
+		applyDefaultOptions(config, ret);
+		applyNet(config.net(), ret);
+		
 		if (config.replication().getReplSetName()!=null) {
 			ret.add("--replSet");
 			ret.add(config.replication().getReplSetName());
