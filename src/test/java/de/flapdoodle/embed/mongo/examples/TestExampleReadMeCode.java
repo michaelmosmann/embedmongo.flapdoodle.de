@@ -46,10 +46,12 @@ import de.flapdoodle.embed.mongo.MongodStarter;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Timeout;
+import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.mongo.distribution.Versions;
@@ -452,7 +454,6 @@ public class TestExampleReadMeCode extends TestCase {
 		new ICommandLinePostProcessor() {
 			@Override
 			public List<String> process(Distribution distribution, List<String> args) {
-				// TODO Auto-generated method stub
 				return null;
 			}
 		};
@@ -466,4 +467,44 @@ public class TestExampleReadMeCode extends TestCase {
 		// <-
 	}
 
+	// ### Custom Command Line Options
+	/*
+	// ->
+		We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
+	// <-
+	 */
+	public void testCommandLineOptions() throws UnknownHostException, IOException {
+		// ->
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.cmdOptions(new MongoCmdOptionsBuilder()
+			.syncDeplay(10)
+			.build())
+		.build();
+		// ...
+		// <-
+		
+	}
+	
+	// ### Snapshot database files from temp dir
+	/*
+	// ->
+		We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
+	// <-
+	 */
+	public void testSnapshotDbFiles() throws UnknownHostException, IOException {
+		File destination=null;
+		// ->
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.processListener(new ProcessListenerBuilder()
+			.copyDbFilesBeforeStopInto(destination)
+			.build())
+		.cmdOptions(new MongoCmdOptionsBuilder()
+			.defaultSyncDeplay()
+			.build())
+		.build();
+		// ...
+		// <-
+	}
 }

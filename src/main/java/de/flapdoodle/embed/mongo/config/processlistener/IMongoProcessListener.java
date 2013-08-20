@@ -18,20 +18,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo.examples;
+package de.flapdoodle.embed.mongo.config.processlistener;
 
-import java.util.Date;
-
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
+import java.io.File;
 
 
-public class DummyMongoDBTest extends AbstractMongoDBTest {
+public interface IMongoProcessListener {
 
-	public void testNothing() {
-		DB db = getMongo().getDB("test");
-		DBCollection col = db.createCollection("testCol", new BasicDBObject());
-		col.save(new BasicDBObject("testDoc", new Date()));
-	}
+	void onBeforeProcessStart(File dbDir, boolean dbDirIsTemp);
+
+	void onAfterProcessStop(File dbDir, boolean dbDirIsTemp);
+
 }

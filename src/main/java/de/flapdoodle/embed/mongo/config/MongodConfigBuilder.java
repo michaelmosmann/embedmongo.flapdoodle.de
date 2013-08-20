@@ -23,6 +23,8 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
+import de.flapdoodle.embed.mongo.config.processlistener.NoopProcessListener;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
 import de.flapdoodle.embed.process.distribution.IVersion;
@@ -31,11 +33,13 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 
 	protected static final TypedProperty<Storage> REPLICATION = TypedProperty.with("Replication", Storage.class);
 	protected static final TypedProperty<Boolean> CONFIG_SERVER = TypedProperty.with("ConfigServer", Boolean.class);
+	protected static final TypedProperty<IMongoProcessListener> PROCESS_LISTENER = TypedProperty.with("ProcessListener", IMongoProcessListener.class);
 
 	public MongodConfigBuilder() throws UnknownHostException, IOException {
 		super();
 		property(REPLICATION).setDefault(new Storage());
 		property(CONFIG_SERVER).setDefault(false);
+		property(PROCESS_LISTENER).setDefault(new NoopProcessListener());
 	}
 
 	public MongodConfigBuilder version(IFeatureAwareVersion version) {
@@ -57,7 +61,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		cmdOptions().set(cmdOptions);
 		return this;
 	}
-
+	
 	public MongodConfigBuilder replication(Storage replication) {
 		set(REPLICATION,replication);
 		return this;
@@ -65,6 +69,11 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 	
 	public MongodConfigBuilder configServer(boolean configServer) {
 		set(CONFIG_SERVER,configServer);
+		return this;
+	}
+	
+	public MongodConfigBuilder processListener(IMongoProcessListener processListener) {
+		set(PROCESS_LISTENER,processListener);
 		return this;
 	}
 	
@@ -76,19 +85,22 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		Storage replication=get(REPLICATION);
 		boolean configServer=get(CONFIG_SERVER);
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
+		IMongoProcessListener processListener=get(PROCESS_LISTENER);
 		
-		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, replication, configServer);
+		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, replication, configServer,processListener);
 	}
 
 	static class ImmutableMongodConfig extends ImmutableMongoConfig implements IMongodConfig {
 
 		private final Storage _replication;
 		private final boolean _configServer;
+		private final IMongoProcessListener _processListener;
 
-		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, Storage replication,boolean configServer) {
+		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, Storage replication,boolean configServer, IMongoProcessListener processListener) {
 			super(version, net, timeout,cmdOptions);
 			_replication = replication;
 			_configServer = configServer;
+			_processListener = processListener;
 		}
 
 		@Override
@@ -101,5 +113,9 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 			return _configServer;
 		}
 
+		@Override
+		public IMongoProcessListener processListener() {
+			return _processListener;
+		}
 	}
 }

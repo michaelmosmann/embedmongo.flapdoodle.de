@@ -20,13 +20,21 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
+import java.io.IOException;
+import java.net.UnknownHostException;
+
+import org.junit.After;
+import org.junit.Before;
+
 import junit.framework.TestCase;
 
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.distribution.Version;
@@ -40,21 +48,30 @@ public abstract class AbstractMongoDBTest extends TestCase {
 
 	private Mongo _mongo;
 	@Override
+	@Before
 	protected void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		_mongodExe = runtime.prepare(new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(12345, Network.localhostIsIPv6()))
-			.build());
+		_mongodExe = runtime.prepare(createMongodConfig());
 		_mongod = _mongodExe.start();
 
 		super.setUp();
 
-		_mongo = new Mongo("localhost", 12345);
+		_mongo = new MongoClient("localhost", 12345);
+	}
+
+	protected IMongodConfig createMongodConfig() throws UnknownHostException, IOException {
+		return createMongodConfigBuilder().build();
+	}
+
+	protected MongodConfigBuilder createMongodConfigBuilder() throws UnknownHostException, IOException {
+		return new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(12345, Network.localhostIsIPv6()));
 	}
 
 	@Override
+	@After
 	protected void tearDown() throws Exception {
 		super.tearDown();
 

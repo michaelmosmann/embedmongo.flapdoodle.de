@@ -18,20 +18,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo.examples;
+package de.flapdoodle.embed.mongo.config.processlistener;
 
-import java.util.Date;
+import java.io.File;
+import java.io.IOException;
 
-import com.mongodb.BasicDBObject;
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
+import org.apache.commons.io.FileUtils;
 
 
-public class DummyMongoDBTest extends AbstractMongoDBTest {
+public class CopyDbFilesIntoDirBeforeProcessStart implements IMongoProcessListener {
 
-	public void testNothing() {
-		DB db = getMongo().getDB("test");
-		DBCollection col = db.createCollection("testCol", new BasicDBObject());
-		col.save(new BasicDBObject("testDoc", new Date()));
+	private final File _source;
+	
+	public CopyDbFilesIntoDirBeforeProcessStart(File source) {
+		_source=source;
 	}
+
+	@Override
+	public void onBeforeProcessStart(File dbDir, boolean dbDirIsTemp) {
+		try {
+			FileUtils.copyDirectory(_source, dbDir);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public void onAfterProcessStop(File dbDir, boolean dbDirIsTemp) {
+	}
+
 }

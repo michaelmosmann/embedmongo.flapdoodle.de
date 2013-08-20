@@ -75,8 +75,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 	}
 
 	@Override
-	public final void stop() {
-
+	public void stopInternal() {
 		synchronized (this) {
 			if (!stopped) {
 
@@ -94,11 +93,13 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 				}
 
 				stopProcess();
-
-				deleteTempFiles();
-
 			}
 		}
+	}
+	
+	@Override
+	protected void cleanupInternal() {
+		deleteTempFiles();
 	}
 
 	protected void deleteTempFiles() {

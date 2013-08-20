@@ -65,6 +65,18 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 		}
 		this.dbDir = tmpDbDir;
 	}
+	
+	@Override
+	protected void onBeforeProcessStart(ProcessBuilder processBuilder, IMongodConfig config, IRuntimeConfig runtimeConfig) {
+		config.processListener().onBeforeProcessStart(this.dbDir,dbDirIsTemp);
+		super.onBeforeProcessStart(processBuilder, config, runtimeConfig);
+	}
+	
+	@Override
+	protected void onAfterProcessStop(IMongodConfig config, IRuntimeConfig runtimeConfig) {
+		super.onAfterProcessStop(config, runtimeConfig);
+		config.processListener().onAfterProcessStop(this.dbDir,dbDirIsTemp);
+	}
 
 	@Override
 	protected ISupportConfig supportConfig() {

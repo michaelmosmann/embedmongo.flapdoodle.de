@@ -20,6 +20,8 @@
  */
 package de.flapdoodle.embed.mongo.config;
 
+import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
+
 
 public interface IMongodConfig extends IMongoConfig {
 
@@ -27,4 +29,5 @@ public interface IMongodConfig extends IMongoConfig {
 
 	boolean isConfigServer();
 
+	IMongoProcessListener processListener();
 }
