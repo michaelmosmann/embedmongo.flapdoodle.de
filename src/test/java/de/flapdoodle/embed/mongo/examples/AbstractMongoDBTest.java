@@ -46,9 +46,8 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	private MongodExecutable _mongodExe;
 	private MongodProcess _mongod;
 
-	private Mongo _mongo;
+	private MongoClient _mongo;
 	@Override
-	@Before
 	protected void setUp() throws Exception {
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
@@ -71,7 +70,6 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	}
 
 	@Override
-	@After
 	protected void tearDown() throws Exception {
 		super.tearDown();
 

@@ -81,6 +81,9 @@ Or if you want to use the gradle wrapper:
 
 #### 1.35 (SNAPSHOT)
 
+- syncDelay set to 0 (no sync)
+- process listener added (can copy db files after test into custom directory)
+
 #### 1.34
 
 - added builder for mongod and mongos config
@@ -236,7 +239,7 @@ Support for Linux, Windows and MacOSX.
 		mongodExecutable = runtime.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
-		Mongo mongo = new Mongo("localhost", port);
+		MongoClient mongo = new MongoClient("localhost", port);
 		DB db = mongo.getDB("test");
 		DBCollection col = db.createCollection("testCol", new BasicDBObject());
 		col.save(new BasicDBObject("testDoc", new Date()));
@@ -275,7 +278,7 @@ Support for Linux, Windows and MacOSX.
 		mongodExecutable = runtime.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
-		Mongo mongo = new Mongo("localhost", port);
+		MongoClient mongo = new MongoClient("localhost", port);
 		DB db = mongo.getDB("test");
 		DBCollection col = db.createCollection("testCol", new BasicDBObject());
 		col.save(new BasicDBObject("testDoc", new Date()));
@@ -292,7 +295,7 @@ Support for Linux, Windows and MacOSX.
 		private MongodExecutable _mongodExe;
 		private MongodProcess _mongod;
 
-		private Mongo _mongo;
+		private MongoClient _mongo;
 		@Override
 		protected void setUp() throws Exception {
 
@@ -305,7 +308,7 @@ Support for Linux, Windows and MacOSX.
 
 			super.setUp();
 
-			_mongo = new Mongo("localhost", 12345);
+			_mongo = new MongoClient("localhost", 12345);
 		}
 
 		@Override
@@ -329,7 +332,7 @@ Support for Linux, Windows and MacOSX.
 	try {
 		factory = MongodForTestsFactory.with(Version.Main.PRODUCTION);
 
-		Mongo mongo = factory.newMongo();
+		MongoClient mongo = factory.newMongo();
 		DB db = mongo.getDB("test-" + UUID.randomUUID());
 		DBCollection col = db.createCollection("testCol", new BasicDBObject());
 		col.save(new BasicDBObject("testDoc", new Date()));
@@ -477,7 +480,7 @@ Support for Linux, Windows and MacOSX.
 	...
 	int port = 12345;
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
-		.version(new GenericVersion("2.0.7-rc1"))
+		.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"),Feature.SYNC_DELAY))
 		.net(new Net(port, Network.localhostIsIPv6()))
 		.build();
 
@@ -533,7 +536,7 @@ Support for Linux, Windows and MacOSX.
 		mongodExecutable = runtime.prepare(mongodConfig);
 		mongod = mongodExecutable.start();
 
-		Mongo mongo = new Mongo(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+		MongoClient mongo = new MongoClient(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 		...
 
 	} finally {
@@ -563,6 +566,31 @@ Support for Linux, Windows and MacOSX.
 		.defaults(Command.MongoD)
 		.commandLinePostProcessor(postProcessor)
 		.build();
+	...
+
+### Custom Command Line Options
+
+	We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+	.version(Version.Main.PRODUCTION)
+	.cmdOptions(new MongoCmdOptionsBuilder()
+		.syncDeplay(10)
+		.build())
+	.build();
+	...
+
+### Snapshot database files from temp dir
+
+	We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+	.version(Version.Main.PRODUCTION)
+	.processListener(new ProcessListenerBuilder()
+		.copyDbFilesBeforeStopInto(destination)
+		.build())
+	.cmdOptions(new MongoCmdOptionsBuilder()
+		.defaultSyncDeplay()
+		.build())
+	.build();
 	...
 
 ----
