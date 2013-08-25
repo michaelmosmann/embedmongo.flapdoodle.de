@@ -63,6 +63,7 @@ public class MongoDBRuntimeTest extends TestCase {
 			for (IVersion version : Versions.testableVersions(Version.Main.class)) {
 				for (BitSize bitsize : BitSize.values()) {
 					// there is no osx 32bit version for v2.2.1
+					// there is no solare 32bit version
 					if (!shipThisVersion(platform, version, bitsize)) {
 						check(config, new Distribution(version, platform, bitsize));
 					}
@@ -107,6 +108,9 @@ public class MongoDBRuntimeTest extends TestCase {
 			if (currentVersion.equals(Version.Main.PRODUCTION.asInDownloadPath())) return true;
 			if (currentVersion.equals(Version.Main.DEVELOPMENT.asInDownloadPath())) return true;
 		}
+        if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
+        	return true;
+        }
 		return false;
 	}
 

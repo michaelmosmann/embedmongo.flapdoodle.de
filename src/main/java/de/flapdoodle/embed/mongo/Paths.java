@@ -55,6 +55,7 @@ public class Paths implements IPackageResolver {
 		switch (distribution.getPlatform()) {
 			case Linux:
 			case OS_X:
+			case Solaris:
 				mongodPattern = command.commandName();
 				break;
 			case Windows:
@@ -71,6 +72,7 @@ public class Paths implements IPackageResolver {
 		ArchiveType archiveType;
 		switch (distribution.getPlatform()) {
 			case Linux:
+			case Solaris:
 				archiveType = ArchiveType.TGZ;
 				break;
 			case Windows:
@@ -112,6 +114,9 @@ public class Paths implements IPackageResolver {
 				break;
 			case OS_X:
 				splatform = "osx";
+				break;
+			case Solaris:
+				splatform = "sunos5";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
