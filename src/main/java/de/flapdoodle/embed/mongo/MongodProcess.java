@@ -65,13 +65,15 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 		}
 		this.dbDir = tmpDbDir;
 		
-		File tmpPidFile;
-	    if (config.replication().getPidFile() != null) {
-	        tmpPidFile = new File(pidFile, config.replication().getPidFile());
-	    } else {
-	        tmpPidFile = new File(config.replication().getDatabaseDir()
-	           , "mongodb.pid");
-	    }
+        File tmpPidFile;
+        if ( config.replication().getPidFile() != null )
+        {
+            tmpPidFile = new File( pidFile, config.replication().getPidFile() );
+        }
+        else
+        {
+            tmpPidFile = new File( dbDir, "mongodb.pid" );
+        }
 	    this.pidFile = tmpPidFile;
 	}
 	
