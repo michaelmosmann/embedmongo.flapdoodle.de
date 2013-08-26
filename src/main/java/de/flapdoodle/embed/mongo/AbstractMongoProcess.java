@@ -62,6 +62,8 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 		logWatch.waitForResult(getConfig().timeout().getStartupTimeout());
 		if (logWatch.isInitWithSuccess()) {
 			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
+			// write pid to file
+	        forceWritePidFile(process.getPid());
 		} else {
 			throw new IOException("Could not start process");
 		}
