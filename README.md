@@ -77,7 +77,9 @@ Or if you want to use the gradle wrapper:
 
 	./gradlew build
  
+### Changelog
 
+https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo/wiki/Changelog
 
 ### Supported Versions
 
