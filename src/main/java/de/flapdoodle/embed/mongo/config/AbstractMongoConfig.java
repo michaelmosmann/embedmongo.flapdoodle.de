@@ -23,7 +23,6 @@ package de.flapdoodle.embed.mongo.config;
 
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.config.ExecutableProcessConfig;
-import de.flapdoodle.embed.process.distribution.IVersion;
 
 
 public abstract class AbstractMongoConfig extends ExecutableProcessConfig implements IMongoConfig {
