@@ -80,7 +80,7 @@ Or if you want to use the gradle wrapper:
  
 ### Changelog
 
-https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo/wiki/Changelog
+[Changelog](Changelog.md)
 
 ### Supported Versions
 
