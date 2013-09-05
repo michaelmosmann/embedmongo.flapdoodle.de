@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Executable;
 
 /**
@@ -35,8 +36,8 @@ import de.flapdoodle.embed.process.runtime.Executable;
 public class MongodExecutable extends Executable<IMongodConfig, MongodProcess> {
 
 	public MongodExecutable(Distribution distribution, IMongodConfig mongodConfig, IRuntimeConfig runtimeConfig,
-			File mongodExecutable) {
-		super(distribution, mongodConfig, runtimeConfig, mongodExecutable);
+			IExtractedFileSet files) {
+		super(distribution, mongodConfig, runtimeConfig, files);
 	}
 
 	private static Logger logger = Logger.getLogger(MongodExecutable.class.getName());

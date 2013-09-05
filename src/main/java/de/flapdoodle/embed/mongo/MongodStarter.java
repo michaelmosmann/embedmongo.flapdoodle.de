@@ -27,6 +27,7 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Starter;
 
 /**
@@ -49,7 +50,7 @@ public class MongodStarter extends Starter<IMongodConfig,MongodExecutable,Mongod
 	}
 	
 	@Override
-	protected MongodExecutable newExecutable(IMongodConfig mongodConfig, Distribution distribution, IRuntimeConfig runtime, File mongodExe) {
-		return new MongodExecutable(distribution, mongodConfig, runtime, mongodExe);
+	protected MongodExecutable newExecutable(IMongodConfig mongodConfig, Distribution distribution, IRuntimeConfig runtime, IExtractedFileSet files) {
+		return new MongodExecutable(distribution, mongodConfig, runtime, files);
 	}
 }

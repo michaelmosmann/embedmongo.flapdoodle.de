@@ -44,6 +44,7 @@ import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Network;
 
 // CHECKSTYLE:OFF
@@ -116,9 +117,10 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	private void check(IRuntimeConfig runtime, Distribution distribution) throws IOException {
 		assertTrue("Check", runtime.getArtifactStore().checkDistribution(distribution));
-		File mongod = runtime.getArtifactStore().extractExe(distribution);
-		assertNotNull("Extracted", mongod);
-		assertTrue("Delete", mongod.delete());
+		IExtractedFileSet files = runtime.getArtifactStore().extractFileSet(distribution);
+		assertNotNull("Extracted", files);
+		assertNotNull("Extracted", files.executable());
+		assertTrue("Delete", files.executable().delete());
 	}
 
 	public void testCheck() throws IOException, InterruptedException {

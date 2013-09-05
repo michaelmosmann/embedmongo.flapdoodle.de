@@ -20,7 +20,6 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -30,6 +29,7 @@ import de.flapdoodle.embed.mongo.runtime.Mongos;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.ISupportConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
 /**
  *
@@ -47,7 +47,7 @@ public class MongosProcess extends AbstractMongoProcess<IMongosConfig, MongosExe
 	}
 	
 	@Override
-	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, File exe) throws IOException {
-		return Mongos.getCommandLine(getConfig(), exe);
+	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, IExtractedFileSet files) throws IOException {
+		return Mongos.getCommandLine(getConfig(), files);
 	}
 }

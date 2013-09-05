@@ -31,6 +31,7 @@ import de.flapdoodle.embed.mongo.runtime.Mongod;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.ISupportConfig;
 import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.io.directories.PropertyOrPlatformTempDir;
 import de.flapdoodle.embed.process.io.file.Files;
 
@@ -84,8 +85,8 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 	}
 
 	@Override
-	protected List<String> getCommandLine(Distribution distribution, IMongodConfig config, File exe) throws IOException {
-		return Mongod.enhanceCommandLinePlattformSpecific(distribution, Mongod.getCommandLine(getConfig(), exe, dbDir));
+	protected List<String> getCommandLine(Distribution distribution, IMongodConfig config, IExtractedFileSet files) throws IOException {
+		return Mongod.enhanceCommandLinePlattformSpecific(distribution, Mongod.getCommandLine(getConfig(), files, dbDir));
 	}
 
 	@Override

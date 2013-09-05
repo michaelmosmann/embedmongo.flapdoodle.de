@@ -28,6 +28,8 @@ import de.flapdoodle.embed.process.distribution.BitSize;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
+import de.flapdoodle.embed.process.config.store.FileSet;
+import de.flapdoodle.embed.process.config.store.FileType;
 import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
 
@@ -44,29 +46,24 @@ public class Paths implements IPackageResolver {
 	}
 	
 	@Override
-	public Pattern executeablePattern(Distribution distribution) {
-		return Pattern.compile(".*" + executableFilename(distribution));
-	}
-
-	//CHECKSTYLE:OFF
-	@Override
-	public String executableFilename(Distribution distribution) {
-		String mongodPattern;
+	public FileSet getFileSet(Distribution distribution) {
+		String executableFileName;
 		switch (distribution.getPlatform()) {
 			case Linux:
 			case OS_X:
 			case Solaris:
-				mongodPattern = command.commandName();
+				executableFileName = command.commandName();
 				break;
 			case Windows:
-				mongodPattern = command.commandName()+".exe";
+				executableFileName = command.commandName()+".exe";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
 		}
-		return mongodPattern;
+		return FileSet.builder().addEntry(FileType.Executable, executableFileName).build();
 	}
-
+	
+	//CHECKSTYLE:OFF
 	@Override
 	public ArchiveType getArchiveType(Distribution distribution) {
 		ArchiveType archiveType;

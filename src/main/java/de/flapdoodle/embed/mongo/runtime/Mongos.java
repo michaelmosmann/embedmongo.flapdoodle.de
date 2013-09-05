@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
 /**
  *
@@ -36,10 +37,10 @@ public class Mongos extends AbstractMongo {
 
 	private static Logger logger = Logger.getLogger(Mongos.class.getName());
 
-	public static List<String> getCommandLine(IMongosConfig config, File mongosExecutable)
+	public static List<String> getCommandLine(IMongosConfig config, IExtractedFileSet files)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(mongosExecutable.getAbsolutePath(), "-v", 
+		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), "-v", 
 				"--chunkSize", "1"));
 		applyDefaultOptions(config, ret);
 		applyNet(config.net(),ret);
