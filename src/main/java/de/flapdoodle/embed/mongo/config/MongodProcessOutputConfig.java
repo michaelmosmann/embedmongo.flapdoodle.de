@@ -30,11 +30,11 @@ import de.flapdoodle.embed.process.config.io.ProcessOutput;
  */
 public class MongodProcessOutputConfig {
 
-	public static ProcessOutput getDefaultInstance() {
-		return ProcessOutput.getDefaultInstance(Command.MongoD.commandName());
+	public static ProcessOutput getDefaultInstance(Command command) {
+		return ProcessOutput.getDefaultInstance(command.commandName());
 	}
 
-	public static ProcessOutput getInstance(Logger logger) {
-		return ProcessOutput.getInstance(Command.MongoD.commandName(), logger);
+	public static ProcessOutput getInstance(Command command, Logger logger) {
+		return ProcessOutput.getInstance(command.commandName(), logger);
 	}
 }

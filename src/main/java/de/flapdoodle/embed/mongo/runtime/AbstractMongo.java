@@ -32,16 +32,6 @@ public class AbstractMongo {
 
 	protected static <T extends IMongoConfig> void applyDefaultOptions(T config, List<String> ret) {
 		ret.add("--nohttpinterface");
-		if (config.version().enabled(Feature.SYNC_DELAY)) {
-			applySyncDelay(ret, config.cmdOptions());
-		}
-	}
-
-	private static void applySyncDelay(List<String> ret, IMongoCmdOptions cmdOptions) {
-		Integer syncDelay=cmdOptions.syncDelay();
-		if (syncDelay!=null) {
-			ret.add("--syncdelay="+syncDelay);
-		}
 	}
 
 	protected static void applyNet(Net net, List<String> ret) {

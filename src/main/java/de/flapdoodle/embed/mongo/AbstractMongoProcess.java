@@ -71,6 +71,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 		HashSet<String> ret = new HashSet<String>();
 		ret.add("failed errno");
 		ret.add("ERROR:");
+		ret.add("error command line");
 		return ret;
 	}
 

@@ -37,8 +37,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.SupportConfig;
+import de.flapdoodle.embed.mongo.distribution.Feature;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.NUMA;
@@ -140,8 +142,20 @@ public class Mongod extends AbstractMongo {
 		if (config.isConfigServer()) {
 			ret.add("--configsvr");
 		}
+		if (config.version().enabled(Feature.SYNC_DELAY)) {
+			applySyncDelay(ret, config.cmdOptions());
+		}
+
 		return ret;
 	}
+	
+	private static void applySyncDelay(List<String> ret, IMongoCmdOptions cmdOptions) {
+		Integer syncDelay=cmdOptions.syncDelay();
+		if (syncDelay!=null) {
+			ret.add("--syncdelay="+syncDelay);
+		}
+	}
+
 
 	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
 		if (NUMA.isNUMA(new SupportConfig(Command.MongoD),distribution.getPlatform())) {
