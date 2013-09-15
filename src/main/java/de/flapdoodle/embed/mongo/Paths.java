@@ -133,7 +133,7 @@ public class Paths implements IPackageResolver {
 						sbitSize = "i386";
 						break;
 					default:
-						throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
+						throw new IllegalArgumentException("Platform " + distribution.getPlatform() + " not supported yet on 32Bit Platform");
 				}
 				break;
 			case B64:
