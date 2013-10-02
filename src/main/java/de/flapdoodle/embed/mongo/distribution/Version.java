@@ -99,10 +99,12 @@ public enum Version implements IFeatureAwareVersion {
  	V2_4_2("2.4.2",Feature.SYNC_DELAY),
   @Deprecated
 	V2_4_3("2.4.3",Feature.SYNC_DELAY),
+  @Deprecated
+  V2_4_5("2.4.5",Feature.SYNC_DELAY),
 	/**
 	 * new production release
 	 */
-  	V2_4_5("2.4.5",Feature.SYNC_DELAY),
+  	V2_4_6("2.4.6",Feature.SYNC_DELAY),
 
   @Deprecated
   V2_5_0("2.5.0",Feature.SYNC_DELAY),
@@ -151,7 +153,7 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * current production release
 		 */
-		V2_4(V2_4_5),
+		V2_4(V2_4_6),
 		/**
 		 * development release
 		 */
