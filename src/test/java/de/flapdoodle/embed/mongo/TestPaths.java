@@ -44,7 +44,7 @@ public class TestPaths extends TestCase {
 		checkPath(new Distribution(Version.V1_6_5, Platform.Windows, BitSize.B32),
 				"win32/mongodb-win32-i386-1.6.5.zip");
 		checkPath(new Distribution(Version.V1_6_5, Platform.Windows, BitSize.B64),
-				"win32/mongodb-win32-x86_64-2008plus-1.6.5.zip");
+				"win32/mongodb-win32-x86_64-1.6.5.zip");
 		checkPath(new Distribution(Version.V1_8_0, Platform.Linux, BitSize.B32), "linux/mongodb-linux-i686-1.8.0.tgz");
 		checkPath(new Distribution(Version.V1_8_0, Platform.Linux, BitSize.B64),
 				"linux/mongodb-linux-x86_64-1.8.0.tgz");
