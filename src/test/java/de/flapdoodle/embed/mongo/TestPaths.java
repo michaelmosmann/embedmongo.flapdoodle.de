@@ -36,7 +36,12 @@ public class TestPaths extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		paths=new Paths(Command.MongoD);
+		paths=new Paths(Command.MongoD) {
+			@Override
+			protected boolean useWindows2008PlusVersion() {
+				return false;
+			}
+		};
 	}
 	
 	public void testDistributionPaths() {
