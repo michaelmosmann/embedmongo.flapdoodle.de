@@ -51,7 +51,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 			throws IOException {
 		super(distribution, config, runtimeConfig, executable);
 	}
-
+	
 	@Override
 	protected final void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
@@ -62,10 +62,8 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 		logWatch.waitForResult(getConfig().timeout().getStartupTimeout());
 		if (logWatch.isInitWithSuccess()) {
 			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
-			// write pid to file
-	        forceWritePidFile(process.getPid());
 		} else {
-			throw new IOException("Could not start process");
+			throw new IOException("Could not start process: "+logWatch.getFailureFound());
 		}
 	}
 	
@@ -106,7 +104,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 	}
 
 	protected void deleteTempFiles() {
-		
+
 	}
 
 	protected final boolean sendStopToMongoInstance() {

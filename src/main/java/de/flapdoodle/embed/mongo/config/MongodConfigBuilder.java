@@ -40,6 +40,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		property(REPLICATION).setDefault(new Storage());
 		property(CONFIG_SERVER).setDefault(false);
 		property(PROCESS_LISTENER).setDefault(new NoopProcessListener());
+		property(PID_FILE).setDefault("mongod.pid");
 	}
 
 	public MongodConfigBuilder version(IFeatureAwareVersion version) {
@@ -86,8 +87,9 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		boolean configServer=get(CONFIG_SERVER);
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
 		IMongoProcessListener processListener=get(PROCESS_LISTENER);
+		String pidFile=get(PID_FILE);
 		
-		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, replication, configServer,processListener);
+		return new ImmutableMongodConfig(version, net, timeout, cmdOptions, pidFile, replication, configServer,processListener);
 	}
 
 	static class ImmutableMongodConfig extends ImmutableMongoConfig implements IMongodConfig {
@@ -96,8 +98,8 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		private final boolean _configServer;
 		private final IMongoProcessListener _processListener;
 
-		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, Storage replication,boolean configServer, IMongoProcessListener processListener) {
-			super(version, net, timeout,cmdOptions);
+		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, Storage replication,boolean configServer, IMongoProcessListener processListener) {
+			super(version, net, timeout,cmdOptions,pidFile);
 			_replication = replication;
 			_configServer = configServer;
 			_processListener = processListener;

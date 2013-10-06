@@ -437,6 +437,7 @@ Support for Linux, Windows and MacOSX.
 ### Custom Command Line Options
 
 	We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
+
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
 	.cmdOptions(new MongoCmdOptionsBuilder()
@@ -448,6 +449,7 @@ Support for Linux, Windows and MacOSX.
 ### Snapshot database files from temp dir
 
 	We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
+
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
 	.processListener(new ProcessListenerBuilder()
@@ -458,6 +460,53 @@ Support for Linux, Windows and MacOSX.
 		.build())
 	.build();
 	...
+
+### Start mongos with mongod instance
+
+	this is an very easy example to use mongos and mongod
+
+		int port = 12121;
+		int defaultConfigPort = 12345;
+		String defaultHost = "localhost";
+
+		MongodProcess mongod = startMongod(defaultConfigPort);
+
+		try {
+			MongosProcess mongos = startMongos(port, defaultConfigPort, defaultHost);
+			try {
+				MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
+				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
+			} finally {
+				mongos.stop();
+			}
+		} finally {
+			mongod.stop();
+		}
+
+		private MongosProcess startMongos(int port, int defaultConfigPort, String defaultHost) throws UnknownHostException,
+				IOException {
+			IMongosConfig mongosConfig = new MongosConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.configDB(defaultHost + ":" + defaultConfigPort)
+				.build();
+
+			MongosExecutable mongosExecutable = MongosStarter.getDefaultInstance().prepare(mongosConfig);
+			MongosProcess mongos = mongosExecutable.start();
+			return mongos;
+		}
+
+		private MongodProcess startMongod(int defaultConfigPort) throws UnknownHostException, IOException {
+			IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
+				.configServer(true)
+				.build();
+
+			MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
+			MongodProcess mongod = mongodExecutable.start();
+			return mongod;
+		}
 
 ----
 

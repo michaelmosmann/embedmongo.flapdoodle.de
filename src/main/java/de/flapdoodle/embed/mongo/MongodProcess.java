@@ -65,17 +65,6 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 			dbDirIsTemp = true;
 		}
 		this.dbDir = tmpDbDir;
-		
-        File tmpPidFile;
-        if ( config.replication().getPidFile() != null )
-        {
-            tmpPidFile = new File( pidFile, config.replication().getPidFile() );
-        }
-        else
-        {
-            tmpPidFile = new File( dbDir, "mongodb.pid" );
-        }
-	    this.pidFile = tmpPidFile;
 	}
 	
 	@Override
@@ -107,6 +96,7 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 		if ((dbDir != null) && (dbDirIsTemp) && (!Files.forceDelete(dbDir))) {
 			logger.warning("Could not delete temp db dir: " + dbDir);
 		}
+		
 	}
 
 }

@@ -25,17 +25,15 @@ public class Storage {
 	private final int oplogSize;
 	private final String replSetName;
 	private final String databaseDir;
-	private final String pidFile;
 
 	public Storage() {
-		this(null, null, 0, null);
+		this(null, null, 0);
 	}
 
-	public Storage(String databaseDir, String replSetName, int oplogSize, String pidFile) {
+	public Storage(String databaseDir, String replSetName, int oplogSize) {
 		this.databaseDir = databaseDir;
 		this.replSetName = replSetName;
 		this.oplogSize = oplogSize;
-		this.pidFile = pidFile;
 	}
 
 	public int getOplogSize() {
@@ -49,10 +47,4 @@ public class Storage {
 	public String getDatabaseDir() {
 		return databaseDir;
 	}
-
-    public String getPidFile()
-    {
-        return pidFile;
-    }
-
 }

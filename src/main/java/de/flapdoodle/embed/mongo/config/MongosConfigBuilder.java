@@ -33,6 +33,7 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 
 	public MongosConfigBuilder() throws UnknownHostException, IOException {
 		super();
+		property(PID_FILE).setDefault("mongos.pid");
 	}
 
 	public MongosConfigBuilder version(IFeatureAwareVersion version) {
@@ -67,16 +68,17 @@ public class MongosConfigBuilder extends AbstractMongoConfigBuilder<IMongosConfi
 		Timeout timeout = timeout().get();
 		String configDB = get(CONFIG_DB);
 		IMongoCmdOptions cmdOptions=get(CMD_OPTIONS);
+		String pidFile = get(PID_FILE);
 
-		return new ImmutableMongosConfig(version, net, timeout, cmdOptions, configDB);
+		return new ImmutableMongosConfig(version, net, timeout, cmdOptions, pidFile, configDB);
 	}
 
 	static class ImmutableMongosConfig extends ImmutableMongoConfig implements IMongosConfig {
 
 		private final String _configDB;
 
-		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String configDB) {
-			super(version, net, timeout,cmdOptions);
+		public ImmutableMongosConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, String configDB) {
+			super(version, net, timeout,cmdOptions,pidFile);
 			_configDB = configDB;
 		}
 

@@ -27,7 +27,6 @@ import org.junit.Test;
 
 import com.mongodb.MongoClient;
 
-import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
@@ -39,41 +38,41 @@ import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.runtime.Network;
 
 
 public class StartConfigAndMongoDBServerTest {
 
-	
+	/*
+	 // ->
+	 this is an very easy example to use mongos and mongod
+	 // <- 
+	 */
 	@Test
-	public void shouldFixFollowingTest() throws UnknownHostException, IOException {
-		if (false) {
-			tryToStartAndToStopWithoutAnyException();
-		}
-	}
-	
-	public void tryToStartAndToStopWithoutAnyException() throws UnknownHostException, IOException {
-		int port=12121;
-		int defaultConfigPort=12345;
-		String defaultHost="localhost";
-		
+	public void startAndStopMongosAndMongod() throws UnknownHostException, IOException {
+			// ->
+		int port = 12121;
+		int defaultConfigPort = 12345;
+		String defaultHost = "localhost";
+
 		MongodProcess mongod = startMongod(defaultConfigPort);
-		
+
 		try {
 			MongosProcess mongos = startMongos(port, defaultConfigPort, defaultHost);
 			try {
 				MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
-				System.out.println("DB Names: "+mongoClient.getDatabaseNames());
+				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
 			} finally {
 				mongos.stop();
 			}
 		} finally {
 			mongod.stop();
 		}
+			// <-
 	}
-
+	
+	// ->
 	private MongosProcess startMongos(int port, int defaultConfigPort, String defaultHost) throws UnknownHostException,
 			IOException {
 		IMongosConfig mongosConfig = new MongosConfigBuilder()
@@ -98,4 +97,5 @@ public class StartConfigAndMongoDBServerTest {
 		MongodProcess mongod = mongodExecutable.start();
 		return mongod;
 	}
+	// <-
 }

@@ -35,6 +35,7 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 	protected static final TypedProperty<Timeout> TIMEOUT = TypedProperty.with("Timeout", Timeout.class);
 	protected static final TypedProperty<Net> NET = TypedProperty.with("Net", Net.class);
 	protected static final TypedProperty<IMongoCmdOptions> CMD_OPTIONS = TypedProperty.with("CmdOptions", IMongoCmdOptions.class);
+	protected static final TypedProperty<String> PID_FILE = TypedProperty.with("PidFile", String.class);
 
 	
 	public AbstractMongoConfigBuilder() throws UnknownHostException, IOException  {
@@ -58,6 +59,10 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 	protected IProperty<IMongoCmdOptions> cmdOptions() {
 		return property(CMD_OPTIONS);
 	}
+
+	protected IProperty<String> pidFile() {
+		return property(PID_FILE);
+	}
 	
 	static class ImmutableMongoConfig implements IMongoConfig {
 
@@ -65,13 +70,15 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 		private final Timeout _timeout;
 		private final Net _net;
 		private final IMongoCmdOptions _cmdOptions;
+		private final String _pidFile;
 
-		public ImmutableMongoConfig(IFeatureAwareVersion version, Net net, Timeout timeout,IMongoCmdOptions cmdOptions) {
+		public ImmutableMongoConfig(IFeatureAwareVersion version, Net net, Timeout timeout,IMongoCmdOptions cmdOptions,String pidFile) {
 			super();
 			_version = version;
 			_net = net;
 			_timeout = timeout;
 			_cmdOptions = cmdOptions;
+			_pidFile = pidFile;
 		}
 
 		@Override
@@ -93,6 +100,10 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 		public IMongoCmdOptions cmdOptions() {
 			return _cmdOptions;
 		}
-
+		
+		@Override
+		public String pidFile() {
+			return _pidFile;
+		}
 	}
 }

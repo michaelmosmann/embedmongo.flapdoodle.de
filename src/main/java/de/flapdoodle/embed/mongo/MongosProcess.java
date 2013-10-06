@@ -35,7 +35,7 @@ import de.flapdoodle.embed.process.extract.IExtractedFileSet;
  *
  */
 public class MongosProcess extends AbstractMongoProcess<IMongosConfig, MongosExecutable, MongosProcess> {
-
+	
 	public MongosProcess(Distribution distribution, IMongosConfig config, IRuntimeConfig runtimeConfig,
 			MongosExecutable mongosExecutable) throws IOException {
 		super(distribution, config, runtimeConfig, mongosExecutable);
@@ -45,9 +45,10 @@ public class MongosProcess extends AbstractMongoProcess<IMongosConfig, MongosExe
 	protected ISupportConfig supportConfig() {
 		return MongosSupportConfig.getInstance();
 	}
-	
+
 	@Override
-	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, IExtractedFileSet files) throws IOException {
+	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, IExtractedFileSet files)
+			throws IOException {
 		return Mongos.getCommandLine(getConfig(), files);
 	}
 }

@@ -31,6 +31,8 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.junit.Test;
+
 import junit.framework.TestCase;
 
 import com.mongodb.BasicDBObject;
@@ -43,11 +45,16 @@ import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.MongodExecutable;
 import de.flapdoodle.embed.mongo.MongodProcess;
 import de.flapdoodle.embed.mongo.MongodStarter;
+import de.flapdoodle.embed.mongo.MongosExecutable;
+import de.flapdoodle.embed.mongo.MongosProcess;
+import de.flapdoodle.embed.mongo.MongosStarter;
 import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Timeout;
@@ -507,4 +514,8 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		// <-
 	}
+	
+	
+	// ### Start mongos with mongod instance
+	// @include StartConfigAndMongoDBServerTest.java
 }
