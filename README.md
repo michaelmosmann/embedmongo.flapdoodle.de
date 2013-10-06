@@ -436,7 +436,7 @@ Support for Linux, Windows and MacOSX.
 
 ### Custom Command Line Options
 
-	We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
+We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
 
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
@@ -448,7 +448,7 @@ Support for Linux, Windows and MacOSX.
 
 ### Snapshot database files from temp dir
 
-	We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
+We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
 
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
@@ -463,7 +463,7 @@ Support for Linux, Windows and MacOSX.
 
 ### Start mongos with mongod instance
 
-	this is an very easy example to use mongos and mongod
+this is an very easy example to use mongos and mongod
 
 		int port = 12121;
 		int defaultConfigPort = 12345;
