@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.39 (SNAPSHOT)
+#### 1.40 (SNAPSHOT)
+
+#### 1.39
+
+- embed process dep update
 
 #### 1.38
 
