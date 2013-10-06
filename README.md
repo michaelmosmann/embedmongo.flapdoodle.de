@@ -465,48 +465,48 @@ We changed the syncDelay to 0 which turns off sync to disc. To get the files to 
 
 this is an very easy example to use mongos and mongod
 
-		int port = 12121;
-		int defaultConfigPort = 12345;
-		String defaultHost = "localhost";
+	int port = 12121;
+	int defaultConfigPort = 12345;
+	String defaultHost = "localhost";
 
-		MongodProcess mongod = startMongod(defaultConfigPort);
+	MongodProcess mongod = startMongod(defaultConfigPort);
 
+	try {
+		MongosProcess mongos = startMongos(port, defaultConfigPort, defaultHost);
 		try {
-			MongosProcess mongos = startMongos(port, defaultConfigPort, defaultHost);
-			try {
-				MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
-				System.out.println("DB Names: " + mongoClient.getDatabaseNames());
-			} finally {
-				mongos.stop();
-			}
+			MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
+			System.out.println("DB Names: " + mongoClient.getDatabaseNames());
 		} finally {
-			mongod.stop();
+			mongos.stop();
 		}
+	} finally {
+		mongod.stop();
+	}
 
-		private MongosProcess startMongos(int port, int defaultConfigPort, String defaultHost) throws UnknownHostException,
-				IOException {
-			IMongosConfig mongosConfig = new MongosConfigBuilder()
-				.version(Version.Main.PRODUCTION)
-				.net(new Net(port, Network.localhostIsIPv6()))
-				.configDB(defaultHost + ":" + defaultConfigPort)
-				.build();
+	private MongosProcess startMongos(int port, int defaultConfigPort, String defaultHost) throws UnknownHostException,
+			IOException {
+		IMongosConfig mongosConfig = new MongosConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(port, Network.localhostIsIPv6()))
+			.configDB(defaultHost + ":" + defaultConfigPort)
+			.build();
 
-			MongosExecutable mongosExecutable = MongosStarter.getDefaultInstance().prepare(mongosConfig);
-			MongosProcess mongos = mongosExecutable.start();
-			return mongos;
-		}
+		MongosExecutable mongosExecutable = MongosStarter.getDefaultInstance().prepare(mongosConfig);
+		MongosProcess mongos = mongosExecutable.start();
+		return mongos;
+	}
 
-		private MongodProcess startMongod(int defaultConfigPort) throws UnknownHostException, IOException {
-			IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
-				.version(Version.Main.PRODUCTION)
-				.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
-				.configServer(true)
-				.build();
+	private MongodProcess startMongod(int defaultConfigPort) throws UnknownHostException, IOException {
+		IMongodConfig mongoConfigConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
+			.configServer(true)
+			.build();
 
-			MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
-			MongodProcess mongod = mongodExecutable.start();
-			return mongod;
-		}
+		MongodExecutable mongodExecutable = MongodStarter.getDefaultInstance().prepare(mongoConfigConfig);
+		MongodProcess mongod = mongodExecutable.start();
+		return mongod;
+	}
 
 ----
 
