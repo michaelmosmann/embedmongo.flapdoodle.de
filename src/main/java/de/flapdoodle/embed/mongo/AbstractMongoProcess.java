@@ -55,7 +55,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 	@Override
 	protected final void onAfterProcessStart(ProcessControl process, IRuntimeConfig runtimeConfig) throws IOException {
 		ProcessOutput outputConfig = runtimeConfig.getProcessOutput();
-		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor("waiting for connections on port", knownFailureMessages(),
+		LogWatchStreamProcessor logWatch = new LogWatchStreamProcessor(successMessage(), knownFailureMessages(),
 				StreamToLineProcessor.wrap(outputConfig.getOutput()));
 		Processors.connect(process.getReader(), logWatch);
 		Processors.connect(process.getError(), StreamToLineProcessor.wrap(outputConfig.getError()));
@@ -65,6 +65,10 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 		} else {
 			throw new IOException("Could not start process: "+logWatch.getFailureFound());
 		}
+	}
+
+	protected String successMessage() {
+		return "waiting for connections on port";
 	}
 	
 	private Set<String> knownFailureMessages() {

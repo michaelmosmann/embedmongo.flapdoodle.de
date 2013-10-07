@@ -26,28 +26,41 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
-import de.flapdoodle.embed.mongo.config.IMongosConfig;
+import de.flapdoodle.embed.mongo.config.IMongoShellConfig;
+import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 
 /**
  *
  */
-public class Mongos extends AbstractMongo {
+public class MongoShell extends AbstractMongo {
 
-	private static Logger logger = Logger.getLogger(Mongos.class.getName());
-
-	public static List<String> getCommandLine(IMongosConfig config, IExtractedFileSet files)
+	public static List<String> getCommandLine(IMongoShellConfig config, IExtractedFileSet files)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), "-v", 
-				"--chunkSize", "1"));
-		applyDefaultOptions(config, ret);
-		applyNet(config.net(),ret);
+		ret.addAll(Arrays.asList(files.executable().getAbsolutePath()));
 		
-		if (config.getConfigDB()!=null) {
-			ret.add("--configdb");
-			ret.add(config.getConfigDB());
+		String hostname="localhost";
+		Net net = config.net();
+		if (net.isIpv6()) {
+			//ret.add("--ipv6");
 		}
+		if (net.getBindIp()!=null) {
+			hostname=net.getBindIp();
+		}
+
+		
+		ret.add(hostname+":" + net.getPort());
+		if (!config.getScriptParameters().isEmpty()) {
+			ret.add("--eval");
+			for (String parameter : config.getScriptParameters()) {
+				ret.add(parameter);
+			}
+		}
+		if (config.getScriptName()!=null) {
+			ret.add(config.getScriptName());
+		}
+		
 		return ret;
 	}
 }

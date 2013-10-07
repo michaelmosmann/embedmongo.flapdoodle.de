@@ -18,36 +18,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo.runtime;
+package de.flapdoodle.embed.mongo;
 
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Logger;
+import java.io.IOException;
 
-import de.flapdoodle.embed.mongo.config.IMongosConfig;
+import de.flapdoodle.embed.mongo.config.IMongoShellConfig;
+import de.flapdoodle.embed.process.config.IRuntimeConfig;
+import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.runtime.Executable;
 
 /**
  *
  */
-public class Mongos extends AbstractMongo {
+public class MongoShellExecutable extends Executable<IMongoShellConfig, MongoShellProcess> {
 
-	private static Logger logger = Logger.getLogger(Mongos.class.getName());
-
-	public static List<String> getCommandLine(IMongosConfig config, IExtractedFileSet files)
-			throws UnknownHostException {
-		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), "-v", 
-				"--chunkSize", "1"));
-		applyDefaultOptions(config, ret);
-		applyNet(config.net(),ret);
-		
-		if (config.getConfigDB()!=null) {
-			ret.add("--configdb");
-			ret.add(config.getConfigDB());
-		}
-		return ret;
+	public MongoShellExecutable(Distribution distribution, IMongoShellConfig mongodConfig, IRuntimeConfig runtimeConfig,
+			IExtractedFileSet files) {
+		super(distribution, mongodConfig, runtimeConfig, files);
 	}
+
+	@Override
+	protected MongoShellProcess start(Distribution distribution, IMongoShellConfig config, IRuntimeConfig runtime)
+			throws IOException {
+		return new MongoShellProcess(distribution, config, runtime, this);
+	}
+	
+	
+
 }
