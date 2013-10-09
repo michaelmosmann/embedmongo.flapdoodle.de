@@ -78,6 +78,11 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		return this;
 	}
 	
+	public MongodConfigBuilder pidFile(String pidFile) {
+        pidFile().set(pidFile);
+        return this;
+    }
+	
 	@Override
 	public IMongodConfig build() {
 		IFeatureAwareVersion version=version().get();
