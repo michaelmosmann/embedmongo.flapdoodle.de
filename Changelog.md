@@ -1,6 +1,10 @@
 ### Changelog
 
-#### 1.40 (SNAPSHOT)
+#### 1.41 (SNAPSHOT)
+
+#### 1.40
+
+- mongo env command line bug fix
 
 #### 1.39
 
