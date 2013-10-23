@@ -55,11 +55,10 @@ public class MongoShell extends AbstractMongo {
 		ret.add(hostname+":" + net.getPort());
 		if (!config.getScriptParameters().isEmpty()) {
 			ret.add("--eval");
-			StringBuilder eval = new StringBuilder("\"");
+			StringBuilder eval = new StringBuilder();
 			for (String parameter : config.getScriptParameters()) {
 				eval.append(parameter).append("; ");
 			}
-			eval.append("\"");
       ret.add(eval.toString());
 		}
 		if (config.getScriptName()!=null) {

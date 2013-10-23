@@ -25,6 +25,7 @@ import java.net.UnknownHostException;
 
 import org.junit.Test;
 
+import com.google.common.collect.Lists;
 import com.mongodb.MongoClient;
 
 import de.flapdoodle.embed.mongo.MongoShellExecutable;
@@ -86,7 +87,7 @@ public class StartMongoDBServerAndMongoShellClientTest {
 		IMongoShellConfig mongoShellConfig = new MongoShellConfigBuilder()
 			.version(Version.Main.PRODUCTION)
 			.net(new Net(defaultConfigPort, Network.localhostIsIPv6()))
-			.parameters("printjson(db.getCollectionNames())")
+			.parameters(Lists.newArrayList("var hight=3","var width=2","function multip() { print('area ' + hight * width); }","multip()"))
 			.build();
 
 		MongoShellExecutable mongosExecutable = MongoShellStarter.getDefaultInstance().prepare(mongoShellConfig);
