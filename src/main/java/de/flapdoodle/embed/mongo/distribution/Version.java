@@ -82,10 +82,12 @@ public enum Version implements IFeatureAwareVersion {
   V2_2_3("2.2.3"),
   @Deprecated
 	V2_2_4("2.2.4"),
+	@Deprecated
+	V2_2_5("2.2.5"),
     /**
       * last production release
      */    
-  	V2_2_5("2.2.5"),
+  	V2_2_6("2.2.6"),
 
 	@Deprecated
 	V2_3_0("2.3.0"),
@@ -101,17 +103,20 @@ public enum Version implements IFeatureAwareVersion {
 	V2_4_3("2.4.3",Feature.SYNC_DELAY),
   @Deprecated
   V2_4_5("2.4.5",Feature.SYNC_DELAY),
+  @Deprecated
+	V2_4_6("2.4.6",Feature.SYNC_DELAY),
 	/**
 	 * new production release
 	 */
-  	V2_4_6("2.4.6",Feature.SYNC_DELAY),
+	V2_4_7("2.4.7",Feature.SYNC_DELAY),
 
   @Deprecated
   V2_5_0("2.5.0",Feature.SYNC_DELAY),
+  V2_5_1("2.5.1",Feature.SYNC_DELAY),
     /**
      * new developement release
      */
-    V2_5_1("2.5.1",Feature.SYNC_DELAY),
+    V2_5_3("2.5.3",Feature.SYNC_DELAY),
     ;
 
 	private final String specificVersion;
@@ -147,17 +152,17 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * last production release
 		 */
-		V2_2(V2_2_5),
+		V2_2(V2_2_6),
 		@Deprecated
 		V2_3(V2_3_0),
 		/**
 		 * current production release
 		 */
-		V2_4(V2_4_6),
+		V2_4(V2_4_7),
 		/**
 		 * development release
 		 */
-		V2_5(V2_5_1),
+		V2_5(V2_5_3),
 
 		PRODUCTION(V2_4),
 		DEVELOPMENT(V2_5), ;

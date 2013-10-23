@@ -96,22 +96,14 @@ public class MongoDBRuntimeTest extends TestCase {
 	}
 
 	private boolean shipThisVersion(Platform platform, IVersion version, BitSize bitsize) {
-		// there is no osx 32bit version for v2.2.1 and above
 		String currentVersion = version.asInDownloadPath();
-        if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
-			if (currentVersion.equals(Version.V2_2_1.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_2_3.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_2_4.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_2_5.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_3_0.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_4_0_RC3.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.V2_4_0.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.Main.PRODUCTION.asInDownloadPath())) return true;
-			if (currentVersion.equals(Version.Main.DEVELOPMENT.asInDownloadPath())) return true;
-		}
-        if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
-        	return true;
-        }
+    if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
+  		// there is no osx 32bit version for v2.2.1 and above, so we dont check
+    	return true;
+    }
+    if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
+    	return true;
+    }
 		return false;
 	}
 
