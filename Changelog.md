@@ -1,9 +1,11 @@
 ### Changelog
 
-#### 1.41 (SNAPSHOT)
+#### 1.42 (SNAPSHOT)
+
+#### 1.41
 
 - mongo env command line bug fix (now working)
-- mongo version upgrade (2.5.3, 2.4.7, 2.2.6)
+- mongo version upgrade (2.5.4, 2.4.8, 2.2.6)
 
 #### 1.40
 
