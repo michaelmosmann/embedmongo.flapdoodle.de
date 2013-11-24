@@ -47,7 +47,7 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 10.10.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 24.11.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
