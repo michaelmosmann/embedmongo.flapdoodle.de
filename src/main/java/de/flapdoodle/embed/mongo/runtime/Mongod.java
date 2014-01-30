@@ -123,10 +123,14 @@ public class Mongod extends AbstractMongo {
 	public static List<String> getCommandLine(IMongodConfig config, IExtractedFileSet files, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), "-v", 
+		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), 
 				"--dbpath",
 				"" + dbDir.getAbsolutePath(), "--noprealloc", "--smallfiles", "--nojournal",
 				"--noauth"));
+		
+		if (config.cmdOptions().isVerbose()) {
+			ret.add("-v");
+		}
 		
 		applyDefaultOptions(config, ret);
 		applyNet(config.net(), ret);

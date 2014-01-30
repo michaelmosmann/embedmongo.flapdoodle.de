@@ -54,6 +54,7 @@ import de.flapdoodle.embed.mongo.config.IMongodConfig;
 import de.flapdoodle.embed.mongo.config.IMongosConfig;
 import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
+import de.flapdoodle.embed.mongo.config.MongodProcessOutputConfig;
 import de.flapdoodle.embed.mongo.config.MongosConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
@@ -338,6 +339,46 @@ public class TestExampleReadMeCode extends TestCase {
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
 		// <-
+	}
+
+	// #### ... to null device
+	public void testDefaultOutputToNone() throws FileNotFoundException, IOException {
+		int port = 12345;
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"),Feature.SYNC_DELAY))
+			.net(new Net(port, Network.localhostIsIPv6()))
+			.build();
+		// ->
+		// ...
+		Logger logger = Logger.getLogger(getClass().getName());
+		
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+			.defaultsWithLogger(Command.MongoD, logger)
+			.processOutput(ProcessOutput.getDefaultInstanceSilent())
+			.build();
+		
+		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+		// ...
+		// <-
+		MongodProcess mongod = null;
+
+		MongodExecutable mongodExecutable = null;
+		try {
+			mongodExecutable = runtime.prepare(mongodConfig);
+			mongod = mongodExecutable.start();
+
+			MongoClient mongo = new MongoClient("localhost", port);
+			DB db = mongo.getDB("test");
+			DBCollection col = db.createCollection("testCol", new BasicDBObject());
+			col.save(new BasicDBObject("testDoc", new Date()));
+
+		} finally {
+			if (mongod != null) {
+				mongod.stop();
+			}
+			if (mongodExecutable != null)
+				mongodExecutable.stop();
+		}
 	}
 
 	// ### Custom Version

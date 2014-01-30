@@ -27,14 +27,21 @@ import de.flapdoodle.embed.process.builder.TypedProperty;
 public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 
 	protected static final TypedProperty<Integer> SYNC_DELAY = TypedProperty.with("syncDelay", Integer.class);
+	protected static final TypedProperty<Boolean> VERBOSE = TypedProperty.with("verbose", Boolean.class);
 
 	
 	public MongoCmdOptionsBuilder() {
 		property(SYNC_DELAY).setDefault(0);
+		property(VERBOSE).setDefault(false);
 	}
 	
 	public MongoCmdOptionsBuilder syncDeplay(int deplay) {
 		set(SYNC_DELAY, deplay);
+		return this;
+	}
+
+	public MongoCmdOptionsBuilder verbose(boolean verbose) {
+		set(VERBOSE, verbose);
 		return this;
 	}
 
@@ -46,21 +53,29 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 	@Override
 	public IMongoCmdOptions build() {
 		Integer syncDelay=get(SYNC_DELAY, null);
-		return new MongoCmdOptions(syncDelay);
+		boolean verbose=get(VERBOSE);
+		return new MongoCmdOptions(syncDelay,verbose);
 	}
 
 	static class MongoCmdOptions implements IMongoCmdOptions {
 
 		private final Integer _syncDelay;
+		private final boolean _verbose;
 
 		
-		public MongoCmdOptions(Integer syncDelay) {
+		public MongoCmdOptions(Integer syncDelay,boolean verbose) {
 			_syncDelay = syncDelay;
+			_verbose = verbose;
 		}
 		
 		@Override
 		public Integer syncDelay() {
 			return _syncDelay;
+		}
+		
+		@Override
+		public boolean isVerbose() {
+			return _verbose;
 		}
 		
 	}
