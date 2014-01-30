@@ -2,6 +2,9 @@
 
 #### 1.42 (SNAPSHOT)
 
+- massive performance improvment (removed option -v (can be enabled by config))
+- mongo version upgrade (2.5.4, 2.4.9, 2.2.7)
+
 #### 1.41
 
 - mongo env command line bug fix (now working)
