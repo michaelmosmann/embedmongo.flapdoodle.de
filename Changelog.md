@@ -1,6 +1,8 @@
 ### Changelog
 
-#### 1.42 (SNAPSHOT)
+#### 1.43 (SNAPSHOT)
+
+#### 1.42
 
 - massive performance improvment (removed option -v (can be enabled by config))
 - mongo version upgrade (2.5.4, 2.4.9, 2.2.7)

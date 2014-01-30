@@ -47,12 +47,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 24.11.2013 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 31.01.2014 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.41</version>
+		<version>1.42</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -60,7 +60,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.42-SNAPSHOT</version>
+		<version>1.43-SNAPSHOT</version>
 	</dependency>
 
 
@@ -336,6 +336,19 @@ Support for Linux, Windows and MacOSX.
 
 	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
 		.defaultsWithLogger(Command.MongoD, logger)
+		.build();
+
+	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
+	...
+
+#### ... to null device
+
+	...
+	Logger logger = Logger.getLogger(getClass().getName());
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaultsWithLogger(Command.MongoD, logger)
+		.processOutput(ProcessOutput.getDefaultInstanceSilent())
 		.build();
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
