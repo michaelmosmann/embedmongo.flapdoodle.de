@@ -28,13 +28,33 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 
 	protected static final TypedProperty<Integer> SYNC_DELAY = TypedProperty.with("syncDelay", Integer.class);
 	protected static final TypedProperty<Boolean> VERBOSE = TypedProperty.with("verbose", Boolean.class);
+	protected static final TypedProperty<Boolean> NOPREALLOC = TypedProperty.with("noprealloc", Boolean.class);
+	protected static final TypedProperty<Boolean> SMALLFILES = TypedProperty.with("smallfiles", Boolean.class);
+	protected static final TypedProperty<Boolean> NOJOURNAL = TypedProperty.with("nojournal", Boolean.class);
 
-	
 	public MongoCmdOptionsBuilder() {
 		property(SYNC_DELAY).setDefault(0);
 		property(VERBOSE).setDefault(false);
+		property(NOPREALLOC).setDefault(true);
+		property(SMALLFILES).setDefault(true);
+		property(NOJOURNAL).setDefault(true);
 	}
-	
+
+	public MongoCmdOptionsBuilder useNoPrealloc(boolean value) {
+		set(NOPREALLOC, value);
+		return this;
+	}
+
+	public MongoCmdOptionsBuilder useSmallFiles(boolean value) {
+		set(SMALLFILES, value);
+		return this;
+	}
+
+	public MongoCmdOptionsBuilder useNoJournal(boolean value) {
+		set(NOJOURNAL, value);
+		return this;
+	}
+
 	public MongoCmdOptionsBuilder syncDelay(int delay) {
 		set(SYNC_DELAY, delay);
 		return this;
@@ -45,38 +65,63 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 		return this;
 	}
 
-	public MongoCmdOptionsBuilder defaultSyncDeplay() {
+	public MongoCmdOptionsBuilder defaultSyncDelay() {
 		set(SYNC_DELAY, null);
 		return this;
 	}
-	
+
 	@Override
 	public IMongoCmdOptions build() {
-		Integer syncDelay=get(SYNC_DELAY, null);
-		boolean verbose=get(VERBOSE);
-		return new MongoCmdOptions(syncDelay,verbose);
+		Integer syncDelay = get(SYNC_DELAY, null);
+		boolean verbose = get(VERBOSE);
+		boolean noPrealloc = get(NOPREALLOC);
+		boolean smallFiles = get(SMALLFILES);
+		boolean noJournal = get(NOJOURNAL);
+		return new MongoCmdOptions(syncDelay, verbose, noPrealloc, smallFiles, noJournal);
 	}
 
 	static class MongoCmdOptions implements IMongoCmdOptions {
 
 		private final Integer _syncDelay;
 		private final boolean _verbose;
+		private final boolean _noPrealloc;
+		private final boolean _smallFiles;
+		private final boolean _noJournal;
 
-		
-		public MongoCmdOptions(Integer syncDelay,boolean verbose) {
+
+		public MongoCmdOptions(Integer syncDelay, boolean verbose, boolean noPrealloc, boolean smallFiles,
+		                       boolean noJournal) {
 			_syncDelay = syncDelay;
 			_verbose = verbose;
+			_noPrealloc = noPrealloc;
+			_smallFiles = smallFiles;
+			_noJournal = noJournal;
 		}
-		
+
 		@Override
 		public Integer syncDelay() {
 			return _syncDelay;
 		}
-		
+
 		@Override
 		public boolean isVerbose() {
 			return _verbose;
 		}
-		
+
+		@Override
+		public boolean useNoPrealloc() {
+			return _noPrealloc;
+		}
+
+		@Override
+		public boolean useSmallFiles() {
+			return _smallFiles;
+		}
+
+		@Override
+		public boolean useNoJournal() {
+			return _noJournal;
+		}
+
 	}
 }

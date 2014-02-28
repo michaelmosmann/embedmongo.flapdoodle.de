@@ -77,9 +77,9 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(port, Network.localhostIsIPv6()))
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 
@@ -105,21 +105,21 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->		
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(port, Network.localhostIsIPv6()))
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.build();
 
 		Command command = Command.MongoD;
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(command)
-			.artifactStore(new ArtifactStoreBuilder()
 				.defaults(command)
-				.download(new DownloadConfigBuilder()
-					.defaultsForCommand(command))
-					.executableNaming(new UserTempNaming()))
-			.build();
-		
+				.artifactStore(new ArtifactStoreBuilder()
+						.defaults(command)
+						.download(new DownloadConfigBuilder()
+								.defaultsForCommand(command))
+						.executableNaming(new UserTempNaming()))
+				.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 
 		MongodExecutable mongodExecutable = null;
@@ -165,21 +165,21 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		// <-
 	}
-	
+
 	// ### Customize Download URL
 	public void testCustomizeDownloadURL() {
 		// ->
 		// ...
 		Command command = Command.MongoD;
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(command)
-			.artifactStore(new ArtifactStoreBuilder()
 				.defaults(command)
-				.download(new DownloadConfigBuilder()
-					.defaultsForCommand(command)
-					.downloadPath("http://my.custom.download.domain/")))
-			.build();
+				.artifactStore(new ArtifactStoreBuilder()
+						.defaults(command)
+						.download(new DownloadConfigBuilder()
+								.defaultsForCommand(command)
+								.downloadPath("http://my.custom.download.domain/")))
+				.build();
 		// ...
 		// <-
 	}
@@ -188,9 +188,9 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCustomizeArtifactStorage() throws IOException {
 
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.net(new Net(12345, Network.localhostIsIPv6()))
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(12345, Network.localhostIsIPv6()))
+				.build();
 
 		// ->
 		// ...
@@ -198,16 +198,16 @@ public class TestExampleReadMeCode extends TestCase {
 		ITempNaming executableNaming = new UUIDTempNaming();
 
 		Command command = Command.MongoD;
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(command)
-			.artifactStore(new ArtifactStoreBuilder()
 				.defaults(command)
-				.download(new DownloadConfigBuilder()
-					.defaultsForCommand(command)
-					.artifactStorePath(artifactStorePath))
-				.executableNaming(executableNaming))
-			.build();
+				.artifactStore(new ArtifactStoreBuilder()
+						.defaults(command)
+						.download(new DownloadConfigBuilder()
+								.defaultsForCommand(command)
+								.artifactStorePath(artifactStorePath))
+						.executableNaming(executableNaming))
+				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		MongodExecutable mongodExe = runtime.prepare(mongodConfig);
@@ -226,12 +226,12 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
 				Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(Command.MongoD)
-			.processOutput(processOutput)
-			.build();
-		
+				.defaults(Command.MongoD)
+				.processOutput(processOutput)
+				.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
 		// <-
@@ -247,10 +247,10 @@ public class TestExampleReadMeCode extends TestCase {
 		IStreamProcessor commandsOutput = Processors.namedConsole("[console>]");
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(Command.MongoD)
-			.processOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput))
-			.build();
-		
+				.defaults(Command.MongoD)
+				.processOutput(new ProcessOutput(mongodOutput, mongodError, commandsOutput))
+				.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
 		// <-
@@ -260,36 +260,36 @@ public class TestExampleReadMeCode extends TestCase {
 	 * Ist fürs Readme, deshalb nicht statisch und public
 	 */
 	// ->
-	
-		// ...
-		public class FileStreamProcessor implements IStreamProcessor {
-	
-			private FileOutputStream outputStream;
-	
-			public FileStreamProcessor(File file) throws FileNotFoundException {
-				outputStream = new FileOutputStream(file);
-			}
-	
-			@Override
-			public void process(String block) {
-				try {
-					outputStream.write(block.getBytes());
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-	
-			@Override
-			public void onProcessed() {
-				try {
-					outputStream.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-	
+
+	// ...
+	public class FileStreamProcessor implements IStreamProcessor {
+
+		private FileOutputStream outputStream;
+
+		public FileStreamProcessor(File file) throws FileNotFoundException {
+			outputStream = new FileOutputStream(file);
 		}
-		// ...
+
+		@Override
+		public void process(String block) {
+			try {
+				outputStream.write(block.getBytes());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void onProcessed() {
+			try {
+				outputStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	// ...
 	// <-
 
 	// #### ... to java logging
@@ -300,16 +300,16 @@ public class TestExampleReadMeCode extends TestCase {
 
 		ProcessOutput processOutput = new ProcessOutput(Processors.logTo(logger, Level.INFO), Processors.logTo(logger,
 				Level.SEVERE), Processors.named("[console>]", Processors.logTo(logger, Level.FINE)));
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaultsWithLogger(Command.MongoD,logger)
-			.processOutput(processOutput)
-			.artifactStore(new ArtifactStoreBuilder()
-				.defaults(Command.MongoD)
-				.download(new DownloadConfigBuilder()
-					.defaultsForCommand(Command.MongoD)
-					.progressListener(new LoggingProgressListener(logger, Level.FINE))))
-			.build();
+				.defaultsWithLogger(Command.MongoD, logger)
+				.processOutput(processOutput)
+				.artifactStore(new ArtifactStoreBuilder()
+						.defaults(Command.MongoD)
+						.download(new DownloadConfigBuilder()
+								.defaultsForCommand(Command.MongoD)
+								.progressListener(new LoggingProgressListener(logger, Level.FINE))))
+				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
@@ -321,11 +321,11 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->
 		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaultsWithLogger(Command.MongoD, logger)
-			.build();
-		
+				.defaultsWithLogger(Command.MongoD, logger)
+				.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
 		// <-
@@ -335,18 +335,18 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testDefaultOutputToNone() throws FileNotFoundException, IOException {
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"),Feature.SYNC_DELAY))
-			.net(new Net(port, Network.localhostIsIPv6()))
-			.build();
+				.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"), Feature.SYNC_DELAY))
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.build();
 		// ->
 		// ...
 		Logger logger = Logger.getLogger(getClass().getName());
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaultsWithLogger(Command.MongoD, logger)
-			.processOutput(ProcessOutput.getDefaultInstanceSilent())
-			.build();
-		
+				.defaultsWithLogger(Command.MongoD, logger)
+				.processOutput(ProcessOutput.getDefaultInstanceSilent())
+				.build();
+
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 		// ...
 		// <-
@@ -377,9 +377,9 @@ public class TestExampleReadMeCode extends TestCase {
 		// ...
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"),Feature.SYNC_DELAY))
-			.net(new Net(port, Network.localhostIsIPv6()))
-			.build();
+				.version(Versions.withFeatures(new GenericVersion("2.0.7-rc1"), Feature.SYNC_DELAY))
+				.net(new Net(port, Network.localhostIsIPv6()))
+				.build();
 
 		MongodStarter runtime = MongodStarter.getDefaultInstance();
 		MongodProcess mongod = null;
@@ -451,7 +451,8 @@ public class TestExampleReadMeCode extends TestCase {
 			mongodExecutable = runtime.prepare(mongodConfig);
 			mongod = mongodExecutable.start();
 
-			MongoClient mongo = new MongoClient(new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
+			MongoClient mongo = new MongoClient(
+					new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 			// <-
 			DB db = mongo.getDB("test");
 			DBCollection col = db.createCollection("testCol", new BasicDBObject());
@@ -475,32 +476,32 @@ public class TestExampleReadMeCode extends TestCase {
 		// ->
 		// ...
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-			.version(Version.Main.PRODUCTION)
-			.timeout(new Timeout(30000))
-			.build();
+				.version(Version.Main.PRODUCTION)
+				.timeout(new Timeout(30000))
+				.build();
 		// ...
 		// <-
 	}
-	
+
 	// ### Command Line Post Processing
 	public void testCommandLinePostProcessing() {
 
 		// ->
 		// ...
-		ICommandLinePostProcessor postProcessor= // ...
-		// <-
-		new ICommandLinePostProcessor() {
-			@Override
-			public List<String> process(Distribution distribution, List<String> args) {
-				return null;
-			}
-		};
+		ICommandLinePostProcessor postProcessor = // ...
+				// <-
+				new ICommandLinePostProcessor() {
+					@Override
+					public List<String> process(Distribution distribution, List<String> args) {
+						return null;
+					}
+				};
 		// ->
-		
+
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
-			.defaults(Command.MongoD)
-			.commandLinePostProcessor(postProcessor)
-			.build();
+				.defaults(Command.MongoD)
+				.commandLinePostProcessor(postProcessor)
+				.build();
 		// ...
 		// <-
 	}
@@ -514,16 +515,19 @@ public class TestExampleReadMeCode extends TestCase {
 	public void testCommandLineOptions() throws UnknownHostException, IOException {
 		// ->
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-		.version(Version.Main.PRODUCTION)
-		.cmdOptions(new MongoCmdOptionsBuilder()
-			.syncDelay(10)
-			.build())
-		.build();
+				.version(Version.Main.PRODUCTION)
+				.cmdOptions(new MongoCmdOptionsBuilder()
+						.syncDelay(10)
+						.useNoPrealloc(false)
+						.useSmallFiles(false)
+						.useNoJournal(false)
+						.build())
+				.build();
 		// ...
 		// <-
-		
+
 	}
-	
+
 	// ### Snapshot database files from temp dir
 	/*
 	// ->
@@ -531,22 +535,20 @@ public class TestExampleReadMeCode extends TestCase {
 	// <-
 	 */
 	public void testSnapshotDbFiles() throws UnknownHostException, IOException {
-		File destination=null;
+		File destination = null;
 		// ->
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
-		.version(Version.Main.PRODUCTION)
-		.processListener(new ProcessListenerBuilder()
-			.copyDbFilesBeforeStopInto(destination)
-			.build())
-		.cmdOptions(new MongoCmdOptionsBuilder()
-			.defaultSyncDeplay()
-			.build())
-		.build();
+				.version(Version.Main.PRODUCTION)
+				.processListener(new ProcessListenerBuilder()
+						.copyDbFilesBeforeStopInto(destination)
+						.build())
+				.cmdOptions(new MongoCmdOptionsBuilder()
+						.defaultSyncDelay()
+						.build())
+				.build();
 		// ...
 		// <-
 	}
-	
-	
 	// ### Start mongos with mongod instance
 	// @include StartConfigAndMongoDBServerTest.java
 }
