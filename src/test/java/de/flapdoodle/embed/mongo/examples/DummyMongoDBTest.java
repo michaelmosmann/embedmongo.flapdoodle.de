@@ -20,11 +20,11 @@
  */
 package de.flapdoodle.embed.mongo.examples;
 
-import java.util.Date;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
+
+import java.util.Date;
 
 
 public class DummyMongoDBTest extends AbstractMongoDBTest {

@@ -35,8 +35,8 @@ public class MongoCmdOptionsBuilder extends AbstractBuilder<IMongoCmdOptions> {
 		property(VERBOSE).setDefault(false);
 	}
 	
-	public MongoCmdOptionsBuilder syncDeplay(int deplay) {
-		set(SYNC_DELAY, deplay);
+	public MongoCmdOptionsBuilder syncDelay(int delay) {
+		set(SYNC_DELAY, delay);
 		return this;
 	}
 
