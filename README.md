@@ -66,10 +66,10 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 
 ### Gradle
 
-	Make sure you have mavenCentral() in your repositories or that your enterprise/local server prixies the maven central repository.
+Make sure you have mavenCentral() in your repositories or that your enterprise/local server prixies the maven central repository.
 
 	dependencies {
-		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", version: 1.4+"
+		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", "version: 1.4+"
 	}
 
 ### Build from source
