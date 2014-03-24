@@ -69,7 +69,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 Make sure you have mavenCentral() in your repositories or that your enterprise/local server prixies the maven central repository.
 
 	dependencies {
-		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", "version: 1.4+"
+		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", "version: 1.42"
 	}
 
 ### Build from source
