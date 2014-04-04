@@ -26,4 +26,10 @@ public interface IMongoCmdOptions {
 	Integer syncDelay();
 	
 	boolean isVerbose();
+
+	boolean useNoPrealloc();
+
+	boolean useSmallFiles();
+
+	boolean useNoJournal();
 }

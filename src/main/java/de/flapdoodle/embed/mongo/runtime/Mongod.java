@@ -20,6 +20,15 @@
  */
 package de.flapdoodle.embed.mongo.runtime;
 
+import de.flapdoodle.embed.mongo.Command;
+import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
+import de.flapdoodle.embed.mongo.config.IMongodConfig;
+import de.flapdoodle.embed.mongo.config.SupportConfig;
+import de.flapdoodle.embed.mongo.distribution.Feature;
+import de.flapdoodle.embed.process.distribution.Distribution;
+import de.flapdoodle.embed.process.extract.IExtractedFileSet;
+import de.flapdoodle.embed.process.runtime.NUMA;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,15 +44,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import de.flapdoodle.embed.mongo.Command;
-import de.flapdoodle.embed.mongo.config.IMongoCmdOptions;
-import de.flapdoodle.embed.mongo.config.IMongodConfig;
-import de.flapdoodle.embed.mongo.config.SupportConfig;
-import de.flapdoodle.embed.mongo.distribution.Feature;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.extract.IExtractedFileSet;
-import de.flapdoodle.embed.process.runtime.NUMA;
 
 /**
  *
@@ -123,23 +123,33 @@ public class Mongod extends AbstractMongo {
 	public static List<String> getCommandLine(IMongodConfig config, IExtractedFileSet files, File dbDir)
 			throws UnknownHostException {
 		List<String> ret = new ArrayList<String>();
-		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(), 
+		ret.addAll(Arrays.asList(files.executable().getAbsolutePath(),
 				"--dbpath",
-				"" + dbDir.getAbsolutePath(), "--noprealloc", "--smallfiles", "--nojournal",
+				"" + dbDir.getAbsolutePath(),
 				"--noauth"));
-		
+
+		if (config.cmdOptions().useNoPrealloc()) {
+			ret.add("--noprealloc");
+		}
+		if (config.cmdOptions().useSmallFiles()) {
+			ret.add("--smallfiles");
+		}
+		if (config.cmdOptions().useNoJournal()) {
+			ret.add("--nojournal");
+		}
+
 		if (config.cmdOptions().isVerbose()) {
 			ret.add("-v");
 		}
-		
+
 		applyDefaultOptions(config, ret);
 		applyNet(config.net(), ret);
-		
-		if (config.replication().getReplSetName()!=null) {
+
+		if (config.replication().getReplSetName() != null) {
 			ret.add("--replSet");
 			ret.add(config.replication().getReplSetName());
 		}
-		if (config.replication().getOplogSize()!=0) {
+		if (config.replication().getOplogSize() != 0) {
 			ret.add("--oplogSize");
 			ret.add(String.valueOf(config.replication().getOplogSize()));
 		}
@@ -152,17 +162,17 @@ public class Mongod extends AbstractMongo {
 
 		return ret;
 	}
-	
+
 	private static void applySyncDelay(List<String> ret, IMongoCmdOptions cmdOptions) {
-		Integer syncDelay=cmdOptions.syncDelay();
-		if (syncDelay!=null) {
-			ret.add("--syncdelay="+syncDelay);
+		Integer syncDelay = cmdOptions.syncDelay();
+		if (syncDelay != null) {
+			ret.add("--syncdelay=" + syncDelay);
 		}
 	}
 
 
 	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
-		if (NUMA.isNUMA(new SupportConfig(Command.MongoD),distribution.getPlatform())) {
+		if (NUMA.isNUMA(new SupportConfig(Command.MongoD), distribution.getPlatform())) {
 			switch (distribution.getPlatform()) {
 				case Linux:
 					List<String> ret = new ArrayList<String>();
