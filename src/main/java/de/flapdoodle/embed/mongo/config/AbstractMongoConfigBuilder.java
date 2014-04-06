@@ -27,6 +27,7 @@ import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.AbstractBuilder;
 import de.flapdoodle.embed.process.builder.IProperty;
 import de.flapdoodle.embed.process.builder.TypedProperty;
+import de.flapdoodle.embed.process.config.ISupportConfig;
 import de.flapdoodle.embed.process.distribution.IVersion;
 
 public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends AbstractBuilder<T> {
@@ -66,14 +67,18 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 	
 	static class ImmutableMongoConfig implements IMongoConfig {
 
+		private final ISupportConfig _supportConfig;
+		
 		private final IFeatureAwareVersion _version;
 		private final Timeout _timeout;
 		private final Net _net;
 		private final IMongoCmdOptions _cmdOptions;
 		private final String _pidFile;
 
-		public ImmutableMongoConfig(IFeatureAwareVersion version, Net net, Timeout timeout,IMongoCmdOptions cmdOptions,String pidFile) {
+		public ImmutableMongoConfig(ISupportConfig supportConfig, IFeatureAwareVersion version, Net net, Timeout timeout,IMongoCmdOptions cmdOptions,String pidFile) {
 			super();
+			_supportConfig = supportConfig;
+			
 			_version = version;
 			_net = net;
 			_timeout = timeout;
@@ -104,6 +109,11 @@ public abstract class AbstractMongoConfigBuilder<T extends IMongoConfig> extends
 		@Override
 		public String pidFile() {
 			return _pidFile;
+		}
+		
+		@Override
+		public ISupportConfig supportConfig() {
+			return _supportConfig;
 		}
 	}
 }

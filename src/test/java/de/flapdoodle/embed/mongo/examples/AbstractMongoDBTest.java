@@ -43,6 +43,12 @@ import de.flapdoodle.embed.process.runtime.Network;
 // ->
 public abstract class AbstractMongoDBTest extends TestCase {
 
+	/**
+	 * please store Starter or RuntimeConfig in a static final field
+	 * if you want to use artifact store caching (or else disable caching) 
+	 */
+	private static final MongodStarter starter = MongodStarter.getDefaultInstance();
+
 	private MongodExecutable _mongodExe;
 	private MongodProcess _mongod;
 
@@ -50,8 +56,7 @@ public abstract class AbstractMongoDBTest extends TestCase {
 	@Override
 	protected void setUp() throws Exception {
 
-		MongodStarter runtime = MongodStarter.getDefaultInstance();
-		_mongodExe = runtime.prepare(createMongodConfig());
+		_mongodExe = starter.prepare(createMongodConfig());
 		_mongod = _mongodExe.start();
 
 		super.setUp();

@@ -42,11 +42,6 @@ public class MongosProcess extends AbstractMongoProcess<IMongosConfig, MongosExe
 	}
 
 	@Override
-	protected ISupportConfig supportConfig() {
-		return MongosSupportConfig.getInstance();
-	}
-
-	@Override
 	protected List<String> getCommandLine(Distribution distribution, IMongosConfig config, IExtractedFileSet files)
 			throws IOException {
 		return Mongos.getCommandLine(getConfig(), files);

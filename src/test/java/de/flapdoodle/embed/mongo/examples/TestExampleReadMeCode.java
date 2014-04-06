@@ -75,17 +75,17 @@ public class TestExampleReadMeCode extends TestCase {
 	// ### Usage
 	public void testStandard() throws UnknownHostException, IOException {
 		// ->
+		MongodStarter starter = MongodStarter.getDefaultInstance();
+
 		int port = 12345;
 		IMongodConfig mongodConfig = new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.net(new Net(port, Network.localhostIsIPv6()))
 				.build();
 
-		MongodStarter runtime = MongodStarter.getDefaultInstance();
-
 		MongodExecutable mongodExecutable = null;
 		try {
-			mongodExecutable = runtime.prepare(mongodConfig);
+			mongodExecutable = starter.prepare(mongodConfig);
 			MongodProcess mongod = mongodExecutable.start();
 
 			MongoClient mongo = new MongoClient("localhost", port);
@@ -100,24 +100,46 @@ public class TestExampleReadMeCode extends TestCase {
 		// <-
 	}
 
+	// ### Usage - Optimization
+	/*
+	// ->
+ 		You should make the MongodStarter instance or the RuntimeConfig instance static (per Class or per JVM).
+ 		The main purpose of that is the caching of extracted executables and library files. This is done by the ArtifactStore instance
+ 		configured with the RuntimeConfig instance. Each instance uses its own cache so multiple RuntimeConfig instances will use multiple
+ 		ArtifactStores an multiple caches with much less cache hits:)  
+	// <-
+	 */
+	
 	// ### Usage - custom mongod filename 
+	/*
+	// ->
+		To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
+		This way the firewall dialog only popup once any your done. See [Executable Naming](#executable-naming) 
+	// <-
+	 */
 	public void testCustomMongodFilename() throws UnknownHostException, IOException {
 		// ->		
 		int port = 12345;
-		IMongodConfig mongodConfig = new MongodConfigBuilder()
-				.version(Version.Main.PRODUCTION)
-				.net(new Net(port, Network.localhostIsIPv6()))
-				.build();
 
 		Command command = Command.MongoD;
 
 		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(command)
+		.artifactStore(new ArtifactStoreBuilder()
 				.defaults(command)
-				.artifactStore(new ArtifactStoreBuilder()
-						.defaults(command)
-						.download(new DownloadConfigBuilder()
-								.defaultsForCommand(command))
-						.executableNaming(new UserTempNaming()))
+				.download(new DownloadConfigBuilder()
+						.defaultsForCommand(command))
+		// <-
+		// disable caching with user temp naming if runtimeConfig is not the only
+		// instance in this test
+				.useCache(false)
+		// ->
+				.executableNaming(new UserTempNaming()))
+		.build();
+
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.net(new Net(port, Network.localhostIsIPv6()))
 				.build();
 
 		MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
@@ -551,4 +573,15 @@ public class TestExampleReadMeCode extends TestCase {
 	}
 	// ### Start mongos with mongod instance
 	// @include StartConfigAndMongoDBServerTest.java
+	
+	// ## Common Errors
+	
+	// ### Executable Collision
+
+	/*
+	 // ->
+	 See [custom mongod filename](#Usage - custom mongod filename)
+	 // <-
+	 */
+	
 }

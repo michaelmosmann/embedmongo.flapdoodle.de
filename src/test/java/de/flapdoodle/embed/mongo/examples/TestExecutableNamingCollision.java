@@ -51,12 +51,10 @@ public class TestExecutableNamingCollision extends TestCase {
 
 	private MongoClient _mongo;
 	
-	private static final IRuntimeConfig _runtimeConfig;
+	private static final IRuntimeConfig _runtimeConfig=runtimeConfig();
 
-	static
-	{
-		System.out.println("------------------------CONSTR-----------------------------");
-		_runtimeConfig = new RuntimeConfigBuilder()
+	private static IRuntimeConfig runtimeConfig() {
+		return new RuntimeConfigBuilder()
 		.defaults(Command.MongoD)
 		.artifactStore(new ArtifactStoreBuilder()
 				.defaults(Command.MongoD)
@@ -68,9 +66,6 @@ public class TestExecutableNamingCollision extends TestCase {
 	
 	@Override
 	protected void setUp() throws Exception {
-		System.out.println("------------------------SETUP-----------------------------");
-		
-		
 		MongodStarter runtime = MongodStarter.getInstance(_runtimeConfig);
 		_mongodExe = runtime.prepare(createMongodConfig());
 		_mongod = _mongodExe.start();
@@ -78,7 +73,6 @@ public class TestExecutableNamingCollision extends TestCase {
 		super.setUp();
 
 		_mongo = new MongoClient("localhost", 12345);
-		System.out.println("------------------------SETUP DONE-----------------------------");
 	}
 
 	protected IMongodConfig createMongodConfig() throws UnknownHostException, IOException {
@@ -91,12 +85,10 @@ public class TestExecutableNamingCollision extends TestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
-		System.out.println("------------------------TEARDOWN-----------------------------");
 		super.tearDown();
 
 		_mongod.stop();
 		_mongodExe.stop();
-		System.out.println("------------------------DONE-----------------------------");
 	}
 
 	public Mongo getMongo() {

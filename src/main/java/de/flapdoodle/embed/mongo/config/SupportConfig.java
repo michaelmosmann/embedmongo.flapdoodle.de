@@ -22,9 +22,10 @@ package de.flapdoodle.embed.mongo.config;
 
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.config.ISupportConfig;
+import de.flapdoodle.embed.process.extract.ExecutableFileAlreadyExistsException;
 
 
-public class SupportConfig implements ISupportConfig {
+public class SupportConfig extends AbstractSupportConfig {
 	private final Command command;
 
 	public SupportConfig(Command command) {
@@ -38,7 +39,11 @@ public class SupportConfig implements ISupportConfig {
 
 	@Override
 	public String getSupportUrl() {
-		return "https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de/issues\n";
+		return baseUrl()+"/issues\n";
+	}
+	
+	public static String baseUrl() {
+		return "https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo";
 	}
 
 }

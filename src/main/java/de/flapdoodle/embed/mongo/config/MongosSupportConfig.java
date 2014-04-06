@@ -23,7 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import de.flapdoodle.embed.process.config.ISupportConfig;
 
 
-public class MongosSupportConfig implements ISupportConfig {
+public class MongosSupportConfig extends AbstractSupportConfig {
 
 	static MongosSupportConfig _instance=new MongosSupportConfig();
 	

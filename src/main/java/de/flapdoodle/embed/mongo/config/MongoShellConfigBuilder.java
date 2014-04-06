@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
 import de.flapdoodle.embed.process.builder.TypedProperty;
 
@@ -96,7 +97,7 @@ public class MongoShellConfigBuilder extends AbstractMongoConfigBuilder<IMongoSh
 		private final List<String> _parameters;
 
 		public ImmutableMongoShellConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, String scriptName, List<String> parameters) {
-			super(version, net, timeout,cmdOptions,pidFile);
+			super(new SupportConfig(Command.Mongo), version, net, timeout,cmdOptions,pidFile);
 			this._name = scriptName;
 			this._parameters = Collections.unmodifiableList(new ArrayList<String>(parameters));
 		}

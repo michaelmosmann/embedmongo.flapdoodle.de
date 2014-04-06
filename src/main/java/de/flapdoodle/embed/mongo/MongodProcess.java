@@ -79,10 +79,6 @@ public class MongodProcess extends AbstractMongoProcess<IMongodConfig, MongodExe
 		config.processListener().onAfterProcessStop(this.dbDir,dbDirIsTemp);
 	}
 
-	@Override
-	protected ISupportConfig supportConfig() {
-		return new SupportConfig(Command.MongoD);
-	}
 
 	@Override
 	protected List<String> getCommandLine(Distribution distribution, IMongodConfig config, IExtractedFileSet files) throws IOException {

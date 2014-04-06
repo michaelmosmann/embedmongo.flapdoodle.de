@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import java.io.IOException;
 import java.net.UnknownHostException;
 
+import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.config.processlistener.IMongoProcessListener;
 import de.flapdoodle.embed.mongo.config.processlistener.NoopProcessListener;
 import de.flapdoodle.embed.mongo.distribution.IFeatureAwareVersion;
@@ -104,7 +105,7 @@ public class MongodConfigBuilder extends AbstractMongoConfigBuilder<IMongodConfi
 		private final IMongoProcessListener _processListener;
 
 		public ImmutableMongodConfig(IFeatureAwareVersion version, Net net, Timeout timeout, IMongoCmdOptions cmdOptions, String pidFile, Storage replication,boolean configServer, IMongoProcessListener processListener) {
-			super(version, net, timeout,cmdOptions,pidFile);
+			super(new SupportConfig(Command.MongoD),version, net, timeout,cmdOptions,pidFile);
 			_replication = replication;
 			_configServer = configServer;
 			_processListener = processListener;

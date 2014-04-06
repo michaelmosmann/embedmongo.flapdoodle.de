@@ -48,11 +48,6 @@ public class MongoShellProcess extends AbstractMongoProcess<IMongoShellConfig, M
 	}
 	
 	@Override
-	protected ISupportConfig supportConfig() {
-		return new SupportConfig(Command.Mongo);
-	}
-
-	@Override
 	protected List<String> getCommandLine(Distribution distribution, IMongoShellConfig config, IExtractedFileSet files) throws IOException {
 		return MongoShell.getCommandLine(getConfig(), files);
 	}
