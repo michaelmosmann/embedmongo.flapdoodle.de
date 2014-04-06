@@ -48,12 +48,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 31.01.2014 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 06.04.2014 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.42</version>
+		<version>1.43</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -61,7 +61,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.43-SNAPSHOT</version>
+		<version>1.44-SNAPSHOT</version>
 	</dependency>
 
 
@@ -89,21 +89,21 @@ Versions: some older, a stable and a development version
 Support for Linux, Windows and MacOSX.
 
 ### Usage
+
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
 	...
-	
+	MongodStarter runtime = MongodStarter.getDefaultInstance();
+
 	int port = 12345;
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 		.version(Version.Main.PRODUCTION)
 		.net(new Net(port, Network.localhostIsIPv6()))
 		.build();
 
-	MongodStarter runtime = MongodStarter.getDefaultInstance();
-
 	MongodExecutable mongodExecutable = null;
 	try {
-		mongodExecutable = runtime.prepare(mongodConfig);
+		mongodExecutable = starter.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
 		MongoClient mongo = new MongoClient("localhost", port);
@@ -116,16 +116,23 @@ Support for Linux, Windows and MacOSX.
 			mongodExecutable.stop();
 	}
 
+### Usage - Optimization
+
+You should make the MongodStarter instance or the RuntimeConfig instance static (per Class or per JVM).
+The main purpose of that is the caching of extracted executables and library files. This is done by the ArtifactStore instance
+configured with the RuntimeConfig instance. Each instance uses its own cache so multiple RuntimeConfig instances will use multiple
+ArtifactStores an multiple caches with much less cache hits:)  
+
 ### Usage - custom mongod filename 
+
+To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
+This way the firewall dialog only popup once any your done. See [Executable Naming](#executable-naming) 
+
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
 	...
 
 	int port = 12345;
-	IMongodConfig mongodConfig = new MongodConfigBuilder()
-		.version(Version.Main.PRODUCTION)
-		.net(new Net(port, Network.localhostIsIPv6()))
-		.build();
 
 	Command command = Command.MongoD;
 
@@ -134,8 +141,13 @@ Support for Linux, Windows and MacOSX.
 		.artifactStore(new ArtifactStoreBuilder()
 			.defaults(command)
 			.download(new DownloadConfigBuilder()
-				.defaultsForCommand(command))
-				.executableNaming(new UserTempNaming()))
+			.defaultsForCommand(command))
+			.executableNaming(new UserTempNaming()))
+		.build();
+
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+		.version(Version.Main.PRODUCTION)
+		.net(new Net(port, Network.localhostIsIPv6()))
 		.build();
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
@@ -159,6 +171,12 @@ Support for Linux, Windows and MacOSX.
 
 	public abstract class AbstractMongoDBTest extends TestCase {
 
+		/**
+		 * please store Starter or RuntimeConfig in a static final field
+		 * if you want to use artifact store caching (or else disable caching) 
+		 */
+		private static final MongodStarter starter = MongodStarter.getDefaultInstance();
+
 		private MongodExecutable _mongodExe;
 		private MongodProcess _mongod;
 
@@ -166,8 +184,7 @@ Support for Linux, Windows and MacOSX.
 		@Override
 		protected void setUp() throws Exception {
 
-			MongodStarter runtime = MongodStarter.getDefaultInstance();
-			_mongodExe = runtime.prepare(new MongodConfigBuilder()
+			_mongodExe = starter.prepare(new MongodConfigBuilder()
 				.version(Version.Main.PRODUCTION)
 				.net(new Net(12345, Network.localhostIsIPv6()))
 				.build());
@@ -305,7 +322,6 @@ Support for Linux, Windows and MacOSX.
 				e.printStackTrace();
 			}
 		}
-
 	}
 	...
 
@@ -456,6 +472,9 @@ We changed the syncDelay to 0 which turns off sync to disc. To turn on default v
 	.version(Version.Main.PRODUCTION)
 	.cmdOptions(new MongoCmdOptionsBuilder()
 		.syncDeplay(10)
+		.useNoPrealloc(false)
+		.useSmallFiles(false)
+		.useNoJournal(false)
 		.build())
 	.build();
 	...
@@ -470,7 +489,7 @@ We changed the syncDelay to 0 which turns off sync to disc. To get the files to 
 		.copyDbFilesBeforeStopInto(destination)
 		.build())
 	.cmdOptions(new MongoCmdOptionsBuilder()
-		.defaultSyncDeplay()
+		.defaultSyncDelay()
 		.build())
 	.build();
 	...
@@ -521,6 +540,10 @@ this is an very easy example to use mongos and mongod
 		MongodProcess mongod = mongodExecutable.start();
 		return mongod;
 	}
+
+### Executable Collision
+
+See [custom mongod filename](#Usage - custom mongod filename)
 
 ----
 
