@@ -543,7 +543,7 @@ this is an very easy example to use mongos and mongod
 
 ### Executable Collision
 
-See [custom mongod filename](#Usage - custom mongod filename)
+There is a good chance of filename collisions if you use a custom naming schema for the executable (see [custom mongod filename](#Usage - custom mongod filename)). If you got an exception, then you should make your RuntimeConfig or MongoStarter class or jvm static (static final in your test class or singleton class for all tests).
 
 ----
 
