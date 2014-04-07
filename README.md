@@ -126,7 +126,7 @@ ArtifactStores an multiple caches with much less cache hits:)
 ### Usage - custom mongod filename 
 
 To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
-This way the firewall dialog only popup once any your done. See [Executable Naming](#executable-naming) 
+This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision) 
 
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
