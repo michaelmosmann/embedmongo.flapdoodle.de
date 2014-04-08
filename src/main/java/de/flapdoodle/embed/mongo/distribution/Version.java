@@ -115,6 +115,7 @@ public enum Version implements IFeatureAwareVersion {
 	 * new production release
 	 */
 	V2_4_9("2.4.9",Feature.SYNC_DELAY),
+	V2_4_10("2.4.10",Feature.SYNC_DELAY),
 
   @Deprecated
   V2_5_0("2.5.0",Feature.SYNC_DELAY),
@@ -126,6 +127,10 @@ public enum Version implements IFeatureAwareVersion {
      * new developement release
      */
   V2_5_4("2.5.4",Feature.SYNC_DELAY),
+	/**
+	 * soon new production release
+	 */
+  V2_6_0("2.6.0",Feature.SYNC_DELAY),
     ;
 
 	private final String specificVersion;
@@ -154,6 +159,7 @@ public enum Version implements IFeatureAwareVersion {
 	public static enum Main implements IFeatureAwareVersion {
 		@Deprecated
 		V1_8(V1_8_5),
+
 		@Deprecated
 		V2_0(V2_0_9),
 		@Deprecated
@@ -167,14 +173,18 @@ public enum Version implements IFeatureAwareVersion {
 		/**
 		 * current production release
 		 */
-		V2_4(V2_4_9),
+		V2_4(V2_4_10),
 		/**
 		 * development release
 		 */
 		V2_5(V2_5_4),
+		/**
+		 * soon new production release
+		 */
+		V2_6(V2_6_0),
 
 		PRODUCTION(V2_4),
-		DEVELOPMENT(V2_5), ;
+		DEVELOPMENT(V2_6), ;
 
 		private final IFeatureAwareVersion _latest;
 
