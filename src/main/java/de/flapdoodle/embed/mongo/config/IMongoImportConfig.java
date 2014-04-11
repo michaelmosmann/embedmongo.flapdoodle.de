@@ -1,5 +1,6 @@
 /**
  * Copyright (C) 2011
+ *   Can Yaman <can@yaman.me>
  *   Michael Mosmann <michael@mosmann.de>
  *   Martin Jöhren <m.joehren@googlemail.com>
  *
@@ -18,19 +19,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.flapdoodle.embed.mongo;
+package de.flapdoodle.embed.mongo.config;
 
-
-public enum Command {
-	MongoD("mongod"),MongoS("mongos"),Mongo("mongo"),MongoImport("mongoimport");
-	
-	private final String commandName;
-
-	Command(String commandName) {
-		this.commandName = commandName;
-	}
-	
-	public String commandName() {
-		return commandName;
-	}
+/**
+ * Created by canyaman can@yaman.me on 10/04/14.
+ */
+public interface IMongoImportConfig extends IMongoConfig{
+    public String getDatabaseName();
+    public String getCollectionName();
+    public String getImportFile();
+    public boolean isJsonArray();
+    public boolean isDropCollection();
+    public boolean isUpsertDocuments();
 }
