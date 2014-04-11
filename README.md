@@ -541,6 +541,47 @@ this is an very easy example to use mongos and mongod
 		return mongod;
 	}
 
+### Import JSON file with mongoimport command
+
+    public void testStartAndStopMongoImportAndMongod() throws UnknownHostException, IOException {
+        int defaultConfigPort = 12345;
+        String defaultHost = "localhost";
+        String database = "importTestDB";
+        String collection = "importedCollection";
+        String jsonFile=filePathAsString;
+        MongodProcess mongod = startMongod(defaultConfigPort);
+
+        try {
+            MongoImportProcess mongoImport = startMongoImport(defaultConfigPort, database,collection,jsonFile,true,true,true);
+            try {
+                MongoClient mongoClient = new MongoClient(defaultHost, defaultConfigPort);
+                System.out.println("DB Names: " + mongoClient.getDatabaseNames());
+            } finally {
+                mongoImport.stop();
+            }
+        } finally {
+            mongod.stop();
+        }
+    }
+
+    private MongoImportProcess startMongoImport(int port, String dbName, String collection, String jsonFile, Boolean jsonArray,Boolean upsert, Boolean drop) throws UnknownHostException,
+            IOException {
+        IMongoImportConfig mongoImportConfig = new MongoImportConfigBuilder()
+                .version(Version.Main.PRODUCTION)
+                .net(new Net(port, Network.localhostIsIPv6()))
+                .db(dbName)
+                .collection(collection)
+                .upsert(upsert)
+                .dropCollection(drop)
+                .jsonArray(jsonArray)
+                .importFile(jsonFile)
+                .build();
+
+        MongoImportExecutable mongoImportExecutable = MongoImportStarter.getDefaultInstance().prepare(mongoImportConfig);
+        MongoImportProcess mongoImport = mongoImportExecutable.start();
+        return mongoImport;
+    }
+
 ### Executable Collision
 
 There is a good chance of filename collisions if you use a custom naming schema for the executable (see [Usage - custom mongod filename](#usage---custom-mongod-filename)). If you got an exception, then you should make your RuntimeConfig or MongoStarter class or jvm static (static final in your test class or singleton class for all tests).
