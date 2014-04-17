@@ -103,7 +103,7 @@ Support for Linux, Windows and MacOSX.
 
 	MongodExecutable mongodExecutable = null;
 	try {
-		mongodExecutable = starter.prepare(mongodConfig);
+		mongodExecutable = runtime.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
 		MongoClient mongo = new MongoClient("localhost", port);
