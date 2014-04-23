@@ -89,7 +89,7 @@ Versions: some older, a stable and a development version
 Support for Linux, Windows and MacOSX.
 
 ### Usage
-
+```java
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
 	...
@@ -115,6 +115,7 @@ Support for Linux, Windows and MacOSX.
 		if (mongodExecutable != null)
 			mongodExecutable.stop();
 	}
+```
 
 ### Usage - Optimization
 
@@ -127,7 +128,7 @@ ArtifactStores an multiple caches with much less cache hits:)
 
 To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
 This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision) 
-
+```java
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
 	...
@@ -166,9 +167,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 		if (mongodExecutable != null)
 			mongodExecutable.stop();
 	}
+```
 
 ### Unit Tests
-
+```java
 	public abstract class AbstractMongoDBTest extends TestCase {
 
 		/**
@@ -208,9 +210,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 		}
 
 	}
+```
 
 #### ... with some more help
-
+```java
 	...
 	MongodForTestsFactory factory = null;
 	try {
@@ -226,9 +229,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 			factory.shutdown();
 	}
 	...
+```
 
 ### Customize Download URL
-
+```java
 	...
 	Command command = Command.MongoD;
 
@@ -241,9 +245,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 				.downloadPath("http://my.custom.download.domain/")))
 		.build();
 	...
+```
 
 ### Customize Artifact Storage
-
+```java
 	...
 	IDirectory artifactStorePath = new FixedPath(System.getProperty("user.home") + "/.embeddedMongodbCustomPath");
 	ITempNaming executableNaming = new UUIDTempNaming();
@@ -263,11 +268,12 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	MongodExecutable mongodExe = runtime.prepare(mongodConfig);
 	...
+```
 
 ### Usage - custom mongod process output
 
 #### ... to console with line prefix
-
+```java
 	...
 	ProcessOutput processOutput = new ProcessOutput(Processors.namedConsole("[mongod>]"),
 			Processors.namedConsole("[MONGOD>]"), Processors.namedConsole("[console>]"));
@@ -279,9 +285,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
+```
 
 #### ... to file
-
+```java
 	...
 	IStreamProcessor mongodOutput = Processors.named("[mongod>]",
 			new FileStreamProcessor(File.createTempFile("mongod", "log")));
@@ -324,9 +331,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 		}
 	}
 	...
+```
 
 #### ... to java logging
-
+```java
 	...
 	Logger logger = Logger.getLogger(getClass().getName());
 
@@ -345,9 +353,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
+```
 
 #### ... to default java logging (the easy way)
-
+```java
 	...
 	Logger logger = Logger.getLogger(getClass().getName());
 
@@ -357,9 +366,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
+```
 
 #### ... to null device
-
+```java
 	...
 	Logger logger = Logger.getLogger(getClass().getName());
 
@@ -370,9 +380,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 	MongodStarter runtime = MongodStarter.getInstance(runtimeConfig);
 	...
+```
 
 ### Custom Version
-
+```java
 	...
 	int port = 12345;
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
@@ -398,9 +409,10 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 			mongodExecutable.stop();
 	}
 	...
+```
 
 ### Main Versions
-
+```java
 	IVersion version = Version.V2_2_5;
 	// uses latest supported 2.2.x Version
 	version = Version.Main.V2_2;
@@ -408,19 +420,21 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 	version = Version.Main.PRODUCTION;
 	// uses latest supported development version
 	version = Version.Main.DEVELOPMENT;
+```
 
 ### Use Free Server Port
 
 	Warning: maybe not as stable, as expected.
 
 #### ... by hand
-
+```java
 	...
 	int port = Network.getFreeServerPort();
 	...
+```
 
 #### ... automagic
-
+```java
 	...
 	IMongodConfig mongodConfig = new MongodConfigBuilder().version(Version.Main.PRODUCTION).build();
 
@@ -443,18 +457,20 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 			mongodExecutable.stop();
 	}
 	...
+```
 
 ### ... custom timeouts
-
+```java
 	...
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 		.version(Version.Main.PRODUCTION)
 		.timeout(new Timeout(30000))
 		.build();
 	...
+```
 
 ### Command Line Post Processing
-
+```java
 	...
 	ICommandLinePostProcessor postProcessor= ...
 
@@ -463,11 +479,11 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 		.commandLinePostProcessor(postProcessor)
 		.build();
 	...
-
+```
 ### Custom Command Line Options
 
 We changed the syncDelay to 0 which turns off sync to disc. To turn on default value used defaultSyncDelay().
-
+```java
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
 	.cmdOptions(new MongoCmdOptionsBuilder()
@@ -478,11 +494,12 @@ We changed the syncDelay to 0 which turns off sync to disc. To turn on default v
 		.build())
 	.build();
 	...
+```
 
 ### Snapshot database files from temp dir
 
 We changed the syncDelay to 0 which turns off sync to disc. To get the files to create an snapshot you must turn on default value (use defaultSyncDelay()).
-
+```java
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
 	.version(Version.Main.PRODUCTION)
 	.processListener(new ProcessListenerBuilder()
@@ -493,11 +510,12 @@ We changed the syncDelay to 0 which turns off sync to disc. To get the files to 
 		.build())
 	.build();
 	...
+```
 
 ### Start mongos with mongod instance
 
 this is an very easy example to use mongos and mongod
-
+```java
 	int port = 12121;
 	int defaultConfigPort = 12345;
 	String defaultHost = "localhost";
@@ -540,9 +558,10 @@ this is an very easy example to use mongos and mongod
 		MongodProcess mongod = mongodExecutable.start();
 		return mongod;
 	}
+```
 
 ### Import JSON file with mongoimport command
-
+```java
     public void testStartAndStopMongoImportAndMongod() throws UnknownHostException, IOException {
         int defaultConfigPort = 12345;
         String defaultHost = "localhost";
@@ -581,6 +600,7 @@ this is an very easy example to use mongos and mongod
         MongoImportProcess mongoImport = mongoImportExecutable.start();
         return mongoImport;
     }
+```
 
 ### Executable Collision
 
