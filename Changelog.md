@@ -1,6 +1,11 @@
 ### Changelog
 
-#### 1.43 (SNAPSHOT)
+#### 1.44 (SNAPSHOT)
+
+- mongo version upgrade (2.6.0, ...)
+- mongo import command support
+
+#### 1.43
 
 #### 1.42
 
