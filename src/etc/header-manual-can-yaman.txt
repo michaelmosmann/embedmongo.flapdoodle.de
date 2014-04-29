@@ -1,4 +1,5 @@
 Copyright (C) ${lic.year}
+  Can Yaman <can@yaman.me>
   ${lic.username} <${lic.email}>
   ${lic.username2} <${lic.email2}>
   
