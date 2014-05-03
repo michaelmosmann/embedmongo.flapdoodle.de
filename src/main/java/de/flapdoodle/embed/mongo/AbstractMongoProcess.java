@@ -63,7 +63,16 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 		if (logWatch.isInitWithSuccess()) {
 			setProcessId(Mongod.getMongodProcessId(logWatch.getOutput(), -1));
 		} else {
-			throw new IOException("Could not start process: "+logWatch.getFailureFound());
+			String failureFound = logWatch.getFailureFound();
+			if (failureFound==null) {
+				failureFound="\n" +
+						"----------------------\n" +
+						"Hmm.. no failure message.. \n" +
+						"...the cause must be somewhere in the process output\n" +
+						"----------------------\n" +
+						""+logWatch.getOutput();
+			}
+			throw new IOException("Could not start process: "+failureFound);
 		}
 	}
 

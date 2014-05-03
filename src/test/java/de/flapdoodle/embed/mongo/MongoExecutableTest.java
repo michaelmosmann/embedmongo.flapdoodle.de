@@ -33,6 +33,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import com.mongodb.ServerAddress;
 
 import de.flapdoodle.embed.mongo.config.IMongodConfig;
@@ -69,7 +70,7 @@ public class MongoExecutableTest extends TestCase {
 				MongodProcess mongod = mongodExe.start();
 
 				if (useMongodb) {
-					Mongo mongo = new Mongo(
+					MongoClient mongo = new MongoClient(
 							new ServerAddress(mongodConfig.net().getServerAddress(), mongodConfig.net().getPort()));
 					DB db = mongo.getDB("test");
 					DBCollection col = db.createCollection("testCol", new BasicDBObject());
