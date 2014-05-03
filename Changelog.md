@@ -1,6 +1,12 @@
 ### Changelog
 
-#### 1.44 (SNAPSHOT)
+#### 1.46 (SNAPSHOT)
+
+#### 1.45
+
+- embed.process upgrade (better error logging)
+
+#### 1.44
 
 - mongo version upgrade (2.6.0, ...)
 - mongo import command support
