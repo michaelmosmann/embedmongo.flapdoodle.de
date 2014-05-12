@@ -519,6 +519,19 @@ We changed the syncDelay to 0 which turns off sync to disc. To get the files to 
 	...
 ```
 
+### Custom database directory  
+
+If you set a custom database directory, it will not be deleted after shutdown
+```java
+	Storage replication = new Storage("/custom/databaseDir",null,0);
+
+	IMongodConfig mongodConfig = new MongodConfigBuilder()
+			.version(Version.Main.PRODUCTION)
+			.replication(replication)
+			.build();
+	...
+```
+
 ### Start mongos with mongod instance
 
 this is an very easy example to use mongos and mongod

@@ -36,6 +36,7 @@ import de.flapdoodle.embed.mongo.config.MongoCmdOptionsBuilder;
 import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
 import de.flapdoodle.embed.mongo.config.Net;
 import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.config.Storage;
 import de.flapdoodle.embed.mongo.config.Timeout;
 import de.flapdoodle.embed.mongo.config.processlistener.ProcessListenerBuilder;
 import de.flapdoodle.embed.mongo.distribution.Feature;
@@ -567,6 +568,23 @@ public class TestExampleReadMeCode extends TestCase {
 				.cmdOptions(new MongoCmdOptionsBuilder()
 						.defaultSyncDelay()
 						.build())
+				.build();
+		// ...
+		// <-
+	}
+	// ### Custom database directory  
+	/*
+	// ->
+		If you set a custom database directory, it will not be deleted after shutdown
+	// <-
+	 */
+	public void testCustomDatabaseDirectory() throws UnknownHostException, IOException {
+		// ->
+		Storage replication = new Storage("/custom/databaseDir",null,0);
+		
+		IMongodConfig mongodConfig = new MongodConfigBuilder()
+				.version(Version.Main.PRODUCTION)
+				.replication(replication)
 				.build();
 		// ...
 		// <-
