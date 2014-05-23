@@ -22,8 +22,6 @@ package de.flapdoodle.embed.mongo.distribution;
 
 import java.util.EnumSet;
 
-import de.flapdoodle.embed.process.distribution.IVersion;
-
 /**
  * MongoDB Version enum
  */
@@ -71,7 +69,9 @@ public enum Version implements IFeatureAwareVersion {
 	V2_1_0("2.1.0"),
 	@Deprecated
 	V2_1_1("2.1.1"),
+  @Deprecated
 	V2_1_2("2.1.2"),
+
 	@Deprecated
 	V2_2_0_RC0("2.2.0-rc0"),
 	@Deprecated
@@ -85,14 +85,13 @@ public enum Version implements IFeatureAwareVersion {
 	@Deprecated
 	V2_2_5("2.2.5"),
 	@Deprecated
-  	V2_2_6("2.2.6"),
-    /**
-      * last production release
-     */    
-  	V2_2_7("2.2.7"),
+  V2_2_6("2.2.6"),
+  @Deprecated
+  V2_2_7("2.2.7"),
 
 	@Deprecated
 	V2_3_0("2.3.0"),
+
 	@Deprecated
 	V2_4_0_RC3("2.4.0-rc3"),
 	@Deprecated
@@ -111,11 +110,10 @@ public enum Version implements IFeatureAwareVersion {
 	V2_4_7("2.4.7",Feature.SYNC_DELAY),
 	@Deprecated
 	V2_4_8("2.4.8",Feature.SYNC_DELAY),
-	/**
-	 * new production release
-	 */
+  @Deprecated
 	V2_4_9("2.4.9",Feature.SYNC_DELAY),
-	V2_4_10("2.4.10",Feature.SYNC_DELAY),
+  @Deprecated
+  V2_4_10("2.4.10",Feature.SYNC_DELAY),
 
   @Deprecated
   V2_5_0("2.5.0",Feature.SYNC_DELAY),
@@ -123,15 +121,26 @@ public enum Version implements IFeatureAwareVersion {
   V2_5_1("2.5.1",Feature.SYNC_DELAY),
   @Deprecated
   V2_5_3("2.5.3",Feature.SYNC_DELAY),
-    /**
-     * new developement release
-     */
+  @Deprecated
   V2_5_4("2.5.4",Feature.SYNC_DELAY),
-	/**
-	 * soon new production release
+
+  /**
+	 * 2.6 series production releases --------------
 	 */
+  @Deprecated
   V2_6_0("2.6.0",Feature.SYNC_DELAY),
-    ;
+
+  /**
+   * Latest 2.6 production release
+   */
+  V2_6_1("2.6.1",Feature.SYNC_DELAY),
+
+  /**
+   * Latest 2.7 series development release
+   */
+  V2_7_0("2.7.0",Feature.SYNC_DELAY),
+
+  ;
 
 	private final String specificVersion;
 	private EnumSet<Feature> features;
@@ -145,7 +154,7 @@ public enum Version implements IFeatureAwareVersion {
 	public String asInDownloadPath() {
 		return specificVersion;
 	}
-	
+
 	@Override
 		public boolean enabled(Feature feature) {
 			return features.contains(feature);
@@ -164,27 +173,26 @@ public enum Version implements IFeatureAwareVersion {
 		V2_0(V2_0_9),
 		@Deprecated
 		V2_1(V2_1_2),
-		/**
-		 * last production release
-		 */
+    @Deprecated
 		V2_2(V2_2_7),
 		@Deprecated
 		V2_3(V2_3_0),
-		/**
-		 * current production release
-		 */
+    @Deprecated
 		V2_4(V2_4_10),
-		/**
-		 * development release
-		 */
+    @Deprecated
 		V2_5(V2_5_4),
 		/**
-		 * soon new production release
+		 * Latest production release
 		 */
-		V2_6(V2_6_0),
+		V2_6(V2_6_1),
 
-		PRODUCTION(V2_4),
-		DEVELOPMENT(V2_6), ;
+    /**
+     * Latest development release
+     */
+    V2_7(V2_7_0),
+
+		PRODUCTION(V2_6),
+		DEVELOPMENT(V2_7), ;
 
 		private final IFeatureAwareVersion _latest;
 
@@ -196,7 +204,7 @@ public enum Version implements IFeatureAwareVersion {
 		public String asInDownloadPath() {
 			return _latest.asInDownloadPath();
 		}
-		
+
 		@Override
 		public boolean enabled(Feature feature) {
 			return _latest.enabled(feature);
