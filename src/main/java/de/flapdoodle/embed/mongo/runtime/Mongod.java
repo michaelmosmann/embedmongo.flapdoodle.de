@@ -93,10 +93,10 @@ public class Mongod extends AbstractMongo {
 			}
 			return true;
 		} catch (IOException iox) {
-			logger.log(Level.WARNING, String.format("sendShutdown %s:%d", hostname, port));
 			if (tryToReadErrorResponse) {
 				return true;
 			}
+			logger.log(Level.WARNING, String.format("sendShutdown %s:%d", hostname, port), iox);
 		} finally {
 			try {
 				s.close();

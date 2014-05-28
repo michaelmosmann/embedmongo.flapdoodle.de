@@ -95,7 +95,7 @@ public abstract class AbstractMongoProcess<T extends IMongoConfig, E extends Exe
 
 				stopped = true;
 
-				logger.info("try to stop mongod");
+				logger.fine("try to stop mongod");
 				if (!sendStopToMongoInstance()) {
 					logger.warning("could not stop mongod with db command, try next");
 					if (!sendKillToProcess()) {
