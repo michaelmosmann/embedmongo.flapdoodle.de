@@ -100,7 +100,7 @@ Support for Linux, Windows and MacOSX.
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
 	
 	...
-	MongodStarter runtime = MongodStarter.getDefaultInstance();
+	MongodStarter starter = MongodStarter.getDefaultInstance();
 
 	int port = 12345;
 	IMongodConfig mongodConfig = new MongodConfigBuilder()
@@ -110,7 +110,7 @@ Support for Linux, Windows and MacOSX.
 
 	MongodExecutable mongodExecutable = null;
 	try {
-		mongodExecutable = runtime.prepare(mongodConfig);
+		mongodExecutable = starter.prepare(mongodConfig);
 		MongodProcess mongod = mongodExecutable.start();
 
 		MongoClient mongo = new MongoClient("localhost", port);
@@ -251,6 +251,22 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 				.defaultsForCommand(command)
 				.downloadPath("http://my.custom.download.domain/")))
 		.build();
+	...
+```
+
+### Customize Proxy for Download 
+```java
+	...
+	Command command = Command.MongoD;
+
+	IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+		.defaults(command)
+		.artifactStore(new ArtifactStoreBuilder()
+			.defaults(command)
+			.download(new DownloadConfigBuilder()
+				.defaultsForCommand(command)
+				.proxyFactory(new HttpProxyFactory("fooo", 1234))))
+			.build();
 	...
 ```
 

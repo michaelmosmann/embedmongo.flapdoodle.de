@@ -45,6 +45,7 @@ import de.flapdoodle.embed.mongo.distribution.Versions;
 import de.flapdoodle.embed.mongo.tests.MongodForTestsFactory;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.config.io.ProcessOutput;
+import de.flapdoodle.embed.process.config.store.HttpProxyFactory;
 import de.flapdoodle.embed.process.distribution.Distribution;
 import de.flapdoodle.embed.process.distribution.GenericVersion;
 import de.flapdoodle.embed.process.distribution.IVersion;
@@ -207,6 +208,24 @@ public class TestExampleReadMeCode extends TestCase {
 		// <-
 	}
 
+	// ### Customize Proxy for Download 
+	public void testCustomProxy() {
+		// ->
+		// ...
+		Command command = Command.MongoD;
+
+		IRuntimeConfig runtimeConfig = new RuntimeConfigBuilder()
+				.defaults(command)
+				.artifactStore(new ArtifactStoreBuilder()
+						.defaults(command)
+						.download(new DownloadConfigBuilder()
+								.defaultsForCommand(command)
+								.proxyFactory(new HttpProxyFactory("fooo", 1234))))
+				.build();
+		// ...
+		// <-
+	}
+	
 	// ### Customize Artifact Storage
 	public void testCustomizeArtifactStorage() throws IOException {
 
