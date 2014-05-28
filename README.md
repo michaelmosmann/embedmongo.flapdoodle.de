@@ -48,12 +48,12 @@ Embedded MongoDB will provide a platform neutral way for running mongodb in unit
 *	groupId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed__
 *	artifactId from __de.flapdoodle.embedmongo__ to __de.flapdoodle.embed.mongo__
 
-Stable (Maven Central Repository, Released: 03.05.2014 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
+Stable (Maven Central Repository, Released: 28.05.2014 - wait 24hrs for [maven central](http://repo1.maven.org/maven2/de/flapdoodle/embed/de.flapdoodle.embed.mongo/maven-metadata.xml))
 
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.45</version>
+		<version>1.46.0</version>
 	</dependency>
 
 Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
@@ -61,7 +61,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 	<dependency>
 		<groupId>de.flapdoodle.embed</groupId>
 		<artifactId>de.flapdoodle.embed.mongo</artifactId>
-		<version>1.46-SNAPSHOT</version>
+		<version>1.46.1-SNAPSHOT</version>
 	</dependency>
 
 ### Gradle
@@ -69,7 +69,7 @@ Snapshots (Repository http://oss.sonatype.org/content/repositories/snapshots)
 Make sure you have mavenCentral() in your repositories or that your enterprise/local server prixies the maven central repository.
 
 	dependencies {
-		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", "version: 1.44"
+		testCompile group: "de.flapdoodle.embed", name: "de.flapdoodle.embed.mongo", "version: 1.46.0"
 	}
 
 ### Build from source
