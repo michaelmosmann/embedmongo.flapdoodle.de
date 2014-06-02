@@ -1,0 +1,13 @@
+---
+language: java
+install: true
+script: $TARGET
+jdk:
+- openjdk7
+- oraclejdk7
+- oraclejdk8
+
+env:
+  matrix:
+    - TARGET='mvn test'
+    - TARGET='./gradlew test -i'
