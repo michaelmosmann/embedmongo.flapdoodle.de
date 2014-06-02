@@ -1,5 +1,5 @@
 # Organisation Flapdoodle OSS
-[![Build Status](https://drone.io/github.com/flapdoodle-oss/embedmongo.flapdoodle.de/status.png)](https://drone.io/github.com/flapdoodle-oss/embedmongo.flapdoodle.de/latest)
+[![Build Status](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)
 
 We are now a github organisation. You are invited to participate. :)
 
