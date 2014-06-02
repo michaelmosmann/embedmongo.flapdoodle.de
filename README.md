@@ -1,5 +1,5 @@
 # Organisation Flapdoodle OSS
-[![Build Status](https://travis-ci.org/matlockx/de.flapdoodle.embed.mongo.svg)](https://travis-ci.org/matlockx/de.flapdoodle.embed.mongo.svg)
+[![Build Status](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)](https://travis-ci.org/flapdoodle-oss/de.flapdoodle.embed.mongo.svg?branch=master)
 
 We are now a github organisation. You are invited to participate. :)
 
@@ -74,7 +74,7 @@ Make sure you have mavenCentral() in your repositories or that your enterprise/l
 
 ### Build from source
 
-When you fork or clone our branch you should always be able to build the library by running 
+When you fork or clone our branch you should always be able to build the library by running
 
 	mvn package
 
@@ -85,7 +85,7 @@ There is also a build.gradle file available which might sometimes be outdated bu
 Or if you want to use the gradle wrapper:
 
 	./gradlew build
- 
+
 ### Changelog
 
 [Changelog](Changelog.md)
@@ -98,7 +98,7 @@ Support for Linux, Windows and MacOSX.
 ### Usage
 ```java
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
-	
+
 	...
 	MongodStarter starter = MongodStarter.getDefaultInstance();
 
@@ -131,13 +131,13 @@ The main purpose of that is the caching of extracted executables and library fil
 configured with the RuntimeConfig instance. Each instance uses its own cache so multiple RuntimeConfig instances will use multiple
 ArtifactStores an multiple caches with much less cache hits:)  
 
-### Usage - custom mongod filename 
+### Usage - custom mongod filename
 
-To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming. 
-This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision) 
+To avoid windows firewall dialog popups you can chose a stable executable name with UserTempNaming.
+This way the firewall dialog only popup once any your done. See [Executable Collision](#executable-collision)
 ```java
 	import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
-	
+
 	...
 
 	int port = 12345;
@@ -182,7 +182,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 
 		/**
 		 * please store Starter or RuntimeConfig in a static final field
-		 * if you want to use artifact store caching (or else disable caching) 
+		 * if you want to use artifact store caching (or else disable caching)
 		 */
 		private static final MongodStarter starter = MongodStarter.getDefaultInstance();
 
@@ -254,7 +254,7 @@ This way the firewall dialog only popup once any your done. See [Executable Coll
 	...
 ```
 
-### Customize Proxy for Download 
+### Customize Proxy for Download
 ```java
 	...
 	Command command = Command.MongoD;
