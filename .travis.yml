@@ -11,3 +11,8 @@ env:
   matrix:
     - TARGET='mvn test'
     - TARGET='./gradlew test -i'
+
+notifications:
+  email:
+    - michael@mosmann.de
+    - m.joehren@gmail.com
