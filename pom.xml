@@ -12,6 +12,7 @@
 	<artifactId>de.flapdoodle.embed.mongo</artifactId>
 	<name>Flapdoodle Embedded MongoDB</name>
 	<version>1.46.1-SNAPSHOT</version>
+    <packaging>bundle</packaging>
 
 	<description>A embedded mongodb ...</description>
 	<url>http://github.com/flapdoodle-oss/embedmongo.flapdoodle.de</url>
@@ -170,6 +171,22 @@
 				</executions>
 			</plugin>
 
+           	<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<version>2.3.7</version>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Bundle-Category>Utilities</Bundle-Category>
+						<Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
+						<Bundle-Description>${project.description}</Bundle-Description>
+						<Export-Package>${osgi.export}</Export-Package>
+						<Import-Package>${osgi.import}</Import-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+
 <!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -239,6 +256,38 @@
 		</profile>
 	</profiles>
 
+	<properties>
+		<osgi.category>Bundles</osgi.category>
+		<osgi.export>
+			de.flapdoodle.embed.mongo;version=${project.version},
+			de.flapdoodle.embed.mongo.config;version=${project.version},
+			de.flapdoodle.embed.mongo.config.processlistener;version=${project.version},
+			de.flapdoodle.embed.mongo.distribution;version=${project.version},
+			de.flapdoodle.embed.mongo.runtime;version=${project.version},
+			de.flapdoodle.embed.mongo.tests;version=${project.version}
+		</osgi.export>
+		<osgi.import>
+			com.mongodb,
+			de.flapdoodle.embed.process,
+			de.flapdoodle.embed.process.builder,
+			de.flapdoodle.embed.process.collections,
+			de.flapdoodle.embed.process.config,
+			de.flapdoodle.embed.process.config.io,
+			de.flapdoodle.embed.process.config.process,
+			de.flapdoodle.embed.process.config.store,
+			de.flapdoodle.embed.process.distribution,
+			de.flapdoodle.embed.process.exceptions,
+			de.flapdoodle.embed.process.extract,
+			de.flapdoodle.embed.process.io,
+			de.flapdoodle.embed.process.io.directories,
+			de.flapdoodle.embed.process.io.file,
+			de.flapdoodle.embed.process.io.progress,
+			de.flapdoodle.embed.process.runtime,
+			de.flapdoodle.embed.process.store,
+			org.apache.commons.io
+		</osgi.import>
+	</properties>
+	
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
