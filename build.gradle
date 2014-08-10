@@ -22,7 +22,7 @@ eclipse {
 dependencies {
 
     compile 'commons-io:commons-io:2.1'
-    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.39.0'
+    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.40.0'
     compile 'org.mongodb:mongo-java-driver:2.11.3'
 
     testCompile 'junit:junit:4.10'
