@@ -1,6 +1,14 @@
 ### Changelog
 
-#### 1.46 (SNAPSHOT)
+#### 1.46.1 (SNAPSHOT)
+
+#### 1.46.0
+
+- changed to semantic versions
+- custom database dir supported
+- upgrade mongo versions
+- changed some log levels, fixed some error logs
+- proxy configuration added
 
 #### 1.45
 
