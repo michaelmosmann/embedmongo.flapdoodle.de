@@ -2,6 +2,10 @@
 
 #### 1.46.1 (SNAPSHOT)
 
+- support for OSGi (thanks to Niels Betram)
+- support for FreeBSD (thanks to Alex Sanchez)
+- updated gradle build
+
 #### 1.46.0
 
 - changed to semantic versions
