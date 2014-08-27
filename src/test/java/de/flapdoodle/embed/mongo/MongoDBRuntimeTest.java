@@ -20,24 +20,11 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import junit.framework.TestCase;
-
 import com.mongodb.BasicDBObject;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.Mongo;
-
-import de.flapdoodle.embed.mongo.config.ArtifactStoreBuilder;
-import de.flapdoodle.embed.mongo.config.DownloadConfigBuilder;
-import de.flapdoodle.embed.mongo.config.MongodConfigBuilder;
-import de.flapdoodle.embed.mongo.config.Net;
-import de.flapdoodle.embed.mongo.config.RuntimeConfigBuilder;
+import de.flapdoodle.embed.mongo.config.*;
 import de.flapdoodle.embed.mongo.distribution.Version;
 import de.flapdoodle.embed.process.config.IRuntimeConfig;
 import de.flapdoodle.embed.process.distribution.BitSize;
@@ -46,6 +33,12 @@ import de.flapdoodle.embed.process.distribution.IVersion;
 import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.extract.IExtractedFileSet;
 import de.flapdoodle.embed.process.runtime.Network;
+import junit.framework.TestCase;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 // CHECKSTYLE:OFF
 public class MongoDBRuntimeTest extends TestCase {
@@ -97,13 +90,16 @@ public class MongoDBRuntimeTest extends TestCase {
 
 	private boolean shipThisVersion(Platform platform, IVersion version, BitSize bitsize) {
 		String currentVersion = version.asInDownloadPath();
-    if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
-  		// there is no osx 32bit version for v2.2.1 and above, so we dont check
-    	return true;
-    }
-    if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
-    	return true;
-    }
+		if ((platform == Platform.OS_X) && (bitsize == BitSize.B32)) {
+			// there is no osx 32bit version for v2.2.1 and above, so we dont check
+			return true;
+		}
+		if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
+			return true;
+		}
+		if ((platform == Platform.FreeBSD)  && (bitsize == BitSize.B32)) {
+			return true;
+		}
 		return false;
 	}
 

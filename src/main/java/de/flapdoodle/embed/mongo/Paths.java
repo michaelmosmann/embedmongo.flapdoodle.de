@@ -20,18 +20,12 @@
  */
 package de.flapdoodle.embed.mongo;
 
-import java.util.logging.Logger;
-import java.util.regex.Pattern;
-
-import de.flapdoodle.embed.process.distribution.ArchiveType;
-import de.flapdoodle.embed.process.distribution.BitSize;
-import de.flapdoodle.embed.process.distribution.Distribution;
-import de.flapdoodle.embed.process.distribution.IVersion;
-import de.flapdoodle.embed.process.distribution.Platform;
 import de.flapdoodle.embed.process.config.store.FileSet;
 import de.flapdoodle.embed.process.config.store.FileType;
-import de.flapdoodle.embed.process.config.store.IDownloadConfig;
 import de.flapdoodle.embed.process.config.store.IPackageResolver;
+import de.flapdoodle.embed.process.distribution.*;
+
+import java.util.logging.Logger;
 
 /**
  *
@@ -52,6 +46,7 @@ public class Paths implements IPackageResolver {
 			case Linux:
 			case OS_X:
 			case Solaris:
+			case FreeBSD:
 				executableFileName = command.commandName();
 				break;
 			case Windows:
@@ -69,14 +64,13 @@ public class Paths implements IPackageResolver {
 		ArchiveType archiveType;
 		switch (distribution.getPlatform()) {
 			case Linux:
+			case OS_X:
 			case Solaris:
+			case FreeBSD:
 				archiveType = ArchiveType.TGZ;
 				break;
 			case Windows:
 				archiveType = ArchiveType.ZIP;
-				break;
-			case OS_X:
-				archiveType = ArchiveType.TGZ;
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());
@@ -114,6 +108,9 @@ public class Paths implements IPackageResolver {
 				break;
 			case Solaris:
 				splatform = "sunos5";
+				break;
+			case FreeBSD:
+				splatform = "freebsd";
 				break;
 			default:
 				throw new IllegalArgumentException("Unknown Platform " + distribution.getPlatform());

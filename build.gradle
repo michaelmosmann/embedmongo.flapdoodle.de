@@ -1,6 +1,8 @@
 group = 'de.flapdoodle.embedmongo'
-version = '1.45-SNAPSHOT'
-project.ext.gradleVersion = "1.11"
+version = '1.46.1-SNAPSHOT'
+
+project.ext.gradleVersion = "1.12"
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 repositories { mavenCentral() }
@@ -18,9 +20,9 @@ eclipse {
 }
 
 dependencies {
-    
+
     compile 'commons-io:commons-io:2.1'
-    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.36'
+    compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.40.0'
     compile 'org.mongodb:mongo-java-driver:2.11.3'
 
     testCompile 'junit:junit:4.10'
