@@ -46,6 +46,16 @@ public class MongoDBRuntimeTest extends TestCase {
 	public void testNothing() {
 
 	}
+	
+	public void testSingleVersion() throws IOException {
+		
+		RuntimeConfigBuilder defaultBuilder = new RuntimeConfigBuilder()
+		.defaults(Command.MongoD);
+
+		IRuntimeConfig config = defaultBuilder.build();
+
+		check(config, new Distribution(Version.V2_6_0, Platform.Windows, BitSize.B32));
+	}
 
 	public void testDistributions() throws IOException {
 		RuntimeConfigBuilder defaultBuilder = new RuntimeConfigBuilder()
@@ -97,7 +107,7 @@ public class MongoDBRuntimeTest extends TestCase {
 		if ((platform == Platform.Solaris)  && (bitsize == BitSize.B32)) {
 			return true;
 		}
-		if ((platform == Platform.FreeBSD)  && (bitsize == BitSize.B32)) {
+		if (platform == Platform.FreeBSD) {
 			return true;
 		}
 		return false;
