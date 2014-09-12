@@ -563,6 +563,7 @@ public class TestExampleReadMeCode extends TestCase {
 						.useNoPrealloc(false)
 						.useSmallFiles(false)
 						.useNoJournal(false)
+						.enableTextSearch(true)
 						.build())
 				.build();
 		// ...

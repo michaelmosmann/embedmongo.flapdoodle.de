@@ -94,33 +94,33 @@ public enum Version implements IFeatureAwareVersion {
 	@Deprecated
 	V2_4_0_RC3("2.4.0-rc3"),
 	@Deprecated
-	V2_4_0("2.4.0",Feature.SYNC_DELAY),
+	V2_4_0("2.4.0",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-  V2_4_1("2.4.1",Feature.SYNC_DELAY),
+  V2_4_1("2.4.1",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
- 	V2_4_2("2.4.2",Feature.SYNC_DELAY),
+ 	V2_4_2("2.4.2",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-	V2_4_3("2.4.3",Feature.SYNC_DELAY),
+	V2_4_3("2.4.3",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-  V2_4_5("2.4.5",Feature.SYNC_DELAY),
+  V2_4_5("2.4.5",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-	V2_4_6("2.4.6",Feature.SYNC_DELAY),
+	V2_4_6("2.4.6",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-	V2_4_7("2.4.7",Feature.SYNC_DELAY),
+	V2_4_7("2.4.7",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
 	@Deprecated
-	V2_4_8("2.4.8",Feature.SYNC_DELAY),
+	V2_4_8("2.4.8",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-	V2_4_9("2.4.9",Feature.SYNC_DELAY),
-  V2_4_10("2.4.10",Feature.SYNC_DELAY),
+	V2_4_9("2.4.9",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
+  V2_4_10("2.4.10",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
 
   @Deprecated
-  V2_5_0("2.5.0",Feature.SYNC_DELAY),
+  V2_5_0("2.5.0",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-  V2_5_1("2.5.1",Feature.SYNC_DELAY),
+  V2_5_1("2.5.1",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-  V2_5_3("2.5.3",Feature.SYNC_DELAY),
+  V2_5_3("2.5.3",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
   @Deprecated
-  V2_5_4("2.5.4",Feature.SYNC_DELAY),
+  V2_5_4("2.5.4",Feature.SYNC_DELAY, Feature.TEXT_SEARCH),
 
   /**
 	 * 2.6 series production releases --------------

@@ -159,6 +159,9 @@ public class Mongod extends AbstractMongo {
 		if (config.version().enabled(Feature.SYNC_DELAY)) {
 			applySyncDelay(ret, config.cmdOptions());
 		}
+		if (config.version().enabled(Feature.TEXT_SEARCH)) {
+			applyTextSearch(ret, config.cmdOptions());
+		}
 
 		return ret;
 	}
@@ -168,6 +171,13 @@ public class Mongod extends AbstractMongo {
 		if (syncDelay != null) {
 			ret.add("--syncdelay=" + syncDelay);
 		}
+	}
+	
+	private static void applyTextSearch(List<String> ret, IMongoCmdOptions cmdOptions) {
+		if (cmdOptions.enableTextSearch()) {
+			ret.add("--setParameter textSearchEnabled=true");
+		}
+		
 	}
 
 

@@ -514,6 +514,7 @@ We changed the syncDelay to 0 which turns off sync to disc. To turn on default v
 		.useNoPrealloc(false)
 		.useSmallFiles(false)
 		.useNoJournal(false)
+		.enableTextSearch(true)
 		.build())
 	.build();
 	...

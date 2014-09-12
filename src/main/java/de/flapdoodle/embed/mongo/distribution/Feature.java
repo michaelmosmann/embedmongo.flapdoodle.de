@@ -24,7 +24,8 @@ import java.util.Arrays;
 import java.util.EnumSet;
 
 public enum Feature {
-	SYNC_DELAY;
+	SYNC_DELAY, 
+	TEXT_SEARCH /* enabled by default in mongodb >=2.6 */;
 
 	public static EnumSet<Feature> asSet(Feature... features) {
 		if (features.length == 0) {

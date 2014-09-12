@@ -32,4 +32,6 @@ public interface IMongoCmdOptions {
 	boolean useSmallFiles();
 
 	boolean useNoJournal();
+	
+	boolean enableTextSearch();
 }

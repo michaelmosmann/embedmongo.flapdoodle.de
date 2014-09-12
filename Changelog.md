@@ -5,6 +5,7 @@
 - support for OSGi (thanks to Niels Betram)
 - support for FreeBSD (thanks to Alex Sanchez)
 - updated gradle build
+- switch to enable textsearch in mongodb before 2.6
 
 #### 1.46.0
 
