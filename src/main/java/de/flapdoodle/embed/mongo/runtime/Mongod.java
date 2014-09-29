@@ -175,11 +175,10 @@ public class Mongod extends AbstractMongo {
 	
 	private static void applyTextSearch(List<String> ret, IMongoCmdOptions cmdOptions) {
 		if (cmdOptions.enableTextSearch()) {
-			ret.add("--setParameter textSearchEnabled=true");
+			ret.add("--setParameter");
+			ret.add("textSearchEnabled=true");
 		}
-		
 	}
-
 
 	public static List<String> enhanceCommandLinePlattformSpecific(Distribution distribution, List<String> commands) {
 		if (NUMA.isNUMA(new SupportConfig(Command.MongoD), distribution.getPlatform())) {
