@@ -24,8 +24,8 @@ import java.util.EnumSet;
 
 import de.flapdoodle.embed.process.distribution.IVersion;
 
-
 public class Versions {
+
 	private Versions() {
 		// no instance
 	}
@@ -53,6 +53,38 @@ public class Versions {
 		public boolean enabled(Feature feature) {
 			return _features.contains(feature);
 		}
-		
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ ((_features == null) ? 0 : _features.hashCode());
+			result = prime * result + ((_version == null) ? 0 : _version.hashCode());
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			GenericFeatureAwareVersion other = (GenericFeatureAwareVersion) obj;
+			if (_features == null) {
+				if (other._features != null)
+					return false;
+			} else if (!_features.equals(other._features))
+				return false;
+			if (_version == null) {
+				if (other._version != null)
+					return false;
+			} else if (!_version.equals(other._version))
+				return false;
+			return true;
+		}
+
 	}
 }
