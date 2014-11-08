@@ -25,7 +25,7 @@ dependencies {
     compile 'de.flapdoodle.embed:de.flapdoodle.embed.process:1.40.0'
     compile 'org.mongodb:mongo-java-driver:2.11.3'
 
-    testCompile 'junit:junit:4.10'
+    testCompile 'junit:junit:4.11'
     testCompile 'org.mongodb:mongo-java-driver:2.6.3'
     testCompile 'org.mockito:mockito-core:1.9.0'
     testCompile 'org.mortbay.jetty:jetty:6.1.25'
