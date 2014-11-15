@@ -23,6 +23,7 @@ package de.flapdoodle.embed.mongo.config;
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.process.extract.UUIDTempNaming;
 import de.flapdoodle.embed.process.io.directories.PropertyOrPlatformTempDir;
+import de.flapdoodle.embed.process.store.Downloader;
 
 public class ArtifactStoreBuilder extends de.flapdoodle.embed.process.store.ArtifactStoreBuilder {
 
@@ -30,6 +31,7 @@ public class ArtifactStoreBuilder extends de.flapdoodle.embed.process.store.Arti
 		tempDir().setDefault(new PropertyOrPlatformTempDir());
 		executableNaming().setDefault(new UUIDTempNaming());
 		download().setDefault(new DownloadConfigBuilder().defaultsForCommand(command).build());
+		downloader().setDefault(new Downloader());
 		return this;
 	}
 }

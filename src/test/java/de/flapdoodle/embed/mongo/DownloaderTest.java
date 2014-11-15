@@ -101,7 +101,8 @@ public class DownloaderTest {
 	public void testDownload() throws Exception {
 		initRuntime();
 		Distribution d = new Distribution(new GenericVersion("3.1.1"), Platform.detect(), BitSize.B64);
-		File f = Downloader.download(dc, d);
+		Downloader downloader = new Downloader();
+		File f = downloader.download(dc, d);
 	}
 
 	private void initRuntime() {
@@ -114,6 +115,7 @@ public class DownloaderTest {
 	public void testDownloadShouldThrowExceptionForUnknownVersion() throws Exception {
 		initRuntime();
 		Distribution d = new Distribution(new GenericVersion("3013.1.1"), Platform.detect(), BitSize.B64);
-		File f = Downloader.download(dc, d);
+		Downloader downloader = new Downloader();
+		File f = downloader.download(dc, d);
 	}
 }
