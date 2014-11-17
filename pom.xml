@@ -11,7 +11,7 @@
 	<groupId>de.flapdoodle.embed</groupId>
 	<artifactId>de.flapdoodle.embed.mongo</artifactId>
 	<name>Flapdoodle Embedded MongoDB</name>
-	<version>1.46.4</version>
+	<version>1.46.5-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
 	<description>A embedded mongodb ...</description>
