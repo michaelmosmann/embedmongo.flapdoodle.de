@@ -1,6 +1,18 @@
 ### Changelog
 
-#### 1.46.1 (SNAPSHOT)
+#### 1.46.5 (SNAPSHOT)
+
+#### 1.46.4
+
+- Implement equals and hashCode on GenericFeatureAwareVersion so that CachingArtifactStore can work. Version is a component of Distribution, which is used as the cache key of CachingArtifactStore
+
+#### 1.46.3
+- skipped due to release 'problems'
+
+#### 1.46.2
+- skipped due to release 'problems' 
+
+#### 1.46.1 
 
 - support for OSGi (thanks to Niels Betram)
 - support for FreeBSD (thanks to Alex Sanchez)
