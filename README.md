@@ -1,6 +1,6 @@
 # Moved to Flapdoodle OSS
 
-We are using a gitgub organisation NOW. Thats the way you can participate in development. Please use from NOW
+We are using a github organisation NOW. Thats the way you can participate in development. Please use from NOW
 
 https://github.com/flapdoodle-oss/embedmongo.flapdoodle.de
 
